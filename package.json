@@ -46,7 +46,8 @@
     "eslint-plugin-storybook": "^0.6.11",
     "husky": "^8.0.3",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "sass": "^1.58.3"
   },
   "resolutions": {
     "webpack": "^5"
