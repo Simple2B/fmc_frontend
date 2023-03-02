@@ -1,4 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import SignUpStartPage from '../../../components/forms/sign_up_start_page/SignUpStartPage';
 import SignUpSPLayout, { ISignUpSPLayout } from './SignUpSPLayout';
 import { mockSignUpSPLayoutProps } from './SignUpSPLayout.mocks';
 
@@ -18,5 +19,6 @@ export const SignUpStartPageLayout = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
 SignUpStartPageLayout.args = {
+  children: <SignUpStartPage />,
   ...mockSignUpSPLayoutProps.base,
 } as ISignUpSPLayout;
