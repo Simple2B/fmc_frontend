@@ -2,7 +2,7 @@
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import * as NextImage from 'next/image';
 import React from 'react';
-import '../src/styles/globals.css';
+import '../src/styles/main.sass';
 import { AuthProvider } from '../state/auth/AuthContext';
 
 const BREAKPOINTS_INT = {
