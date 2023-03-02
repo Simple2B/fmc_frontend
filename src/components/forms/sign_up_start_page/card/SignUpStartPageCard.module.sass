@@ -1,0 +1,39 @@
+@import "../../../../styles/variables"
+@import "../../../../styles/mixins"
+
+.wrapper
+    color: $color-sign-sp
+    font-family: $font-poppins
+    @include box-center(center)
+    flex-direction: column
+    .title
+        font-size: 64px
+        font-weight: 900
+        line-height: 32px
+        padding-bottom: 24px
+        letter-spacing: 1.5px
+        text-align: center
+    .description
+        font-size: 16px
+        font-weight: 600
+        line-height: 24px
+        padding-bottom: 24px
+        letter-spacing: .3px
+        text-align: center
+    .btnWrapper
+        padding-bottom: 32px
+
+@media (max-width: 944px)
+    .wrapper
+        .title
+            font-size: 44px
+        .description
+            font-size: 14px
+
+@media (max-width: 600px)
+    .wrapper
+        .title
+            font-size: 34px
+        .description
+            font-size: 14px
+            
