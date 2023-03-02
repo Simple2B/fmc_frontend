@@ -1,0 +1,32 @@
+@import "../../../styles/variables"
+@import "../../../styles/mixins"
+
+
+.wrapper
+    width: 100%
+    height: 100%
+    @include box-center(space-between)
+    flex-wrap: wrap
+    padding-left: 16px
+    padding-right: 16px
+    .orBox
+        color: $color-sign-sp
+        font-family: $font-poppins
+        font-weight: 600
+        font-size: 18px
+        display: flex
+        align-items: center
+        &::before, &::after
+            content:'\00a0\00a0\00a0\00a0'
+            text-decoration: line-through
+            margin: auto 0.5em
+
+            
+@media (max-width: 995px)
+    .wrapper
+        @include box-center(center)
+        flex-direction: column
+        padding-left: 24px
+        padding-right: 24px
+        .orBox
+            padding-bottom: 32px
