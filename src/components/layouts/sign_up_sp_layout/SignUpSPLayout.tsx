@@ -61,6 +61,16 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const [isHoverInput1, setIsHoverInput1] = React.useState(false);
+  const [isHoverInput2, setIsHoverInput2] = React.useState(false);
+
+  const handleMouseEnter = (setIsHover: any) => {
+    setIsHover(true);
+  };
+  const handleMouseLeave = (setIsHover: any) => {
+    setIsHover(false);
+  };
+
   return (
     <Box
       className={`${wrapperClassName}`}
@@ -103,17 +113,41 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 color={color}
               >
-                Already have an account?
+                Already have an account? Log in like a
               </Box>
               <Link
                 href="#"
                 className={`${style.commonTextStyle} ${style.btnText}`}
                 style={{
-                  color: `${color}`,
-                  borderBottom: `2px solid ${color}`,
+                  color: `${isHoverInput1 ? color : 'rgb(113, 113, 113)'}`,
+                  borderBottom: `2px solid ${
+                    isHoverInput1 ? color : 'rgb(113, 113, 113)'
+                  }`,
                 }}
+                onMouseEnter={() => handleMouseEnter(setIsHoverInput1)}
+                onMouseLeave={() => handleMouseLeave(setIsHoverInput1)}
               >
-                Log in
+                Coach
+              </Link>
+              <Box
+                className={`${style.commonTextStyle} ${style.text}`}
+                color={color}
+              >
+                or
+              </Box>
+              <Link
+                href="#"
+                className={`${style.commonTextStyle} ${style.btnText}`}
+                style={{
+                  color: `${isHoverInput2 ? color : 'rgb(113, 113, 113)'}`,
+                  borderBottom: `2px solid ${
+                    isHoverInput2 ? color : 'rgb(113, 113, 113)'
+                  }`,
+                }}
+                onMouseEnter={() => handleMouseEnter(setIsHoverInput2)}
+                onMouseLeave={() => handleMouseLeave(setIsHoverInput2)}
+              >
+                Student
               </Link>
             </Box>
           </Toolbar>

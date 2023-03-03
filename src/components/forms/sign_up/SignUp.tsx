@@ -11,9 +11,10 @@ const re = /\S+@\S+\.\S+/;
 // eslint-disable-next-line no-unused-vars
 export interface ISignUp {
   title: string;
+  signUpType: string;
 }
 
-const SignUp: React.FC<ISignUp> = ({ title }) => {
+const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
   const [name, setName] = React.useState<string>('');
   const [errorNameMessage, setErrorNameMessage] = React.useState<string>('');
   const [isErrorName, setIsErrorName] = React.useState<boolean>(false);
@@ -286,7 +287,6 @@ const SignUp: React.FC<ISignUp> = ({ title }) => {
           >
             Sign up
           </Button>
-
           <div className={style.hr}>
             <div></div>
             <div style={{ color: '#717171' }}>Or</div>

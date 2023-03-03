@@ -9,20 +9,20 @@ export default function SignUpCoachStudent() {
   return (
     <>
       <Head>
-        <title>Sign Up Student</title>
-        <meta name="description" content="Sign Up Student" />
+        <title>Sign Up Coach</title>
+        <meta name="description" content="Sign Up Coach" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SignUpSPLayout
         linkBackgroundImg={
-          matches ? '../../../img/young-basketball-bg-student.jpg' : ' '
+          matches ? '../../../img/young-basketball-bg-coach.png' : ' '
         }
         wrapperClassName={'boxWithBackgroundStudentPage'}
         linkLogo={linkLogo}
         color={'#000'}
       >
-        <SignUpStudent title={'I’m a Student'} signUpType={''} />
+        <SignUpStudent title={'I’m a Coach'} signUpType={''} />
       </SignUpSPLayout>
     </>
   );

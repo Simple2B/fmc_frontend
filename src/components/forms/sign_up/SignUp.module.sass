@@ -4,7 +4,7 @@
 .wrapper
     width: 40%
     position: absolute
-    top: -30vh
+    top: -32vh
     right: 0
     .title
         font-family: $font-poppins
@@ -41,11 +41,18 @@
                 &:last-child
                     margin-left: 20px
 
+@media (max-width: 950px)
+    .wrapper
+        position: absolute
+        top: -15vh
+        right: 0
+        .title
+
 @media (max-width: 900px)
     .wrapper
         width: 100%
         position: absolute
-        top: 0
+        top: -15vh
         right: 0
         .title
 
