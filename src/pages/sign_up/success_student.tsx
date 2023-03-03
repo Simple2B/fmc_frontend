@@ -1,10 +1,10 @@
+import SuccessSignUp from '@/components/success_sign_up/SuccessSignUp';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import linkLogo from '../../../public/fmc_logo.png';
-import SignUpStudent from '../../components/forms/sign_up/SignUp';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp_layout/SignUpSPLayout';
 
-export default function SignUpCoachStudent() {
+export default function SuccessStudent() {
   const matches = useMediaQuery('(min-width:900px)');
   return (
     <>
@@ -22,7 +22,7 @@ export default function SignUpCoachStudent() {
         linkLogo={linkLogo}
         color={'#000'}
       >
-        <SignUpStudent title={'I’m a Student'} signUpType={'student'} />
+        <SuccessSignUp email={'test@email.com'} />
       </SignUpSPLayout>
     </>
   );

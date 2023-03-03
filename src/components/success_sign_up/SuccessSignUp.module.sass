@@ -1,0 +1,64 @@
+@import "../../styles/variables"
+@import "../../styles/mixins"
+
+.wrapper
+    width: 30%
+    position: absolute
+    top: -139px
+    left: 60%
+    right: 16px
+    .title
+        color: $color-text-success
+        font-family: $font-poppins
+        font-weight: 900
+        font-size: 32px
+        line-height: 32px
+        margin-bottom: 18px
+    .description, .email
+        color: $color-text-success
+        font-family: $font-poppins
+        font-weight: 600
+        font-size: 16px
+        line-height: 24px
+    .email
+       margin-bottom: 18px
+    .info
+        position: relative
+        color: $color-text-success
+        font-family: $font-inter
+        font-weight: 600
+        font-size: 16px
+        line-height: 24px
+        .arrow
+            width: 15.5px
+            height: 19.5px
+            color:#222CDF
+            transform: rotate(35deg)
+            position: absolute
+            top: 0
+            left: 103px
+
+
+
+@media (max-width: 900px)
+    .wrapper
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+        margin: 0 auto
+        position: relative
+        width: 70%
+        top: 0
+        left: 0
+        right: 0
+        text-align: center
+        .title, .description, .info
+            display: flex
+            justify-content: center
+            align-items: center
+        .info
+            padding-right: 180px
+
+        
+        
