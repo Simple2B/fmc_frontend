@@ -12,11 +12,13 @@ const SignUpStartPage: React.FC<ISignUpStartPage> = () => {
       <SignUpStartPageCard
         title={'I AM A COACH'}
         description={'I want to train and get paid easily.'}
+        href={'/sign_up/coach'}
       />
       <span className={style.orBox}> or </span>
       <SignUpStartPageCard
         title={'I AM A STUDENT'}
         description={'I want to discover a coach and schedule a training.'}
+        href={'/sign_up/student'}
       />
     </Box>
   );

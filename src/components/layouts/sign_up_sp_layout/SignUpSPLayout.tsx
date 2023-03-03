@@ -70,16 +70,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
       }}
     >
       <Box className={style.wrapperAppBar}>
-        <AppBar
-          component="nav"
-          color={'transparent'}
-          className={style.appBar}
-          sx={
-            {
-              // '& .css-hyum1k-MuiToolbar-root': { p: 0 },
-            }
-          }
-        >
+        <AppBar component="nav" color={'transparent'} className={style.appBar}>
           <Toolbar>
             <IconButton
               color="inherit"
