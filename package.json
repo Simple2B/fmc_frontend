@@ -15,7 +15,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "generate-client": "openapi-typescript http://localhost:8000/openapi.json --output ./src/petstore.ts"
   },
   "dependencies": {
     "@next/font": "13.1.6",
@@ -50,6 +51,7 @@
     "eslint-plugin-storybook": "^0.6.11",
     "husky": "^8.0.3",
     "node-polyfill-webpack-plugin": "^2.0.1",
+    "openapi-typescript": "^6.1.1",
     "prettier": "^2.8.4",
     "sass": "^1.58.3",
     "storybook-addon-sass-postcss": "^0.1.3"
