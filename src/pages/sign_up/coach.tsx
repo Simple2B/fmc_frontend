@@ -26,7 +26,7 @@ export default function SignUpCoachStudent() {
         userType={UserType.student}
         typeSign={TypeSign.up}
       >
-        <SignUpStudent title={'I’m a Coach'} signUpType={''} />
+        <SignUpStudent title={'I’m a Coach'} signUpType={UserType.coach} />
       </SignUpSPLayout>
     </>
   );
