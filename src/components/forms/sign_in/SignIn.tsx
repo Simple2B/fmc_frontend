@@ -6,7 +6,9 @@ import style from './SignIn.module.sass';
 import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
 
+import { UserType } from '@/store/types/user';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 // import Loader from '../../common/Loader/Loader';
 // import googleIcon from '../../../img/7123025_logo_google_g_icon.svg';
 
@@ -259,12 +261,17 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
               showPassword={showPassword}
               setHidePassword={setHidePassword}
             />
-            <div
+            <Link
               className={style.linkForgotPassword}
+              href={`${
+                userType === UserType.coach
+                  ? '/forgot_password/start_coach'
+                  : '/forgot_password/start_student'
+              }`}
               // onClick={handleClickForgotPassword}
             >
               Forgot password? <span className={style.arrow}>&#8593;</span>
-            </div>
+            </Link>
           </Box>
 
           <Button

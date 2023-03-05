@@ -245,7 +245,7 @@ const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
           />
           <Input
             helperText={errorNameMessage}
-            isError={isErrorEmail}
+            isError={isErrorName}
             name={'name'}
             label={'Full name'}
             value={name}
