@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Image, { StaticImageData } from 'next/image';
-import Link from 'next/link';
 import * as React from 'react';
 import StudentLinks from './link/StudentLinks';
 import style from './SignUpSPLayout.module.sass';
@@ -58,8 +57,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
       </Box>
       <Divider />
       <List>
-        <Link
-          href="#"
+        <Box
           className={`${style.commonTextStyle} ${style.btnText}`}
           style={{
             color: `${color}`,
@@ -67,7 +65,6 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
             textAlign: 'center',
           }}
         >
-          {/* add logic of login and sign up */}
           {typeSign === TypeSign.up ? (
             <Box>
               <Box sx={{ padding: '10px' }}> Sign in </Box>
@@ -76,7 +73,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
           ) : (
             'in'
           )}
-        </Link>
+        </Box>
       </List>
     </Box>
   );
