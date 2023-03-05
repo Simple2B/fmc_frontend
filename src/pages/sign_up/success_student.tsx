@@ -1,4 +1,5 @@
 import SuccessSignUp from '@/components/success_sign_up/SuccessSignUp';
+import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import linkLogo from '../../../public/fmc_logo.png';
@@ -21,6 +22,9 @@ export default function SuccessStudent() {
         wrapperClassName={'boxWithBackgroundStudentPage'}
         linkLogo={linkLogo}
         color={'#000'}
+        description={'Already have an account? Log in like a'}
+        userType={UserType.student}
+        typeSign={TypeSign.up}
       >
         <SuccessSignUp email={'test@email.com'} />
       </SignUpSPLayout>

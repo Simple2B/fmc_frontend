@@ -1,5 +1,6 @@
+import { TypeSign, UserType } from '@/store/types/user';
 import Head from 'next/head';
-import linkLogo from '../../../public/fmc_logo.png';
+import linkLogo from '../../../public/white_fmc_logo.png';
 import SignUpStartPage from '../../components/forms/sign_up_start_page/SignUpStartPage';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp_layout/SignUpSPLayout';
 
@@ -17,6 +18,9 @@ export default function SignUpCoachStudent() {
         wrapperClassName={'boxWithBackgroundStartPage'}
         linkLogo={linkLogo}
         color={'#fff'}
+        description={'Already have an account? Log in like a'}
+        userType={UserType.student}
+        typeSign={TypeSign.up}
       >
         <SignUpStartPage />
       </SignUpSPLayout>
