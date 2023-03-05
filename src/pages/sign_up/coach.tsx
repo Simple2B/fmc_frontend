@@ -23,7 +23,7 @@ export default function SignUpCoachStudent() {
         linkLogo={linkLogo}
         color={'#000'}
         description={'Already have an account? Log in like a'}
-        userType={UserType.student}
+        userType={UserType.coach}
         typeSign={TypeSign.up}
       >
         <SignUpStudent title={'I’m a Coach'} signUpType={UserType.coach} />

@@ -23,7 +23,7 @@ export default function SuccessCoach() {
         linkLogo={linkLogo}
         color={'#000'}
         description={'Already have an account? Log in like a'}
-        userType={UserType.student}
+        userType={UserType.coach}
         typeSign={TypeSign.up}
       >
         <SuccessSignUp email={'test@email.com'} />
