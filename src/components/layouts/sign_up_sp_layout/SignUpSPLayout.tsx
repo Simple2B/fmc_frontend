@@ -1,4 +1,4 @@
-import { TypeSign } from '@/store/types/user';
+import { TypeSign, UserType } from '@/store/types/user';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -23,6 +23,7 @@ export interface ISignUpSPLayout {
   description: string;
   userType: string;
   typeSign: string;
+  isGoBack?: boolean;
 }
 
 const drawerWidth = 240;
@@ -35,8 +36,9 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
   wrapperClassName,
   color,
   description,
-  // userType,
+  userType,
   typeSign,
+  isGoBack,
 }) => {
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
@@ -58,6 +60,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
       </Box>
       <Divider />
       <List>
+        <Box>{isGoBack && <Box>Go back</Box>}</Box>
         <Box
           className={`${style.commonTextStyle} ${style.btnText}`}
           style={{
@@ -126,16 +129,40 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
             </Box>
             <Box
               sx={{
+                width: `${isGoBack ? '50%' : 'unset'}`,
                 display: { xs: 'none', sm: 'flex' },
-                justifyContent: 'center',
+                justifyContent: `${isGoBack ? 'space-between' : 'none'}`,
                 alignItems: 'center',
               }}
             >
+              {isGoBack && (
+                <Link
+                  className={`${style.commonTextStyle} ${style.infoText}`}
+                  color={'#222222'}
+                  href={`${
+                    userType === UserType.coach
+                      ? '/sign_in/coach'
+                      : '/sign_in/student'
+                  } `}
+                  style={{ marginLeft: '15px' }}
+                >
+                  <p>
+                    <i className={style.arrowLeft}></i>
+                  </p>
+                  <span className={style.text}>Go back</span>
+                </Link>
+              )}
+
               <Box
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 color={color}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
               >
-                <span style={{ paddingRight: '10px' }}> {description} </span>
+                <Box style={{ paddingRight: '10px' }}> {description} </Box>
                 {typeSign === TypeSign.up ? (
                   <StudentLinks color={color} />
                 ) : (

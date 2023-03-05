@@ -25,6 +25,7 @@ export default function SignInCoach() {
         description={'Don’t have an account?'}
         userType={UserType.coach}
         typeSign={TypeSign.in}
+        isGoBack={true}
       >
         <StartForgotPassword userType={UserType.coach} />
       </SignUpSPLayout>
