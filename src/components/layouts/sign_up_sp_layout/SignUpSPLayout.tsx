@@ -1,3 +1,4 @@
+import { TypeSign } from '@/store/types/user';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,6 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
+import StudentLinks from './link/StudentLinks';
 import style from './SignUpSPLayout.module.sass';
 
 export interface ISignUpSPLayout {
@@ -18,6 +20,9 @@ export interface ISignUpSPLayout {
   linkBackgroundImg: StaticImageData | string | null;
   linkLogo: StaticImageData | string;
   color: string;
+  description: string;
+  userType: string;
+  typeSign: string;
 }
 
 const drawerWidth = 240;
@@ -29,6 +34,9 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
   linkBackgroundImg,
   wrapperClassName,
   color,
+  description,
+  // userType,
+  typeSign,
 }) => {
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
@@ -38,8 +46,15 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Box sx={{ my: 2 }}>
-        <Image src={linkLogo} alt="LOGO" width={44} height={34} />
+      <Box
+        sx={{
+          my: 2,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image src={linkLogo} alt="LOGO" width={65} height={48} />
       </Box>
       <Divider />
       <List>
@@ -48,11 +63,19 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
           className={`${style.commonTextStyle} ${style.btnText}`}
           style={{
             color: `${color}`,
-            borderBottom: `2px solid ${color}`,
+            justifyContent: 'center',
             textAlign: 'center',
           }}
         >
-          Log in
+          {/* add logic of login and sign up */}
+          {typeSign === TypeSign.up ? (
+            <Box>
+              <Box sx={{ padding: '10px' }}> Sign in </Box>
+              <StudentLinks color={color} />
+            </Box>
+          ) : (
+            'in'
+          )}
         </Link>
       </List>
     </Box>
@@ -60,16 +83,6 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
-  const [isHoverInput1, setIsHoverInput1] = React.useState(false);
-  const [isHoverInput2, setIsHoverInput2] = React.useState(false);
-
-  const handleMouseEnter = (setIsHover: any) => {
-    setIsHover(true);
-  };
-  const handleMouseLeave = (setIsHover: any) => {
-    setIsHover(false);
-  };
 
   return (
     <Box
@@ -113,42 +126,9 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 color={color}
               >
-                Already have an account? Log in like a
+                <span> {description} </span>
+                {typeSign === TypeSign.up && <StudentLinks color={color} />}
               </Box>
-              <Link
-                href="#"
-                className={`${style.commonTextStyle} ${style.btnText}`}
-                style={{
-                  color: `${isHoverInput1 ? color : 'rgb(113, 113, 113)'}`,
-                  borderBottom: `2px solid ${
-                    isHoverInput1 ? color : 'rgb(113, 113, 113)'
-                  }`,
-                }}
-                onMouseEnter={() => handleMouseEnter(setIsHoverInput1)}
-                onMouseLeave={() => handleMouseLeave(setIsHoverInput1)}
-              >
-                Coach
-              </Link>
-              <Box
-                className={`${style.commonTextStyle} ${style.text}`}
-                color={color}
-              >
-                or
-              </Box>
-              <Link
-                href="#"
-                className={`${style.commonTextStyle} ${style.btnText}`}
-                style={{
-                  color: `${isHoverInput2 ? color : 'rgb(113, 113, 113)'}`,
-                  borderBottom: `2px solid ${
-                    isHoverInput2 ? color : 'rgb(113, 113, 113)'
-                  }`,
-                }}
-                onMouseEnter={() => handleMouseEnter(setIsHoverInput2)}
-                onMouseLeave={() => handleMouseLeave(setIsHoverInput2)}
-              >
-                Student
-              </Link>
             </Box>
           </Toolbar>
         </AppBar>

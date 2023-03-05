@@ -8,6 +8,9 @@ const base: ISignUpSPLayout = {
   linkLogo: linkLogo,
   color: '#fff',
   wrapperClassName: 'boxWithBackgroundStartPage',
+  description: 'Already have an account? Log in like a',
+  userType: 'student',
+  typeSign: 'signUp',
 };
 
 export const mockSignUpSPLayoutProps = {
