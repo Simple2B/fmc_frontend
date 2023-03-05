@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Image, { StaticImageData } from 'next/image';
+import Link from 'next/link';
 import * as React from 'react';
 import StudentLinks from './link/StudentLinks';
 import style from './SignUpSPLayout.module.sass';
@@ -71,7 +72,18 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
               <StudentLinks color={color} />
             </Box>
           ) : (
-            'in'
+            <Box sx={{ padding: '10px' }}>
+              <Link
+                href="/sign_up/coach_student"
+                className={`${style.commonTextStyle} ${style.btnText}`}
+                style={{
+                  color: `${color}`,
+                  borderBottom: `2px solid ${color}`,
+                }}
+              >
+                Sign up
+              </Link>
+            </Box>
           )}
         </Box>
       </List>
@@ -123,8 +135,21 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 color={color}
               >
-                <span> {description} </span>
-                {typeSign === TypeSign.up && <StudentLinks color={color} />}
+                <span style={{ paddingRight: '10px' }}> {description} </span>
+                {typeSign === TypeSign.up ? (
+                  <StudentLinks color={color} />
+                ) : (
+                  <Link
+                    href="/sign_up/coach_student"
+                    className={`${style.commonTextStyle} ${style.btnText}`}
+                    style={{
+                      color: `${color}`,
+                      borderBottom: `2px solid ${color}`,
+                    }}
+                  >
+                    Sign up
+                  </Link>
+                )}
               </Box>
             </Box>
           </Toolbar>

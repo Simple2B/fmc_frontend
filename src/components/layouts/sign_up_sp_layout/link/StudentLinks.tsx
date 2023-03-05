@@ -21,7 +21,7 @@ const StudentLinks: React.FC<IStudentLinks> = ({ color }) => {
   return (
     <Box className={style.wrapperStudentLinks}>
       <Link
-        href="#"
+        href="/sign_in/coach"
         className={`${style.commonTextStyle} ${style.btnText}`}
         style={{
           color: `${isHoverInput1 ? color : 'rgb(113, 113, 113)'}`,
@@ -38,7 +38,7 @@ const StudentLinks: React.FC<IStudentLinks> = ({ color }) => {
         or
       </Box>
       <Link
-        href="#"
+        href="/sign_in/student"
         className={`${style.commonTextStyle} ${style.btnText}`}
         style={{
           color: `${isHoverInput2 ? color : 'rgb(113, 113, 113)'}`,
