@@ -2,16 +2,16 @@ import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import linkLogo from '../../../public/fmc_logo.png';
-import StartForgotPassword from '../../components/forms/forgot_password/StartForgotPassword';
+import InfoForgotPassword from '../../components/forms/forgot_password/info/InfoForgotPassword';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp_layout/SignUpSPLayout';
 
-export default function StartCoach() {
+export default function InfoStudent() {
   const matches = useMediaQuery('(min-width:900px)');
   return (
     <>
       <Head>
-        <title>Coach</title>
-        <meta name="description" content="Coach" />
+        <title>Student</title>
+        <meta name="description" content="Student" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -27,7 +27,7 @@ export default function StartCoach() {
         typeSign={TypeSign.in}
         isGoBack={true}
       >
-        <StartForgotPassword userType={UserType.coach} />
+        <InfoForgotPassword userType={UserType.student} />
       </SignUpSPLayout>
     </>
   );
