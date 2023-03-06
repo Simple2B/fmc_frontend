@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import SignUpStartPage from '../../../components/forms/sign_up_start_page/SignUpStartPage';
+import SignUpStartPage from '../../forms/sign_up_start_page/SignUpStartPage';
 import SignUpSPLayout, { ISignUpSPLayout } from './SignUpSPLayout';
 import { mockSignUpSPLayoutProps } from './SignUpSPLayout.mocks';
 
