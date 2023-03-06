@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "generate-client": "openapi-typescript http://localhost:8000/openapi.json --output ./src/petstore.ts"
+    "generate-client": "openapi-typescript http://localhost:8000/openapi.json --output ./src/fmc_fast_api.ts"
   },
   "dependencies": {
     "@next/font": "13.1.6",
