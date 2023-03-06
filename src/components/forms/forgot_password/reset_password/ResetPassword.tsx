@@ -129,6 +129,12 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
         }}
       >
         <Typography className={style.title}>Reset your password</Typography>
+        <Box sx={{ mt: '24px' }}>
+          <Typography className={style.description}>
+            Enter the email address you used when you joined and we’ll send you
+            instructions to reset your password.
+          </Typography>
+        </Box>
         <Box
           component="form"
           noValidate
@@ -180,7 +186,6 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
             isError={isErrorPasswordConfirm}
             helperText={errorPasswordConfirmMessage}
           />
-
           <Button
             type="submit"
             fullWidth
