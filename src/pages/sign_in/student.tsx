@@ -3,7 +3,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import linkLogo from '../../../public/white_fmc_logo.png';
 import SignIn from '../../components/forms/sign_in/SignIn';
-import SignUpSPLayout from '../../components/layouts/sign_up_sp_layout/SignUpSPLayout';
+import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
 export default function SignInStudent() {
   const matches = useMediaQuery('(min-width:900px)');

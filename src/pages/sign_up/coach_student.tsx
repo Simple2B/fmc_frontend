@@ -2,7 +2,7 @@ import { TypeSign, UserType } from '@/store/types/user';
 import Head from 'next/head';
 import linkLogo from '../../../public/white_fmc_logo.png';
 import SignUpStartPage from '../../components/forms/sign_up_start_page/SignUpStartPage';
-import SignUpSPLayout from '../../components/layouts/sign_up_sp_layout/SignUpSPLayout';
+import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
 export default function SignUpCoachStudent() {
   return (
