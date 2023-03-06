@@ -61,7 +61,16 @@
         padding: 3px
         transform: rotate(135deg)
     .text
+        color: black
+        padding-top: 1px
         margin-left: 6px
+    &:hover
+        .arrowLeft
+            border: solid $color-fp
+            border-width: 0 3px 3px 0
+        .text
+            color: $color-fp
+
 
 
 @media (max-width: 713px)
@@ -87,3 +96,23 @@
     text-decoration: none
     padding-bottom: 2px
 
+.goBackMobContainer
+    display: flex
+    justify-content: center
+    align-items: center
+    text-decoration: none
+    color: $color-fp
+    padding-right: 7px
+    font-size: 16px
+    font-weight: 400
+    cursor: pointer
+    margin-top: 13px
+    margin-bottom: 13px
+    .arrowLeft
+        border: solid $color-fp
+        border-width: 0 3px 3px 0
+        display: inline-block
+        padding: 3px
+        transform: rotate(135deg)
+    .text
+        padding-top: 2.5px

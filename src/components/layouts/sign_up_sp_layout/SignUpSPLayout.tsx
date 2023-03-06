@@ -60,7 +60,24 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
       </Box>
       <Divider />
       <List>
-        <Box>{isGoBack && <Box>Go back</Box>}</Box>
+        <Box>
+          {isGoBack && (
+            <Link
+              className={`${style.goBackMobContainer}`}
+              color={'#222222'}
+              href={`${
+                userType === UserType.coach
+                  ? '/sign_in/coach'
+                  : '/sign_in/student'
+              } `}
+            >
+              <p>
+                <i className={style.arrowLeft}></i>
+              </p>
+              <span className={style.text}>Go back</span>
+            </Link>
+          )}
+        </Box>
         <Box
           className={`${style.commonTextStyle} ${style.btnText}`}
           style={{
