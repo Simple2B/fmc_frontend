@@ -2,11 +2,15 @@ import SuccessSignUp from '@/components/success_sign_up/SuccessSignUp';
 import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import linkLogo from '../../../public/LOGO.svg';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
 export default function SuccessStudent() {
   const matches = useMediaQuery('(min-width:900px)');
+  const router = useRouter();
+  const email = router.asPath.split('?')[1];
+
   return (
     <>
       <Head>
@@ -26,7 +30,7 @@ export default function SuccessStudent() {
         userType={UserType.student}
         typeSign={TypeSign.up}
       >
-        <SuccessSignUp email={'test@email.com'} />
+        <SuccessSignUp email={email} />
       </SignUpSPLayout>
     </>
   );

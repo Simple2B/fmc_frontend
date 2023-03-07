@@ -16,10 +16,12 @@ export const studentClientApi = {
     }
   },
 
-  studentAccountConfirmation: async (): Promise<number | string> => {
+  studentAccountConfirmation: async (
+    token: string
+  ): Promise<number | string> => {
     try {
       const response = await instance().get(
-        '/auth/student/account-confirmation?token'
+        `/auth/student/account-confirmation?${token}`
       );
       const res = response.data;
       console.log(`[GET: account-confirmation] student -> res data  ${res}`);
@@ -28,7 +30,7 @@ export const studentClientApi = {
       console.log(
         `[GET: account-confirmation] student -> error message => ${error.message}`
       );
-      throw error;
+      throw error.message;
     }
   },
 

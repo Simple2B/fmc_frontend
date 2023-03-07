@@ -5,6 +5,7 @@ import * as React from 'react';
 import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
 import Loader from '../../../common/loader/Loader';
+import MessageBox from '../../../common/message_box/MessageBox';
 import CustomModel from '../../../common/modal/Modal';
 import { coachClientApi } from '../../../fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '../../../fast_api_backend/api/usersInstance/student/studentInstance';
@@ -83,13 +84,21 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
             const response = await coachClientApi.signUpCoach(data);
             console.log('POST [/sign_up] coach successfully', response);
             setIsLoad(false);
-            router.push('/sign_up/success_coach');
+            setSuccess(true);
+            router.push({
+              pathname: '/sign_up/success_coach',
+              query: email,
+            });
           }
           if (userType === UserType.student) {
             const response = await studentClientApi.signUpStudent(data);
             setIsLoad(false);
+            setSuccess(true);
             console.log('POST [/sign_up] student successfully', response);
-            router.push('/sign_up/success_student');
+            router.push({
+              pathname: '/sign_up/success_student',
+              query: email,
+            });
           }
           // setSuccess(true);
         } catch (error: any) {
@@ -101,14 +110,18 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
             console.log(
               `POST [/sign_up] coach error message: ${error.message}`
             );
-            alert(`coach: ${error.message}`);
+            // alert(`coach: ${error.message}`);
+            setSuccess(false);
+            setError('Email already exists');
           }
           if (userType === UserType.student) {
             router.push('/sign_up/student');
             console.log(
               `POST [/sign_up] student error message: ${error.message}`
             );
-            alert(`student: ${error.message}`);
+            // alert(`student: ${error.message}`);
+            setSuccess(false);
+            setError('Email already exists');
           }
           console.log(`POST [/sign_up] error message: ${error.message}`);
         }
@@ -124,6 +137,17 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
   ) => {
     setPasswordState(e.target.value);
   };
+
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
 
   return (
     <Box className={style.wrapper}>
@@ -149,112 +173,17 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
               <Loader />
             </CustomModel>
           )}
-          {/* {error && !isSuccess && (
-          <Modal
-            open={error !== null ? true : false}
-            onClose={() => {
-              setError(null);
-              navigate('/auth#sign_in');
-            }}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            sx={{ margin: '15% auto' }}
-          >
-            <Box
-              sx={{
-                width: '75%',
-                margin: '0 auto',
-                padding: '55px 30px',
-                backgroundColor: '#151632',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '20px',
-                zIndex: '100',
-              }}
+          {error && !isSuccess && (
+            <CustomModel
+              isOpen={modalIsOpen}
+              handleClick={() => setModalIsOpen(!modalIsOpen)}
             >
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ color: '#f8dcdb', textAlign: 'center' }}
-              >
-                {`${error}`}
-              </Typography>
-            </Box>
-          </Modal>
-        )}
-        {isLoad && (
-          <Modal
-            open={isLoad}
-            onClose={() => console.log('Load false')}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            sx={{
-              margin: '15% auto',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              sx={{
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '20px',
-                zIndex: '100',
-              }}
-            >
-              <Loader />
-            </Box>
-          </Modal>
-        )}
-        {isSuccess && (
-          <Modal
-            open={isSuccess}
-            onClose={() => {
-              setSuccess(false);
-              navigate('/');
-            }}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            sx={{ margin: '15% auto' }}
-          >
-            <Box
-              sx={{
-                width: '75%',
-                margin: '0 auto',
-                padding: '55px 30px',
-                backgroundColor: '#151632',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '20px',
-                zIndex: '100',
-              }}
-            >
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ color: '#f8dcdb', textAlign: 'center' }}
-              >
-                {`Please check your mail ${email}`}
-              </Typography>
-              <Typography
-                id="modal-modal-description"
-                sx={{ mt: 2, color: '#f8dcdb', textAlign: 'center' }}
-              >
-                You should receive a letter within 1 minute
-              </Typography>
-            </Box>
-          </Modal>
-        )} */}
+              <MessageBox
+                error={error}
+                handleClick={() => setModalIsOpen(!modalIsOpen)}
+              />
+            </CustomModel>
+          )}
           <Input
             helperText={errorEmailMessage}
             isError={isErrorEmail}

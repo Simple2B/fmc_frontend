@@ -17,10 +17,10 @@ export const coachClientApi = {
     }
   },
 
-  coachAccountConfirmation: async (): Promise<number | string> => {
+  coachAccountConfirmation: async (token: string): Promise<number | string> => {
     try {
       const response = await instance().get(
-        '/auth/coach/account-confirmation?token'
+        `/auth/coach/account-confirmation?${token}`
       );
       const res = response.data;
       console.log(`[GET: account-confirmation] coach -> res data  ${res}`);
@@ -29,7 +29,7 @@ export const coachClientApi = {
       console.log(
         `[GET: account-confirmation] coach -> error message => ${error.message}`
       );
-      throw error;
+      throw error.message;
     }
   },
 

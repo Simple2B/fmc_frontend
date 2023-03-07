@@ -3,16 +3,23 @@ import { Box, Modal } from '@mui/material';
 import * as React from 'react';
 
 // eslint-disable-next-line no-unused-vars
-export interface ISignUp {
+export interface ICustomModel {
   children?: any;
   isOpen: boolean;
+  handleClick?:
+    | ((event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void)
+    | undefined;
 }
 
-const CustomModel: React.FC<ISignUp> = ({ children, isOpen }) => {
+const CustomModel: React.FC<ICustomModel> = ({
+  children,
+  isOpen,
+  handleClick,
+}) => {
   return (
     <Modal
       open={isOpen}
-      onClose={() => console.log('Load false')}
+      onClose={handleClick}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
