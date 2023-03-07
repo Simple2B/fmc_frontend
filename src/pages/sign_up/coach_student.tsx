@@ -1,6 +1,6 @@
 import { TypeSign, UserType } from '@/store/types/user';
 import Head from 'next/head';
-import linkLogo from '../../../public/white_fmc_logo.png';
+import linkLogo from '../../../public/LOGO(WHITE).svg';
 import SignUpStartPage from '../../components/forms/sign_up_start_page/SignUpStartPage';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 

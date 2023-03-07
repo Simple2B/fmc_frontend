@@ -1,11 +1,11 @@
 import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
-import linkLogo from '../../../public/fmc_logo.png';
-import SignUpStudent from '../../components/forms/sign_up/SignUp';
+import linkLogo from '../../../public/LOGO.svg';
+import SignUp from '../../components/forms/sign_up/SignUp';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
-export default function SignUpCoachStudent() {
+export default function SignUpCoach() {
   const matches = useMediaQuery('(min-width:900px)');
   return (
     <>
@@ -26,7 +26,7 @@ export default function SignUpCoachStudent() {
         userType={UserType.coach}
         typeSign={TypeSign.up}
       >
-        <SignUpStudent title={'I’m a Coach'} signUpType={UserType.coach} />
+        <SignUp title={'I’m a Coach'} userType={UserType.coach} />
       </SignUpSPLayout>
     </>
   );

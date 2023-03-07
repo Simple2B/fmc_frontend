@@ -1,11 +1,11 @@
-import SuccessSignUp from '@/components/success_sign_up/SuccessSignUp';
-import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
-import linkLogo from '../../../public/LOGO.svg';
-import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
+import linkLogo from '../../../../public/LOGO.svg';
+import Confirmation from '../../../components/forms/sign_up/confirmation/Confirmation';
+import SignUpSPLayout from '../../../components/layouts/sign_up_sp/SignUpSPLayout';
+import { UserType } from '../../../store/types/user';
 
-export default function SuccessStudent() {
+export default function ConfirmationStudent() {
   const matches = useMediaQuery('(min-width:900px)');
   return (
     <>
@@ -21,12 +21,10 @@ export default function SuccessStudent() {
         }
         wrapperClassName={'boxWithBackgroundStudentPage'}
         linkLogo={linkLogo}
-        color={'#000'}
-        description={'Already have an account? Log in like a'}
+        color={'#fff'}
         userType={UserType.student}
-        typeSign={TypeSign.up}
       >
-        <SuccessSignUp email={'test@email.com'} />
+        <Confirmation title={'Welcome!'} userType={UserType.student} />
       </SignUpSPLayout>
     </>
   );

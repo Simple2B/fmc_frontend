@@ -1,17 +1,17 @@
-import SuccessSignUp from '@/components/success_sign_up/SuccessSignUp';
-import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
-import linkLogo from '../../../public/LOGO.svg';
-import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
+import linkLogo from '../../../../public/LOGO.svg';
+import Confirmation from '../../../components/forms/sign_up/confirmation/Confirmation';
+import SignUpSPLayout from '../../../components/layouts/sign_up_sp/SignUpSPLayout';
+import { UserType } from '../../../store/types/user';
 
-export default function SuccessCoach() {
+export default function ConfirmationCoach() {
   const matches = useMediaQuery('(min-width:900px)');
   return (
     <>
       <Head>
-        <title>Sign Up Coach</title>
-        <meta name="description" content="Sign Up Coach" />
+        <title>Confirmation Coach</title>
+        <meta name="description" content="Confirmation Coach" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -21,12 +21,10 @@ export default function SuccessCoach() {
         }
         wrapperClassName={'boxWithBackgroundStudentPage'}
         linkLogo={linkLogo}
-        color={'#000'}
-        description={'Already have an account? Log in like a'}
+        color={'#fff'}
         userType={UserType.coach}
-        typeSign={TypeSign.up}
       >
-        <SuccessSignUp email={'test@email.com'} />
+        <Confirmation title={'Welcome!'} userType={UserType.coach} />
       </SignUpSPLayout>
     </>
   );
