@@ -1,7 +1,7 @@
 import { TypeSign, UserType } from '@/store/types/user';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
-import linkLogo from '../../../public/fmc_logo.png';
+import linkLogo from '../../../public/LOGO.svg';
 import InfoForgotPassword from '../../components/forms/forgot_password/info/InfoForgotPassword';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
