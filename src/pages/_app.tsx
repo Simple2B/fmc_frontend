@@ -8,6 +8,11 @@ import '../styles/main.sass';
 const Loading = () => {
   const router = useRouter();
   const [isLoad, setIsLoad] = useState<boolean>(false);
+
+  console.log('====================================');
+  console.log(' isLoad ', isLoad);
+  console.log('====================================');
+
   useEffect(() => {
     const handleStart = (url: string) =>
       url !== router.asPath && setIsLoad(true);
@@ -23,7 +28,8 @@ const Loading = () => {
       router.events.off('routeChangeComplete', handleComplete);
       router.events.off('routeChangeError', handleComplete);
     };
-  });
+  }, [router.asPath, router.events]);
+
   return (
     <>
       {isLoad && (
