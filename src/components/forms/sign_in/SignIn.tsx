@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import style from './SignIn.module.sass';
 // import { GoogleLogin } from 'react-google-login';
-import { IResponseCoachData } from '@/store/types/users/coach/coachType';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import Input from '../../../common/input/Input';
@@ -14,9 +13,8 @@ import CustomModel from '../../../common/modal/Modal';
 import { coachAuthApi } from '../../../fast_api_backend/api/authApi/coach/authApi';
 import { studentAuthApi } from '../../../fast_api_backend/api/authApi/student/authApi';
 import { UserType } from '../../../store/types/user';
+import { IResponseCoachData } from '../../../store/types/users/coach/coachType';
 import { IResponseStudentData } from '../../../store/types/users/student/studentType';
-// import Loader from '../../common/Loader/Loader';
-// import googleIcon from '../../../img/7123025_logo_google_g_icon.svg';
 
 const re = /\S+@\S+\.\S+/;
 
@@ -29,9 +27,6 @@ export interface ISignIn {
 const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
   // const { googleClientId, appleKeyId } = useContext(AuthContext);
   // const matches = useMediaQuery('(min-width:600px)');
-  console.log('====================================');
-  console.log('SignIn: userType', userType);
-  console.log('====================================');
 
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
@@ -122,24 +117,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
         };
         signInStudent();
       }
-
-      // if (userType === UserType.coach) {
-      //   const signInCoach = async () => {
-      //     const coachToken = await coachAuthApi.signInCoach(email, password);
-      //     if (coachToken as IResponseCoachData) {
-      //       localStorage.setItem(
-      //         'token',
-      //         (coachToken as IResponseCoachData).access_token
-      //       );
-      //       router.push('/profiles/coach/my_appointments');
-      //     }
-      //     // if (coachToken as string) {
-      //     //   alert(`${coachToken}`);
-      //     //   router.push('/');
-      //     // }
-      //   };
-      //   signInCoach();
-      // }
 
       const signIn = async (userType: string) => {
         setIsLoad(true);
