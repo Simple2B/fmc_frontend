@@ -2,7 +2,7 @@ import { ICoach } from '../../../../store/types/users/coach/coachType';
 import { instance } from '../../_axiosInstance';
 
 export const coachClientApi = {
-  createCoach: async (data: ICoach): Promise<number | string> => {
+  signUpCoach: async (data: ICoach): Promise<number | string> => {
     try {
       const response = await instance().post('/auth/coach/sign-up', data);
       const res = response.data;

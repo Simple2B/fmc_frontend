@@ -12,11 +12,11 @@ const formatRequestBody = (email: string, password: string) => {
   return formData;
 };
 
-export const authApi = {
+export const coachAuthApi = {
   signInCoach: async (
     email: string,
     password: string
-  ): Promise<IResponseCoachData> => {
+  ): Promise<IResponseCoachData | string> => {
     try {
       const response = await authInstance.post(
         '/auth/coach/login',
@@ -26,7 +26,7 @@ export const authApi = {
       return response.data;
     } catch (error: any) {
       console.log(`POST [/sign_in] coach - error message: ${error.message}`);
-      throw error;
+      throw error.message;
     }
   },
 };

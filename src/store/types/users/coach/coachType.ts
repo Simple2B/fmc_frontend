@@ -1,5 +1,9 @@
 // created coach (save to db info student)
-export interface ICoach {}
+export interface ICoach {
+  email: string;
+  username: string;
+  password: string;
+}
 
 export interface ICoachResponse {}
 

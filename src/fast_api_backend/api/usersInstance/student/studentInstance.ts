@@ -2,7 +2,7 @@ import { IStudent } from '../../../../store/types/users/student/studentType';
 import { instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
-  createStudent: async (data: IStudent): Promise<number | string> => {
+  signUpStudent: async (data: IStudent): Promise<number | string> => {
     try {
       const response = await instance().post('/auth/student/sign-up', data);
       const res = response.data;
