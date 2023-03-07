@@ -1,8 +1,14 @@
 /* eslint-disable no-unused-vars */
-import Input from '@/common/input/Input';
 import { Box, Button, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
+import Loader from '../../../common/loader/Loader';
+import CustomModel from '../../../common/modal/Modal';
+import { coachClientApi } from '../../../fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '../../../fast_api_backend/api/usersInstance/student/studentInstance';
+import { UserType } from '../../../store/types/user';
 
 import style from './SignUp.module.sass';
 
@@ -11,10 +17,12 @@ const re = /\S+@\S+\.\S+/;
 // eslint-disable-next-line no-unused-vars
 export interface ISignUp {
   title: string;
-  signUpType: string;
+  userType: string;
 }
 
-const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
+const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
+  const router = useRouter();
+
   const [name, setName] = React.useState<string>('');
   const [errorNameMessage, setErrorNameMessage] = React.useState<string>('');
   const [isErrorName, setIsErrorName] = React.useState<boolean>(false);
@@ -46,14 +54,11 @@ const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
     setSuccess(false);
     setIsLoad(true);
     setIsErrorEmail(false);
-    // setIsErrorName(false);
     setErrorEmailMessage('');
-    // setErrorNameMessage('');
     if (email === '') {
       setIsErrorEmail(true);
       setErrorEmailMessage('Email cannot be empty');
     }
-
     if (re.test(email.toLowerCase())) {
       setIsErrorEmail(false);
       setErrorEmailMessage('');
@@ -61,33 +66,54 @@ const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
       setIsErrorEmail(true);
       setErrorEmailMessage('Email is not valid');
     }
-
     // if (name === '') {
     //   setIsErrorName(true);
     //   setErrorNameMessage('Name cannot be empty');
     // }
 
     if (email) {
-      // const name = email.split('@')[0];
-      const getRegistrationMessage = async () => {
+      const data = {
+        email: email,
+        username: name,
+        password: password,
+      };
+      const getRegistrationMessage = async (userType: string) => {
         try {
-          const response = '';
-          // await instance().post('/sign_up', {
-          //   email: email,
-          //   username: name,
-          // });
-          console.log('POST [/sign_up] successfully', response);
-          setIsLoad(false);
-          setSuccess(true);
-          // return response.data;
+          if (userType === UserType.coach) {
+            const response = await coachClientApi.signUpCoach(data);
+            console.log('POST [/sign_up] coach successfully', response);
+            setIsLoad(false);
+            router.push('/sign_up/success_coach');
+          }
+          if (userType === UserType.student) {
+            const response = await studentClientApi.signUpStudent(data);
+            setIsLoad(false);
+            console.log('POST [/sign_up] student successfully', response);
+            router.push('/sign_up/success_student');
+          }
+          // setSuccess(true);
         } catch (error: any) {
           setIsLoad(false);
-          setSuccess(false);
-          setError('Email already exists');
+          // setSuccess(false);
+
+          if (userType === UserType.coach) {
+            router.push('/sign_up/coach');
+            console.log(
+              `POST [/sign_up] coach error message: ${error.message}`
+            );
+            alert(`coach: ${error.message}`);
+          }
+          if (userType === UserType.student) {
+            router.push('/sign_up/student');
+            console.log(
+              `POST [/sign_up] student error message: ${error.message}`
+            );
+            alert(`student: ${error.message}`);
+          }
           console.log(`POST [/sign_up] error message: ${error.message}`);
         }
       };
-      getRegistrationMessage();
+      getRegistrationMessage(userType);
     }
   };
 
@@ -118,6 +144,11 @@ const SignUp: React.FC<ISignUp> = ({ title, signUpType }) => {
           sx={{ mt: 1, position: 'relative', width: '100%' }}
           className={style.form}
         >
+          {isLoad && (
+            <CustomModel isOpen={isLoad}>
+              <Loader />
+            </CustomModel>
+          )}
           {/* {error && !isSuccess && (
           <Modal
             open={error !== null ? true : false}

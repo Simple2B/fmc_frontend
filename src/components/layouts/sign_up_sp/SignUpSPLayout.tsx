@@ -20,9 +20,9 @@ export interface ISignUpSPLayout {
   linkBackgroundImg: StaticImageData | string | null;
   linkLogo: StaticImageData | string;
   color: string;
-  description: string;
+  description?: string;
   userType: string;
-  typeSign: string;
+  typeSign?: string;
   isGoBack?: boolean;
 }
 

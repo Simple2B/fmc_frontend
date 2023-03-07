@@ -1,6 +1,6 @@
 import { ISignUpSPLayout } from './SignUpSPLayout';
-import linkLogo from '/public/fmc_logo.png';
 import linkImgBG from '/public/img/young-basketball-bg.png';
+import linkLogo from '/public/LOGO.svg';
 
 // for children put some component
 const base: ISignUpSPLayout = {
