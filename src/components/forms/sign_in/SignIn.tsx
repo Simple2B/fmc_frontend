@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
 import Loader from '../../../common/loader/Loader';
+import MessageBox from '../../../common/message_box/MessageBox';
 import CustomModel from '../../../common/modal/Modal';
 import { coachAuthApi } from '../../../fast_api_backend/api/authApi/coach/authApi';
 import { studentAuthApi } from '../../../fast_api_backend/api/authApi/student/authApi';
@@ -30,6 +31,8 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
 
   const router = useRouter();
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
 
   const [email, setEmail] = useState<string>('');
   const [errorEmailMessage, setErrorEmailMessage] = useState<string>('');
@@ -72,6 +75,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSuccess(false);
     setIsErrorEmail(false);
     setIsErrorPassword(false);
     setErrorEmailMessage('');
@@ -92,32 +96,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
       setErrorPasswordMessage('Password cannot be empty');
     }
     if (email && password) {
-      console.log({
-        email: email,
-        password: password,
-      });
-      if (userType === UserType.student) {
-        const signInStudent = async () => {
-          const studentToken = await studentAuthApi.signInStudent(
-            email,
-            password
-          );
-          if (studentToken as IResponseStudentData) {
-            localStorage.setItem(
-              'token',
-              (studentToken as IResponseStudentData).access_token
-            );
-            router.push('/profiles/student/my_lessons');
-          }
-
-          // if (studentToken as string) {
-          //   alert(`${studentToken}`);
-          //   router.push('/');
-          // }
-        };
-        signInStudent();
-      }
-
       const signIn = async (userType: string) => {
         setIsLoad(true);
         try {
@@ -129,6 +107,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
               (coachToken as IResponseCoachData).access_token
             );
             setIsLoad(false);
+            setSuccess(true);
             router.push('/profiles/coach/my_appointments');
           }
           if (userType === UserType.student) {
@@ -141,6 +120,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
               (studentToken as IResponseStudentData).access_token
             );
             setIsLoad(false);
+            setSuccess(true);
             console.log('POST [/sign_in] student successfully', studentToken);
             router.push('/profiles/student/my_lessons');
           }
@@ -153,14 +133,18 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             console.log(
               `POST [/sign_in] coach error message: ${error.message}`
             );
-            alert(`coach: ${error}`);
+            // alert(`coach: ${error}`);
+            setSuccess(false);
+            setError(`${error}`);
           }
           if (userType === UserType.student) {
             router.push('/sign_in/student');
             console.log(
               `POST [/sign_in] student error message: ${error.message}`
             );
-            alert(`student: ${error}`);
+            // alert(`student: ${error}`);
+            setSuccess(false);
+            setError(`${error}`);
           }
           console.log(`POST [/sign_in] error message: ${error.message}`);
         }
@@ -168,6 +152,17 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
       signIn(userType);
     }
   };
+
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
 
   // const handleForgotPasswordSubmit = (
   //   event: React.FormEvent<HTMLFormElement>
@@ -276,6 +271,17 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
           {isLoad && (
             <CustomModel isOpen={isLoad}>
               <Loader />
+            </CustomModel>
+          )}
+          {error && !isSuccess && (
+            <CustomModel
+              isOpen={modalIsOpen}
+              handleClick={() => setModalIsOpen(!modalIsOpen)}
+            >
+              <MessageBox
+                error={error}
+                handleClick={() => setModalIsOpen(!modalIsOpen)}
+              />
             </CustomModel>
           )}
           {/* {error && !isLoggin && (
