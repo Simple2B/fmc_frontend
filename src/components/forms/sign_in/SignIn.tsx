@@ -6,7 +6,8 @@ import style from './SignIn.module.sass';
 // import { GoogleLogin } from 'react-google-login';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
-import Input from '../../../common/input/Input';
+// import Input from 'common/input/Input';
+import Input from '@/src/common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
 import Loader from '../../../common/loader/Loader';
 import MessageBox from '../../../common/message_box/MessageBox';
@@ -124,7 +125,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             console.log('POST [/sign_in] student successfully', studentToken);
             router.push('/profiles/student/my_lessons');
           }
-          // setSuccess(true);
         } catch (error: any) {
           setIsLoad(false);
 
@@ -133,7 +133,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             console.log(
               `POST [/sign_in] coach error message: ${error.message}`
             );
-            // alert(`coach: ${error}`);
             setSuccess(false);
             setError(`${error}`);
           }
@@ -142,7 +141,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             console.log(
               `POST [/sign_in] student error message: ${error.message}`
             );
-            // alert(`student: ${error}`);
             setSuccess(false);
             setError(`${error}`);
           }
