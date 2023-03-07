@@ -22,7 +22,7 @@ const SignUpStartPageCard: React.FC<ISignUpStartPageCard> = ({
       <Box className={style.description}>{description}</Box>
       <Box className={style.btnWrapper}>
         <Link href={href}>
-          <Btn text={'continue'} />
+          <Btn text={'Continue'} />
         </Link>
       </Box>
     </Box>

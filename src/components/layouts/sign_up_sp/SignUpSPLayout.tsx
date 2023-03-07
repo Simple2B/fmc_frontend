@@ -1,4 +1,3 @@
-import { TypeSign, UserType } from '@/store/types/user';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,7 +8,9 @@ import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import { TypeSign, UserType } from '../../../store/types/user';
 import StudentLinks from './link/StudentLinks';
 import style from './SignUpSPLayout.module.sass';
 
@@ -40,6 +41,11 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
   typeSign,
   isGoBack,
 }) => {
+  const router = useRouter();
+  console.log('====================================');
+  console.log(' router => ', router.asPath);
+  console.log('====================================');
+
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
   const handleDrawerToggle = () => {
@@ -56,7 +62,9 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
           alignItems: 'center',
         }}
       >
-        <Image src={linkLogo} alt="LOGO" width={65} height={48} />
+        <Link href={'/'}>
+          <Image src={linkLogo} alt="LOGO" width={65} height={48} />
+        </Link>
       </Box>
       <Divider />
       <List>
@@ -142,7 +150,9 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              <Image src={linkLogo} alt="LOGO" width={84} height={64} />
+              <Link href={'/'}>
+                <Image src={linkLogo} alt="LOGO" width={104} height={84} />
+              </Link>
             </Box>
             <Box
               sx={{
@@ -227,6 +237,12 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
           {children}
         </Box>
       </Box>
+
+      {/* {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )} */}
     </Box>
   );
 };

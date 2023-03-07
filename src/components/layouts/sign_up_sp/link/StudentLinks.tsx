@@ -34,7 +34,10 @@ const StudentLinks: React.FC<IStudentLinks> = ({ color }) => {
       >
         Coach
       </Link>
-      <Box className={`${style.commonTextStyle} ${style.text}`} color={color}>
+      <Box
+        className={`${style.commonTextStyle} ${style.text} ${style.boxOr}`}
+        color={color}
+      >
         or
       </Box>
       <Link

@@ -14,7 +14,7 @@ const SignUpStartPage: React.FC<ISignUpStartPage> = () => {
         description={'I want to train and get paid easily.'}
         href={'/sign_up/coach'}
       />
-      <span className={style.orBox}> or </span>
+      <Box className={style.orBox}> or </Box>
       <SignUpStartPageCard
         title={'I AM A STUDENT'}
         description={'I want to discover a coach and schedule a training.'}
