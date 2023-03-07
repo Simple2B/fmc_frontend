@@ -9,10 +9,6 @@ const Loading = () => {
   const router = useRouter();
   const [isLoad, setIsLoad] = useState<boolean>(false);
 
-  console.log('====================================');
-  console.log(' isLoad ', isLoad);
-  console.log('====================================');
-
   useEffect(() => {
     const handleStart = (url: string) =>
       url !== router.asPath && setIsLoad(true);

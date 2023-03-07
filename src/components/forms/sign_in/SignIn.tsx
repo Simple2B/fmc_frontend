@@ -4,14 +4,16 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import style from './SignIn.module.sass';
 // import { GoogleLogin } from 'react-google-login';
+import { IResponseCoachData } from '@/store/types/users/coach/coachType';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
 import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
+import Loader from '../../../common/loader/Loader';
+import CustomModel from '../../../common/modal/Modal';
 import { coachAuthApi } from '../../../fast_api_backend/api/authApi/coach/authApi';
 import { studentAuthApi } from '../../../fast_api_backend/api/authApi/student/authApi';
 import { UserType } from '../../../store/types/user';
-import { IResponseCoachData } from '../../../store/types/users/coach/coachType';
 import { IResponseStudentData } from '../../../store/types/users/student/studentType';
 // import Loader from '../../common/Loader/Loader';
 // import googleIcon from '../../../img/7123025_logo_google_g_icon.svg';
@@ -32,6 +34,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
   console.log('====================================');
 
   const router = useRouter();
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
 
   const [email, setEmail] = useState<string>('');
   const [errorEmailMessage, setErrorEmailMessage] = useState<string>('');
@@ -120,23 +123,72 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
         signInStudent();
       }
 
-      if (userType === UserType.coach) {
-        const signInCoach = async () => {
-          const coachToken = await coachAuthApi.signInCoach(email, password);
-          if (coachToken as IResponseCoachData) {
+      // if (userType === UserType.coach) {
+      //   const signInCoach = async () => {
+      //     const coachToken = await coachAuthApi.signInCoach(email, password);
+      //     if (coachToken as IResponseCoachData) {
+      //       localStorage.setItem(
+      //         'token',
+      //         (coachToken as IResponseCoachData).access_token
+      //       );
+      //       router.push('/profiles/coach/my_appointments');
+      //     }
+      //     // if (coachToken as string) {
+      //     //   alert(`${coachToken}`);
+      //     //   router.push('/');
+      //     // }
+      //   };
+      //   signInCoach();
+      // }
+
+      const signIn = async (userType: string) => {
+        setIsLoad(true);
+        try {
+          if (userType === UserType.coach) {
+            const coachToken = await coachAuthApi.signInCoach(email, password);
+            console.log('POST [/sign_in] coach successfully', coachToken);
             localStorage.setItem(
               'token',
               (coachToken as IResponseCoachData).access_token
             );
+            setIsLoad(false);
             router.push('/profiles/coach/my_appointments');
           }
-          // if (coachToken as string) {
-          //   alert(`${coachToken}`);
-          //   router.push('/');
-          // }
-        };
-        signInCoach();
-      }
+          if (userType === UserType.student) {
+            const studentToken = await studentAuthApi.signInStudent(
+              email,
+              password
+            );
+            localStorage.setItem(
+              'token',
+              (studentToken as IResponseStudentData).access_token
+            );
+            setIsLoad(false);
+            console.log('POST [/sign_in] student successfully', studentToken);
+            router.push('/profiles/student/my_lessons');
+          }
+          // setSuccess(true);
+        } catch (error: any) {
+          setIsLoad(false);
+
+          if (userType === UserType.coach) {
+            router.push('/sign_in/coach');
+            console.log(
+              `POST [/sign_in] coach error message: ${error.message}`
+            );
+            alert(`coach: ${error}`);
+          }
+          if (userType === UserType.student) {
+            router.push('/sign_in/student');
+            console.log(
+              `POST [/sign_in] student error message: ${error.message}`
+            );
+            alert(`student: ${error}`);
+          }
+          console.log(`POST [/sign_in] error message: ${error.message}`);
+        }
+      };
+      signIn(userType);
     }
   };
 
@@ -244,6 +296,11 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
           sx={{ mt: 1, position: 'relative', width: '100%' }}
           className={style.form}
         >
+          {isLoad && (
+            <CustomModel isOpen={isLoad}>
+              <Loader />
+            </CustomModel>
+          )}
           {/* {error && !isLoggin && (
           <ModalWindow
             isOpen={error !== null ? true : false}
@@ -253,9 +310,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             children={error}
           />
         )}
-        {loading && (
-          <ModalWindow isOpen={loading} type={'load'} children={<Loader />} />
-        )}
+        
         {isLoggin && (
           <ModalWindow
             isOpen={isLoggin}
