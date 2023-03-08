@@ -15,6 +15,8 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
 import style from './LandingPage.module.sass';
+import SearchInput from './search_box/SearchBox';
+import VideoBox from './video_box/VideoBox';
 
 export interface ILandingPage {
   children?: any;
@@ -24,11 +26,7 @@ export interface ILandingPage {
 
 const drawerWidth = 240;
 
-const LandingPage: React.FC<ILandingPage> = ({
-  children,
-  window,
-  wrapperClassName,
-}) => {
+const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
@@ -91,28 +89,7 @@ const LandingPage: React.FC<ILandingPage> = ({
         margin: '0 auto',
       }}
     >
-      <Box
-        sx={{
-          position: 'absolute',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '932px',
-          top: 0,
-          right: 0,
-          left: 0,
-        }}
-      >
-        <video autoPlay muted loop id="myVideo">
-          <source
-            src={
-              'https://find-my-coach.s3.amazonaws.com/assets/pexels-cottonbro-10340715.mp4'
-            }
-            type="video/mp4"
-          />
-        </video>
-      </Box>
+      <VideoBox />
       <Box className={style.wrapperAppBar}>
         <AppBar component="nav" color={'transparent'} className={style.appBar}>
           <Toolbar>
@@ -132,10 +109,14 @@ const LandingPage: React.FC<ILandingPage> = ({
                 pt: '15px',
                 pb: '15px',
                 display: { xs: 'none', sm: 'block' },
+                position: 'relative',
               }}
             >
-              <Link href={'/'}>
-                <Image src={linkLogo} alt="LOGO" width={104} height={84} />
+              <Link
+                href={'/'}
+                style={{ position: 'absolute', top: '-34px', left: '-15.5px' }}
+              >
+                <Image src={linkLogo} alt="LOGO" width={124} height={104} />
               </Link>
             </Box>
             <Box
@@ -155,37 +136,17 @@ const LandingPage: React.FC<ILandingPage> = ({
                   alignItems: 'center',
                 }}
               >
-                <Box
-                  className={style.signInText}
-                  sx={{ color: '#1876D1', mr: '15px', textAlign: 'center' }}
-                >
-                  Sign in
-                </Box>
+                <Box className={style.signInText}>Sign in</Box>
                 <Box
                   onClick={() => router.push('/sign_in/coach')}
-                  className={`${style.commonTextStyle} ${style.btnText}`}
-                  style={{
-                    color: '#fff',
-                    borderBottom: '2px solid #fff',
-                    marginRight: '15px',
-                    textAlign: 'center',
-                  }}
+                  className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
                 >
                   Coach
                 </Box>
-                <Box sx={{ color: '#1876D1', mr: '15px', textAlign: 'center' }}>
-                  {' '}
-                  or{' '}
-                </Box>
+                <Box className={style.signInText}> or </Box>
                 <Box
                   onClick={() => router.push('/sign_in/student')}
-                  className={`${style.commonTextStyle} ${style.btnText}`}
-                  style={{
-                    color: '#fff',
-                    borderBottom: '2px solid #fff',
-                    marginRight: '15px',
-                    textAlign: 'center',
-                  }}
+                  className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
                 >
                   Student
                 </Box>
@@ -234,7 +195,27 @@ const LandingPage: React.FC<ILandingPage> = ({
         </Box>
         <Box component="main" className={style.mainBox}>
           <Toolbar />
-          {children}
+          <Box className={style.title}>Find your perfect coach</Box>
+          <Box className={style.description}>
+            We make it fast, simple and secure to book a coach that can help
+            increase your potential.{' '}
+          </Box>
+          <Box>
+            <SearchInput />
+            <Box
+              sx={{
+                width: '237px',
+                height: '45px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Button className={style.searchBtn}>Soccer</Button>
+              <Button className={style.searchBtn}>Rugby</Button>
+              <Button className={style.searchBtn}>Golf</Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
 
