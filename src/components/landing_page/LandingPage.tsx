@@ -11,6 +11,7 @@ import {
   Toolbar,
 } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
 import style from './LandingPage.module.sass';
@@ -28,6 +29,7 @@ const LandingPage: React.FC<ILandingPage> = ({
   window,
   wrapperClassName,
 }) => {
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
   const handleDrawerToggle = () => {
@@ -138,8 +140,8 @@ const LandingPage: React.FC<ILandingPage> = ({
             </Box>
             <Box
               sx={{
-                width: 'unset',
                 display: { xs: 'none', sm: 'flex' },
+                width: 'unset',
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}
@@ -147,26 +149,48 @@ const LandingPage: React.FC<ILandingPage> = ({
               <Box
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 sx={{
-                  width: '275px',
+                  width: '420px',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <Link
-                  href="/sign_up/coach_student"
+                <Box
+                  className={style.signInText}
+                  sx={{ color: '#1876D1', mr: '15px', textAlign: 'center' }}
+                >
+                  Sign in
+                </Box>
+                <Box
+                  onClick={() => router.push('/sign_in/coach')}
                   className={`${style.commonTextStyle} ${style.btnText}`}
                   style={{
                     color: '#fff',
                     borderBottom: '2px solid #fff',
                     marginRight: '15px',
+                    textAlign: 'center',
                   }}
                 >
-                  Sign up
-                </Link>
+                  Coach
+                </Box>
+                <Box sx={{ color: '#1876D1', mr: '15px', textAlign: 'center' }}>
+                  {' '}
+                  or{' '}
+                </Box>
+                <Box
+                  onClick={() => router.push('/sign_in/student')}
+                  className={`${style.commonTextStyle} ${style.btnText}`}
+                  style={{
+                    color: '#fff',
+                    borderBottom: '2px solid #fff',
+                    marginRight: '15px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Student
+                </Box>
                 <Button
-                  // type="submit"
-                  onClick={() => '/sign_up/coach_student'}
+                  onClick={() => router.push('/sign_up/coach_student')}
                   fullWidth
                   variant="contained"
                   sx={{
@@ -175,7 +199,7 @@ const LandingPage: React.FC<ILandingPage> = ({
                     borderRadius: '8px',
                     width: '199px',
                     height: '56px',
-                    // #1976d2
+                    textAlign: 'center',
                   }}
                 >
                   Create account
