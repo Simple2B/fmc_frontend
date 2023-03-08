@@ -1,22 +1,18 @@
-FROM node:16-alpine AS deps
+FROM node:16-alpine
+ENV NEXT_TELEMETRY_DISABLED 1
 RUN apk update
+
 RUN apk add --no-cache libc6-compat
+RUN apk add yarn
+
+RUN export PATH="$PATH:`yarn global bin`"
 
 WORKDIR /app
 
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn
 
-# builder
-FROM node:16-alpine AS builder
-
-WORKDIR /app
-
-COPY --from=deps /app/node_modules ./node_modules
-
+# COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN yarn run build
+CMD ["yarn", "run" ,"build"]
