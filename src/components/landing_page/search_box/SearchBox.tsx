@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -17,6 +17,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
         alignItems: 'center',
         width: 587,
         height: 60,
+        position: 'relative',
       }}
     >
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
@@ -29,16 +30,12 @@ const SearchInput: React.FC<ISearchInput> = () => {
       />
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <IconButton
-        color="primary"
-        sx={{ p: '10px', pr: '330px', position: 'relative' }}
-        aria-label="directions"
-      >
-        {/* <DirectionsIcon /> */}
+      <Box sx={{ pr: '330px' }}>
         <Button
           sx={{
             position: 'absolute',
-            right: '3px',
+            top: '7px',
+            right: '6px',
             color: '#FFF',
             backgroundColor: '#F05547',
             width: '108px',
@@ -51,7 +48,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
         >
           Search
         </Button>
-      </IconButton>
+      </Box>
     </Paper>
   );
 };
