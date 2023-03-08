@@ -2,6 +2,7 @@ version: '3.8'
 services:
 
   nextjs_app:
+    image: simple2b/fmc-frontend
     build: .
     volumes:
       - .:/app
