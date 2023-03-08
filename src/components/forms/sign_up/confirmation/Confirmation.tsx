@@ -1,10 +1,11 @@
-import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Loader from '../../../../common/loader/Loader';
+import MessageBox from '../../../../common/message_box/MessageBox';
 import CustomModel from '../../../../common/modal/Modal';
+import { coachClientApi } from '../../../../fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '../../../../fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '../../../../store/types/user';
 
 import style from './Confirmation.module.sass';
@@ -19,44 +20,61 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
   const token = router.asPath.split('?')[1];
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   const handleConfirm = () => {
-    if (userType === UserType.coach) {
-      const confirmCoachEmail = async () => {
-        setIsLoad(true);
-        const res = await coachClientApi.coachAccountConfirmation(token);
-        console.log('====================================');
-        console.log('res => ', res);
-        console.log('====================================');
-        if (res === 200) {
-          console.log('coach: confirmCoachEmail => res', res);
+    const confirmCoachEmail = async (userType: string) => {
+      setIsLoad(true);
+      try {
+        if (userType === UserType.coach) {
+          const res = await coachClientApi.coachAccountConfirmation(token);
+          setIsLoad(false);
+          setSuccess(true);
+          console.log('POST [/confirmation] coach successfully', res);
           router.push('/sign_in/coach');
-          setIsLoad(false);
-        } else {
-          console.log('coach: confirmCoachEmail => error', res);
-          setIsLoad(false);
-          alert(`${res}`);
         }
-      };
-      confirmCoachEmail();
-    }
-
-    if (userType === UserType.student) {
-      const confirmStudentEmail = async () => {
-        const res = await studentClientApi.studentAccountConfirmation(token);
-        if (res === 200) {
-          console.log('student: confirmCoachEmail => res', res);
+        if (userType === UserType.student) {
+          const res = await studentClientApi.studentAccountConfirmation(token);
           setIsLoad(false);
+          setSuccess(true);
+          console.log('POST [/confirmation] student successfully', res);
           router.push('/sign_in/student');
-        } else {
-          console.log('student: confirmCoachEmail => error', res);
-          setIsLoad(false);
-          alert(`${res}`);
         }
-      };
-      confirmStudentEmail();
-    }
+      } catch (error: any) {
+        if (userType === UserType.coach) {
+          console.log(
+            `POST [/confirmation] coach error message: ${error.message}`
+          );
+          setSuccess(false);
+          setError('The token is not valid, please try to register again!');
+          router.push('/sign_up/coach');
+        }
+        if (userType === UserType.student) {
+          console.log(
+            `POST [/confirmation] student error message: ${error.message}`
+          );
+          setSuccess(false);
+          setError('The token is not valid, please try to register again!');
+          router.push('/sign_up/student');
+        }
+        console.log(`POST [/confirmation] error message: ${error.message}`);
+      }
+    };
+    confirmCoachEmail(userType);
   };
+
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setIsLoad(false);
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
 
   return (
     <Box className={style.wrapper}>
@@ -76,8 +94,6 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
           </Typography>
         </Box>
         <Box
-          component="form"
-          noValidate
           sx={{ mt: 1, position: 'relative', width: '100%' }}
           className={style.form}
         >
@@ -89,6 +105,17 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
       {isLoad && (
         <CustomModel isOpen={isLoad}>
           <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
         </CustomModel>
       )}
     </Box>

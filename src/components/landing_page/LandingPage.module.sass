@@ -1,0 +1,119 @@
+@import "../../styles/variables"
+@import "../../styles/mixins"
+
+.wrapperAppBar
+    width: 1140px
+    position: relative
+    margin: 0 auto
+    .appBar
+        width: 100%
+        box-shadow: none
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        margin: 0
+    .mainBox
+        width: 100%
+        position: absolute
+        top: 43%
+        z-index: 3   
+
+@media (max-width: 1038px)  
+    .wrapperAppBar
+        .mainBox
+            top: 20%  
+
+@media (max-width: 945px)  
+    .wrapperAppBar
+        .mainBox
+            top: 25%  
+
+
+@media (max-width: 600px)
+    .wrapperAppBar
+        .mainBox
+            top: 13%  
+
+.commonTextStyle
+    font-family: $font-inter
+    display: flex
+    text-decoration: none
+
+    .wrapperStudentLinks
+        padding-left: 5px
+        display: flex
+        align-items: center
+
+.text
+    padding-left: 10px
+    padding-right: 10px
+
+.infoText
+    padding-right: 7px
+    font-size: 14px
+    font-weight: 400
+    cursor: pointer
+    .arrowLeft
+        border: solid black
+        border-width: 0 3px 3px 0
+        display: inline-block
+        padding: 3px
+        transform: rotate(135deg)
+    .text
+        color: black
+        padding-top: 1px
+    .boxOr
+        color: $opacity-bg-color
+    &:hover
+        .arrowLeft
+            border: solid $color-fp
+            border-width: 0 3px 3px 0
+        .text
+            color: $color-fp
+
+
+
+@media (max-width: 713px)
+    .infoText
+        padding-right: 3px
+        font-size: 13px
+        font-weight: 300
+
+@media (max-width: 660px)
+    .infoText
+        padding-right: 0
+        font-size: 13px
+        font-weight: 200
+
+@media (max-width: 648px)
+    .infoText
+        font-size: 11px
+        font-weight: 100
+
+    
+.btnText
+    font-weight: 600
+    text-decoration: none
+    padding-bottom: 2px
+
+.goBackMobContainer
+    display: flex
+    justify-content: center
+    align-items: center
+    text-decoration: none
+    color: $color-fp
+    padding-right: 7px
+    font-size: 16px
+    font-weight: 400
+    cursor: pointer
+    margin-top: 13px
+    margin-bottom: 13px
+    .arrowLeft
+        border: solid $color-fp
+        border-width: 0 3px 3px 0
+        display: inline-block
+        padding: 3px
+        transform: rotate(135deg)
+    .text
+        padding-top: 2.5px

@@ -1,11 +1,9 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/router';
-import React, { useState } from 'react';
-import style from './SignIn.module.sass';
-// import { GoogleLogin } from 'react-google-login';
 import Typography from '@mui/material/Typography';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import Input from '../../../common/input/Input';
 import PasswordInput from '../../../common/input_password/PasswordInput';
 import Loader from '../../../common/loader/Loader';
@@ -16,6 +14,7 @@ import { studentAuthApi } from '../../../fast_api_backend/api/authApi/student/au
 import { UserType } from '../../../store/types/user';
 import { IResponseCoachData } from '../../../store/types/users/coach/coachType';
 import { IResponseStudentData } from '../../../store/types/users/student/studentType';
+import style from './SignIn.module.sass';
 
 const re = /\S+@\S+\.\S+/;
 

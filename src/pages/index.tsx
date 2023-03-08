@@ -1,5 +1,5 @@
-import { Box } from '@mui/system';
 import Head from 'next/head';
+import LandingPage from '../components/landing_page/LandingPage';
 import styles from '../styles/Home.module.sass';
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Box sx={{ mt: '15vh' }}>Home page</Box>
+        <LandingPage wrapperClassName={styles.wrapper} />
       </main>
     </>
   );
