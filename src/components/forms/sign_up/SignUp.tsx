@@ -112,7 +112,7 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
             );
             // alert(`coach: ${error.message}`);
             setSuccess(false);
-            setError('Email already exists');
+            setError(`${error.message}`);
           }
           if (userType === UserType.student) {
             router.push('/sign_up/student');
@@ -121,7 +121,7 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
             );
             // alert(`student: ${error.message}`);
             setSuccess(false);
-            setError('Email already exists');
+            setError(`${error.message}`);
           }
           console.log(`POST [/sign_up] error message: ${error.message}`);
         }
