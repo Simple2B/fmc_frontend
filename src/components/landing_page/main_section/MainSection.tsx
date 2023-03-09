@@ -1,5 +1,7 @@
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import facebook from '../../../../public/facebook.png';
+import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBook-Pro-16.png';
 import TitleBox from '../title_box/TitleBox';
 import Cards from './cards_sport_types/Cards';
@@ -15,6 +17,9 @@ const MainSection: React.FC<IMainSection> = () => {
   const matches855 = useMediaQuery('(max-width:855px)');
   const matches625 = useMediaQuery('(max-width:625px)');
   const matches385 = useMediaQuery('(max-width:385px)');
+
+  const year = new Date().getFullYear();
+
   return (
     <Box className={styles.section}>
       <TitleBox
@@ -103,6 +108,48 @@ const MainSection: React.FC<IMainSection> = () => {
       </Box>
       <Box className={styles.wrapperContactForm}>
         <WrapperContactForm />
+      </Box>
+      <Box className={styles.mainSectionFooter}>
+        <Box className={styles.wrapperFooter}>
+          <Box className={styles.cards}>
+            <Box className={styles.card1}>
+              <Box sx={{ position: 'relative' }}>
+                <Image src={logo} alt={'logo'} width={93} height={90} />
+              </Box>
+              <Box
+                sx={{
+                  width: '218px',
+                  color: '#fff',
+                  fontSize: '16px',
+                  lineHeight: '20px',
+                  pl: '15px',
+                }}
+              >
+                Optimizing your coach experience
+              </Box>
+            </Box>
+            <Box className={styles.card2}>
+              <Box className={styles.c2}>Privacy&policy</Box>
+              <Box className={styles.c2}>Become an investor</Box>
+              <Box className={styles.c2}>Contact us</Box>
+            </Box>
+            <Box className={styles.card3}>
+              <Box className={styles.c3}>Follow us</Box>
+              <Box className={styles.boxSocial}>
+                <Box>
+                  <Image src={facebook} alt={'facebook'} />
+                </Box>
+                <Box>
+                  <Image src={''} alt={'instagram'} />
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box className={styles.copyright}>
+            Copyright {year}. All rights reserved
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
