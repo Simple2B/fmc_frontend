@@ -9,6 +9,7 @@ import {
   Link,
   List,
   Toolbar,
+  useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -27,6 +28,8 @@ export interface ILandingPage {
 const drawerWidth = 240;
 
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
+  const matches845 = useMediaQuery('(max-width:845px)');
+  const matches320 = useMediaQuery('(max-width:320px)');
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
@@ -81,16 +84,9 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box
-      className={`${wrapperClassName}`}
-      sx={{
-        display: 'flex',
-        backgroundColor: 'grey',
-        margin: '0 auto',
-      }}
-    >
-      <VideoBox />
+    <Box className={`${wrapperClassName}`}>
       <Box className={style.wrapperAppBar}>
+        <VideoBox />
         <AppBar component="nav" color={'transparent'} className={style.appBar}>
           <Toolbar>
             <IconButton
@@ -114,9 +110,18 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             >
               <Link
                 href={'/'}
-                style={{ position: 'absolute', top: '-34px', left: '-15.5px' }}
+                style={{
+                  position: 'absolute',
+                  top: matches845 ? '-25px' : '-34px',
+                  left: matches845 ? '-14.5px' : '-15.5px',
+                }}
               >
-                <Image src={linkLogo} alt="LOGO" width={124} height={104} />
+                <Image
+                  src={linkLogo}
+                  alt="LOGO"
+                  width={matches845 ? 100 : 124}
+                  height={matches845 ? 80 : 104}
+                />
               </Link>
             </Box>
             <Box
@@ -158,8 +163,10 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                     mt: 3,
                     mb: 2,
                     borderRadius: '8px',
-                    width: '199px',
-                    height: '56px',
+                    textTransform: 'capitalize',
+                    fontSize: matches845 ? '13px' : '16px',
+                    width: matches845 ? '152px' : '199px',
+                    height: matches845 ? '40px' : '56px',
                     textAlign: 'center',
                   }}
                 >
@@ -200,15 +207,27 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             We make it fast, simple and secure to book a coach that can help
             increase your potential.{' '}
           </Box>
-          <Box>
+          <Box
+            sx={
+              matches320
+                ? {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }
+                : {}
+            }
+          >
             <SearchInput />
             <Box
               sx={{
-                width: '237px',
-                height: '45px',
+                width: matches845 ? '200px' : '237px',
+                height: matches320 ? '30px' : matches845 ? '40px' : '45px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                mr: '8px',
               }}
             >
               <Button className={style.searchBtn}>Soccer</Button>
