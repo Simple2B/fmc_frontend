@@ -1,5 +1,9 @@
 import { Box, Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Input from '../../../../common/input/Input';
+import Loader from '../../../../common/loader/Loader';
+import MessageBox from '../../../../common/message_box/MessageBox';
+import CustomModel from '../../../../common/modal/Modal';
 import styles from './WrapperContactForm.module.sass';
 
 export interface IWrapperContactForm {}
@@ -7,14 +11,45 @@ export interface IWrapperContactForm {}
 const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
   // const router = useRouter();
   const [email, setEmail] = useState('');
+  const [errorEmailMessage, setErrorEmailMessage] = useState<string>('');
+  const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
+
   const [question, setQuestion] = useState('');
+
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const sendQuestion = () => {
     console.log(' question => ', {
       email: email,
       question: question,
     });
+    setSuccess(false);
+    setIsLoad(true);
+    setIsErrorEmail(false);
+    setErrorEmailMessage('');
+    if (email === '') {
+      setIsLoad(false);
+      setIsErrorEmail(true);
+      setErrorEmailMessage('Email cannot be empty');
+    }
+    setEmail('');
+    setQuestion('');
   };
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+        setIsLoad(false);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
   return (
     <Box className={styles.wrapperCards}>
       <Box
@@ -34,18 +69,26 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
         </Box>
 
         <Box className={styles.infoCards}>
-          <Box sx={{ width: '100%' }}>
-            <TextField
-              id="outlined-multiline-flexible"
-              label="Email"
-              multiline
-              maxRows={4}
-              sx={{ width: '100%', mb: '48px' }}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Box>
-          <Box sx={{ width: '100%' }}>
+          <Input
+            helperText={errorEmailMessage}
+            isError={isErrorEmail}
+            name={'email'}
+            label={'Email'}
+            value={email}
+            sx={{ mt: 2 }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (e.target.value !== '') {
+                setIsErrorEmail(false);
+                setErrorEmailMessage('');
+              } else {
+                setIsErrorEmail(true);
+                setErrorEmailMessage('Email cannot be empty');
+              }
+            }}
+            type="email"
+          />
+          <Box sx={{ width: '100%', mt: '20px' }}>
             <TextField
               sx={{ width: '100%' }}
               id="outlined-multiline-static"
@@ -78,6 +121,22 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
           </Button>
         </Box>
       </Box>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };
