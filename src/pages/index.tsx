@@ -1,3 +1,4 @@
+import MainSection from '@/components/landing_page/main_section/MainSection';
 import Head from 'next/head';
 import LandingPage from '../components/landing_page/LandingPage';
 import styles from '../styles/Home.module.sass';
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
+        <MainSection />
       </main>
     </>
   );
