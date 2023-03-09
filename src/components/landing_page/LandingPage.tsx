@@ -28,7 +28,9 @@ export interface ILandingPage {
 const drawerWidth = 240;
 
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
+  // const matches1114 = useMediaQuery('(max-width:1114px)');
   const matches845 = useMediaQuery('(max-width:845px)');
+  // const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
@@ -227,7 +229,6 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                mr: '8px',
               }}
             >
               <Button className={style.searchBtn}>Soccer</Button>
@@ -237,12 +238,6 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
           </Box>
         </Box>
       </Box>
-
-      {/* {isLoad && (
-        <CustomModel isOpen={isLoad}>
-          <Loader />
-        </CustomModel>
-      )} */}
     </Box>
   );
 };

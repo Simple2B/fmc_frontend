@@ -18,10 +18,10 @@ const SearchInput: React.FC<ISearchInput> = () => {
         p: matches320 ? '' : '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: matches445 ? 300 : matches845 ? 400 : 587,
+        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 400 : 587,
         height: matches445 ? 33 : matches845 ? 45 : 60,
         position: 'relative',
-        left: matches320 ? '-6px' : 0,
+        left: matches320 ? '-15px' : 0,
         backgroundColor: matches320
           ? 'rgba(255, 255, 255, 0.7)'
           : 'rgba(255, 255, 255, 1)',
