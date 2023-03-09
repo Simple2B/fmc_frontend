@@ -9,6 +9,12 @@ module.exports = () => {
     sassOptions: {
       includePaths: [join(__dirname, 'styles')],
     },
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+    experimental: {
+      outputStandalone: true,
+    },
   };
   return nextConfig;
 };
