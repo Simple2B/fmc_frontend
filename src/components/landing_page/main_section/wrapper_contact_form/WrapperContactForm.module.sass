@@ -1,0 +1,97 @@
+@import "../../../../styles/variables"
+@import "../../../../styles/mixins"
+
+.wrapperCards
+    width: 100%
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border: 1px solid rgba(71, 71, 71, 0.05)
+    box-shadow: 0px 0px 5px rgba(71, 71, 71, 0.25)
+    border-radius: 8px
+    .wrapperCard
+        width: 50%
+    .wrapperCard1
+        background-repeat: no-repeat
+        background-size: cover
+        background-position: center
+        border-bottom-left-radius: 8px
+        border-top-left-radius: 8px
+    .wrapperCard2
+        padding-left: 59px
+        padding-top: 62px
+        padding-bottom: 50px
+        padding-right: 59px
+        .title, .description
+            font-family: $font-inter
+            color: #333333
+        .title
+            font-weight: 600
+            font-size: 32px
+            padding-bottom: 32px
+        .description
+            font-weight: 400
+            font-size: 16px
+            line-height: 19.36px
+            padding-bottom: 40px
+        .infoCards
+            display: flex
+            flex-direction: column
+            justify-content: flex-start
+            align-items: flex-start
+            padding-bottom: 32px
+            .infoCard
+                font-weight: 400
+                font-size: 16px
+                display: flex
+                justify-content: center
+                align-items: center
+                padding-bottom: 7px
+                .infoIcon
+                   padding-right: 7px 
+                .text
+        .Btns
+            display: flex
+            justify-content: center
+            align-items: center
+            .Btn
+                font-weight: 600
+                font-size: 16px
+
+@media screen and ( max-width: 800px )
+    .wrapperCards
+        width: 534px
+        justify-content: center
+        flex-wrap: wrap
+        .wrapperCard
+            width: 534px
+        .wrapperCard1
+            border-bottom-left-radius: 0
+            border-top-right-radius: 8px
+
+@media screen and ( max-width: 550px )
+    .wrapperCards
+        .wrapperCard
+            width: 100%
+        .wrapperCard2
+            padding: 13px
+            .title
+                font-size: 22px
+                padding-bottom: 22px
+            .description
+                font-weight: 400
+                font-size: 16px
+                padding-bottom: 20px
+            .infoCards
+                padding-bottom: 22px
+                .infoCard
+                    font-size: 14px
+            .Btns
+                display: flex
+                justify-content: flex-start
+                align-items: flex-start
+                .Btn
+                    font-weight: 500
+                    font-size: 11px
+                    width: 130px
+                    height: 40px
