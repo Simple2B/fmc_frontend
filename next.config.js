@@ -9,6 +9,7 @@ module.exports = () => {
     sassOptions: {
       includePaths: [join(__dirname, 'styles')],
     },
+    output: 'standalone',
   };
   return nextConfig;
 };

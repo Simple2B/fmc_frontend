@@ -4,11 +4,9 @@ services:
   nextjs_app:
     image: simple2b/fmc-frontend:v1
     build: .
-    volumes:
-      - .:/app
-    command: yarn run start
+    command: node server.js
     ports:
-      - "3000:3000"
+      - 127.0.0.1:3000:3000
     environment:
-      NODE_ENV: ${NODE_ENV}
+      NODE_ENV: production
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
