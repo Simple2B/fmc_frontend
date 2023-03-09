@@ -2,7 +2,7 @@
 @import "../../../styles/mixins"
 
 .wrapperVideo
-    max-width: 100%
+    width: 100%
     position: absolute
     display: flex
     justify-content: center
@@ -17,9 +17,18 @@
     .wrapperVideo
         top: -98px
 
+@media (max-width: 1425px)
+    .wrapperVideo
+        top: -195px
+
+
 @media (max-width: 1114px)
     .wrapperVideo
         top: -212px
+
+@media (max-width: 993px)
+    .wrapperVideo
+        top: -252px
 
 @media (max-width: 920px)
     .wrapperVideo

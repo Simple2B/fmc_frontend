@@ -47,7 +47,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
             color: '#FFF',
             backgroundColor: '#F05547',
             width: matches445 ? '' : matches845 ? '88px' : '108px',
-            height: matches445 ? '24px' : matches845 ? '26px' : '46px',
+            height: matches445 ? '24px' : matches845 ? '36px' : '46px',
             borderRadius: matches845 ? '4px' : '8px',
             '&:hover': {
               backgroundColor: 'grey',
