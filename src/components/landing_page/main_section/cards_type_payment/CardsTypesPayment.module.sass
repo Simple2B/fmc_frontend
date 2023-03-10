@@ -1,0 +1,36 @@
+@import "../../../../styles/variables"
+@import "../../../../styles/mixins"
+
+
+.cards
+    width: 100%
+    display: flex
+    justify-content: space-between
+    align-items: center
+    .card
+        width: 245px
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+        .icon
+            padding-bottom: 19px
+        .title, .description
+            font-family: $font-inter
+        .title
+            padding-bottom: 22px
+            font-size: 24px
+            font-weight: 700
+        .description
+            font-size: 16px
+            font-weight: 400
+
+        
+@media screen and ( max-width: 800px )
+    .cards
+        width: 100%
+        justify-content: center
+        flex-wrap: wrap
+        .card
+            padding-bottom: 25px
+    

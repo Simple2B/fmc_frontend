@@ -1,7 +1,19 @@
 @import "variables"
+@import "mixins"
 
 .main
+  width: 100%
+  @include box-center(center)
+  margin: 0 auto
   background-color: $color-sign-sp-layout
   display: flex
+  flex-direction: column
   justify-content: center
   align-items: center
+  .wrapper
+    width: 100%
+    margin: 0 auto
+    position: relative
+    display: flex
+    padding-left: 24px
+    padding-right: 24px
