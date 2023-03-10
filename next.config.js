@@ -9,12 +9,15 @@ module.exports = () => {
     sassOptions: {
       includePaths: [join(__dirname, 'styles')],
     },
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
-    experimental: {
-      outputStandalone: true,
-    },
+    output: 'standalone',
+    rewrites: ()=>{
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://app:80/api/:path*' // Proxy to Backend
+        },
+      ]
+    }
   };
   return nextConfig;
 };
