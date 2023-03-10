@@ -63,7 +63,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
         }}
       >
         <Link href={'/'}>
-          <Image src={linkLogo} alt="LOGO" width={65} height={48} />
+          <Image src={linkLogo} alt="LOGO" width={120} height={103} />
         </Link>
       </Box>
       <Divider />

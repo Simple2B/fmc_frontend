@@ -50,7 +50,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
         }}
       >
         <Link href={'/'}>
-          <Image src={linkLogo} alt="LOGO" width={65} height={48} />
+          <Image src={linkLogo} alt="LOGO" width={120} height={103} />
         </Link>
       </Box>
       <Divider />
@@ -58,25 +58,61 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
         <Box
           className={`${style.commonTextStyle} ${style.btnText}`}
           style={{
-            // color: `${color}`,
             justifyContent: 'center',
             textAlign: 'center',
           }}
         >
-          <Box sx={{ padding: '10px' }}>
+          <Box
+            className={`${style.commonTextStyleMob}`}
+            sx={{
+              width: '98%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Box className={style.signInTextMob}>Sign in</Box>
+            <Box
+              onClick={() => router.push('/sign_in/coach')}
+              className={`${style.textMob} ${style.btnLanding}`}
+            >
+              Coach
+            </Box>
+            <Box className={style.signInTextMob}> or </Box>
+            <Box
+              onClick={() => router.push('/sign_in/student')}
+              className={`${style.textMob} ${style.btnLanding}`}
+            >
+              Student
+            </Box>
+            <Button
+              onClick={() => router.push('/sign_up/coach_student')}
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 5,
+                mb: 2,
+                borderRadius: '8px',
+                textTransform: 'capitalize',
+                fontSize: '18px',
+                width: '199px',
+                height: '50px',
+                textAlign: 'center',
+              }}
+            >
+              Create account
+            </Button>
+          </Box>
+          {/* <Box sx={{ padding: '10px' }}>
             <Link
               href="/sign_up/coach_student"
               className={`${style.commonTextStyle} ${style.btnText}`}
-              style={
-                {
-                  // color: `${color}`,
-                  // borderBottom: `2px solid ${color}`,
-                }
-              }
+ 
             >
               Sign up
             </Link>
-          </Box>
+          </Box> */}
         </Box>
       </List>
     </Box>
