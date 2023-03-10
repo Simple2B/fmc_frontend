@@ -110,16 +110,12 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
             console.log(
               `POST [/sign_up] coach error message: ${error.message}`
             );
-            // alert(`coach: ${error.message}`);
             setSuccess(false);
             setError(`${error.message}`);
           }
           if (userType === UserType.student) {
             router.push('/sign_up/student');
-            console.log(
-              `POST [/sign_up] student error message: ${error.message}`
-            );
-            // alert(`student: ${error.message}`);
+            console.log(`POST [/sign_up] student error message: ${error}`);
             setSuccess(false);
             setError(`${error.message}`);
           }

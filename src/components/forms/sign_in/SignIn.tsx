@@ -128,21 +128,16 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
 
           if (userType === UserType.coach) {
             router.push('/sign_in/coach');
-            console.log(
-              `POST [/sign_in] coach error message: ${error.message}`
-            );
+            console.log(`POST [/sign_in] coach error message: ${error}`);
             setSuccess(false);
             setError(`${error}`);
           }
           if (userType === UserType.student) {
             router.push('/sign_in/student');
-            console.log(
-              `POST [/sign_in] student error message: ${error.message}`
-            );
+            console.log(`POST [/sign_in] student error message: ${error}`);
             setSuccess(false);
             setError(`${error}`);
           }
-          console.log(`POST [/sign_in] error message: ${error.message}`);
         }
       };
       signIn(userType);

@@ -25,7 +25,7 @@ export const studentAuthApi = {
       console.log('POST [/sign_in] student successfully');
       return response.data;
     } catch (error: any) {
-      console.log(`POST [/sign_in] student - error message: ${error.message}`);
+      console.log(`POST [/sign_in] student - error: ${error}`);
       throw error.message;
     }
   },
