@@ -243,11 +243,12 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
           >
             Sign up
           </Button>
-          <div className={style.hr}>
+          {/* TODO: add for next task */}
+          {/* <div className={style.hr}>
             <div></div>
             <div style={{ color: '#717171' }}>Or</div>
             <div></div>
-          </div>
+          </div> */}
         </Box>
       </Box>
     </Box>

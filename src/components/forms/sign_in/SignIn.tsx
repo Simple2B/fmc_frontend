@@ -354,12 +354,15 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
           >
             Sign In
           </Button>
-          <div className={style.hr}>
+
+          {/* TODO: add for next task */}
+          {/* <div className={style.hr}>
             <div></div>
             <div style={{ color: '#717171' }}>Or</div>
             <div></div>
-          </div>
+          </div> */}
 
+          {/* TODO: add for next task (google auth)*/}
           {/* <div className="socialContainer">
           {!!googleClientId && (
             <Link
