@@ -17,7 +17,12 @@
         width: 100%
         position: absolute
         top: 43%
-        z-index: 3   
+        z-index: 3 
+
+@media (max-width: 1119px) 
+    .wrapperAppBar
+        .mainBox
+            top: 18%   
 
 @media (max-width: 1038px)  
     .wrapperAppBar
@@ -27,13 +32,22 @@
 @media (max-width: 945px)  
     .wrapperAppBar
         .mainBox
-            top: 25%  
+            top: 25% 
 
+@media (max-width: 800px)  
+    .wrapperAppBar
+        .mainBox
+            top: 16% 
 
 @media (max-width: 600px)
     .wrapperAppBar
         .mainBox
             top: 13%  
+
+@media (max-width: 320px)
+    .wrapperAppBar
+        .mainBox
+            top: 1.5% 
 
 .commonTextStyle
     font-family: $font-inter

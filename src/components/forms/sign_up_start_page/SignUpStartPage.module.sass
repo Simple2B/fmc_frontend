@@ -21,6 +21,13 @@
             text-decoration: line-through
             margin: auto 0.5em
 
+@media (max-width: 1119px) 
+    .wrapper
+        @include box-center(center)
+        flex-direction: column
+        .orBox
+            padding-bottom: 40px
+
 @media (max-width: 1039px) 
     .wrapper
         @include box-center(center)
