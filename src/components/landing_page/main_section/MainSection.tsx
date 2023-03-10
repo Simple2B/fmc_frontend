@@ -1,6 +1,7 @@
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
-import facebook from '../../../../public/facebook.png';
 import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBook-Pro-16.png';
 import TitleBox from '../title_box/TitleBox';
@@ -136,11 +137,14 @@ const MainSection: React.FC<IMainSection> = () => {
             <Box className={styles.card3}>
               <Box className={styles.c3}>Follow us</Box>
               <Box className={styles.boxSocial}>
-                <Box>
-                  <Image src={facebook} alt={'facebook'} />
+                <Box sx={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon
+                    icon={faFacebook}
+                    style={{ fontSize: '16px' }}
+                  />
                 </Box>
-                <Box>
-                  <Image src={''} alt={'instagram'} />
+                <Box sx={{ cursor: 'pointer' }}>
+                  <FontAwesomeIcon icon={faInstagram} />
                 </Box>
               </Box>
             </Box>

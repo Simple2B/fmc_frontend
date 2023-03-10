@@ -34,6 +34,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
         sx={{ ml: 1, flex: 1, fontSize: matches845 ? '12px' : '' }}
         placeholder={matches445 ? 'Search' : 'Search a coach, sport'}
         inputProps={{ 'aria-label': 'search google maps' }}
+        autoFocus
       />
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />

@@ -32,8 +32,6 @@ const Input: React.FC<IInput> = ({
   return (
     <TextField
       error={isError}
-      autoFocus
-      // inputRef={(input) => input && input.focus()}
       variant="outlined"
       name={name}
       label={label}
