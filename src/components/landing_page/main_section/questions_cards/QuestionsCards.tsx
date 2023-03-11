@@ -88,6 +88,7 @@ const QuestionsCards: React.FC<IQuestionsCards> = () => {
                 sx={{
                   visibility: item.isShowArrow ? 'visible' : 'hidden',
                   height: !item.isShowArrow ? '0px' : '100%',
+                  marginTop: !item.isShowArrow ? '0px' : '20px',
                 }}
               >
                 <Box className={styles.answer}>{item.answer}</Box>
