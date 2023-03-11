@@ -8,7 +8,6 @@ import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import { TypeSign, UserType } from '../../../store/types/user';
 import StudentLinks from './link/StudentLinks';
@@ -41,11 +40,7 @@ const SignUpSPLayout: React.FC<ISignUpSPLayout> = ({
   typeSign,
   isGoBack,
 }) => {
-  const router = useRouter();
-  console.log('====================================');
-  console.log(' router => ', router.asPath);
-  console.log('====================================');
-
+  // const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
 
   const handleDrawerToggle = () => {

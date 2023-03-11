@@ -28,7 +28,7 @@ export interface ILandingPage {
 const drawerWidth = 240;
 
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
-  // const matches1114 = useMediaQuery('(max-width:1114px)');
+  const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
   // const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
@@ -104,15 +104,6 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
               Create account
             </Button>
           </Box>
-          {/* <Box sx={{ padding: '10px' }}>
-            <Link
-              href="/sign_up/coach_student"
-              className={`${style.commonTextStyle} ${style.btnText}`}
- 
-            >
-              Sign up
-            </Link>
-          </Box> */}
         </Box>
       </List>
     </Box>
@@ -173,7 +164,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
               <Box
                 className={`${style.commonTextStyle} ${style.infoText}`}
                 sx={{
-                  width: '420px',
+                  width: matches1920 ? '100%' : '420px',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -260,7 +251,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             <SearchInput />
             <Box
               sx={{
-                width: matches845 ? '200px' : '237px',
+                width: matches845 ? '200px' : matches1920 ? '246px' : '237px',
                 height: matches320 ? '30px' : matches845 ? '40px' : '45px',
                 display: 'flex',
                 justifyContent: 'space-between',
