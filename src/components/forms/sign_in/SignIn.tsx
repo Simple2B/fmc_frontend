@@ -1,3 +1,4 @@
+import { getErrorMessage } from '@/helper/error_function';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -124,20 +125,21 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             router.push('/profiles/student/my_lessons');
           }
         } catch (error: any) {
-          setIsLoad(false);
-
           if (userType === UserType.coach) {
             router.push('/sign_in/coach');
             console.log(`POST [/sign_in] coach error message: ${error}`);
             setSuccess(false);
-            setError(`${error}`);
+            getErrorMessage(error, setError);
           }
           if (userType === UserType.student) {
             router.push('/sign_in/student');
-            console.log(`POST [/sign_in] student error message: ${error}`);
+            console.log(
+              `POST [/sign_in] student error message ===> : ${error}`
+            );
             setSuccess(false);
-            setError(`${error}`);
+            getErrorMessage(error, setError);
           }
+          setIsLoad(false);
         }
       };
       signIn(userType);

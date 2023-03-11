@@ -1,26 +1,29 @@
+import {
+  faCalendarDays,
+  faFileInvoiceDollar,
+  faMagnifyingGlass,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Button } from '@mui/material';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
-import payment from '../../../../../public/info_items/payment.png';
-import search from '../../../../../public/info_items/search.png';
-import rating from '../../../../../public/info_items/star.png';
 import styles from './InfoBoxSignUp.module.sass';
 
 const infoItems = [
   {
-    icon: search,
+    icon: <FontAwesomeIcon icon={faMagnifyingGlass} />,
     text: 'Get new students',
   },
   {
-    icon: '',
+    icon: <FontAwesomeIcon icon={faCalendarDays} />,
     text: 'Grow your business',
   },
   {
-    icon: payment,
+    icon: <FontAwesomeIcon icon={faFileInvoiceDollar} />,
     text: 'Get paid securely',
   },
   {
-    icon: rating,
+    icon: <FontAwesomeIcon icon={faStar} />,
     text: 'Get ratings',
   },
 ];
@@ -54,12 +57,7 @@ const InfoBoxSignUp: React.FC<IInfoBoxSignUp> = () => {
             return (
               <Box key={index} className={styles.infoCard}>
                 <Box className={styles.infoIcon}>
-                  <Image
-                    src={item.icon}
-                    alt={`${index + 1}`}
-                    width={20}
-                    height={20}
-                  />
+                  <Box sx={{ width: 20, height: 20 }}>{item.icon}</Box>
                 </Box>
                 <Box className={styles.infoText}>{item.text}</Box>
               </Box>

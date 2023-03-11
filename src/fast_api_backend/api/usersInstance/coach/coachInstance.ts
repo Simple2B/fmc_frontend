@@ -35,7 +35,7 @@ export const coachClientApi = {
 
   checkCoach: async (): Promise<true> => {
     try {
-      const response = await instance().get('');
+      const response = await instance().get('/whoami/student');
       const res = response.data;
       console.log(`[GET] check coach -> res data  ${res}`);
       return res;
@@ -47,7 +47,7 @@ export const coachClientApi = {
 
   coachGetProfile: async (): Promise<any> => {
     try {
-      const response = await instance().get('');
+      const response = await instance().get('/profile/coach');
       const res = response.data;
       console.log(`[GET: get profile] coach -> res data  ${res}`);
       return res;

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { getErrorMessage } from '@/helper/error_function';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -111,13 +112,13 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
               `POST [/sign_up] coach error message: ${error.message}`
             );
             setSuccess(false);
-            setError(`${error.message}`);
+            getErrorMessage(error.message, setError);
           }
           if (userType === UserType.student) {
             router.push('/sign_up/student');
             console.log(`POST [/sign_up] student error message: ${error}`);
             setSuccess(false);
-            setError(`${error.message}`);
+            getErrorMessage(error.message, setError);
           }
           console.log(`POST [/sign_up] error message: ${error.message}`);
         }

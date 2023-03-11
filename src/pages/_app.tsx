@@ -27,7 +27,7 @@ const Loading = () => {
       router.events.off('routeChangeComplete', handleComplete);
       router.events.off('routeChangeError', handleComplete);
     };
-  }, [router.asPath, router.events]);
+  }, [router.asPath, router.events, isLoad]);
 
   return (
     <>

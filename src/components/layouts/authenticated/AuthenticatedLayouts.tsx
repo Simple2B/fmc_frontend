@@ -34,6 +34,9 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   async function getProfile() {
     if (userType === UserType.student) {
       const res = await studentClientApi.checkStudent();
+      console.log('====================================');
+      console.log('student: res ', res);
+      console.log('====================================');
       if (res) {
         const studentProfile = await studentClientApi.studentGetProfile();
         setProfile(studentProfile);
@@ -44,6 +47,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
 
     if (userType === UserType.coach) {
       const res = await coachClientApi.checkCoach();
+      console.log('coach: res ', res);
       if (res) {
         const coachProfile = await coachClientApi.coachGetProfile();
         setProfile(coachProfile);

@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 const API_URI = process.env.NEXT_PUBLIC_API_URL;
 
 export const instance = (): AxiosInstance => {
-  const token = localStorage.getItem('userToken') ?? '';
+  const token = localStorage.getItem('token') ?? '';
   return axios.create({
     baseURL: API_URI,
     headers: {

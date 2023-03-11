@@ -36,19 +36,19 @@ export const studentClientApi = {
 
   checkStudent: async (): Promise<true> => {
     try {
-      const response = await instance().get('');
+      const response = await instance().get('/whoami/student');
       const res = response.data;
       console.log(`[GET] check student -> res data  ${res}`);
       return res;
     } catch (error: any) {
-      console.log(`[GET] check student -> error message => ${error.message}`);
+      console.log(`[GET] check student -> error message => ${error}`);
       throw error;
     }
   },
 
   studentGetProfile: async (): Promise<any> => {
     try {
-      const response = await instance().get('');
+      const response = await instance().get('/profile/student');
       const res = response.data;
       console.log(`[GET: get profile] student -> res data  ${res}`);
       return res;
