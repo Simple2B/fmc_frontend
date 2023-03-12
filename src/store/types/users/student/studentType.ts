@@ -1,5 +1,9 @@
 // created student (save to db info student)
-export interface IStudent {}
+export interface IStudent {
+  email: string;
+  username: string;
+  password: string;
+}
 
 export interface IStudentResponse {}
 
@@ -10,9 +14,11 @@ export interface IResponseStudentData {
 }
 
 // profile
-// username
-// email
-// first_name
-// last_name
-// profile_picture
-// is_verified
+export interface IStudentProfile {
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  profile_picture: string;
+  is_verified: boolean;
+}

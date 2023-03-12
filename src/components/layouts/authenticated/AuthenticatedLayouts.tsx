@@ -1,12 +1,15 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+/* eslint-disable no-unused-vars */
+import NavBar from '@/common/nav_bar/NavBar';
+import RightBar from '@/common/right_bar/RightBar';
+import SideBar from '@/common/side_bar/SideBar';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { Box, createTheme, PaletteMode, Stack } from '@mui/material';
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import TopBar from '../../../common/top_bar/TopBar';
 import { coachClientApi } from '../../../fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '../../../fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '../../../store/types/user';
-import style from './AuthenticatedLayouts.module.sass';
 
 export interface IStudentAuthenticatedLayout {
   children: any;
@@ -18,9 +21,22 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   userType,
 }) => {
   const router = useRouter();
-  const [profile, setProfile] = React.useState();
+  const [profile, setProfile] = React.useState<IStudentProfile>({
+    username: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    profile_picture: '',
+    is_verified: false,
+  });
 
-  const theme = createTheme({});
+  const [mode, setMode] = React.useState<PaletteMode>('light');
+
+  const theme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
 
   console.log('====================================');
   console.log('AuthenticatedLayout: profile ', profile);
@@ -34,9 +50,6 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   async function getProfile() {
     if (userType === UserType.student) {
       const res = await studentClientApi.checkStudent();
-      console.log('====================================');
-      console.log('student: res ', res);
-      console.log('====================================');
       if (res) {
         const studentProfile = await studentClientApi.studentGetProfile();
         setProfile(studentProfile);
@@ -58,23 +71,24 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   }
 
   // TODO: remove and add for next page with this layout
-  // eslint-disable-next-line no-unused-vars
-  function logout() {
-    localStorage.removeItem('token');
-    router.push('/');
-  }
+  // function logout() {
+  //   localStorage.removeItem('token');
+  //   router.push('/');
+  // }
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <div className={style.containerProfile}>
-        {/* <SideBar /> */}
-        <main className={style.content}>
-          <TopBar />
-          {children}
-        </main>
-      </div>
-    </ThemeProvider>
+    <Box>
+      <NavBar
+        username={profile.username}
+        picture={profile.profile_picture}
+        userType={userType}
+      />
+      <Stack direction="row" spacing="2" justifyContent="space-between">
+        <SideBar />
+        {children}
+        <RightBar />
+      </Stack>
+    </Box>
   );
 };
 

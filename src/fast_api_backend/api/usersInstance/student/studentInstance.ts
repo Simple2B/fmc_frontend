@@ -1,4 +1,7 @@
-import { IStudent } from '../../../../store/types/users/student/studentType';
+import {
+  IStudent,
+  IStudentProfile,
+} from '../../../../store/types/users/student/studentType';
 import { instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -46,7 +49,7 @@ export const studentClientApi = {
     }
   },
 
-  studentGetProfile: async (): Promise<any> => {
+  studentGetProfile: async (): Promise<IStudentProfile> => {
     try {
       const response = await instance().get('/profile/student');
       const res = response.data;
