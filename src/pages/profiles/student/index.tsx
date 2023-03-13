@@ -42,14 +42,15 @@ const listItemsStudent = [
 
 export default function ProfileStudent() {
   // const matches = useMediaQuery('(min-width:900px)');
-  const [location, setLocation] = useState('/profiles/student#my_lessons');
+  const [location, setLocation] = useState<any>('/profiles/student#my_lessons');
   console.log('====================================');
   console.log(' location ', location);
   console.log('====================================');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setLocation(window.location.href);
+      // global.window
+      setLocation(global.window.location.href);
     }
   }, [location]);
 
