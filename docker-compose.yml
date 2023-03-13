@@ -2,7 +2,7 @@ version: '3.8'
 services:
 
   nextjs_app:
-    image: 270968290167.dkr.ecr.us-east-1.amazonaws.com/fmc-frontend
+    image: 270968290167.dkr.ecr.us-east-1.amazonaws.com/fmc-frontend:latest
     build: .
     command: node server.js
     ports:
