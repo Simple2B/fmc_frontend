@@ -286,17 +286,7 @@
     .boxOr
         color: $opacity-bg-color
 
-.commonTextStyleMob
-    .signInTextMob, .textMob
-        font-family: $font-inter
-        font-size: 16px
-        padding-top: 16px
-        margin-bottom: 16px        
-        color: #FFF
-        margin-right: 0
-        text-align: center
-    .textMob
-        font-size: 22px
+
 
 @media (max-width: 713px)
     .infoText
@@ -331,3 +321,18 @@
         padding-top: 12px
         color: $color-text
         border-bottom: 2px solid $color-text
+
+.commonTextStyleMob
+    cursor: pointer
+    .signInTextMob, .textMob
+        font-family: $font-inter
+        font-size: 16px
+        padding-top: 16px
+        margin-bottom: 16px        
+        color: #FFF
+        margin-right: 0
+        text-align: center
+    .textMob
+        font-size: 22px
+        &:hover
+            color: $color-text
