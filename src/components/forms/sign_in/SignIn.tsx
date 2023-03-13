@@ -121,9 +121,9 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             );
             setIsLoad(false);
             setSuccess(true);
-            console.log('POST [/sign_in] student successfully', studentToken);
             router.push('/profiles/student/my_lessons');
           }
+          localStorage.setItem('userType', userType);
         } catch (error: any) {
           if (userType === UserType.coach) {
             router.push('/sign_in/coach');

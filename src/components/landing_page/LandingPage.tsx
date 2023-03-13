@@ -1,14 +1,20 @@
-import MenuIcon from '@mui/icons-material/Menu';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import { getCurrentUser } from '@/helper/get_current_user';
+import { logout } from '@/helper/logout/logout';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { Logout } from '@mui/icons-material';
 import {
-  AppBar,
+  Avatar,
   Box,
   Button,
   Divider,
   Drawer,
-  IconButton,
   Link,
   List,
   Toolbar,
+  Typography,
   useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
@@ -17,6 +23,7 @@ import * as React from 'react';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
 import style from './LandingPage.module.sass';
 import SearchInput from './search_box/SearchBox';
+import TopBar from './top_bar/TopBar';
 import VideoBox from './video_box/VideoBox';
 
 export interface ILandingPage {
@@ -30,17 +37,50 @@ const drawerWidth = 240;
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
-  // const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
+
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
+
+  const [userType, setUserType] = React.useState<string | null>();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const [profile, setProfile] = React.useState<IStudentProfile>({
+    username: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    profile_picture: '',
+    is_verified: false,
+  });
+
+  React.useEffect(() => {
+    setUserType(localStorage.getItem('userType') ?? '');
+  }, [isLoad]);
+
+  React.useEffect(() => {
+    if (userType)
+      getCurrentUser(
+        userType,
+        setProfile,
+        setIsLoad,
+        setSuccess,
+        setError,
+        error
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userType]);
+
+  // bar for mobile version app
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box sx={{ textAlign: 'center' }}>
       <Box
         sx={{
           my: 2,
@@ -72,37 +112,95 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
               alignItems: 'center',
             }}
           >
-            <Box className={style.signInTextMob}>Sign in</Box>
-            <Box
-              onClick={() => router.push('/sign_in/coach')}
-              className={`${style.textMob} ${style.btnLanding}`}
-            >
-              Coach
-            </Box>
-            <Box className={style.signInTextMob}> or </Box>
-            <Box
-              onClick={() => router.push('/sign_in/student')}
-              className={`${style.textMob} ${style.btnLanding}`}
-            >
-              Student
-            </Box>
-            <Button
-              onClick={() => router.push('/sign_up/coach_student')}
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 5,
-                mb: 2,
-                borderRadius: '8px',
-                textTransform: 'capitalize',
-                fontSize: '18px',
-                width: '199px',
-                height: '50px',
-                textAlign: 'center',
-              }}
-            >
-              Create account
-            </Button>
+            {profile.is_verified ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  gap: '20px',
+                }}
+              >
+                <Avatar
+                  src={profile.profile_picture}
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.6)',
+                    border: '0.3px solid rgba(0, 0, 0, 0.6)',
+                  }}
+                />
+                <Box
+                  component="span"
+                  className={style.avatarName}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '20px',
+                  }}
+                >
+                  <Box sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+                    {profile.username}
+                  </Box>
+                  <Box
+                    onClick={() =>
+                      logout(
+                        setIsLoad,
+                        setProfile,
+                        router,
+                        setMobileOpen,
+                        setUserType
+                      )
+                    }
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '5px',
+                      color: 'rgba(0, 0, 0, 0.6)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Logout />
+                    <Typography>Logout</Typography>
+                  </Box>
+                </Box>
+              </Box>
+            ) : (
+              <>
+                <Box className={style.signInTextMob}>Sign in</Box>
+                <Box
+                  onClick={() => router.push('/sign_in/coach')}
+                  className={`${style.textMob} ${style.btnLanding}`}
+                >
+                  Coach
+                </Box>
+                <Box className={style.signInTextMob}> or </Box>
+                <Box
+                  onClick={() => router.push('/sign_in/student')}
+                  className={`${style.textMob} ${style.btnLanding}`}
+                >
+                  Student
+                </Box>
+                <Button
+                  onClick={() => router.push('/sign_up/coach_student')}
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 5,
+                    mb: 2,
+                    borderRadius: '8px',
+                    textTransform: 'capitalize',
+                    fontSize: '18px',
+                    width: '199px',
+                    height: '50px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Create account
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </List>
@@ -112,99 +210,28 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
   return (
     <Box className={`${wrapperClassName}`}>
       <Box className={style.wrapperAppBar}>
         <VideoBox />
-        <AppBar component="nav" color={'transparent'} className={style.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-              <MenuIcon sx={{ color: '#fff' }} />
-            </IconButton>
-            <Box
-              component="div"
-              sx={{
-                flexGrow: 1,
-                pt: '15px',
-                pb: '15px',
-                display: { xs: 'none', sm: 'block' },
-                position: 'relative',
-              }}
-            >
-              <Link
-                href={'/'}
-                style={{
-                  position: 'absolute',
-                  top: matches845 ? '-25px' : '-34px',
-                  left: matches845 ? '-14.5px' : '-15.5px',
-                }}
-              >
-                <Image
-                  src={linkLogo}
-                  alt="LOGO"
-                  width={matches845 ? 100 : 124}
-                  height={matches845 ? 80 : 104}
-                />
-              </Link>
-            </Box>
-            <Box
-              sx={{
-                display: { xs: 'none', sm: 'flex' },
-                width: 'unset',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <Box
-                className={`${style.commonTextStyle} ${style.infoText}`}
-                sx={{
-                  width: matches1920 ? '100%' : '420px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <Box className={style.signInText}>Sign in</Box>
-                <Box
-                  onClick={() => router.push('/sign_in/coach')}
-                  className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
-                >
-                  Coach
-                </Box>
-                <Box className={style.signInText}> or </Box>
-                <Box
-                  onClick={() => router.push('/sign_in/student')}
-                  className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
-                >
-                  Student
-                </Box>
-                <Button
-                  onClick={() => router.push('/sign_up/coach_student')}
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                    borderRadius: '8px',
-                    textTransform: 'capitalize',
-                    fontSize: matches845 ? '13px' : '16px',
-                    width: matches845 ? '152px' : '199px',
-                    height: matches845 ? '40px' : '56px',
-                    textAlign: 'center',
-                  }}
-                >
-                  Create account
-                </Button>
-              </Box>
-            </Box>
-          </Toolbar>
-        </AppBar>
+        <TopBar
+          handleDrawerToggle={handleDrawerToggle}
+          profile={profile}
+          setIsLoad={setIsLoad}
+          setUserType={setUserType}
+          setProfile={setProfile}
+        />
         <Box
           component="nav"
           sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}
@@ -265,6 +292,22 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
           </Box>
         </Box>
       </Box>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };

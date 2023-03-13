@@ -7,8 +7,8 @@ const typeQuestions = [
     question: 'How much does it cost to use FindMyCoach?',
     answer:
       'At this current stage, there is no subscription fee for FindMyCoach! There is a very small charge for bookings (3.9% + 20p) which includes the Stripe payments fee and covers the cost of the Stripe Express accounts which you will have access to. We will have subscription tiers as we include some of our exciting new features but don’t worry - we will always have the option to keep using our platform for no subscription cost.dd',
-    isOpen: true,
-    isShowArrow: true,
+    isOpen: false,
+    isShowArrow: false,
   },
   {
     question: 'What are the benefits to me as a coach?',

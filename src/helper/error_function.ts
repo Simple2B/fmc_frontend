@@ -8,6 +8,8 @@ export const getErrorMessage = (
     setError('Invalid credentials');
   } else if (Number(errorNumber) === 409) {
     setError('Student with such email address already exists');
+  } else if (Number(errorNumber) === 401) {
+    setError('Unauthorized');
   } else {
     setError(`${axiosError}`);
   }

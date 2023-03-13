@@ -1,15 +1,15 @@
 /* eslint-disable no-unused-vars */
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
 import NavBar from '@/common/nav_bar/NavBar';
 import RightBar from '@/common/right_bar/RightBar';
 import SideBar from '@/common/side_bar/SideBar';
+import { getCurrentUser } from '@/helper/get_current_user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
 import { Box, createTheme, PaletteMode, Stack } from '@mui/material';
-import { redirect } from 'next/navigation';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { coachClientApi } from '../../../fast_api_backend/api/usersInstance/coach/coachInstance';
-import { studentClientApi } from '../../../fast_api_backend/api/usersInstance/student/studentInstance';
-import { UserType } from '../../../store/types/user';
 
 export interface IStudentAuthenticatedLayout {
   children: any;
@@ -21,6 +21,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   userType,
 }) => {
   const router = useRouter();
+
   const [profile, setProfile] = React.useState<IStudentProfile>({
     username: '',
     email: '',
@@ -30,6 +31,10 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     is_verified: false,
   });
 
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+
   const [mode, setMode] = React.useState<PaletteMode>('light');
 
   const theme = createTheme({
@@ -38,43 +43,28 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     },
   });
 
-  console.log('====================================');
-  console.log('AuthenticatedLayout: profile ', profile);
-  console.log('====================================');
-
   React.useEffect(() => {
-    getProfile();
+    getCurrentUser(
+      userType,
+      setProfile,
+      setIsLoad,
+      setSuccess,
+      setError,
+      error
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType]);
 
-  async function getProfile() {
-    if (userType === UserType.student) {
-      const res = await studentClientApi.checkStudent();
-      if (res) {
-        const studentProfile = await studentClientApi.studentGetProfile();
-        setProfile(studentProfile);
-      } else {
-        redirect('/sign_in/student');
-      }
-    }
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
 
-    if (userType === UserType.coach) {
-      const res = await coachClientApi.checkCoach();
-      console.log('coach: res ', res);
-      if (res) {
-        const coachProfile = await coachClientApi.coachGetProfile();
-        setProfile(coachProfile);
-      } else {
-        redirect('/sign_in/coach');
-      }
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
     }
-  }
-
-  // TODO: remove and add for next page with this layout
-  // function logout() {
-  //   localStorage.removeItem('token');
-  //   router.push('/');
-  // }
+  }, [modalIsOpen, error]);
 
   return (
     <Box>
@@ -82,12 +72,30 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         username={profile.username}
         picture={profile.profile_picture}
         userType={userType}
+        setIsLoad={setIsLoad}
+        setProfile={setProfile}
       />
       <Stack direction="row" spacing="2" justifyContent="space-between">
         <SideBar />
         {children}
         <RightBar />
       </Stack>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };

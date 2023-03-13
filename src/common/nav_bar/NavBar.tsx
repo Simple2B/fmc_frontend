@@ -1,4 +1,6 @@
+import { logout } from '@/helper/logout/logout';
 import { UserType } from '@/store/types/user';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -17,6 +19,7 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import style from './NavBar.module.sass';
 
@@ -24,10 +27,21 @@ export interface INavBar {
   username: string;
   picture: string;
   userType: string;
+  // eslint-disable-next-line no-unused-vars
+  setIsLoad: (value: React.SetStateAction<boolean>) => void;
+  // eslint-disable-next-line no-unused-vars
+  setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
 }
 
-const NavBar: React.FC<INavBar> = ({ username, picture, userType }) => {
+const NavBar: React.FC<INavBar> = ({
+  username,
+  picture,
+  userType,
+  setIsLoad,
+  setProfile,
+}) => {
   const [isOpen, setOpen] = React.useState<boolean>(false);
+  const router = useRouter();
   // const open = Boolean(anchorEl);
   // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
   //   setAnchorEl(event.currentTarget);
@@ -103,7 +117,7 @@ const NavBar: React.FC<INavBar> = ({ username, picture, userType }) => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem>
+              <MenuItem onClick={() => logout(setIsLoad, setProfile, router)}>
                 <Logout sx={{ mr: '7px' }} />
                 Logout
               </MenuItem>
