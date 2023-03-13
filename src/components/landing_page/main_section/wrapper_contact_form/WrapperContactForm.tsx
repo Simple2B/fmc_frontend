@@ -36,6 +36,7 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
     }
     setEmail('');
     setQuestion('');
+    setIsLoad(false);
   };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
@@ -67,7 +68,6 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
         <Box className={styles.description}>
           Fill the form below and we’ll contact you shortly
         </Box>
-
         <Box className={styles.infoCards}>
           <Input
             helperText={errorEmailMessage}
@@ -95,7 +95,6 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
               label="Your question"
               multiline
               rows={4}
-              defaultValue=""
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
             />
