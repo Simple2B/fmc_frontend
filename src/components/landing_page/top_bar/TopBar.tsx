@@ -1,7 +1,12 @@
 import { logout } from '@/helper/logout/logout';
 import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
-import { ArrowDropDown, ArrowDropUp, Logout } from '@mui/icons-material';
+import {
+  ArrowDropDown,
+  ArrowDropUp,
+  Logout,
+  Person,
+} from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -185,7 +190,7 @@ const TopBar: React.FC<ITopBar> = ({
                             : router.push('/profiles/coach#my_appointments');
                         }}
                       >
-                        {/* <UserProfile sx={{ mr: '7px' }} /> */}
+                        <Person sx={{ mr: '7px' }} />
                         Profile
                       </MenuItem>
                     </Menu>

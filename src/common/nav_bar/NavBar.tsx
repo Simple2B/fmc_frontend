@@ -4,6 +4,7 @@ import { IStudentProfile } from '@/store/types/users/student/studentType';
 import {
   ArrowDropDown,
   ArrowDropUp,
+  Home,
   Logout,
   Menu as IconMenu,
   Notifications,
@@ -127,7 +128,7 @@ const NavBar: React.FC<INavBar> = ({
                   router.push('/');
                 }}
               >
-                {/* <Home sx={{ mr: '7px' }} /> */}
+                <Home sx={{ mr: '7px' }} />
                 Home
               </MenuItem>
             </Menu>
