@@ -50,7 +50,10 @@ export default function ProfileStudent() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // global.window
-      setLocation(global.window.location.href);
+      console.log(' window ', window);
+      console.log('====================================');
+
+      setLocation(window.location.href);
     }
   }, [location]);
 
