@@ -1,4 +1,5 @@
 import { logout } from '@/helper/logout/logout';
+import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
 import { ArrowDropDown, ArrowDropUp, Logout } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -29,6 +30,7 @@ export interface ITopBar {
   setUserType: (value: React.SetStateAction<string | null | undefined>) => void;
   // eslint-disable-next-line no-unused-vars
   setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
+  userType: string | null | undefined;
 }
 
 const TopBar: React.FC<ITopBar> = ({
@@ -37,6 +39,7 @@ const TopBar: React.FC<ITopBar> = ({
   setIsLoad,
   setUserType,
   setProfile,
+  userType,
 }) => {
   const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
@@ -175,7 +178,18 @@ const TopBar: React.FC<ITopBar> = ({
                         <Logout sx={{ mr: '7px' }} />
                         Logout
                       </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          userType && userType === UserType.student
+                            ? router.push('/profiles/student#my_lessons')
+                            : router.push('/profiles/coach#my_appointments');
+                        }}
+                      >
+                        {/* <UserProfile sx={{ mr: '7px' }} /> */}
+                        Profile
+                      </MenuItem>
                     </Menu>
+                    {/*  */}
                   </Box>
                 </Box>
               </Box>

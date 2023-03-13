@@ -122,6 +122,14 @@ const NavBar: React.FC<INavBar> = ({
                 <Logout sx={{ mr: '7px' }} />
                 Logout
               </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  router.push('/');
+                }}
+              >
+                {/* <Home sx={{ mr: '7px' }} /> */}
+                Home
+              </MenuItem>
             </Menu>
           </Box>
         </Box>

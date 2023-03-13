@@ -3,6 +3,7 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
+import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
 import { Logout } from '@mui/icons-material';
 import {
@@ -127,6 +128,11 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                     color: 'rgba(0, 0, 0, 0.6)',
                     border: '0.3px solid rgba(0, 0, 0, 0.6)',
                   }}
+                  onClick={() => {
+                    userType && userType === UserType.student
+                      ? router.push('/profiles/student#my_lessons')
+                      : router.push('/profiles/coach#my_appointments');
+                  }}
                 />
                 <Box
                   component="span"
@@ -139,7 +145,14 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                     gap: '20px',
                   }}
                 >
-                  <Box sx={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+                  <Box
+                    sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                    onClick={() => {
+                      userType && userType === UserType.student
+                        ? router.push('/profiles/student#my_lessons')
+                        : router.push('/profiles/coach#my_appointments');
+                    }}
+                  >
                     {profile.username}
                   </Box>
                   <Box
@@ -231,6 +244,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
           setIsLoad={setIsLoad}
           setUserType={setUserType}
           setProfile={setProfile}
+          userType={userType}
         />
         <Box
           component="nav"
