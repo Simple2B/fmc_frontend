@@ -90,6 +90,7 @@ const NavBar: React.FC<INavBar> = ({ username, picture, userType }) => {
                 boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
               }}
               open={isOpen}
+              onClose={() => setOpen(false)}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
