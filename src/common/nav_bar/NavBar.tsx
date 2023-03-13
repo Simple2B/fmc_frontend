@@ -63,6 +63,7 @@ const NavBar: React.FC<INavBar> = ({
           Logo
         </Typography>
         <IconMenu sx={{ display: { xs: 'block', sm: 'none' } }} />
+        {/* TODO: for search use mui Autocomplete */}
         {userType === UserType.student && (
           <div className={style.search}>
             <InputBase placeholder="Search a coach" />
