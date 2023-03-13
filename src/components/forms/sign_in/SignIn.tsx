@@ -108,7 +108,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             );
             setIsLoad(false);
             setSuccess(true);
-            router.push('/profiles/coach#my_appointments');
+            router.push('/profiles/coach?my_appointments');
           }
           if (userType === UserType.student) {
             const studentToken = await studentAuthApi.signInStudent(
@@ -121,7 +121,7 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             );
             setIsLoad(false);
             setSuccess(true);
-            router.push('/profiles/student#my_lessons');
+            router.push('/profiles/student?my_lessons');
           }
           localStorage.setItem('userType', userType);
         } catch (error: any) {

@@ -130,8 +130,8 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                   }}
                   onClick={() => {
                     userType && userType === UserType.student
-                      ? router.push('/profiles/student#my_lessons')
-                      : router.push('/profiles/coach#my_appointments');
+                      ? router.push('/profiles/student?my_lessons')
+                      : router.push('/profiles/coach?my_appointments');
                   }}
                 />
                 <Box
@@ -149,8 +149,8 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                     sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
                     onClick={() => {
                       userType && userType === UserType.student
-                        ? router.push('/profiles/student#my_lessons')
-                        : router.push('/profiles/coach#my_appointments');
+                        ? router.push('/profiles/student?my_lessons')
+                        : router.push('/profiles/coach?my_appointments');
                     }}
                   >
                     {profile.username}

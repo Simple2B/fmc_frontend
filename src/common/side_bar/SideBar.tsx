@@ -4,6 +4,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { useRouter } from 'next/router';
 
 export interface IItem {
   name: string;
@@ -16,13 +17,20 @@ export interface ISideBar {
 }
 
 const SideBar: React.FC<ISideBar> = ({ listItems }) => {
+  const router = useRouter();
   return (
     <Box flex={1} p={2} sx={{ display: { xs: 'none', sm: 'block' } }}>
       <List>
         {listItems.map((item, index) => {
           return (
             <ListItem disablePadding key={index}>
-              <ListItemButton component="a" href={item.href}>
+              <ListItemButton
+                component="a"
+                onClick={() =>
+                  router.push(item.href, undefined, { shallow: true })
+                }
+                // href={item.href}
+              >
                 <ListItemIcon>
                   <Box
                     sx={{
