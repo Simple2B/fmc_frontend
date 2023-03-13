@@ -4,7 +4,7 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import NavBar from '@/common/nav_bar/NavBar';
 import RightBar from '@/common/right_bar/RightBar';
-import SideBar from '@/common/side_bar/SideBar';
+import SideBar, { IItem } from '@/common/side_bar/SideBar';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
 import { Box, createTheme, PaletteMode, Stack } from '@mui/material';
@@ -14,11 +14,13 @@ import * as React from 'react';
 export interface IStudentAuthenticatedLayout {
   children: any;
   userType: string;
+  listItems: IItem[];
 }
 
 const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   children,
   userType,
+  listItems,
 }) => {
   const router = useRouter();
 
@@ -76,7 +78,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         setProfile={setProfile}
       />
       <Stack direction="row" spacing="2" justifyContent="space-between">
-        <SideBar />
+        <SideBar listItems={listItems} />
         {children}
         <RightBar />
       </Stack>
