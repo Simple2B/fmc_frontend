@@ -24,3 +24,11 @@ export const authInstance: AxiosInstance = axios.create({
     'Access-Control-Allow-Origin': '*',
   },
 });
+
+export const authApplicationInstance: AxiosInstance = axios.create({
+  baseURL: API_URI,
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Access-Control-Allow-Origin': '*',
+  },
+});

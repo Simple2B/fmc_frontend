@@ -1,5 +1,6 @@
+import { IUserGoogleRequest } from '@/store/types/users/googleUserType';
 import { IResponseCoachData } from '../../../../store/types/users/coach/coachType';
-import { authInstance } from '../../_axiosInstance';
+import { authApplicationInstance, authInstance } from '../../_axiosInstance';
 
 const formatRequestBody = (email: string, password: string) => {
   const formData = new FormData();
@@ -26,6 +27,22 @@ export const coachAuthApi = {
       return response.data;
     } catch (error: any) {
       console.log(`POST [/sign_in] coach - error message: ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  googleAuthCoach: async (
+    data: IUserGoogleRequest
+  ): Promise<{ access_token: string; token_type: string }> => {
+    try {
+      const response = await authApplicationInstance.post(
+        '/auth/coach/google-oauth',
+        data
+      );
+      console.log('POST [/google-oauth] coach successfully', response);
+      return response.data;
+    } catch (error: any) {
+      console.log(`POST [/google-oauth] coach - error: ${error}`);
       throw error.message;
     }
   },
