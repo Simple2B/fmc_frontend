@@ -1,42 +1,70 @@
-import React from 'react';
-// import { GoogleLogin } from 'react-google-login';
-import { GoogleLogin } from '@react-oauth/google';
+import { AuthContext } from '@/context/authContext';
+import { TypeSign } from '@/store/types/user';
+import { Button, useMediaQuery } from '@mui/material';
+import Image from 'next/image';
+import React, { useContext } from 'react';
+import { GoogleLogin } from 'react-google-login';
+import googleIcon from '../../../public/logo_google.png';
 
 export interface IGoogleLoginBtn {
-  // clientId: string;
-  buttonText: string;
   // eslint-disable-next-line no-unused-vars
-  onSuccess: (res: any) => void;
+  onSuccess: any;
   // eslint-disable-next-line no-unused-vars
-  onError: (res?: any) => void;
+  onError?: any;
+  typeSign: string;
 }
 
 // eslint-disable-next-line no-empty-pattern
 const GoogleLoginBtn: React.FC<IGoogleLoginBtn> = ({
-  // clientId,
   onSuccess,
   onError,
+  typeSign,
 }) => {
+  const keys = useContext(AuthContext);
+  const matches320 = useMediaQuery('(min-width:320px)');
   return (
     <GoogleLogin
-      // render={(renderProps: {
-      //   onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
-      //   disabled: boolean | undefined;
-      // }) => (
-      //   <button
-      //     type="button"
-      //     className=""
-      //     onClick={renderProps.onClick}
-      //     disabled={renderProps.disabled}
-      //   >
-      //     Sign in with google
-      //   </button>
-      // )}
-      // buttonText={buttonText}
+      clientId={keys.googleClientId}
+      render={(renderProps) => {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={renderProps.onClick}
+            sx={{
+              mt: 3,
+              mb: 2,
+              borderRadius: '8px',
+              width: '100%',
+              height: '56px',
+              backgroundColor: '#fff',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: '#1876D1',
+              fontWeight: 500,
+              fontSize: matches320 ? '13px' : '14px',
+              '&:hover': {
+                color: '#fff',
+              },
+            }}
+          >
+            <Image
+              src={googleIcon}
+              alt={'google'}
+              width={40}
+              height={40}
+              style={{ marginRight: '13px' }}
+            />
+            {typeSign === TypeSign.up
+              ? 'Sign up with Google'
+              : 'Sign in with Google'}
+          </Button>
+        );
+      }}
       onSuccess={onSuccess}
-      onError={onError}
-      // cookiePolicy={'single_host_origin'}
-      // isSignedIn={true}
+      onFailure={onError}
+      cookiePolicy={'single_host_origin'}
     />
   );
 };
