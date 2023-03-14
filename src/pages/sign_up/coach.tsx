@@ -7,6 +7,19 @@ import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
 export default function SignUpCoach() {
   const matches = useMediaQuery('(min-width:900px)');
+
+  const onSuccess = (res: any) => {
+    console.log('====================================');
+    console.log('[SignUpCoach] onSuccess: res ', res.profileObj);
+    console.log('====================================');
+  };
+
+  const onFailure = (res: any) => {
+    console.log('====================================');
+    console.log('[SignUpCoach] onFailure: res ', res);
+    console.log('====================================');
+  };
+
   return (
     <>
       <Head>
@@ -26,7 +39,12 @@ export default function SignUpCoach() {
         userType={UserType.coach}
         typeSign={TypeSign.up}
       >
-        <SignUp title={'I’m a Coach'} userType={UserType.coach} />
+        <SignUp
+          title={'I’m a Coach'}
+          userType={UserType.coach}
+          onSuccess={onSuccess}
+          onError={onFailure}
+        />
       </SignUpSPLayout>
     </>
   );
