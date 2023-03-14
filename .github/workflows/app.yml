@@ -9,18 +9,6 @@ on:
     branches: [main, develop]
 
 jobs:
-  tests:
-    name: 🎉 Jest test
-    runs-on: self-hosted
-    steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: '16'
-
   build:
     name: build docker image
     runs-on: [ubuntu-latest]
