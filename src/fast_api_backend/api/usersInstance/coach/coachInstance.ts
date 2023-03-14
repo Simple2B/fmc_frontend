@@ -35,7 +35,7 @@ export const coachClientApi = {
 
   checkCoach: async (): Promise<true> => {
     try {
-      const response = await instance().get('/whoami/student');
+      const response = await instance().get('/whoami/coach');
       const res = response.data;
       console.log(`[GET] check coach -> res data  ${res}`);
       return res;
