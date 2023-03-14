@@ -37,6 +37,7 @@ const CustomModel: React.FC<ICustomModel> = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: '20px',
+          border: 'none',
           zIndex: '100',
         }}
       >

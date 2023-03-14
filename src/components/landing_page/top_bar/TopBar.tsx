@@ -170,6 +170,16 @@ const TopBar: React.FC<ITopBar> = ({
                       }}
                     >
                       <MenuItem
+                        onClick={() => {
+                          userType && userType === UserType.student
+                            ? router.push('/profiles/student?my_lessons')
+                            : router.push('/profiles/coach?my_appointments');
+                        }}
+                      >
+                        <Person sx={{ mr: '7px' }} />
+                        Profile
+                      </MenuItem>
+                      <MenuItem
                         onClick={() =>
                           logout(
                             setIsLoad,
@@ -182,16 +192,6 @@ const TopBar: React.FC<ITopBar> = ({
                       >
                         <Logout sx={{ mr: '7px' }} />
                         Logout
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => {
-                          userType && userType === UserType.student
-                            ? router.push('/profiles/student#my_lessons')
-                            : router.push('/profiles/coach#my_appointments');
-                        }}
-                      >
-                        <Person sx={{ mr: '7px' }} />
-                        Profile
                       </MenuItem>
                     </Menu>
                     {/*  */}

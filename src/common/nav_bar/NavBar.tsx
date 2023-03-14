@@ -119,10 +119,6 @@ const NavBar: React.FC<INavBar> = ({
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem onClick={() => logout(setIsLoad, setProfile, router)}>
-                <Logout sx={{ mr: '7px' }} />
-                Logout
-              </MenuItem>
               <MenuItem
                 onClick={() => {
                   router.push('/');
@@ -130,6 +126,10 @@ const NavBar: React.FC<INavBar> = ({
               >
                 <Home sx={{ mr: '7px' }} />
                 Home
+              </MenuItem>
+              <MenuItem onClick={() => logout(setIsLoad, setProfile, router)}>
+                <Logout sx={{ mr: '7px' }} />
+                Logout
               </MenuItem>
             </Menu>
           </Box>

@@ -17,41 +17,37 @@ const listItemsCoach = [
   {
     name: 'My Appointments ',
     icon: <CalendarToday color={'primary'} />,
-    href: '/profiles/coach#my_appointments ',
+    href: '/profiles/coach?my_appointments ',
   },
   {
     name: 'Reviews',
     icon: <FavoriteBorder color={'primary'} />,
-    href: '/profiles/coach#reviews',
+    href: '/profiles/coach?reviews',
   },
   {
     name: 'Packages',
     icon: <Mode color={'primary'} />,
-    href: '/profiles/coach#packages',
+    href: '/profiles/coach?packages',
   },
   {
     name: 'Messages',
     icon: <Message color={'primary'} />,
-    href: '/profiles/coach#message',
+    href: '/profiles/coach?message',
   },
   {
     name: 'Settings',
     icon: <Settings color={'primary'} />,
-    href: '/profiles/coach#settings',
+    href: '/profiles/coach?settings',
   },
   {
     name: 'Get help',
     icon: <Help color={'primary'} />,
-    href: '/profiles/coach#get_help',
+    href: '/profiles/coach?get_help',
   },
 ];
 
 export default function ProfileCoach() {
-  // const matches = useMediaQuery('(min-width:900px)');
   const router = useRouter();
-  console.log('====================================');
-  console.log(' router ', router.asPath);
-  console.log('====================================');
   return (
     <>
       <Head>
@@ -62,7 +58,7 @@ export default function ProfileCoach() {
       </Head>
       <AuthenticatedLayout userType={UserType.coach} listItems={listItemsCoach}>
         <Box flex={1} p={2}>
-          My Appointments
+          {router.asPath.split('?')[1]}
         </Box>
       </AuthenticatedLayout>
     </>

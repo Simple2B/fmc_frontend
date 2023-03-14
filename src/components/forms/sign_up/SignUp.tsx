@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import GoogleLoginBtn from '@/components/google_login/GoogleLogin';
 import { getErrorMessage } from '@/helper/error_function';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -20,11 +21,12 @@ const re = /\S+@\S+\.\S+/;
 export interface ISignUp {
   title: string;
   userType: string;
+  onSuccess: (res: any) => void;
+  onError: (res: any) => void;
 }
 
-const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
+const SignUp: React.FC<ISignUp> = ({ title, userType, onSuccess, onError }) => {
   const router = useRouter();
-
   const [name, setName] = React.useState<string>('');
   const [errorNameMessage, setErrorNameMessage] = React.useState<string>('');
   const [isErrorName, setIsErrorName] = React.useState<boolean>(false);
@@ -68,10 +70,6 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
       setIsErrorEmail(true);
       setErrorEmailMessage('Email is not valid');
     }
-    // if (name === '') {
-    //   setIsErrorName(true);
-    //   setErrorNameMessage('Name cannot be empty');
-    // }
 
     if (email) {
       const data = {
@@ -244,12 +242,20 @@ const SignUp: React.FC<ISignUp> = ({ title, userType }) => {
           >
             Sign up
           </Button>
-          {/* TODO: add for next task */}
-          {/* <div className={style.hr}>
+          <div className={style.hr}>
             <div></div>
             <div style={{ color: '#717171' }}>Or</div>
             <div></div>
-          </div> */}
+          </div>
+          <Box sx={{ width: '100%' }}>
+            <GoogleLoginBtn
+              // clientId={clientId}
+              // buttonText={'Sign up with Google'}
+              onSuccess={onSuccess}
+              onError={onError}
+              buttonText={''}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>
