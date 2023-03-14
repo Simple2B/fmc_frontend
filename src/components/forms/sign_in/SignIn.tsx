@@ -1,3 +1,4 @@
+import GoogleLoginBtn from '@/components/google_login/GoogleLogin';
 import { getErrorMessage } from '@/helper/error_function';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -22,10 +23,21 @@ const re = /\S+@\S+\.\S+/;
 export interface ISignIn {
   title: string;
   userType: string;
+  // eslint-disable-next-line no-unused-vars
+  onSuccess: any;
+  // eslint-disable-next-line no-unused-vars
+  onFailure?: any;
+  typeSign: string;
 }
 
 // eslint-disable-next-line no-empty-pattern
-const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
+const SignIn: React.FC<ISignIn> = ({
+  title,
+  userType,
+  onSuccess,
+  onFailure,
+  typeSign,
+}) => {
   // const { googleClientId, appleKeyId } = useContext(AuthContext);
   // const matches = useMediaQuery('(min-width:600px)');
 
@@ -341,7 +353,6 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
               Forgot password? <span className={style.arrow}>&#8593;</span>
             </Link>
           </Box>
-
           <Button
             type="submit"
             fullWidth
@@ -357,12 +368,19 @@ const SignIn: React.FC<ISignIn> = ({ title, userType }) => {
             Sign In
           </Button>
 
-          {/* TODO: add for next task */}
-          {/* <div className={style.hr}>
+          <div className={style.hr}>
             <div></div>
             <div style={{ color: '#717171' }}>Or</div>
             <div></div>
-          </div> */}
+          </div>
+
+          <Box sx={{ width: '100%' }}>
+            <GoogleLoginBtn
+              onSuccess={onSuccess}
+              onError={onFailure}
+              typeSign={typeSign}
+            />
+          </Box>
 
           {/* TODO: add for next task (google auth)*/}
           {/* <div className="socialContainer">
