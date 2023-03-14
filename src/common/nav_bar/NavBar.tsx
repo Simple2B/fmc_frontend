@@ -73,7 +73,7 @@ const NavBar: React.FC<INavBar> = ({
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <Badge
-            badgeContent={3}
+            // badgeContent={3}
             color="primary"
             sx={{
               display: { xs: 'none', sm: 'inline-block' },
@@ -81,6 +81,12 @@ const NavBar: React.FC<INavBar> = ({
               border: '1px solid',
               p: '7px 9px',
               borderRadius: '50%',
+              '&:hover': {
+                boxShadow: '0px 0px 5px #1876D1',
+                border: '1px solid',
+                p: '7px 9px',
+                borderRadius: '50%',
+              },
             }}
           >
             <Notifications color="action" />

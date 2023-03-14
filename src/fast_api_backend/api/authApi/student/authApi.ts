@@ -1,5 +1,6 @@
+import { IUserGoogleRequest } from '@/store/types/users/googleUserType';
 import { IResponseStudentData } from '../../../../store/types/users/student/studentType';
-import { authInstance } from '../../_axiosInstance';
+import { authApplicationInstance, authInstance } from '../../_axiosInstance';
 
 const formatRequestBody = (email: string, password: string) => {
   const formData = new FormData();
@@ -26,6 +27,21 @@ export const studentAuthApi = {
       return response.data;
     } catch (error: any) {
       console.log(`POST [/sign_in] student - error: ${error}`);
+      throw error.message;
+    }
+  },
+  googleAuthStudent: async (
+    data: IUserGoogleRequest
+  ): Promise<{ access_token: string; token_type: string }> => {
+    try {
+      const response = await authApplicationInstance.post(
+        '/auth/student/google-oauth',
+        data
+      );
+      console.log('POST [/google-oauth] student successfully', response);
+      return response.data;
+    } catch (error: any) {
+      console.log(`POST [/google-oauth] student - error: ${error}`);
       throw error.message;
     }
   },

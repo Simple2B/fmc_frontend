@@ -12,6 +12,7 @@ const base: ISignUp = {
   onError: function (res: any): void {
     throw new Error('Function not implemented.');
   },
+  typeSign: '',
 };
 
 export const mockBaseSignUpPageProps = {};

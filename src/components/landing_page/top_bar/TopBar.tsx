@@ -149,11 +149,12 @@ const TopBar: React.FC<ITopBar> = ({
                     <Menu
                       id="basic-menu"
                       sx={{
-                        mt: '25px',
-                        p: '0 15px',
+                        mt: '38px',
+                        mr: '23px',
                         boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
                         position: 'absolute',
-                        left: 0,
+                        // left: 0,
+                        right: 0,
                       }}
                       open={isOpen}
                       onClose={() => setOpen(false)}

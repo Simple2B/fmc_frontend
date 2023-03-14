@@ -1,12 +1,82 @@
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import SignIn from '@/components/forms/sign_in/SignIn';
+import { coachAuthApi } from '@/fast_api_backend/api/authApi/coach/authApi';
+import { getErrorMessage } from '@/helper/error_function';
 import { TypeSign, UserType } from '@/store/types/user';
+import { IResponseStudentData } from '@/store/types/users/student/studentType';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
-import SignIn from '../../components/forms/sign_in/SignIn';
 import SignUpSPLayout from '../../components/layouts/sign_up_sp/SignUpSPLayout';
 
 export default function SignInCoach() {
   const matches = useMediaQuery('(min-width:900px)');
+
+  const router = useRouter();
+
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // google success login
+  const onSuccess = (res: any) => {
+    const data = {
+      email: res.profileObj.email ?? '',
+      username: res.profileObj.name ?? '',
+      google_openid_key: res.profileObj.googleId ?? '',
+      picture: res.profileObj.imageUrl ?? '',
+    };
+
+    // save user data from google to fast api db
+    const CoachGoogleAuth = async () => {
+      setIsLoad(true);
+      try {
+        const res = await coachAuthApi.googleAuthCoach(data);
+        setIsLoad(false);
+        setSuccess(true);
+        console.log('CoachGoogleAuth: res ', res);
+        localStorage.setItem(
+          'token',
+          (res as IResponseStudentData).access_token
+        );
+        localStorage.setItem('userType', UserType.coach);
+        router.push({
+          pathname: '/profiles/coach',
+          query: 'my_appointments',
+        });
+      } catch (error: any) {
+        setIsLoad(false);
+        setSuccess(false);
+        console.log('CoachGoogleAuth: error ', error);
+        getErrorMessage(error, setError);
+        router.push('/sign_in/coach');
+      }
+    };
+    CoachGoogleAuth();
+  };
+
+  const onFailure = (res: any) => {
+    console.log('[SignInCoach] onFailure: res ', res);
+    router.push('/sign_in/coach');
+    setSuccess(false);
+    getErrorMessage(res, setError);
+  };
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
   return (
     <>
       <Head>
@@ -26,7 +96,29 @@ export default function SignInCoach() {
         userType={UserType.coach}
         typeSign={TypeSign.in}
       >
-        <SignIn title={'Welcome back'} userType={UserType.coach} />
+        <SignIn
+          title={'Welcome back'}
+          userType={UserType.coach}
+          onSuccess={onSuccess}
+          onFailure={onFailure}
+          typeSign={TypeSign.in}
+        />
+        {isLoad && (
+          <CustomModel isOpen={isLoad}>
+            <Loader />
+          </CustomModel>
+        )}
+        {error && !isSuccess && (
+          <CustomModel
+            isOpen={modalIsOpen}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          >
+            <MessageBox
+              error={error}
+              handleClick={() => setModalIsOpen(!modalIsOpen)}
+            />
+          </CustomModel>
+        )}
       </SignUpSPLayout>
     </>
   );
