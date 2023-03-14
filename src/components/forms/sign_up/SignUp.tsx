@@ -21,11 +21,18 @@ const re = /\S+@\S+\.\S+/;
 export interface ISignUp {
   title: string;
   userType: string;
-  onSuccess: (res: any) => void;
-  onError: (res: any) => void;
+  onSuccess: any;
+  onError?: any;
+  typeSign: string;
 }
 
-const SignUp: React.FC<ISignUp> = ({ title, userType, onSuccess, onError }) => {
+const SignUp: React.FC<ISignUp> = ({
+  title,
+  userType,
+  onSuccess,
+  onError,
+  typeSign,
+}) => {
   const router = useRouter();
   const [name, setName] = React.useState<string>('');
   const [errorNameMessage, setErrorNameMessage] = React.useState<string>('');
@@ -249,11 +256,9 @@ const SignUp: React.FC<ISignUp> = ({ title, userType, onSuccess, onError }) => {
           </div>
           <Box sx={{ width: '100%' }}>
             <GoogleLoginBtn
-              // clientId={clientId}
-              // buttonText={'Sign up with Google'}
               onSuccess={onSuccess}
               onError={onError}
-              buttonText={''}
+              typeSign={typeSign}
             />
           </Box>
         </Box>
