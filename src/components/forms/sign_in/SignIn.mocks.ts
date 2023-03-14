@@ -11,6 +11,7 @@ const base: ISignIn = {
   onFailure: function (res: any): void {
     throw new Error('Function not implemented.');
   },
+  typeSign: '',
 };
 
 export const mockSignInProps = {
