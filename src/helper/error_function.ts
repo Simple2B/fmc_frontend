@@ -10,6 +10,8 @@ export const getErrorMessage = (
     setError('Student with such email address already exists');
   } else if (Number(errorNumber) === 401) {
     setError('Unauthorized');
+  } else if (Number(errorNumber) === 400) {
+    setError('You haven`t been signed up before');
   } else {
     setError(`${axiosError}`);
   }
