@@ -33,7 +33,7 @@ export const coachClientApi = {
     }
   },
 
-  checkCoach: async (): Promise<true> => {
+  checkCoach: async (): Promise<boolean> => {
     try {
       const response = await instance().get('/whoami/coach');
       const res = response.data;

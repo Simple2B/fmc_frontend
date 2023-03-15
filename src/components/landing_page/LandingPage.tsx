@@ -62,6 +62,10 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     is_verified: false,
   });
 
+  console.log('====================================');
+  console.log('!!!!! profile ', profile);
+  console.log('====================================');
+
   React.useEffect(() => {
     setUserType(localStorage.getItem('userType') ?? '');
   }, [isLoad]);
@@ -73,8 +77,8 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
         setProfile,
         setIsLoad,
         setSuccess,
-        setError,
-        error
+        setError
+        // error
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType]);
