@@ -25,7 +25,7 @@ export const authInstance: AxiosInstance = axios.create({
   },
 });
 
-export const authApplicationInstance: AxiosInstance = axios.create({
+export const applicationInstance: AxiosInstance = axios.create({
   baseURL: API_URI,
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
