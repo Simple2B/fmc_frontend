@@ -21,9 +21,6 @@ export async function getCurrentUser(
       if (res) {
         try {
           const studentProfile = await studentClientApi.studentGetProfile();
-          console.log('====================================');
-          console.log(' studentProfile => ', studentProfile);
-          console.log('====================================');
           if (setProfile) setProfile(studentProfile);
           if (setIsLoad) setIsLoad(false);
           if (setSuccess) setSuccess(true);

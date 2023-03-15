@@ -37,6 +37,7 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
     setIsLoad(true);
     setIsErrorEmail(false);
     setErrorEmailMessage('');
+
     if (email === '') {
       setIsErrorEmail(true);
       setErrorEmailMessage('Email cannot be empty');
@@ -49,7 +50,7 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
       setErrorEmailMessage('Email is not valid');
     }
 
-    if (email) {
+    if (!isErrorEmail) {
       const data = { email: email };
       const getMessage = async () => {
         try {
@@ -164,6 +165,7 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
               width: '100%',
               height: '56px',
             }}
+            disabled={isErrorEmail}
           >
             Reset password
           </Button>

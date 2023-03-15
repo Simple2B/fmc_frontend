@@ -62,10 +62,6 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     is_verified: false,
   });
 
-  console.log('====================================');
-  console.log('!!!!! profile ', profile);
-  console.log('====================================');
-
   React.useEffect(() => {
     setUserType(localStorage.getItem('userType') ?? '');
   }, [isLoad]);
