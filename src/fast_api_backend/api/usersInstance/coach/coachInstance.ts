@@ -1,5 +1,5 @@
 import { ICoach } from '../../../../store/types/users/coach/coachType';
-import { instance } from '../../_axiosInstance';
+import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const coachClientApi = {
   signUpCoach: async (data: ICoach): Promise<number | string> => {
@@ -56,6 +56,23 @@ export const coachClientApi = {
         `[GET: get profile] coach -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  coachForgotPassword: async (data: { email: string }): Promise<string> => {
+    try {
+      const response = await applicationInstance.post(
+        '/auth/coach/forgot-password',
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: ForgotPassword] coach -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ForgotPassword] coach -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

@@ -2,7 +2,7 @@ import {
   IStudent,
   IStudentProfile,
 } from '../../../../store/types/users/student/studentType';
-import { instance } from '../../_axiosInstance';
+import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
   signUpStudent: async (data: IStudent): Promise<number | string> => {
@@ -60,6 +60,23 @@ export const studentClientApi = {
         `[GET: get profile] student -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  studentForgotPassword: async (data: { email: string }): Promise<string> => {
+    try {
+      const response = await applicationInstance.post(
+        '/auth/student/forgot-password',
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: ForgotPassword] student -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ForgotPassword] student -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };
