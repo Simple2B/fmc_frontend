@@ -2,7 +2,7 @@ import {
   IStudent,
   IStudentProfile,
 } from '../../../../store/types/users/student/studentType';
-import { instance } from '../../_axiosInstance';
+import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
   signUpStudent: async (data: IStudent): Promise<number | string> => {
@@ -23,15 +23,15 @@ export const studentClientApi = {
     token: string
   ): Promise<number | string> => {
     try {
-      const response = await instance().get(
+      const response = await applicationInstance().get(
         `/auth/student/account-confirmation?${token}`
       );
       const res = response.data;
-      console.log(`[GET: account-confirmation] student -> res data  ${res}`);
+      console.log(`[POST: account-confirmation] student -> res data  ${res}`);
       return res;
     } catch (error: any) {
       console.log(
-        `[GET: account-confirmation] student -> error message => ${error.message}`
+        `[POST: account-confirmation] student -> error message => ${error.message}`
       );
       throw error.message;
     }
@@ -60,6 +60,43 @@ export const studentClientApi = {
         `[GET: get profile] student -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  studentForgotPassword: async (data: { email: string }): Promise<string> => {
+    try {
+      const response = await applicationInstance().post(
+        '/auth/student/forgot-password',
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: ForgotPassword] student -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ForgotPassword] student -> error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+
+  studentResetPassword: async (
+    data: { password: string; password1: string },
+    verification_token: string
+  ): Promise<string> => {
+    try {
+      const response = await applicationInstance().post(
+        `/auth/student/reset-password/${verification_token}`,
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: studentResetPassword] student -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: studentResetPassword] student -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

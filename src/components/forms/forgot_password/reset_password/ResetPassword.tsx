@@ -4,7 +4,15 @@ import React, { useEffect, useState } from 'react';
 import PasswordInput from '../../../../common/input_password/PasswordInput';
 import style from './ResetPassword.module.sass';
 
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { getErrorMessage } from '@/helper/error_function';
+import { UserType } from '@/store/types/user';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/router';
 
 export interface IResetPassword {
   userType: string;
@@ -12,12 +20,11 @@ export interface IResetPassword {
 
 // eslint-disable-next-line no-empty-pattern
 const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
-  // const { googleClientId, appleKeyId } = useContext(AuthContext);
-  // const matches = useMediaQuery('(min-width:600px)');
+  const router = useRouter();
 
-  console.log('====================================');
-  console.log('SignIn: userType', userType);
-  console.log('====================================');
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
 
   const [password, setPassword] = useState<string>('');
   const [isErrorPassword, setIsErrorPassword] = useState<boolean>(false);
@@ -73,6 +80,7 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
 
   useEffect(() => {
     checkedPassword();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password, passwordConfirm]);
 
   const showPassword = (
@@ -84,8 +92,8 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
 
   const submitRegistration = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // setIsLoad(true);
-    // setSuccess(false);
+    setIsLoad(true);
+    setSuccess(false);
     setIsErrorPassword(false);
     setErrorPasswordMessage('');
     setIsErrorPasswordConfirm(false);
@@ -94,28 +102,66 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
     checkedPassword();
 
     if (password === passwordConfirm) {
-      // if (userUUID) {
-      //   const resetPasswordData = {
-      //     verification_token: userUUID,
-      //     password: password,
-      //   };
-      //   const resetPassword = async () => {
-      //     try {
-      //       // const response = await instance().post('/user/reset_password', resetPasswordData);
-      //       // setIsLoad(false);
-      //       // setSuccess(true);
-      //       // return response.data;
-      //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      //     } catch (error: any) {
-      //       // setIsLoad(false);
-      //       // setSuccess(false);
-      //       // setError('Something went wrong... Please sign up!');
-      //     }
-      //   };
-      //   resetPassword();
-      // }
+      const verification_token = router.asPath.split('?token=')[1];
+      console.log('====================================');
+      console.log('[ResetPassword] verification_token => ', verification_token);
+      console.log('====================================');
+      const data = { password: password, password1: passwordConfirm };
+      const ResetPassword = async () => {
+        try {
+          if (userType === UserType.student) {
+            const response = await studentClientApi.studentResetPassword(
+              data,
+              verification_token
+            );
+            console.log('[ResetPassword]: student ', response);
+            setIsLoad(false);
+            setSuccess(true);
+            router.push('/reset_password/success/student');
+          }
+          if (userType === UserType.coach) {
+            const response = await coachClientApi.coachResetPassword(
+              data,
+              verification_token
+            );
+            console.log('[ResetPassword]: coach ', response);
+            setIsLoad(false);
+            setSuccess(true);
+            router.push('/reset_password/success/coach');
+          }
+        } catch (error: any) {
+          if (userType === UserType.coach) {
+            router.push('/');
+            console.log(`POST [ResetPassword] coach error message: ${error}`);
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError, 'resetPass');
+          }
+          if (userType === UserType.student) {
+            router.push('/');
+            console.log(
+              `POST [ResetPassword] student error message ===> : ${error}`
+            );
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError, 'resetPass');
+          }
+        }
+      };
+      ResetPassword();
     }
   };
+
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
 
   return (
     <Box className={style.wrapper}>
@@ -142,28 +188,6 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
           sx={{ mt: 1, position: 'relative', width: '100%' }}
           className={style.form}
         >
-          {/* {error && !isLoggin && (
-          <ModalWindow
-            isOpen={error !== null ? true : false}
-            navigate={navigate}
-            navigationPath={'/auth'}
-            type={'error'}
-            children={error}
-          />
-        )}
-        {loading && (
-          <ModalWindow isOpen={loading} type={'load'} children={<Loader />} />
-        )}
-        {isLoggin && (
-          <ModalWindow
-            isOpen={isLoggin}
-            navigate={navigate}
-            navigationPath={'/profile/sensors'}
-            type={'success'}
-            children={'You are successfully logged in'}
-          />
-        )} */}
-
           <PasswordInput
             label="Password"
             value={password}
@@ -202,6 +226,22 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
           </Button>
         </Box>
       </Box>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };

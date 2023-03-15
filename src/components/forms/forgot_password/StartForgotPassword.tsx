@@ -1,6 +1,14 @@
 /* eslint-disable no-unused-vars */
 import Input from '@/common/input/Input';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { getErrorMessage } from '@/helper/error_function';
+import { UserType } from '@/store/types/user';
 import { Box, Button, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import style from './StartForgotPassword.module.sass';
@@ -13,7 +21,7 @@ export interface IStartForgotPassword {
 }
 
 const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
-  console.log('StartForgotPassword: userType => ', userType);
+  const router = useRouter();
 
   const [email, setEmail] = React.useState<string>('');
   const [errorEmailMessage, setErrorEmailMessage] = React.useState<string>('');
@@ -23,55 +31,83 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  //   const handleSignUp = (e: { preventDefault: () => void }) => {
-  //     e.preventDefault();
-  //     setSuccess(false);
-  //     setIsLoad(true);
-  //     setIsErrorEmail(false);
-  //     // setIsErrorName(false);
-  //     setErrorEmailMessage('');
-  //     // setErrorNameMessage('');
-  //     if (email === '') {
-  //       setIsErrorEmail(true);
-  //       setErrorEmailMessage('Email cannot be empty');
-  //     }
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setSuccess(false);
+    setIsLoad(true);
+    setIsErrorEmail(false);
+    setErrorEmailMessage('');
+    if (email === '') {
+      setIsErrorEmail(true);
+      setErrorEmailMessage('Email cannot be empty');
+    }
+    if (re.test(email.toLowerCase())) {
+      setIsErrorEmail(false);
+      setErrorEmailMessage('');
+    } else {
+      setIsErrorEmail(true);
+      setErrorEmailMessage('Email is not valid');
+    }
 
-  //     if (re.test(email.toLowerCase())) {
-  //       setIsErrorEmail(false);
-  //       setErrorEmailMessage('');
-  //     } else {
-  //       setIsErrorEmail(true);
-  //       setErrorEmailMessage('Email is not valid');
-  //     }
+    if (email) {
+      const data = { email: email };
+      const getMessage = async () => {
+        try {
+          if (userType === UserType.student) {
+            const response = await studentClientApi.studentForgotPassword(data);
+            console.log('[StartForgotPassword]: student ', response);
+            setIsLoad(false);
+            setSuccess(true);
+            router.push({
+              pathname: '/forgot_password/info_student',
+              query: email,
+            });
+          }
+          if (userType === UserType.coach) {
+            const response = await coachClientApi.coachForgotPassword(data);
+            console.log('[StartForgotPassword]: coach ', response);
+            setIsLoad(false);
+            setSuccess(true);
+            router.push({
+              pathname: '/forgot_password/info_coach',
+              query: email,
+            });
+          }
+        } catch (error: any) {
+          if (userType === UserType.coach) {
+            router.push('/forgot_password/start_coach');
+            console.log(
+              `POST [/forgot_password] coach error message: ${error}`
+            );
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError);
+          }
+          if (userType === UserType.student) {
+            router.push('/forgot_password/start_student');
+            console.log(
+              `POST [/forgot_password] student error message ===> : ${error}`
+            );
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError);
+          }
+        }
+      };
+      getMessage();
+    }
+  };
 
-  //     // if (name === '') {
-  //     //   setIsErrorName(true);
-  //     //   setErrorNameMessage('Name cannot be empty');
-  //     // }
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
 
-  //     if (email) {
-  //       // const name = email.split('@')[0];
-  //       const getRegistrationMessage = async () => {
-  //         try {
-  //           const response = '';
-  //           // await instance().post('/sign_up', {
-  //           //   email: email,
-  //           //   username: name,
-  //           // });
-  //           console.log('POST [/sign_up] successfully', response);
-  //           setIsLoad(false);
-  //           setSuccess(true);
-  //           // return response.data;
-  //         } catch (error: any) {
-  //           setIsLoad(false);
-  //           setSuccess(false);
-  //           setError('Email already exists');
-  //           console.log(`POST [/sign_up] error message: ${error.message}`);
-  //         }
-  //       };
-  //       getRegistrationMessage();
-  //     }
-  //   };
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
 
   return (
     <Box className={style.wrapper}>
@@ -94,7 +130,7 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
         <Box
           component="form"
           noValidate
-          //   onSubmit={handleSignUp}
+          onSubmit={handleSubmit}
           sx={{ mt: 1, position: 'relative', width: '100%' }}
           className={style.form}
         >
@@ -117,7 +153,6 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
             }}
             type="email"
           />
-
           <Button
             type="submit"
             fullWidth
@@ -134,6 +169,22 @@ const StartForgotPassword: React.FC<IStartForgotPassword> = ({ userType }) => {
           </Button>
         </Box>
       </Box>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            error={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };

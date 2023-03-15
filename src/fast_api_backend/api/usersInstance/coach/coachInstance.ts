@@ -1,5 +1,5 @@
 import { ICoach } from '../../../../store/types/users/coach/coachType';
-import { instance } from '../../_axiosInstance';
+import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const coachClientApi = {
   signUpCoach: async (data: ICoach): Promise<number | string> => {
@@ -19,7 +19,7 @@ export const coachClientApi = {
 
   coachAccountConfirmation: async (token: string): Promise<number | string> => {
     try {
-      const response = await instance().get(
+      const response = await applicationInstance().get(
         `/auth/coach/account-confirmation?${token}`
       );
       const res = response.data;
@@ -56,6 +56,43 @@ export const coachClientApi = {
         `[GET: get profile] coach -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  coachForgotPassword: async (data: { email: string }): Promise<string> => {
+    try {
+      const response = await applicationInstance().post(
+        '/auth/coach/forgot-password',
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: ForgotPassword] coach -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ForgotPassword] coach -> error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+
+  coachResetPassword: async (
+    data: { password: string; password1: string },
+    verification_token: string
+  ): Promise<string> => {
+    try {
+      const response = await applicationInstance().post(
+        `/auth/coach/reset-password/${verification_token}`,
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: coachResetPassword] coach -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: coachResetPassword] coach -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

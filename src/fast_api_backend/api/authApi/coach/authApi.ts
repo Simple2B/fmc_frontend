@@ -1,6 +1,6 @@
 import { IUserGoogleRequest } from '@/store/types/users/googleUserType';
 import { IResponseCoachData } from '../../../../store/types/users/coach/coachType';
-import { authApplicationInstance, authInstance } from '../../_axiosInstance';
+import { applicationInstance, authInstance } from '../../_axiosInstance';
 
 const formatRequestBody = (email: string, password: string) => {
   const formData = new FormData();
@@ -35,7 +35,7 @@ export const coachAuthApi = {
     data: IUserGoogleRequest
   ): Promise<{ access_token: string; token_type: string }> => {
     try {
-      const response = await authApplicationInstance.post(
+      const response = await applicationInstance().post(
         '/auth/coach/google-oauth',
         data
       );

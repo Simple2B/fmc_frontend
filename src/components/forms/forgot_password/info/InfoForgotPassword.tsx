@@ -2,6 +2,7 @@
 import { UserType } from '@/store/types/user';
 import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import style from './InfoForgotPassword.module.sass';
@@ -12,6 +13,8 @@ export interface IInfoForgotPassword {
 }
 
 const InfoForgotPassword: React.FC<IInfoForgotPassword> = ({ userType }) => {
+  const router = useRouter();
+
   return (
     <Box className={style.wrapper}>
       <Box
@@ -27,7 +30,9 @@ const InfoForgotPassword: React.FC<IInfoForgotPassword> = ({ userType }) => {
         <Box sx={{ pt: '28px', pb: '10px' }}>
           <Box className={style.description}>
             Instructions to reset your password have been sent to
-            findmycoach@gmail.com
+            <Typography sx={{ mr: '3px' }}>
+              {router.asPath.split('?')[1]}
+            </Typography>
           </Box>
           <Box
             className={style.description}
