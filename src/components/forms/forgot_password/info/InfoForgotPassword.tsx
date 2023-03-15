@@ -13,10 +13,8 @@ export interface IInfoForgotPassword {
 }
 
 const InfoForgotPassword: React.FC<IInfoForgotPassword> = ({ userType }) => {
-  const { query } = useRouter();
-  console.log('====================================');
-  console.log('[InfoForgotPassword] query => ', query);
-  console.log('====================================');
+  const router = useRouter();
+
   return (
     <Box className={style.wrapper}>
       <Box
@@ -32,7 +30,9 @@ const InfoForgotPassword: React.FC<IInfoForgotPassword> = ({ userType }) => {
         <Box sx={{ pt: '28px', pb: '10px' }}>
           <Box className={style.description}>
             Instructions to reset your password have been sent to
-            findmycoach@gmail.com
+            <Typography sx={{ mr: '3px' }}>
+              {router.asPath.split('?')[1]}
+            </Typography>
           </Box>
           <Box
             className={style.description}

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import Loader from '../../../../common/loader/Loader';
@@ -17,13 +17,19 @@ export interface IConfirmation {
 
 const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
   const router = useRouter();
-  const token = router.asPath.split('?')[1];
+  console.log(
+    '[handleConfirm] token ===>  ',
+    router.asPath.split('?token=')[1]
+  );
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const handleConfirm = () => {
+  const handleConfirm = (e: any) => {
+    e.preventDefault();
+    const token = router.asPath.split('?token=')[1];
+    console.log('[handleConfirm] token ===>  ', token);
     const confirmCoachEmail = async (userType: string) => {
       setIsLoad(true);
       try {
@@ -35,6 +41,9 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
           router.push('/sign_in/coach');
         }
         if (userType === UserType.student) {
+          console.log('====================================');
+          console.log('student === token ==== ', token);
+          console.log('====================================');
           const res = await studentClientApi.studentAccountConfirmation(token);
           setIsLoad(false);
           setSuccess(true);
@@ -55,7 +64,9 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
             `POST [/confirmation] student error message: ${error.message}`
           );
           setSuccess(false);
-          setError('The token is not valid, please try to register again!');
+          // setError('The token is not valid, please try to register again!');
+          setError(`${error.message}`);
+
           router.push('/sign_up/student');
         }
         console.log(`POST [/confirmation] error message: ${error.message}`);
@@ -95,11 +106,23 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
         </Box>
         <Box
           sx={{ mt: 1, position: 'relative', width: '100%' }}
-          className={style.form}
+          component="form"
+          onSubmit={handleConfirm}
         >
-          <Box className={style.link} onClick={handleConfirm}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              borderRadius: '8px',
+              width: '100%',
+              height: '56px',
+            }}
+          >
             Log in
-          </Box>
+          </Button>
         </Box>
       </Box>
       {isLoad && (

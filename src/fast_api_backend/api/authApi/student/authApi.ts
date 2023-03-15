@@ -34,7 +34,7 @@ export const studentAuthApi = {
     data: IUserGoogleRequest
   ): Promise<{ access_token: string; token_type: string }> => {
     try {
-      const response = await applicationInstance.post(
+      const response = await applicationInstance().post(
         '/auth/student/google-oauth',
         data
       );

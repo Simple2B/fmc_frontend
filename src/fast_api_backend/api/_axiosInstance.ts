@@ -25,10 +25,12 @@ export const authInstance: AxiosInstance = axios.create({
   },
 });
 
-export const applicationInstance: AxiosInstance = axios.create({
-  baseURL: API_URI,
-  headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Access-Control-Allow-Origin': '*',
-  },
-});
+export const applicationInstance = (): AxiosInstance =>
+  axios.create({
+    baseURL: API_URI,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, PATCH',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });

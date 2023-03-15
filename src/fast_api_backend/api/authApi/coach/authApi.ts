@@ -35,7 +35,7 @@ export const coachAuthApi = {
     data: IUserGoogleRequest
   ): Promise<{ access_token: string; token_type: string }> => {
     try {
-      const response = await applicationInstance.post(
+      const response = await applicationInstance().post(
         '/auth/coach/google-oauth',
         data
       );

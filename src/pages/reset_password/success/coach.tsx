@@ -26,7 +26,7 @@ export default function ResetPasswordSuccessCoach() {
         userType={UserType.coach}
         typeSign={TypeSign.in}
       >
-        <SuccessInfo userType={UserType.student} />
+        <SuccessInfo userType={UserType.coach} />
       </SignUpSPLayout>
     </>
   );

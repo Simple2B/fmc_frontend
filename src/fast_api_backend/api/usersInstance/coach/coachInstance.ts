@@ -19,7 +19,7 @@ export const coachClientApi = {
 
   coachAccountConfirmation: async (token: string): Promise<number | string> => {
     try {
-      const response = await instance().get(
+      const response = await applicationInstance().get(
         `/auth/coach/account-confirmation?${token}`
       );
       const res = response.data;
@@ -61,7 +61,7 @@ export const coachClientApi = {
 
   coachForgotPassword: async (data: { email: string }): Promise<string> => {
     try {
-      const response = await applicationInstance.post(
+      const response = await applicationInstance().post(
         '/auth/coach/forgot-password',
         data
       );
@@ -71,6 +71,26 @@ export const coachClientApi = {
     } catch (error: any) {
       console.log(
         `[POST: ForgotPassword] coach -> error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+
+  coachResetPassword: async (
+    data: { password: string; password1: string },
+    verification_token: string
+  ): Promise<string> => {
+    try {
+      const response = await applicationInstance().post(
+        `/auth/coach/reset-password/${verification_token}`,
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: coachResetPassword] coach -> res   ${response}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: coachResetPassword] coach -> error message => ${error.message}`
       );
       throw error.message;
     }
