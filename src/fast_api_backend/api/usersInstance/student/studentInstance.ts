@@ -24,7 +24,7 @@ export const studentClientApi = {
   ): Promise<number | string> => {
     try {
       const response = await applicationInstance().get(
-        `/auth/student/account-confirmation?${token}`
+        `/auth/student/account-confirmation/${token}`
       );
       const res = response.data;
       console.log(`[POST: account-confirmation] student -> res data  ${res}`);

@@ -103,9 +103,7 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
 
     if (password === passwordConfirm) {
       const verification_token = router.asPath.split('?token=')[1];
-      console.log('====================================');
-      console.log('[ResetPassword] verification_token => ', verification_token);
-      console.log('====================================');
+
       const data = { password: password, password1: passwordConfirm };
       const ResetPassword = async () => {
         try {
