@@ -10,38 +10,47 @@ export async function getCurrentUser(
   setProfile?: React.Dispatch<React.SetStateAction<IStudentProfile>>,
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
-  setError?: React.Dispatch<React.SetStateAction<string | null>>,
-  error?: string | null
+  setError?: React.Dispatch<React.SetStateAction<string | null>>
+  // error?: string | null
 ) {
   if (setSuccess) setSuccess(false);
-  if (userType === UserType.student) {
-    if (setIsLoad) setIsLoad(true);
-    const res = await studentClientApi.checkStudent();
-    if (res) {
-      const studentProfile = await studentClientApi.studentGetProfile();
-      if (setProfile) setProfile(studentProfile);
-      if (setIsLoad) setIsLoad(false);
-      if (setSuccess) setSuccess(true);
-    } else {
-      if (setIsLoad) setIsLoad(false);
-      if (error && setError) getErrorMessage(error, setError);
-      redirect('/sign_in/student');
+  try {
+    if (userType === UserType.student) {
+      if (setIsLoad) setIsLoad(true);
+      const res = await studentClientApi.checkStudent();
+      if (res) {
+        try {
+          const studentProfile = await studentClientApi.studentGetProfile();
+          if (setProfile) setProfile(studentProfile);
+          if (setIsLoad) setIsLoad(false);
+          if (setSuccess) setSuccess(true);
+        } catch (error: any) {
+          if (setIsLoad) setIsLoad(false);
+          if (setError) getErrorMessage(error.message, setError);
+          redirect('/sign_in/student');
+        }
+      }
     }
-  }
-
-  if (userType === UserType.coach) {
-    const res = await coachClientApi.checkCoach();
-    console.log('coach: res ', res);
-    if (res) {
-      const coachProfile = await coachClientApi.coachGetProfile();
-      if (setProfile) setProfile(coachProfile);
-      if (setIsLoad) setIsLoad(false);
-      if (setSuccess) setSuccess(true);
-    } else {
-      if (setIsLoad) setIsLoad(false);
-      if (error && setError) getErrorMessage(error, setError);
-      redirect('/sign_in/coach');
+    if (userType === UserType.coach) {
+      const res = await coachClientApi.checkCoach();
+      console.log('coach: res ', res);
+      if (res) {
+        try {
+          const coachProfile = await coachClientApi.coachGetProfile();
+          if (setProfile) setProfile(coachProfile);
+          if (setIsLoad) setIsLoad(false);
+          if (setSuccess) setSuccess(true);
+        } catch (error: any) {
+          if (setIsLoad) setIsLoad(false);
+          if (setError) getErrorMessage(error.message, setError);
+          redirect('/sign_in/coach');
+        }
+      }
     }
+  } catch (error: any) {
+    if (setIsLoad) setIsLoad(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userType');
   }
   if (setIsLoad) setIsLoad(false);
 }

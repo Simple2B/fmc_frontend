@@ -5,7 +5,7 @@ module.exports = () => {
    * @type {import('next').NextConfig}
    */
   const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     sassOptions: {
       includePaths: [join(__dirname, 'styles')],
     },

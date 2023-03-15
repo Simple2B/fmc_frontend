@@ -37,7 +37,7 @@ export const studentClientApi = {
     }
   },
 
-  checkStudent: async (): Promise<true> => {
+  checkStudent: async (): Promise<boolean> => {
     try {
       const response = await instance().get('/whoami/student');
       const res = response.data;
@@ -53,7 +53,7 @@ export const studentClientApi = {
     try {
       const response = await instance().get('/profile/student');
       const res = response.data;
-      console.log(`[GET: get profile] student -> res data  ${res}`);
+      console.log(`[GET: get profile] student -> res  ${response}`);
       return res;
     } catch (error: any) {
       console.log(

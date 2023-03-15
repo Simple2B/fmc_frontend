@@ -219,6 +219,12 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
               width: '100%',
               height: '56px',
             }}
+            disabled={
+              (password === '' && passwordConfirm === '') ||
+              password !== passwordConfirm
+                ? true
+                : false
+            }
           >
             Reset password
           </Button>

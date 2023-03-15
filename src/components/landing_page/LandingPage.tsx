@@ -73,8 +73,8 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
         setProfile,
         setIsLoad,
         setSuccess,
-        setError,
-        error
+        setError
+        // error
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType]);

@@ -51,8 +51,8 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
       setProfile,
       setIsLoad,
       setSuccess,
-      setError,
-      error
+      setError
+      // error
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType]);
