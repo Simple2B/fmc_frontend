@@ -17,10 +17,6 @@ export interface IConfirmation {
 
 const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
   const router = useRouter();
-  console.log(
-    '[handleConfirm] token ===>  ',
-    router.asPath.split('?token=')[1]
-  );
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
@@ -29,7 +25,6 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
   const handleConfirm = (e: any) => {
     e.preventDefault();
     const token = router.asPath.split('?token=')[1];
-    console.log('[handleConfirm] token ===>  ', token);
     const confirmCoachEmail = async (userType: string) => {
       setIsLoad(true);
       try {
@@ -41,9 +36,6 @@ const Confirmation: React.FC<IConfirmation> = ({ title, userType }) => {
           router.push('/sign_in/coach');
         }
         if (userType === UserType.student) {
-          console.log('====================================');
-          console.log('student === token ==== ', token);
-          console.log('====================================');
           const res = await studentClientApi.studentAccountConfirmation(token);
           setIsLoad(false);
           setSuccess(true);

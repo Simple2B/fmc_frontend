@@ -20,7 +20,7 @@ export const coachClientApi = {
   coachAccountConfirmation: async (token: string): Promise<number | string> => {
     try {
       const response = await applicationInstance().get(
-        `/auth/coach/account-confirmation?${token}`
+        `/auth/coach/account-confirmation/${token}`
       );
       const res = response.data;
       console.log(`[GET: account-confirmation] coach -> res data  ${res}`);
