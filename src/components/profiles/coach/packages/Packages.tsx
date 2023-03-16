@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import styles from './Messages.module.sass';
+import styles from './Packages.module.sass';
 
 export interface IPackages {}
 
