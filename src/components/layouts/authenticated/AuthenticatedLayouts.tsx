@@ -3,7 +3,6 @@ import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import NavBar from '@/common/nav_bar/NavBar';
-import RightBar from '@/common/right_bar/RightBar';
 import SideBar, { IItem } from '@/common/side_bar/SideBar';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
@@ -80,7 +79,6 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
       <Stack direction="row" spacing="2" justifyContent="space-between">
         <SideBar listItems={listItems} />
         {children}
-        <RightBar />
       </Stack>
       {isLoad && (
         <CustomModel isOpen={isLoad}>
