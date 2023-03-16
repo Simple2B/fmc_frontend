@@ -10,8 +10,9 @@ export async function getCurrentUser(
   setProfile?: React.Dispatch<React.SetStateAction<IStudentProfile>>,
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
-  setError?: React.Dispatch<React.SetStateAction<string | null>>
+  setError?: React.Dispatch<React.SetStateAction<string | null>>,
   // error?: string | null
+  href?: string
 ) {
   if (setSuccess) setSuccess(false);
   try {
@@ -51,6 +52,7 @@ export async function getCurrentUser(
     if (setIsLoad) setIsLoad(false);
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
+    if (href) window.location.href = href;
   }
   if (setIsLoad) setIsLoad(false);
 }
