@@ -10,7 +10,7 @@ const VideoBox: React.FC<IVideoBox> = () => {
       <video autoPlay muted loop id="myVideo" className={style.video}>
         <source
           src={
-            'https://find-my-coach.s3.amazonaws.com/assets/pexels-cottonbro-10340715.mp4'
+            'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/pexels-cottonbro-10340715.mp4'
           }
           type="video/mp4"
         />
