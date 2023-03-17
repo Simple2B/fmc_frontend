@@ -4,6 +4,8 @@ import { IStudentProfile } from '@/store/types/users/student/studentType';
 import {
   ArrowDropDown,
   ArrowDropUp,
+  CalendarMonth,
+  Close,
   Home,
   Logout,
   Menu as IconMenu,
@@ -19,9 +21,12 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useState } from 'react';
+import MarkedCalendar from '../marked_calendar/MarkedCalendar';
 import style from './NavBar.module.sass';
 
 export interface INavBar {
@@ -32,6 +37,8 @@ export interface INavBar {
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
   setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
+  setIsOpenMobSideBar: React.Dispatch<React.SetStateAction<boolean>>;
+  isOpenMobSideBar: boolean;
 }
 
 const NavBar: React.FC<INavBar> = ({
@@ -40,9 +47,15 @@ const NavBar: React.FC<INavBar> = ({
   userType,
   setIsLoad,
   setProfile,
+  setIsOpenMobSideBar,
+  isOpenMobSideBar,
 }) => {
   const [isOpen, setOpen] = React.useState<boolean>(false);
   const router = useRouter();
+
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+
+  const matches970 = useMediaQuery('(max-width:970px)');
   // const open = Boolean(anchorEl);
   // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
   //   setAnchorEl(event.currentTarget);
@@ -58,12 +71,21 @@ const NavBar: React.FC<INavBar> = ({
       <Toolbar className={style.toolBar}>
         <Typography
           variant="h6"
-          color=""
-          sx={{ display: { xs: 'none', sm: 'block' } }}
+          // color=""
+          sx={{ display: matches970 ? 'none' : 'block' }}
         >
-          Logo
+          LOGO
         </Typography>
-        <IconMenu sx={{ display: { xs: 'block', sm: 'none' } }} />
+        <Typography
+          variant="h6"
+          color="#000"
+          sx={{ display: matches970 ? 'flex' : 'none', cursor: 'pointer' }}
+          // sx={{ display: { xs: 'flex', sm: 'none' } }}
+          onClick={() => setIsOpenMobSideBar(!isOpenMobSideBar)}
+        >
+          {!isOpenMobSideBar ? <IconMenu /> : <Close />}
+        </Typography>
+
         {/* TODO: for search use mui Autocomplete */}
         {userType === UserType.student && (
           <div className={style.search}>
@@ -71,12 +93,44 @@ const NavBar: React.FC<INavBar> = ({
           </div>
         )}
 
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          {matches970 && router.asPath.split('?')[1] === 'my_lessons' && (
+            <Box position={'relative'}>
+              <CalendarMonth
+                sx={{
+                  width: 33,
+                  height: 33,
+                  color: '#F05547',
+                  cursor: 'pointer',
+                }}
+                onClick={() => setIsOpenCalendar(!isOpenCalendar)}
+              />
+              {isOpenCalendar && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '38px',
+                    right: '-100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '100',
+                    borderRadius: '18px',
+                    boxShadow: '0px 0px 5px #1664C0',
+                  }}
+                >
+                  <MarkedCalendar />
+                </Box>
+              )}
+            </Box>
+          )}
           <Badge
             // badgeContent={3}
             color="primary"
             sx={{
-              display: { xs: 'none', sm: 'inline-block' },
+              display: matches970 ? 'none' : 'inline-block',
+              // display: { xs: 'none', sm: 'inline-block' },
               boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',
               border: '1px solid',
               p: '7px 9px',
