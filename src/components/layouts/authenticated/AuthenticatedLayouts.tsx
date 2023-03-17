@@ -6,9 +6,17 @@ import NavBar from '@/common/nav_bar/NavBar';
 import SideBar, { IItem } from '@/common/side_bar/SideBar';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
-import { Box, createTheme, PaletteMode, Stack } from '@mui/material';
+import {
+  Box,
+  createTheme,
+  PaletteMode,
+  Stack,
+  useMediaQuery,
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useState } from 'react';
+import style from './AuthenticatedLayouts.module.sass';
 
 export interface IStudentAuthenticatedLayout {
   children: any;
@@ -22,6 +30,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   listItems,
 }) => {
   const router = useRouter();
+  const matches970 = useMediaQuery('(max-width:970px)');
 
   const [profile, setProfile] = React.useState<IStudentProfile>({
     username: '',
@@ -37,7 +46,6 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
 
   const [mode, setMode] = React.useState<PaletteMode>('light');
-
   const theme = createTheme({
     palette: {
       mode: mode,
@@ -67,6 +75,25 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     }
   }, [modalIsOpen, error]);
 
+  const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
+
+  const MobSideBar = () => {
+    return (
+      <Box
+        sx={{
+          width: '252px',
+          height: '100vh',
+          backgroundColor: '#fff',
+          position: 'absolute',
+          boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',
+          zIndex: 3,
+        }}
+      >
+        <SideBar listItems={listItems} />
+      </Box>
+    );
+  };
+
   return (
     <Box>
       <NavBar
@@ -75,10 +102,29 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         userType={userType}
         setIsLoad={setIsLoad}
         setProfile={setProfile}
+        setIsOpenMobSideBar={setIsOpenMobSideBar}
+        isOpenMobSideBar={isOpenMobSideBar}
       />
-      <Stack direction="row" spacing="2" justifyContent="space-between">
-        <SideBar listItems={listItems} />
-        {children}
+      <Stack direction="row" justifyContent="space-between">
+        <Box
+          className={style.wrapperSideBar}
+          sx={{
+            display: matches970 ? 'none' : 'block',
+            width: matches970 ? 'none' : '25%',
+            height: '100vh',
+          }}
+        >
+          <SideBar listItems={listItems} />
+        </Box>
+        {isOpenMobSideBar && <MobSideBar />}
+        <Box
+          sx={{
+            borderLeft: matches970 ? '' : '.5px solid #DBDBDB',
+            width: matches970 ? '100%' : '88%',
+          }}
+        >
+          {children}
+        </Box>
       </Stack>
       {isLoad && (
         <CustomModel isOpen={isLoad}>

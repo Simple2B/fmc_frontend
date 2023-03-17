@@ -7,6 +7,7 @@ import computer from '../../../../public/MacBook-Pro-16.png';
 import TitleBox from '../title_box/TitleBox';
 import Cards from './cards_sport_types/Cards';
 import CardsTypesPayment from './cards_type_payment/CardsTypesPayment';
+import ForTheCoaches from './for_the_coaches/ForTheCoaches';
 import InfoBoxSignUp from './info_box_sign_up/InfoBoxSignUp';
 import styles from './MainSection.module.sass';
 import QuestionsCards from './questions_cards/QuestionsCards';
@@ -23,6 +24,24 @@ const MainSection: React.FC<IMainSection> = () => {
 
   return (
     <Box className={styles.section}>
+      <TitleBox
+        color={'#000'}
+        top={''}
+        title={'For the coaches'}
+        description={''}
+      />
+      <Box
+        className={styles.wrapperCardTypeSports}
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'self-start',
+          flexWrap: 'wrap',
+          gap: 3,
+        }}
+      >
+        <ForTheCoaches />
+      </Box>
       <TitleBox
         color={'#000'}
         top={''}
