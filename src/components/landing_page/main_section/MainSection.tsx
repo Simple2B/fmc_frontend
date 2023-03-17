@@ -2,6 +2,9 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import line_first from '../../../../public/lines/line_first.png';
+import line_second from '../../../../public/lines/line_second.png';
+import line_third from '../../../../public/lines/line_third.png';
 import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBook-Pro-16.png';
 import TitleBox from '../title_box/TitleBox';
@@ -34,6 +37,8 @@ const MainSection: React.FC<IMainSection> = () => {
       <Box
         className={styles.wrapperCardTypeSports}
         sx={{
+          position: 'relative',
+          zIndex: 1,
           display: 'flex',
           justifyContent: matches1111 ? 'center' : 'space-between',
           alignItems: matches1111 ? 'center' : 'self-start',
@@ -42,6 +47,56 @@ const MainSection: React.FC<IMainSection> = () => {
         }}
       >
         <ForTheCoaches />
+        <Box
+          sx={{
+            display: matches1111 ? 'none' : 'block',
+            position: 'absolute',
+            top: '105px',
+            right: '175px',
+            zIndex: 0,
+          }}
+        >
+          <Image src={line_first} alt={'logo'} width={400} height={45} />
+        </Box>
+
+        <Box
+          sx={{
+            display: matches1111 ? 'none' : 'block',
+            position: 'absolute',
+            top: '363px',
+            left: '160px',
+            zIndex: 0,
+          }}
+        >
+          <Image src={line_second} alt={'logo'} width={410} height={65} />
+        </Box>
+
+        <Box
+          sx={{
+            display: matches1111 ? 'none' : 'block',
+            position: 'absolute',
+            top: '480px',
+            right: '175px',
+            zIndex: 0,
+          }}
+        >
+          <Image src={line_first} alt={'logo'} width={400} height={45} />
+        </Box>
+
+        <Box
+          sx={{
+            display: matches1111 ? 'none' : 'block',
+            position: 'absolute',
+            top: '765px',
+            left: '165px',
+            zIndex: 0,
+          }}
+        >
+          <Image src={line_third} alt={'logo'} width={410} height={45} />
+        </Box>
+
+        {/* <Image src={line} alt={'logo'} width={499} height={95} />
+        <Image src={line} alt={'logo'} width={499} height={95} /> */}
       </Box>
       <TitleBox
         color={'#000'}
