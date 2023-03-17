@@ -291,16 +291,16 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             <SearchInput />
             <Box
               sx={{
-                width: matches845 ? '200px' : matches1920 ? '246px' : '237px',
+                width: matches845 ? '200px' : matches1920 ? '225px' : '237px',
                 height: matches320 ? '30px' : matches845 ? '40px' : '45px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              <Button className={style.searchBtn}>Soccer</Button>
-              <Button className={style.searchBtn}>Rugby</Button>
-              <Button className={style.searchBtn}>Golf</Button>
+              <Box className={style.searchBtn}>Soccer</Box>
+              <Box className={style.searchBtn}>Rugby</Box>
+              <Box className={style.searchBtn}>Golf</Box>
             </Box>
           </Box>
         </Box>

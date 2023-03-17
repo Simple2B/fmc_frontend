@@ -23,6 +23,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/lab": "^5.0.0-alpha.123",
     "@mui/x-date-pickers": "^6.0.2",
     "@next/font": "13.1.6",
     "@types/jwt-decode": "^3.1.0",

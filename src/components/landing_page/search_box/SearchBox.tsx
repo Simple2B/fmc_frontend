@@ -18,7 +18,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
         p: matches320 ? '' : '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 400 : 587,
+        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 400 : 566,
         height: matches445 ? 33 : matches845 ? 45 : 60,
         position: 'relative',
         left: matches320 ? '-15px' : 0,
