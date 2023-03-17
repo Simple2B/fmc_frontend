@@ -16,6 +16,7 @@ import WrapperContactForm from './wrapper_contact_form/WrapperContactForm';
 export interface IMainSection {}
 
 const MainSection: React.FC<IMainSection> = () => {
+  const matches1111 = useMediaQuery('(max-width:1111px)');
   const matches855 = useMediaQuery('(max-width:855px)');
   const matches625 = useMediaQuery('(max-width:625px)');
   const matches385 = useMediaQuery('(max-width:385px)');
@@ -34,10 +35,10 @@ const MainSection: React.FC<IMainSection> = () => {
         className={styles.wrapperCardTypeSports}
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'self-start',
+          justifyContent: matches1111 ? 'center' : 'space-between',
+          alignItems: matches1111 ? 'center' : 'self-start',
           flexWrap: 'wrap',
-          gap: 3,
+          gap: matches1111 ? 5 : 3,
         }}
       >
         <ForTheCoaches />
