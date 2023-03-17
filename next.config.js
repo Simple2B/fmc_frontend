@@ -1,4 +1,5 @@
-const { join } = require('path');
+// const { join } = require('path');
+const path = require('path');
 
 module.exports = () => {
   /**
@@ -7,7 +8,7 @@ module.exports = () => {
   const nextConfig = {
     reactStrictMode: false,
     sassOptions: {
-      includePaths: [join(__dirname, 'styles')],
+      includePaths: [path.join(__dirname, 'styles')],
     },
     output: 'standalone',
     rewrites: () => {
