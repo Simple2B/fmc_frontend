@@ -6,6 +6,8 @@ export interface ITitleBox {
   top?: string;
   title: string;
   description: string;
+  textAlign?: string;
+  paddingLeft?: string;
 }
 
 const TitleBox: React.FC<ITitleBox> = ({
@@ -13,12 +15,18 @@ const TitleBox: React.FC<ITitleBox> = ({
   top = 0,
   title,
   description,
+  textAlign = 'center',
+  paddingLeft = 0,
 }) => {
   // const matches845 = useMediaQuery('(max-width:845px)');
   // const matches445 = useMediaQuery('(max-width:445px)');
   // const matches320 = useMediaQuery('(max-width:320px)');
   return (
-    <Box component="section" className={style.section} sx={{ top: { top } }}>
+    <Box
+      component="section"
+      className={style.section}
+      sx={{ top: { top }, textAlign: textAlign, paddingLeft: paddingLeft }}
+    >
       <Box sx={{ color: { color } }} className={style.title}>
         {title}
       </Box>
