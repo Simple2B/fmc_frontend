@@ -64,7 +64,6 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
         className={`${styles.wrapperCard} ${styles.wrapperCard2} ${styles.wrapperText}`}
       >
         <Box className={styles.title}>Still have questions?</Box>
-
         <Box className={styles.description}>
           Fill the form below and we’ll contact you shortly
         </Box>

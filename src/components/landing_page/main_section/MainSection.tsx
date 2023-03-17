@@ -6,7 +6,7 @@ import line_first from '../../../../public/lines/line_first.png';
 import line_second from '../../../../public/lines/line_second.png';
 import line_third from '../../../../public/lines/line_third.png';
 import logo from '../../../../public/LOGO(WHITE).svg';
-import computer from '../../../../public/MacBook-Pro-16.png';
+import computer from '../../../../public/MacBookPro16.svg';
 import TitleBox from '../title_box/TitleBox';
 import Cards from './cards_sport_types/Cards';
 import CardsTypesPayment from './cards_type_payment/CardsTypesPayment';
@@ -58,7 +58,6 @@ const MainSection: React.FC<IMainSection> = () => {
         >
           <Image src={line_first} alt={'logo'} width={400} height={45} />
         </Box>
-
         <Box
           sx={{
             display: matches1111 ? 'none' : 'block',
@@ -70,7 +69,6 @@ const MainSection: React.FC<IMainSection> = () => {
         >
           <Image src={line_second} alt={'logo'} width={410} height={65} />
         </Box>
-
         <Box
           sx={{
             display: matches1111 ? 'none' : 'block',
@@ -82,7 +80,6 @@ const MainSection: React.FC<IMainSection> = () => {
         >
           <Image src={line_first} alt={'logo'} width={400} height={45} />
         </Box>
-
         <Box
           sx={{
             display: matches1111 ? 'none' : 'block',
@@ -94,9 +91,6 @@ const MainSection: React.FC<IMainSection> = () => {
         >
           <Image src={line_third} alt={'logo'} width={410} height={45} />
         </Box>
-
-        {/* <Image src={line} alt={'logo'} width={499} height={95} />
-        <Image src={line} alt={'logo'} width={499} height={95} /> */}
       </Box>
       <TitleBox
         color={'#000'}
@@ -167,6 +161,17 @@ const MainSection: React.FC<IMainSection> = () => {
             },
           }}
         >
+          {/* TODO: add background blue */}
+          {/* <Box
+            sx={{
+              position: 'absolute',
+              top: '-100px',
+              backgroundImage: 'url(../../../../bg/Ellipse_blue.png)',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          /> */}
           <Image
             className={styles.img}
             src={computer}
@@ -176,6 +181,15 @@ const MainSection: React.FC<IMainSection> = () => {
               matches385 ? 190 : matches625 ? 220 : matches855 ? 280 : 480
             }
           />
+          {/* TODO: add background */}
+          {/* <Box
+            sx={{
+              backgroundImage: 'url()',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          /> */}
         </Box>
         <Box className={styles.wrapperBackground2} />
       </Box>

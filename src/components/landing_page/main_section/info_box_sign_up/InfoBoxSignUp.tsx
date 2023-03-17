@@ -45,13 +45,11 @@ const InfoBoxSignUp: React.FC<IInfoBoxSignUp> = () => {
         className={`${styles.wrapperCard} ${styles.wrapperCard2} ${styles.wrapperText}`}
       >
         <Box className={styles.title}>Sign up with FindMyCoach</Box>
-
         <Box className={styles.description}>
           FMC includes a complete booking and payments system, client ratings
           and reviews as well as comprehensive analytics powered by Stripe. Sign
           up to start coaching with FindMyCoach.
         </Box>
-
         <Box className={styles.infoCards}>
           {infoItems.map((item, index) => {
             return (
@@ -64,9 +62,7 @@ const InfoBoxSignUp: React.FC<IInfoBoxSignUp> = () => {
             );
           })}
         </Box>
-
         <Box className={styles.Btns}>
-          {/* <Box className={styles.Btn1}>Become a coach</Box> */}
           <Button
             className={styles.Btn1}
             onClick={() => router.push('/sign_up/coach')}
@@ -77,14 +73,13 @@ const InfoBoxSignUp: React.FC<IInfoBoxSignUp> = () => {
               borderRadius: '8px',
               textTransform: 'capitalize',
               fontSize: '',
-              width: '187px',
+              width: '98%',
               height: '52px',
               textAlign: 'center',
             }}
           >
             Become a coach
           </Button>
-          <Box className={styles.Btn2}>Learn more</Box>
         </Box>
       </Box>
     </Box>
