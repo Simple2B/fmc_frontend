@@ -33,7 +33,21 @@ const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
 
   return (
     <Box className={styles.wrapper} sx={{ gap: 2 }}>
-      <CoachesCards sessions={sessions} />
+      <Box
+        sx={{
+          fontFamily: 'Inter, sens-serif',
+          fontWeight: 600,
+          fontSize: '24px',
+          color: '#000',
+          mt: '23px',
+          mb: '35px',
+        }}
+      >
+        Coaches you’ve liked
+      </Box>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <CoachesCards sessions={sessions} />
+      </Box>
     </Box>
   );
 };
