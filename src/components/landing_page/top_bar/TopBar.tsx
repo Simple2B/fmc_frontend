@@ -49,11 +49,21 @@ const TopBar: React.FC<ITopBar> = ({
   const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
   const router = useRouter();
-  const [isOpen, setOpen] = React.useState<boolean>(false);
+  // const [isOpen, setOpen] = React.useState<boolean>(false);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const isOpen = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <AppBar component="nav" color={'transparent'} className={style.appBar}>
       <Toolbar>
         <IconButton
+          id="basic-button"
           color="inherit"
           aria-label="open drawer"
           edge="start"
@@ -118,86 +128,79 @@ const TopBar: React.FC<ITopBar> = ({
                   fontSize: matches845 ? '13px' : '16px',
                 }}
               >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '20px',
-                  }}
+                <Button
+                  id="basic-button"
+                  aria-controls={isOpen ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={isOpen ? 'true' : undefined}
+                  onClick={handleClick}
                 >
-                  <Avatar
-                    src={profile.profile_picture}
-                    onClick={() => setOpen(!isOpen)}
-                  />
                   <Box
-                    component="span"
-                    className={style.avatarName}
                     sx={{
-                      display: { xs: 'none', sm: 'flex' },
-                      justifyContent: 'space-between',
+                      display: 'flex',
                       alignItems: 'center',
-                      position: 'relative',
+                      gap: '20px',
                     }}
-                    onClick={() => setOpen(!isOpen)}
                   >
-                    <Box sx={{ color: 'white' }}>{profile.username}</Box>
-                    {isOpen ? (
-                      <ArrowDropDown sx={{ color: 'white' }} />
-                    ) : (
-                      <ArrowDropUp sx={{ color: 'white' }} />
-                    )}
-                    <Menu
-                      id="basic-menu"
+                    <Avatar src={profile.profile_picture} />
+                    <Box
+                      component="span"
+                      className={style.avatarName}
                       sx={{
-                        mt: '38px',
-                        mr: '23px',
-                        boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
-                        position: 'absolute',
-                        // left: 0,
-                        right: 0,
-                      }}
-                      open={isOpen}
-                      onClose={() => setOpen(false)}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      MenuListProps={{
-                        'aria-labelledby': 'basic-button',
+                        display: { xs: 'none', sm: 'flex' },
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        position: 'relative',
                       }}
                     >
-                      <MenuItem
-                        onClick={() => {
-                          userType && userType === UserType.student
-                            ? router.push('/profiles/student?my_lessons')
-                            : router.push('/profiles/coach?my_appointments');
-                        }}
-                      >
-                        <Person sx={{ mr: '7px' }} />
-                        Profile
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() =>
-                          logout(
-                            setIsLoad,
-                            setProfile,
-                            router,
-                            undefined,
-                            setUserType
-                          )
-                        }
-                      >
-                        <Logout sx={{ mr: '7px' }} />
-                        Logout
-                      </MenuItem>
-                    </Menu>
-                    {/*  */}
+                      <Box sx={{ color: 'white' }}>{profile.username}</Box>
+                      {isOpen ? (
+                        <ArrowDropDown sx={{ color: 'white' }} />
+                      ) : (
+                        <ArrowDropUp sx={{ color: 'white' }} />
+                      )}
+                    </Box>
                   </Box>
-                </Box>
+                </Button>
+
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={isOpen}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                  sx={{
+                    boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
+                    ml: '200px',
+                  }}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      userType && userType === UserType.student
+                        ? router.push('/profiles/student?my_lessons')
+                        : router.push('/profiles/coach?my_appointments');
+                    }}
+                  >
+                    <Person sx={{ mr: '7px' }} />
+                    Profile
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() =>
+                      logout(
+                        setIsLoad,
+                        setProfile,
+                        router,
+                        undefined,
+                        setUserType
+                      )
+                    }
+                  >
+                    <Logout sx={{ mr: '7px' }} />
+                    Logout
+                  </MenuItem>
+                </Menu>
               </Box>
             ) : (
               <>
