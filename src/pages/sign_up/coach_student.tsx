@@ -8,8 +8,8 @@ export default function SignUpCoachStudent() {
   return (
     <>
       <Head>
-        <title>Sign Up Coach Student</title>
-        <meta name="description" content="Sign Up Coach Student" />
+        <title>Sign Up Coach Athlete</title>
+        <meta name="description" content="Sign Up Coach Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

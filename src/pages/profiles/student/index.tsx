@@ -79,8 +79,8 @@ export default function ProfileStudent() {
   return (
     <>
       <Head>
-        <title>Profile Student</title>
-        <meta name="description" content="Profile Student" />
+        <title>Profile Athlete</title>
+        <meta name="description" content="Profile Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

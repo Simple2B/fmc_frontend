@@ -216,7 +216,7 @@ const TopBar: React.FC<ITopBar> = ({
                   onClick={() => router.push('/sign_in/student')}
                   className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
                 >
-                  Student
+                  Athlete
                 </Box>
                 <Button
                   onClick={() => router.push('/sign_up/coach_student')}

@@ -8,7 +8,7 @@ export const getErrorMessage = (
   if (Number(errorNumber) === 403) {
     setError('Invalid credentials');
   } else if (Number(errorNumber) === 409) {
-    setError('Student with such email address already exists');
+    setError('User with such email address already exists');
   } else if (Number(errorNumber) === 401) {
     setError('Unauthorized');
   } else if (Number(errorNumber) === 400) {
