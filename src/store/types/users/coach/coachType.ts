@@ -12,3 +12,13 @@ export interface IResponseCoachData {
   access_token: string;
   token_type: string;
 }
+
+export interface ICoachProfile {
+  uuid: string | null;
+  username: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  profile_picture: string;
+  is_verified: boolean;
+}

@@ -5,8 +5,8 @@ import Box from '@mui/material/Box';
 import Image from 'next/image';
 import * as React from 'react';
 import armIcon from '../../../../../public/arm_icon.png';
-import CardsSessions from './card/CardsSessions';
 import styles from './MyLessons.module.sass';
+import CardsSessions from './card/CardsSessions';
 
 const boxStyle = {
   width: '100%',
@@ -32,6 +32,15 @@ const MyLessons: React.FC<IMyLessons> = () => {
       price: 'Price $64',
       location: 'DeWitt Clinton Park, W 54th St, New York, NY',
       clothes: 'Bring a tennis racket and wear tennis shoes.',
+      coach: {
+        uuid: 'random-uuid-2',
+        username: 'Coach 1',
+        email: 'coach@gmail.com',
+        first_name: '',
+        last_name: '',
+        profile_picture: '',
+        is_verified: true,
+      },
     },
     {
       picture: '../../../../../example/example_picture_avatar.png',
@@ -41,6 +50,15 @@ const MyLessons: React.FC<IMyLessons> = () => {
       price: 'Price $64',
       location: 'DeWitt Clinton Park, W 54th St, New York, NY',
       clothes: 'Bring a tennis racket and wear tennis shoes.',
+      coach: {
+        uuid: 'random-uuid-2',
+        username: 'Coach 1',
+        email: 'coach@gmail.com',
+        first_name: '',
+        last_name: '',
+        profile_picture: '',
+        is_verified: true,
+      },
     },
   ];
 
@@ -53,6 +71,15 @@ const MyLessons: React.FC<IMyLessons> = () => {
       price: 'Price $64',
       location: 'DeWitt Clinton Park, W 54th St, New York, NY',
       clothes: 'Bring a tennis racket and wear tennis shoes.',
+      coach: {
+        uuid: 'random-uuid-2',
+        username: 'Coach 1',
+        email: 'coach@gmail.com',
+        first_name: '',
+        last_name: '',
+        profile_picture: '',
+        is_verified: true,
+      },
     },
   ];
 

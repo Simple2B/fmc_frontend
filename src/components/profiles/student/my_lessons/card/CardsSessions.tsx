@@ -1,3 +1,4 @@
+import { ICoachProfile } from '@/store/types/users/coach/coachType';
 import {
   AccessTime,
   EventAvailable,
@@ -14,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 interface ISession {
@@ -24,6 +26,7 @@ interface ISession {
   price: string;
   location: string;
   clothes: string;
+  coach: ICoachProfile;
 }
 
 export interface ICardsSessions {
@@ -32,8 +35,10 @@ export interface ICardsSessions {
 }
 
 const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
-  // const router = useRouter();
-
+  const router = useRouter();
+  const handleSendMessage = (item: ISession) => {
+    router.push('/profiles/student?messages');
+  };
   return (
     <>
       {sessions.map((item, index) => {
@@ -202,6 +207,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                       color: '#000',
                       fontWeight: '600',
                     }}
+                    onClick={() => handleSendMessage(item)}
                   >
                     Message
                   </Button>
