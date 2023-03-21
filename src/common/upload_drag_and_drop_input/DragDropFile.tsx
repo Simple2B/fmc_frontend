@@ -9,7 +9,7 @@ export interface IDragDropFile {
   setPreviewUrl: React.Dispatch<React.SetStateAction<string>>;
   fileName: string | null;
   setFileName: React.Dispatch<React.SetStateAction<string | null>>;
-  setFile: React.Dispatch<React.SetStateAction<any[] | null>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 const DragDropFile: React.FC<IDragDropFile> = ({
@@ -103,6 +103,7 @@ const DragDropFile: React.FC<IDragDropFile> = ({
           ref={inputRef}
           type="file"
           id="inputFileUpload"
+          accept="image/*"
           className={styles.inputFileUpload}
           multiple={true}
           onChange={(e) => {

@@ -241,7 +241,7 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            error={error}
+            message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>

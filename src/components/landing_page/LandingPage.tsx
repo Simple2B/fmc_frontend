@@ -316,7 +316,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            error={error}
+            message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>

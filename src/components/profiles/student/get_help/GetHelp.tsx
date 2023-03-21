@@ -167,7 +167,7 @@ const GetHelp: React.FC<IGetHelp> = () => {
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            error={errorQuestion}
+            message={errorQuestion}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>

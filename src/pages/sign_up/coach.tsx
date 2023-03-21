@@ -113,7 +113,7 @@ export default function SignUpCoach() {
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           >
             <MessageBox
-              error={error}
+              message={error}
               handleClick={() => setModalIsOpen(!modalIsOpen)}
             />
           </CustomModel>

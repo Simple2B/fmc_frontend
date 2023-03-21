@@ -15,7 +15,7 @@ const Settings: React.FC<ISettings> = ({ userType }) => {
     <Box className={styles.wrapper}>
       <Box className={styles.container}>
         <Box className={styles.personalInfoContainer}>
-          <PersonalInfo />
+          <PersonalInfo userType={userType} />
         </Box>
         <Box className={styles.changePasswordContainer}>
           <ChangePassword userType={userType} />
