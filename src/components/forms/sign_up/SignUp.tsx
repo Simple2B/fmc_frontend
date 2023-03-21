@@ -181,7 +181,7 @@ const SignUp: React.FC<ISignUp> = ({
               handleClick={() => setModalIsOpen(!modalIsOpen)}
             >
               <MessageBox
-                error={error}
+                message={error}
                 handleClick={() => setModalIsOpen(!modalIsOpen)}
               />
             </CustomModel>
