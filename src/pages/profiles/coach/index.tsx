@@ -65,7 +65,7 @@ export default function ProfileCoach() {
     ['reviews']: <Reviews />,
     ['packages']: <Packages />,
     ['message']: <Messages />,
-    ['settings']: <Settings />,
+    ['settings']: <Settings userType={UserType.coach} />,
     ['get_help']: <GetHelp />,
   };
 

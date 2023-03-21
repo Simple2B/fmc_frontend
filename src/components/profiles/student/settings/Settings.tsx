@@ -9,8 +9,6 @@ export interface ISettings {
 }
 
 const Settings: React.FC<ISettings> = ({ userType }) => {
-  // const router = useRouter();
-
   return (
     <Box className={styles.wrapper}>
       <Box className={styles.container}>
