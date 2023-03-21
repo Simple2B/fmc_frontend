@@ -34,6 +34,7 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
     React.useState<string>('');
   const [isErrorLastName, setIsErrorLastName] = React.useState<boolean>(false);
 
+  const [file, setFile] = useState<any[] | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
 
@@ -52,6 +53,8 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
       setErrorNameMessage('Name cannot be empty');
     }
   };
+
+  const savePersonalInfo = () => {};
 
   return (
     <Box className={styles.wrapperPersonalInfo}>
@@ -112,8 +115,11 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
             setPreviewUrl={setPreviewUrl}
             fileName={fileName}
             setFileName={setFileName}
+            setFile={setFile}
           />
-          <Box className={styles.btnSave}>Save</Box>
+          <Box className={styles.btnSave} onClick={savePersonalInfo}>
+            Save
+          </Box>
         </Box>
       </Box>
     </Box>

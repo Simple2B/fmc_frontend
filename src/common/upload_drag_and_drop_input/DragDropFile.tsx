@@ -9,19 +9,19 @@ export interface IDragDropFile {
   setPreviewUrl: React.Dispatch<React.SetStateAction<string>>;
   fileName: string | null;
   setFileName: React.Dispatch<React.SetStateAction<string | null>>;
+  setFile: React.Dispatch<React.SetStateAction<any[] | null>>;
 }
 
 const DragDropFile: React.FC<IDragDropFile> = ({
   setPreviewUrl,
   fileName,
   setFileName,
+  setFile,
 }) => {
   // ref
   const inputRef = useRef<any>(null);
   // drag state
   const [dragActive, setDragActive] = useState<boolean>(false);
-  const [file, setFile] = useState<any[] | null>(null);
-  console.log('[DragDropFile] file ', file);
 
   // handle drag events
   const handleDrag = function (e: {
