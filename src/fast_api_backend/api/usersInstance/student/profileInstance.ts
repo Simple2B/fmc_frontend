@@ -1,4 +1,4 @@
-import { instanceFormData } from '../../_axiosInstance';
+import { instance, instanceFormData } from '../../_axiosInstance';
 
 const formatRequestBody = (
   first_name: string,
@@ -35,6 +35,29 @@ export const studentProfileApi = {
         `[POST: /student/personal-info] -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  changePasswordStudent: async (data: {
+    new_password: string;
+    new_password_confirmation: string;
+    old_password: string;
+  }): Promise<string> => {
+    try {
+      const response = await instance().post(
+        '/profile/student/change-password',
+        data
+      );
+      const res = response.data;
+      console.log(
+        `[POST: /change-password] create student -> res data  ${res}`
+      );
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: /change-password] create student -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

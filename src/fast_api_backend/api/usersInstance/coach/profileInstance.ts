@@ -1,4 +1,4 @@
-import { instanceFormData } from '../../_axiosInstance';
+import { instance, instanceFormData } from '../../_axiosInstance';
 
 const formatRequestBody = (
   first_name: string,
@@ -35,6 +35,27 @@ export const coachProfileApi = {
         `[POST: /coach/personal-info] -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  changePasswordCoach: async (data: {
+    new_password: string;
+    new_password_confirmation: string;
+    old_password: string;
+  }): Promise<string> => {
+    try {
+      const response = await instance().post(
+        '/profile/coach/change-password',
+        data
+      );
+      const res = response.data;
+      console.log(`[POST: /change-password] create coach -> res data  ${res}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: /change-password] create coach -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

@@ -8,6 +8,10 @@ export const getErrorMessage = (
   if (Number(errorNumber) === 403) {
     setError('Invalid credentials');
   } else if (Number(errorNumber) === 409) {
+    if (type && type === 'changePass') {
+      setError('Error while changing password');
+      return;
+    }
     setError('User with such email address already exists');
   } else if (Number(errorNumber) === 401) {
     setError('Unauthorized');
@@ -17,6 +21,11 @@ export const getErrorMessage = (
   } else if (Number(errorNumber) === 400) {
     if (type && type === 'resetPass') {
       setError('Bad token');
+      return;
+    }
+    if (type && type === 'changePass') {
+      setError('Old password is incorrect');
+      return;
     }
     setError('You haven`t been signed up before');
   } else if (Number(errorNumber) === 500) {

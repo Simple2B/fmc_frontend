@@ -1,8 +1,16 @@
 /* eslint-disable no-unused-vars */
 import Input from '@/common/input/Input';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { studentProfileApi } from '@/fast_api_backend/api/usersInstance/student/profileInstance';
+import { checkedPassword } from '@/helper/checked_password';
+import { getErrorMessage } from '@/helper/error_function';
+import { UserType } from '@/store/types/user';
 import Box from '@mui/material/Box';
-import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ChangePassword.module.sass';
 
 const nameInputStyles = {
@@ -23,36 +31,45 @@ export interface IChangePassword {
 }
 
 const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
-  const router = useRouter();
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [currentPassword, setCurrentPassword] = React.useState<string>('');
+  const [currentPassword, setCurrentPassword] = useState<string>('');
   const [errorCurrentPasswordMessage, setErrorCurrentPasswordMessage] =
-    React.useState<string>('');
+    useState<string>('');
   const [isErrorCurrentPassword, setIsErrorCurrentPassword] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
-  const [currentPassword2, setCurrentPassword2] = React.useState<string>('');
-  const [errorCurrentPasswordMessage2, setErrorCurrentPasswordMessage2] =
-    React.useState<string>('');
-  const [isErrorCurrentPassword2, setIsErrorCurrentPassword2] =
-    React.useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
+  const [errorPasswordMessage, setErrorPasswordMessage] = useState<string>('');
+  const [isErrorPassword, setIsErrorPassword] = useState<boolean>(false);
 
-  const [verifyPassword, setVerifyPassword] = React.useState<string>('');
+  const [verifyPassword, setVerifyPassword] = useState<string>('');
   const [errorVerifyPasswordMessage, setErrorVerifyPasswordMessage] =
-    React.useState<string>('');
+    useState<string>('');
   const [isErrorVerifyPassword, setIsErrorVerifyPassword] =
-    React.useState<boolean>(false);
+    useState<boolean>(false);
 
-  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!modalIsOpen) {
       setTimeout(() => {
         setModalIsOpen(true);
-        // setError(null);
+        setError(null);
+        setSuccess(false);
       }, 1000);
     }
   }, [modalIsOpen]);
+
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+    setCurrentPassword('');
+    setPassword('');
+    setVerifyPassword('');
+  };
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -67,6 +84,60 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
     } else {
       setIsErrorName(true);
       setErrorNameMessage('Field cannot be empty');
+    }
+  };
+
+  const saveInfoForChangePassword = () => {
+    checkedPassword(
+      password,
+      verifyPassword,
+      setIsErrorCurrentPassword,
+      setErrorCurrentPasswordMessage,
+      setIsErrorVerifyPassword,
+      setErrorVerifyPasswordMessage
+    );
+    if (currentPassword !== '' && password === verifyPassword) {
+      const ChangePassword = async () => {
+        const data = {
+          old_password: currentPassword,
+          new_password: password,
+          new_password_confirmation: verifyPassword,
+        };
+        try {
+          if (userType === UserType.student) {
+            setIsLoad(true);
+            const response = await studentProfileApi.changePasswordStudent(
+              data
+            );
+            console.log('[ChangePassword]: student ', response);
+            setIsLoad(false);
+            setSuccess(true);
+          }
+          if (userType === UserType.coach) {
+            setIsLoad(true);
+            const response = await coachProfileApi.changePasswordCoach(data);
+            console.log('[ChangePassword]: coach ', response);
+            setIsLoad(false);
+            setSuccess(true);
+          }
+        } catch (error: any) {
+          if (userType === UserType.coach) {
+            console.log(`POST [ChangePassword] coach error message: ${error}`);
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError, 'changePass');
+          }
+          if (userType === UserType.student) {
+            console.log(
+              `POST [ChangePassword] student error message ===> : ${error}`
+            );
+            setIsLoad(false);
+            setSuccess(false);
+            getErrorMessage(error, setError, 'changePass');
+          }
+        }
+      };
+      ChangePassword();
     }
   };
 
@@ -95,18 +166,18 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
         </Box>
         <Box className={styles.inputBox}>
           <Input
-            helperText={errorCurrentPasswordMessage2}
-            isError={isErrorCurrentPassword2}
-            name={'currentPassword2'}
-            label={'Current password'}
-            value={currentPassword2}
+            helperText={errorPasswordMessage}
+            isError={isErrorPassword}
+            name={'password'}
+            label={'New password'}
+            value={password}
             sx={nameInputStyles}
             onChange={(e) =>
               handleOnChange(
                 e,
-                setCurrentPassword2,
-                setIsErrorCurrentPassword2,
-                setErrorCurrentPasswordMessage2
+                setPassword,
+                setIsErrorPassword,
+                setErrorPasswordMessage
               )
             }
             type="text"
@@ -118,7 +189,7 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
             helperText={errorVerifyPasswordMessage}
             isError={isErrorVerifyPassword}
             name={'verifyPassword'}
-            label={'Verify password'}
+            label={'Confirm password'}
             value={verifyPassword}
             sx={nameInputStyles}
             onChange={(e) =>
@@ -134,26 +205,36 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
         </Box>
       </Box>
       <Box className={styles.btn}>
-        {/* <Button
-          onClick={submitRegistration}
-          sx={{
-            mt: 3,
-            mb: 2,
-            borderRadius: '8px',
-            width: '100%',
-            height: '56px',
-          }}
-          disabled={
-            (password === '' && passwordConfirm === '') ||
-            password !== passwordConfirm
-              ? true
-              : false
-          }
-        >
+        <Box className={styles.btnSave} onClick={saveInfoForChangePassword}>
           Save
-        </Button> */}
-        <Box className={styles.btnSave}>Save</Box>
+        </Box>
       </Box>
+
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            message={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+
+      {isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Change password successfully'}
+            handleClick={closeSuccessMessage}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };
