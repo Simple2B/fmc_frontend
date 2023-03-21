@@ -9,6 +9,7 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { checkedPassword } from '@/helper/checked_password';
 import { getErrorMessage } from '@/helper/error_function';
 import { UserType } from '@/store/types/user';
 import Typography from '@mui/material/Typography';
@@ -47,39 +48,15 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
     setPasswordState(e.target.value);
   };
 
-  const checkedPassword = () => {
-    if (password === '') {
-      setIsErrorPassword(true);
-      setErrorPasswordMessage('Password cannot be empty');
-    } else {
-      setIsErrorPassword(false);
-      setErrorPasswordMessage('');
-    }
-
-    if (passwordConfirm === '') {
-      setIsErrorPasswordConfirm(true);
-      setErrorPasswordConfirmMessage('Password cannot be empty');
-    } else {
-      setIsErrorPasswordConfirm(false);
-      setErrorPasswordConfirmMessage('');
-    }
-
-    if (password !== passwordConfirm) {
-      setIsErrorPasswordConfirm(true);
-      setErrorPasswordConfirmMessage("Passwords don't match");
-      // setIsLoad(false);
-      // setSuccess(false);
-      // setError(null);
-    } else {
-      setIsErrorPasswordConfirm(false);
-      setErrorPasswordConfirmMessage('');
-      // setIsLoad(false);
-      // setError(null);
-    }
-  };
-
   useEffect(() => {
-    checkedPassword();
+    checkedPassword(
+      password,
+      passwordConfirm,
+      setIsErrorPassword,
+      setErrorPasswordMessage,
+      setIsErrorPasswordConfirm,
+      setErrorPasswordConfirmMessage
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [password, passwordConfirm]);
 
@@ -99,7 +76,14 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
     setIsErrorPasswordConfirm(false);
     setErrorPasswordConfirmMessage('');
 
-    checkedPassword();
+    checkedPassword(
+      password,
+      passwordConfirm,
+      setIsErrorPassword,
+      setErrorPasswordMessage,
+      setIsErrorPasswordConfirm,
+      setErrorPasswordConfirmMessage
+    );
 
     if (password === passwordConfirm) {
       const verification_token = router.asPath.split('?token=')[1];
