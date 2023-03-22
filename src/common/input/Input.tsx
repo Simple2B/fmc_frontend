@@ -2,8 +2,8 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
 export interface IInput {
-  isError: boolean;
-  helperText: string;
+  isError?: boolean;
+  helperText?: string;
   name: string;
   label: string;
   value: string;
