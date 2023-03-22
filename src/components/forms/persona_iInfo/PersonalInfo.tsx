@@ -1,7 +1,14 @@
 /* eslint-disable no-unused-vars */
 import Input from '@/common/input/Input';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
 import DragDropFile from '@/common/upload_drag_and_drop_input/DragDropFile';
-import { Avatar, Typography } from '@mui/material';
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { studentProfileApi } from '@/fast_api_backend/api/usersInstance/student/profileInstance';
+import { getErrorMessage } from '@/helper/error_function';
+import { UserType } from '@/store/types/user';
+import { Avatar, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
@@ -20,9 +27,28 @@ const nameInputStyles = {
   },
 };
 
-export interface IPersonalInfo {}
+export interface IPersonalInfo {
+  userType: string;
+}
 
-const PersonalInfo: React.FC<IPersonalInfo> = () => {
+const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
+  const matches600 = useMediaQuery('(max-width:600px)');
+
+  const nameInputStyles = {
+    mt: matches600 ? 1.5 : 4,
+    '& .MuiInputBase-root': {
+      position: 'relative',
+    },
+    '& .MuiFormHelperText-root': {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: '-20px',
+    },
+  };
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
   // const router = useRouter();
   const [name, setFirstName] = React.useState<string>('');
   const [errorNameMessage, setErrorFirstNameMessage] =
@@ -34,6 +60,7 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
     React.useState<string>('');
   const [isErrorLastName, setIsErrorLastName] = React.useState<boolean>(false);
 
+  const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
 
@@ -51,6 +78,93 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
       setIsErrorName(true);
       setErrorNameMessage('Name cannot be empty');
     }
+  };
+
+  const savePersonalInfo = () => {
+    if (name === '') {
+      setIsErrorFirstName(true);
+      setErrorFirstNameMessage('Name cannot be empty');
+    } else {
+      setIsErrorFirstName(false);
+      setErrorFirstNameMessage('');
+    }
+
+    if (name !== '') {
+      const saveData = async (userType: string) => {
+        let fileToSave;
+        if (file) {
+          fileToSave = file;
+        } else {
+          fileToSave = new File(['example'], 'example.txt', {
+            type: 'text/plain',
+          });
+        }
+
+        try {
+          if (userType === UserType.coach) {
+            setIsLoad(true);
+            const response = await coachProfileApi.savePersonalInfoCoach(
+              name,
+              lastName,
+              fileToSave
+            );
+            console.log('POST [/personal_info] coach successfully', response);
+            setIsLoad(false);
+            setSuccess(true);
+          }
+          if (userType === UserType.student) {
+            setIsLoad(true);
+            const response = await studentProfileApi.savePersonalInfoStudent(
+              name,
+              lastName,
+              fileToSave
+            );
+            setIsLoad(false);
+            setSuccess(true);
+            console.log('POST [/personal_info] student successfully', response);
+          }
+        } catch (error: any) {
+          setIsLoad(false);
+
+          if (userType === UserType.coach) {
+            console.log(
+              `POST [/personal_info] coach error message: ${error.message}`
+            );
+            setSuccess(false);
+            getErrorMessage(error.message, setError);
+          }
+          if (userType === UserType.student) {
+            console.log(
+              `POST [/personal_info] student error message: ${error}`
+            );
+            setSuccess(false);
+            getErrorMessage(error.message, setError);
+          }
+          console.log(`POST [/personal_info] error message: ${error.message}`);
+        }
+      };
+      saveData(userType);
+    }
+  };
+
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+    setFirstName('');
+    setLastName('');
+    setFileName(null);
+    setPreviewUrl('');
   };
 
   return (
@@ -112,10 +226,38 @@ const PersonalInfo: React.FC<IPersonalInfo> = () => {
             setPreviewUrl={setPreviewUrl}
             fileName={fileName}
             setFileName={setFileName}
+            setFile={setFile}
           />
-          <Box className={styles.btnSave}>Save</Box>
+          <Box className={styles.btnSave} onClick={savePersonalInfo}>
+            Save
+          </Box>
         </Box>
       </Box>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            message={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+
+      {isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Personal information saved successfully'}
+            handleClick={closeSuccessMessage}
+          />
+        </CustomModel>
+      )}
     </Box>
   );
 };

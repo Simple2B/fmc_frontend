@@ -1,11 +1,12 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
+import GetHelp from '@/components/profiles/get_help/GetHelp';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
-import GetHelp from '@/components/profiles/student/get_help/GetHelp';
 import Messages from '@/components/profiles/student/messages/Messages';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { UserType } from '@/store/types/user';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -51,6 +52,14 @@ export default function ProfileStudent() {
   // const matches = useMediaQuery('(min-width:900px)');
   const matches414 = useMediaQuery('(max-width:414px)');
   const router = useRouter();
+  const [profile, setProfile] = useState<IStudentProfile>({
+    username: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    profile_picture: '',
+    is_verified: false,
+  });
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
@@ -58,7 +67,7 @@ export default function ProfileStudent() {
     ['favorite_coaches']: <FavoriteCoaches />,
     ['messages']: <Messages />,
     ['settings']: <Settings userType={UserType.student} />,
-    ['get_help']: <GetHelp />,
+    ['get_help']: <GetHelp userType={UserType.student} email={profile.email} />,
   };
 
   useEffect(() => {
@@ -69,7 +78,7 @@ export default function ProfileStudent() {
     const redirectUrl = process.env.BASE_URL;
     getCurrentUser(
       UserType.student,
-      undefined,
+      setProfile,
       undefined,
       undefined,
       undefined,

@@ -1,7 +1,7 @@
 @import "../../styles/variables"
 @import "../../styles/mixins"
 
-.formFileUpload
+.formFileUpload, .formFilesUpload
     display: flex
     justify-content: center
     align-items: center
@@ -13,6 +13,26 @@
     border-radius: 8px
     text-align: center
     position: relative
+
+.formFilesUpload, .formFiles
+    width: 100%
+    max-width: 100%
+    max-height: 100%
+    flex-direction: column
+    .dropzone
+        width: 100%
+        .inputZone
+            width: 100%
+
+.formFiles
+    margin-top: 25px
+    margin-left: 15px
+    display: flex
+    justify-content: center
+    align-items: flex-start
+    text-align: center
+    position: relative
+
 
 
 .inputFileUpload
@@ -63,7 +83,7 @@
     left: 0px
 
 
-@media (max-width: 414px)
+@media (max-width: 600px)
     .formFileUpload
         width: 320px
         height: 100px

@@ -137,7 +137,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            error={error}
+            message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>

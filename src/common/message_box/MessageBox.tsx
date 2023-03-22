@@ -4,11 +4,11 @@ import * as React from 'react';
 
 // eslint-disable-next-line no-unused-vars
 export interface IMessageBox {
-  error: string;
+  message: string;
   handleClick?: React.MouseEventHandler<HTMLSpanElement> | undefined;
 }
 
-const MessageBox: React.FC<IMessageBox> = ({ error, handleClick }) => {
+const MessageBox: React.FC<IMessageBox> = ({ message, handleClick }) => {
   return (
     <Box
       sx={{
@@ -43,7 +43,7 @@ const MessageBox: React.FC<IMessageBox> = ({ error, handleClick }) => {
         component="h2"
         sx={{ color: '#f8dcdb', textAlign: 'center' }}
       >
-        {`${error}`}
+        {`${message}`}
       </Typography>
     </Box>
   );

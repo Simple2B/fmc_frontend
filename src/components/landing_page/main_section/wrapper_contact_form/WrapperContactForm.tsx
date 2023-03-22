@@ -130,7 +130,7 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            error={error}
+            message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>

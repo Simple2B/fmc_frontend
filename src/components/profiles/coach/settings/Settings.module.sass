@@ -2,3 +2,49 @@
 @import "../../../../styles/mixins"
 
 .wrapper
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 0 auto
+    .container
+        width: 100%
+        margin-top: 28px
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        flex-wrap: wrap
+        .personalInfoContainer, .changePasswordContainer, .changeYourProfileContainer
+            display: flex
+            justify-content: center
+            align-items: center
+            max-width: 998.27px
+            width: 100%
+            padding: 23px 60px
+            box-shadow: 0px 0px 15px rgba(199, 199, 199, 0.25)
+            border-radius: 8px
+        .changePasswordContainer, .changeYourProfileContainer
+            margin-top: 46px
+
+@media (max-width: 1112px)
+    .wrapper
+        .container
+            margin-top: 10px
+            width: 100%
+            .personalInfoContainer, .changePasswordContainer, .changeYourProfileContainer
+                width: 760px
+            .changePasswordContainer, .changeYourProfileContainer
+                margin-top: 26px
+            
+
+@media (max-width: 600px)
+    .wrapper
+        width: 320px
+        .container
+            .personalInfoContainer, .changePasswordContainer, .changeYourProfileContainer
+                width: 320px
+            .changePasswordContainer, .changeYourProfileContainer
+                margin-top: 6px
+            .changeYourProfileContainer
+                padding: 0

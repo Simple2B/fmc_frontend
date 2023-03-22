@@ -34,3 +34,18 @@ export const applicationInstance = (): AxiosInstance =>
       'Access-Control-Allow-Origin': '*',
     },
   });
+
+export const instanceFormData = (): AxiosInstance => {
+  const token = localStorage.getItem('token') ?? '';
+  return axios.create({
+    baseURL: API_URI,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'Content-Type, Authorization, X-Requested-With',
+    },
+  });
+};

@@ -1,0 +1,149 @@
+@import "../../../styles/variables"
+@import "../../../styles/mixins"
+
+.wrapperPersonalInfo
+    position: relative
+    max-width: 900px
+    .titleSection
+        width: 100%
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+    .namesSection
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        flex-wrap: wrap
+        .inputBox:first-child
+            margin-right: 10px
+        .inputBox
+            width: 421px
+            padding-bottom: 20px
+    .aboutSection
+        margin-top: 17px
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center       
+    .btnSave
+        display: flex
+        justify-content: center
+        align-items: center
+        width: 100%
+        cursor: pointer
+        transition: all 0.5s ease-out 
+        color: #fff
+        background-color: #1876D1
+        border-radius: 8px
+        margin-top: 25px
+        padding-top: 11px
+        padding-bottom: 12px
+        &:hover
+            transition: all 0.5s ease-out 
+            background-color: #222CDF
+    .certificatesSection, .sessionsSection, .locationsSection
+        margin-top: 17px
+        width: 100%
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+        .certificatesTitle, .sessionsTitle, .locationsTitle
+            margin-bottom: 14px
+            .title, .subtitle 
+                font-family: $font-inter
+                font-weight: 400
+            .title
+                font-size: 14px
+                color: #222222
+            .subtitle 
+                font-size: 12px
+                color: #777777
+        .checkBoxesWrapper
+            width: 100%
+            display: flex
+            flex-direction: column
+            justify-content: flex-start
+            align-items: flex-start
+            .formGroup
+                width: 95%
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: flex-start
+                .formControlLabel
+                    width: 100%
+                    font-family: $font-inter
+                    font-weight: 400
+                    font-size: 14px
+                    color: #222222
+                .checkbox
+                    width: 30px 
+                    height: 30px 
+                    margin-left: 1.5%
+        .locationInputsWrapper
+            width: 100%
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            .inputsBox  
+                width: 100%
+                display: flex
+                justify-content: space-between
+                align-items: center   
+        .uploadInputWrapper
+            width: 100%
+        .locationBtn
+            cursor: pointer
+            font-family: $font-inter
+            font-weight: 600
+            font-size: 14px
+            color: #222222
+                
+
+@media (max-width: 1112px)  
+    .wrapperPersonalInfo
+        .titleSection
+        .namesSection
+
+
+
+
+@media (max-width: 600px)
+    .wrapperPersonalInfo
+        width: 310px
+        .titleSection
+            width: 100%
+        .namesSection
+            width: 100%
+            .inputBox:first-child
+                margin-right: 0
+            .inputBox
+                width: 100%
+                padding: 0
+        .aboutSection
+            margin-top: 10px
+            display: flex
+            justify-content: center
+            align-items: center
+        .certificatesSection, .sessionsSection, .locationsSection
+            .certificatesTitle, .sessionsTitle, .locationsTitle
+                margin-bottom: 10px
+                .title, .subtitle 
+            .checkBoxesWrapper
+                flex-wrap: wrap
+                .formGroup
+                    width: 100%
+                    flex-wrap: wrap
+                    .formControlLabel
+                    .checkbox
+                        width: 30px 
+                        height: 30px 
+                        margin-left: 1.5%
+            .locationInputsWrapper
+                flex-wrap: wrap
+                .inputsBox    
+                    flex-wrap: wrap 
