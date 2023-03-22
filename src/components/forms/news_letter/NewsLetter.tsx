@@ -24,7 +24,11 @@ const nameInputStyles = {
   },
 };
 
-export const NewsLetter = () => {
+interface INewsLetter {
+  setIsOpen: any;
+}
+
+export const NewsLetter: React.FC<INewsLetter> = ({ setIsOpen }) => {
   // const [isLoad, setIsLoad] = useState<boolean>(false);
   // const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -65,12 +69,18 @@ export const NewsLetter = () => {
   return (
     <CustomModel
       isOpen={modalIsOpen}
-      handleClick={() => setModalIsOpen(!modalIsOpen)}
+      handleClick={() => {
+        setModalIsOpen(!modalIsOpen);
+        setIsOpen(false);
+      }}
     >
       <Box className={styles.modalMessageWrapper}>
         <Box
           className={styles.crossWrapper}
-          onClick={() => setModalIsOpen(!modalIsOpen)}
+          onClick={() => {
+            setModalIsOpen(!modalIsOpen);
+            setIsOpen(false);
+          }}
         >
           <Close sx={{ width: '18px', height: '18px' }} />
         </Box>
