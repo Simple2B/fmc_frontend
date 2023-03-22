@@ -4,6 +4,7 @@ import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
+import { UserType } from '@/store/types/user';
 import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
@@ -129,7 +130,6 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
     }
 
     if (sport !== '') {
-      setIsLoad(true);
       console.log('[Coach] Your profile data', {
         sport: sport,
         files: files,
@@ -138,49 +138,26 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
         sessionForChildren: checkedChildren,
         location: locationValuesInputs,
       });
-      setIsLoad(false);
       const saveData = async (userType: string) => {
-        // try {
-        //   if (userType === UserType.coach) {
-        //     setIsLoad(true);
-        //     const response = await coachProfileApi.savePersonalInfoCoach(
-        //       name,
-        //       lastName,
-        //       fileToSave
-        //     );
-        //     console.log('POST [/personal_info] coach successfully', response);
-        //     setIsLoad(false);
-        //     setSuccess(true);
-        //   }
-        //   if (userType === UserType.student) {
-        //     setIsLoad(true);
-        //     const response = await studentProfileApi.savePersonalInfoStudent(
-        //       name,
-        //       lastName,
-        //       fileToSave
-        //     );
-        //     setIsLoad(false);
-        //     setSuccess(true);
-        //     console.log('POST [/personal_info] student successfully', response);
-        //   }
-        // } catch (error: any) {
-        //   setIsLoad(false);
-        //   if (userType === UserType.coach) {
-        //     console.log(
-        //       `POST [/personal_info] coach error message: ${error.message}`
-        //     );
-        //     setSuccess(false);
-        //     getErrorMessage(error.message, setError);
-        //   }
-        //   if (userType === UserType.student) {
-        //     console.log(
-        //       `POST [/personal_info] student error message: ${error}`
-        //     );
-        //     setSuccess(false);
-        //     getErrorMessage(error.message, setError);
-        //   }
-        //   console.log(`POST [/personal_info] error message: ${error.message}`);
-        // }
+        try {
+          // TODO: send data to backend
+          if (userType === UserType.coach) {
+            setIsLoad(true);
+            // const response = await coachProfileApi.savePersonalInfoCoach(
+            //   name,
+            //   lastName,
+            //   fileToSave
+            // );
+            // console.log('POST [/personal_info] coach successfully', response);
+            // setIsLoad(false);
+            // setSuccess(true);
+          }
+        } catch (error: any) {
+          setIsLoad(false);
+          console.log(`POST [your profile] error message: ${error.message}`);
+          setSuccess(false);
+          // getErrorMessage(error.message, setError);
+        }
       };
       saveData(userType);
     }

@@ -1,0 +1,132 @@
+@import "../../../styles/variables"
+@import "../../../styles/mixins"
+
+.modalMessageWrapper
+    position: relative
+    margin: 0 auto
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border: 1px solid #fff
+    border-radius: 20px
+    z-index: 100
+    .imageWrapper
+        border-bottom-left-radius: 20px
+        border-top-left-radius: 20px
+        width: 300px
+        height: 272px
+        .image
+            width: 100%
+            height: 100%
+            border-bottom-left-radius: 20px
+            border-top-left-radius: 20px
+    .crossWrapper
+        color: #000
+        position: absolute
+        top: 20px
+        right: 20px
+        font-family: sans-serif
+        cursor: pointer
+    .modalTextWrapper
+        background-color: #fff
+        padding: 59px 29px
+        width: 527px
+        border-bottom-right-radius: 20px 
+        border-top-right-radius: 20px 
+        .title, .subtitle
+            font-family: $font-inter
+        .title
+            font-size: 24px
+            font-weight: 500
+            padding-bottom: 12px
+        .subtitle
+            font-size: 16px
+            font-weight: 400
+            line-height: 19.36px
+            padding-bottom: 24px
+        .inputsWrapper
+            display: flex
+            justify-content: center
+            align-items: center
+            .btnSave
+                cursor: pointer
+                width: 187px
+                height: 54px
+                font-family: $font-inter
+                font-size: 16px
+                font-weight: 600
+                color: #fff
+                display: flex
+                justify-content: center
+                align-items: center
+                background-color: #1876D1
+                transition: 0.3s linear all
+                border-bottom-right-radius: 8px 
+                border-top-right-radius: 8px 
+                &:hover
+                    transition: 0.3s linear all
+                    background-color: #222CDF
+
+
+@media (max-width: 694px)
+    .modalMessageWrapper
+        width: 315px
+        flex-wrap: wrap
+        justify-content: center
+        border: none
+        .imageWrapper
+            width: 100%
+            border: none
+            .image
+                width: 100%
+                height: 100%
+                border-bottom-left-radius: 0px
+                border-top-left-radius: 0px
+        .crossWrapper
+            color: #fff
+        .modalTextWrapper
+            background-color: #fff
+            padding: 30px 15px
+            width: 100%
+            border-bottom-right-radius: 0px 
+            border-top-right-radius: 0px 
+            .title, .subtitle
+                font-family: $font-inter
+            .title
+                font-size: 24px
+                font-weight: 500
+                padding-bottom: 12px
+            .subtitle
+                font-size: 16px
+                font-weight: 400
+                line-height: 19.36px
+                padding-bottom: 24px
+            .inputsWrapper
+                flex-wrap: wrap
+                .btnSave
+                    width: 100%
+                    margin-top: 10px
+                    border-radius: 8px
+                    &:hover
+                        transition: 0.3s linear all
+                        background-color: #222CDF
+
+@media (max-width: 320px)
+    .modalMessageWrapper
+        width: 300px
+        .imageWrapper
+            .image
+        .crossWrapper
+        .modalTextWrapper
+            padding: 20px 10px
+            .title, .subtitle
+                font-family: $font-inter
+            .title
+                font-size: 19px
+                font-weight: 500
+                padding-bottom: 12px
+            .subtitle
+                font-size: 13px
+                font-weight: 300
+                line-height: 19.36px
+                padding-bottom: 24px
