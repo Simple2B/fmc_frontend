@@ -53,7 +53,6 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   };
 
   const [profile, setProfile] = React.useState<IStudentProfile>({
-    uuid: '',
     username: '',
     email: '',
     first_name: '',
