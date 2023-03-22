@@ -15,7 +15,7 @@ export interface IResponseStudentData {
 
 // profile
 export interface IStudentProfile {
-  uuid: string;
+  uuid: string | null;
   username: string;
   email: string;
   first_name: string;
