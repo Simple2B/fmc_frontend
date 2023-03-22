@@ -61,6 +61,8 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
   const [checkedAdults, setCheckedAdults] = useState<boolean>(true);
   const [checkedChildren, setCheckedChildren] = useState<boolean>(false);
 
+  const [about, setAbout] = useState<string>('');
+
   // Location
   const [locationValuesInputs, setLocationValuesInputs] = useState<ILocation[]>(
     [
@@ -99,6 +101,24 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
     }
   };
 
+  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+    setSport('');
+    setSkills('');
+  };
+
   const saveProfileInfo = () => {
     if (sport === '') {
       setIsErrorSport(true);
@@ -109,6 +129,16 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
     }
 
     if (sport !== '') {
+      setIsLoad(true);
+      console.log('[Coach] Your profile data', {
+        sport: sport,
+        files: files,
+        about: about,
+        sessionForAdults: checkedAdults,
+        sessionForChildren: checkedChildren,
+        location: locationValuesInputs,
+      });
+      setIsLoad(false);
       const saveData = async (userType: string) => {
         // try {
         //   if (userType === UserType.coach) {
@@ -156,24 +186,6 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
     }
   };
 
-  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
-
-  React.useEffect(() => {
-    if (!modalIsOpen) {
-      setTimeout(() => {
-        setModalIsOpen(true);
-        setError(null);
-      }, 1000);
-    }
-  }, [modalIsOpen, error]);
-
-  const closeSuccessMessage = () => {
-    setModalIsOpen(!modalIsOpen);
-    setSuccess(false);
-    setSport('');
-    setSkills('');
-  };
-
   return (
     <Box className={styles.wrapperPersonalInfo}>
       <Box className={styles.titleSection}>
@@ -207,15 +219,20 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
             sx={nameInputStyles}
             onChange={(e) => setSkills(e.target.value)}
             type="text"
+            // TODO: logic for this input must be add (now it is disabled)
+            disabled={true}
           />
         </Box>
       </Box>
       <Box className={styles.aboutSection}>
         <Textarea
           placeholder="About"
-          defaultValue="About"
           minRows={6}
           sx={{ width: '100%' }}
+          value={about}
+          onChange={(e) => {
+            setAbout(e.target.value);
+          }}
         />
       </Box>
       <Box className={styles.certificatesSection}>
