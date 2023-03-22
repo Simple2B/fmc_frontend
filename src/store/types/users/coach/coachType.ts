@@ -14,11 +14,12 @@ export interface IResponseCoachData {
 }
 
 export interface ICoachProfile {
-  uuid: string | null;
+  uuid: string;
   username: string;
   email: string;
   first_name: string;
   last_name: string;
   profile_picture: string;
   is_verified: boolean;
+  about: string | null;
 }

@@ -1,67 +1,38 @@
-import { Box, Button } from '@mui/material';
-import ChatMessageBox from './ChatMessageBox';
-import ChatSendMessageArea from './ChatSendMessageArea';
+import { ICoachProfile } from '@/store/types/users/coach/coachType';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { Box } from '@mui/material';
+import { ChatHeader } from './ChatHeader';
+import { ChatMessageBox } from './ChatMessageBox';
+import { ChatSendMessageArea } from './ChatSendMessageArea';
 
-export default function ChatRight() {
+interface IChatMessagesProps {
+  selectedContact: ICoachProfile | IStudentProfile | null;
+}
+
+export function ChatMessages({ selectedContact }: IChatMessagesProps) {
   return (
     <>
-      <Box
-        sx={{
-          width: '100%',
-          height: 900,
-          overflow: 'hidden',
-          overflowY: 'scroll',
-          border: '0.5px solid #DBDBDB',
-        }}
-      >
+      {selectedContact ? (
         <Box
           sx={{
-            display: 'flex',
             width: '100%',
-            height: '7.5%',
-            backgroundColor: '#F2F2F2',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            alignItems: 'center',
-            position: 'sticky',
+            height: 900,
+            overflow: 'hidden',
+            overflowY: 'scroll',
+            border: '0.5px solid #DBDBDB',
           }}
         >
-          <Box
-            sx={{
-              fontFamily: 'Inter',
-              fontSize: '1rem',
-              lineHeight: '1.25rem',
-              fontWeight: 'bold',
-              marginLeft: '5%',
-            }}
-          >
-            John Lee
-          </Box>
-
-          <Button
-            sx={{
-              fontFamily: 'Inter',
-              fontSize: '0.75rem',
-              lineHeight: '1.25rem',
-              fontWeight: 'bold',
-              marginRight: '5%',
-              padding: '1%',
-              color: 'white',
-              backgroundColor: '#222CDF',
-              borderRadius: '10px',
-              '&:hover': {
-                color: 'white',
-                backgroundColor: '#636ae9',
-                tranparent: '0.5',
-              },
-            }}
-          >
-            View Profile
-          </Button>
+          <ChatHeader
+            selectedContactFirstName={selectedContact.first_name}
+            selectedContactLastName={selectedContact.last_name}
+            selectedContactUUID={selectedContact.uuid}
+          />
+          <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
+          <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
         </Box>
-        <ChatMessageBox />
-        <ChatSendMessageArea />
-      </Box>
+      ) : (
+        'Please select contact from list'
+      )}
     </>
   );
 }

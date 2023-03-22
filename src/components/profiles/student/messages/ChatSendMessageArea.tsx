@@ -1,5 +1,16 @@
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { Box, Button, TextField, styled } from '@mui/material';
-export default function ChatSendMessageArea() {
+import { ChangeEventHandler, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+interface ChatSendMessageAreaProps {
+  receiverUUID: string;
+}
+
+export function ChatSendMessageArea({
+  receiverUUID,
+}: ChatSendMessageAreaProps) {
+  const [messageInput, setMessageInput] = useState<string>('');
+  const queryClient = useQueryClient();
   const WhiteBorderTextField = styled(TextField)`
     & label.Mui-focused {
       color: white;
@@ -10,6 +21,25 @@ export default function ChatSendMessageArea() {
       }
     }
   `;
+  const sendMessageMutation = useMutation(
+    async () => {
+      await studentClientApi.studentSendMessageCoach({
+        receiver_id: receiverUUID,
+        text: messageInput,
+      });
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('contactMessageList');
+        setMessageInput('');
+      },
+    }
+  );
+  function handleSendMessage(): void {
+    sendMessageMutation.mutate();
+  }
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) =>
+    setMessageInput(e.target.value);
   return (
     <>
       <Box
@@ -29,6 +59,8 @@ export default function ChatSendMessageArea() {
           }}
         >
           <WhiteBorderTextField
+            value={messageInput}
+            onChange={handleInputChange}
             autoFocus={true}
             multiline
             rows={3}
@@ -36,6 +68,7 @@ export default function ChatSendMessageArea() {
             InputProps={{
               endAdornment: (
                 <Button
+                  onClick={handleSendMessage}
                   sx={{
                     width: '15%',
                     fontFamily: 'Inter',
