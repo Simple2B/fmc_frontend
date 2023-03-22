@@ -4,13 +4,18 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import QuestionsCards from '@/components/landing_page/main_section/questions_cards/QuestionsCards';
 import TitleBox from '@/components/landing_page/title_box/TitleBox';
+import { userApi } from '@/fast_api_backend/api/usersInstance/userInstance';
+import { getErrorMessage } from '@/helper/error_function';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './GetHelp.module.sass';
 
-export interface IGetHelp {}
+export interface IGetHelp {
+  userType: string;
+  email: string;
+}
 
 const typeQuestions = [
   {
@@ -57,7 +62,7 @@ const typeQuestions = [
   },
 ];
 
-const GetHelp: React.FC<IGetHelp> = () => {
+const GetHelp: React.FC<IGetHelp> = ({ userType, email }) => {
   // const router = useRouter();
 
   const [question, setQuestion] = useState('');
@@ -66,10 +71,10 @@ const GetHelp: React.FC<IGetHelp> = () => {
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const sendQuestion = () => {
-    const email = '';
-    console.log('[GetHelp (student)] question => ', {
+  const sendQuestion = async () => {
+    console.log(`[GetHelp ${userType}] question`, {
       email: email,
       question: question,
     });
@@ -80,7 +85,29 @@ const GetHelp: React.FC<IGetHelp> = () => {
     if (question === '') {
       setIsLoad(false);
       setIsErrorQuestion(true);
-      setErrorQuestion('Email cannot be empty');
+      setErrorQuestion('Question cannot be empty');
+    }
+
+    if (question !== '') {
+      const data = {
+        email_from: email,
+        message: question,
+      };
+      try {
+        setIsLoad(true);
+        const response = await userApi.question(data);
+        console.log(`POST [/personal_info] ${userType} successfully`, response);
+        setIsLoad(false);
+        setSuccess(true);
+      } catch (error: any) {
+        setIsLoad(false);
+
+        console.log(
+          `POST [get help] ${userType} error message: ${error.message}`
+        );
+        setSuccess(false);
+        getErrorMessage(error.message, setError, 'getHelp');
+      }
     }
     setQuestion('');
     setIsLoad(false);
@@ -98,6 +125,11 @@ const GetHelp: React.FC<IGetHelp> = () => {
       }, 1000);
     }
   }, [modalIsOpen]);
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+    setQuestion('');
+  };
 
   return (
     <Box className={styles.wrapper}>
@@ -161,14 +193,22 @@ const GetHelp: React.FC<IGetHelp> = () => {
           <Loader />
         </CustomModel>
       )}
-      {errorQuestion && !isSuccess && (
+      {error && !isSuccess && (
         <CustomModel
           isOpen={modalIsOpen}
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            message={errorQuestion}
+            message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+      {isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Question send successfully'}
+            handleClick={closeSuccessMessage}
           />
         </CustomModel>
       )}

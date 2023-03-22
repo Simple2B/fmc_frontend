@@ -12,6 +12,10 @@ export const getErrorMessage = (
       setError('Error while changing password');
       return;
     }
+    if (type && type === 'getHelp') {
+      setError('Failed to create a new contact request');
+      return;
+    }
     setError('User with such email address already exists');
   } else if (Number(errorNumber) === 401) {
     setError('Unauthorized');
