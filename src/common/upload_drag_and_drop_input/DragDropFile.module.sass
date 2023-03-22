@@ -1,0 +1,69 @@
+@import "../../styles/variables"
+@import "../../styles/mixins"
+
+.formFileUpload
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 725px
+    max-width: 725px
+    height: 115px
+    max-height: 115px
+    border: 1px solid #CECECE
+    border-radius: 8px
+    text-align: center
+    position: relative
+
+
+.inputFileUpload
+    display: none
+
+
+.labelFileUpload
+    height: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    border-width: 2px
+    border-radius: 1rem
+    border-style: dashed
+    border-color: #cbd5e1
+    background-color: #f8fafc
+        
+
+
+.uploadButton 
+    cursor: pointer
+    padding: 0.25rem
+    border: none
+    background-color: transparent
+    font-family: $font-inter
+    color: #777777
+    font-size: 12px
+    .textBold
+        color: #333333
+        font-weight: 600
+        
+
+
+.uploadButton:hover 
+    text-decoration-line: underline
+
+.labelFileUpload.dragActive 
+    background-color: #ffffff
+
+.dragFileElement 
+    position: absolute
+    width: 100%
+    height: 100%
+    border-radius: 1rem
+    top: 0px
+    right: 0px
+    bottom: 0px
+    left: 0px
+
+
+@media (max-width: 414px)
+    .formFileUpload
+        width: 320px
+        height: 100px

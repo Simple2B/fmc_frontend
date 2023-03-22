@@ -51,7 +51,10 @@ const PasswordInput: React.FC<IPasswordInput> = ({
     >
       <InputLabel
         htmlFor="outlined-adornment-password"
-        sx={{ width: '100%', color: 'rgba(0, 0, 0, 0.87)' }}
+        sx={{
+          width: '100%',
+          color: 'rgba(0, 0, 0, 0.87)',
+        }}
         error={isError}
       >
         {label}
@@ -66,30 +69,6 @@ const PasswordInput: React.FC<IPasswordInput> = ({
         sx={{
           width: '100%',
           paddingRight: '0',
-          //   '.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input': {
-          //     bgcolor: '#1F2A40',
-          //   },
-          //   '.css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-          //     border: '1px solid #A9D3DE',
-          //   },
-          //   '& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input': {
-          //     color: '#A9D3DE',
-          //   },
-          //   '& .css-yjsfm1 span': { color: '#A9D3DE' },
-          //   '&:hover': {
-          //     '.css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-          //       border: '1px solid #A9D3DE',
-          //     },
-          //     '.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input': {
-          //       color: '#A9D3DE',
-          //     },
-          //     '.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root': {
-          //       color: '#A9D3DE',
-          //     },
-          //   },
-          //   '.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root': {
-          //     color: '#A9D3DE',
-          //   },
         }}
         inputProps={{ style: inputStyle }}
         endAdornment={

@@ -14,8 +14,8 @@ export default function SuccessStudent() {
   return (
     <>
       <Head>
-        <title>Sign Up Student</title>
-        <meta name="description" content="Sign Up Student" />
+        <title>Sign Up Athlete</title>
+        <meta name="description" content="Sign Up Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

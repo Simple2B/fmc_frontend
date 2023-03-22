@@ -14,7 +14,7 @@ import {
   Settings as Sett,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
-// import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -49,6 +49,7 @@ const listItemsStudent = [
 
 export default function ProfileStudent() {
   // const matches = useMediaQuery('(min-width:900px)');
+  const matches414 = useMediaQuery('(max-width:414px)');
   const router = useRouter();
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
@@ -56,7 +57,7 @@ export default function ProfileStudent() {
     ['my_lessons']: <MyLessons />,
     ['favorite_coaches']: <FavoriteCoaches />,
     ['messages']: <Messages />,
-    ['settings']: <Settings />,
+    ['settings']: <Settings userType={UserType.student} />,
     ['get_help']: <GetHelp />,
   };
 
@@ -79,8 +80,8 @@ export default function ProfileStudent() {
   return (
     <>
       <Head>
-        <title>Profile Student</title>
-        <meta name="description" content="Profile Student" />
+        <title>Profile Athlete</title>
+        <meta name="description" content="Profile Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -88,7 +89,7 @@ export default function ProfileStudent() {
         userType={UserType.student}
         listItems={listItemsStudent}
       >
-        <Box flex={1} p={2}>
+        <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
           {profileComponents[href]}
         </Box>
       </AuthenticatedLayout>

@@ -192,7 +192,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                   onClick={() => router.push('/sign_in/student')}
                   className={`${style.textMob} ${style.btnLanding}`}
                 >
-                  Student
+                  Athlete
                 </Box>
                 <Button
                   onClick={() => router.push('/sign_up/coach_student')}
