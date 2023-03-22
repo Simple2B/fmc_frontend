@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import Input from '@/common/input/Input';
 import CustomModel from '@/common/modal/Modal';
 import { Close } from '@mui/icons-material';
 import { Box } from '@mui/material';
@@ -6,21 +8,59 @@ import { useEffect, useState } from 'react';
 import picture from '../../../../public/picture_newsletter.png';
 import styles from './NewsLetter.module.sass';
 
+const nameInputStyles = {
+  '& .MuiInputBase-root': {
+    position: 'relative',
+  },
+  // '&. .css-11dl6sg-MuiFormControl-root-MuiTextField-root': {
+  //   borderBottomRightRadius: 'none',
+  //   borderTopRightRadius: 'none',
+  // },
+  '& .MuiFormHelperText-root': {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: '-20px',
+  },
+};
+
 export const NewsLetter = () => {
-  const [isLoad, setIsLoad] = useState<boolean>(false);
-  const [isSuccess, setSuccess] = useState<boolean>(false);
+  // const [isLoad, setIsLoad] = useState<boolean>(false);
+  // const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
+
+  const [email, setEmail] = useState<string>('');
+  const [errorEmailMessage, setErrorEmailMessage] = useState<string>('');
+  const [isErrorEmail, setIsErrorEmail] = useState<boolean>(false);
+
+  const handleOnChange = (
+    e: { target: { value: string } },
+    setName: (arg0: any) => void,
+    setIsErrorName: (arg0: boolean) => void,
+    setErrorNameMessage: (arg0: string) => void
+  ) => {
+    setName(e.target.value);
+    if (e.target.value !== '') {
+      setIsErrorName(false);
+      setErrorNameMessage('');
+    } else {
+      setIsErrorName(true);
+      setErrorNameMessage('Name cannot be empty');
+    }
+  };
 
   useEffect(() => {
     if (!modalIsOpen) {
       setTimeout(() => {
         setModalIsOpen(true);
         setError(null);
-        setIsLoad(false);
+        // setIsLoad(false);
       }, 1000);
     }
   }, [modalIsOpen, error]);
+
+  const subscribeNews = () => {};
 
   return (
     <CustomModel
@@ -43,7 +83,28 @@ export const NewsLetter = () => {
             Sign up for our newsletter now and stay in the loop on all things
             FindMyCoach.
           </Box>
-          <Box className={styles.inputsWrapper}></Box>
+          <Box className={styles.inputsWrapper}>
+            <Input
+              helperText={errorEmailMessage}
+              isError={isErrorEmail}
+              name={'email'}
+              label={'Email address'}
+              value={email}
+              sx={nameInputStyles}
+              onChange={(e) =>
+                handleOnChange(
+                  e,
+                  setEmail,
+                  setIsErrorEmail,
+                  setErrorEmailMessage
+                )
+              }
+              type="text"
+            />
+            <Box className={styles.btnSave} onClick={subscribeNews}>
+              Subscribe
+            </Box>
+          </Box>
         </Box>
       </Box>
     </CustomModel>

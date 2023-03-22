@@ -1,3 +1,4 @@
+import { NewsLetter } from '@/components/forms/news_letter/NewsLetter';
 import MainSection from '@/components/landing_page/main_section/MainSection';
 import Head from 'next/head';
 import LandingPage from '../components/landing_page/LandingPage';
@@ -15,7 +16,7 @@ export default function Home() {
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
         <MainSection />
-        {/* <NewsLetter /> */}
+        <NewsLetter />
       </main>
     </>
   );
