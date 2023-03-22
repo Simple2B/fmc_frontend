@@ -5,7 +5,12 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import Textarea from '@mui/joy/Textarea';
-import { Typography } from '@mui/material';
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
@@ -24,6 +29,12 @@ const nameInputStyles = {
   },
 };
 
+interface ILocation {
+  city: string;
+  street: string;
+  postCode: string;
+}
+
 export interface IYourProfile {
   userType: string;
 }
@@ -32,38 +43,38 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  // const router = useRouter();
+
   const [sport, setSport] = useState<string>('');
   const [errorSportMessage, setErrorSportMessage] = useState<string>('');
   const [isErrorSport, setIsErrorSport] = useState<boolean>(false);
 
   const [skills, setSkills] = useState<string>('');
 
-  // const [file, setFile] = useState<File | null>(null);
-  // const [fileName, setFileName] = useState<string | null>(null);
-  // const [previewUrl, setPreviewUrl] = useState('');
-
   const [files, setFiles] = useState<File[]>([]);
   const [filesNames, setFilesNames] = useState<string[] | null>(null);
 
-  console.log(' files => ', files);
+  const [checkedAdults, setCheckedAdults] = useState<boolean>(true);
+  const [checkedChildren, setCheckedChildren] = useState<boolean>(false);
 
-  // TODO: add for view download files
-  // const [images, setImages] = useState<File[] | null>([]);
-  // const onDrop = useCallback((acceptedFiles: any) => {
-  //   acceptedFiles.map((file: any) => {
-  //     const reader = new FileReader();
-  //     // TODO: add for view download files
-  //     // reader.onload = function (e) {
-  //     //   setImages((prevState) => [
-  //     //     ...prevState,
-  //     //     { id: cuid(), src: e.target.result },
-  //     //   ]);
-  //     // };
-  //     reader.readAsDataURL(file);
-  //     return file;
-  //   });
-  // }, []);
+  // Location
+  const [locationValuesInputs, setLocationValuesInputs] = useState<ILocation[]>(
+    [
+      {
+        city: '',
+        street: '',
+        postCode: '',
+      },
+      {
+        city: '',
+        street: '',
+        postCode: '',
+      },
+    ]
+  );
+
+  console.log('====================================');
+  console.log(' locationValuesInputs ===> ', locationValuesInputs);
+  console.log('====================================');
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -228,7 +239,37 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
             Choose one or two options.
           </Typography>
         </Box>
-        <Box className={styles.checkBoxesWrapper}></Box>
+        <Box className={styles.checkBoxesWrapper}>
+          <FormGroup className={styles.formGroup}>
+            <FormControlLabel
+              className={styles.formControlLabel}
+              control={
+                <Checkbox
+                  className={styles.checkbox}
+                  defaultChecked
+                  checked={checkedAdults}
+                  onChange={() => {
+                    setCheckedAdults(!checkedAdults);
+                  }}
+                />
+              }
+              label="I offer sessions for adults"
+            />
+            <FormControlLabel
+              className={styles.formControlLabel}
+              control={
+                <Checkbox
+                  className={styles.checkbox}
+                  checked={checkedChildren}
+                  onChange={() => {
+                    setCheckedChildren(!checkedChildren);
+                  }}
+                />
+              }
+              label="I offer sessions for children"
+            />
+          </FormGroup>
+        </Box>
       </Box>
 
       <Box className={styles.locationsSection}>
@@ -240,7 +281,91 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
             Choose one or two options.
           </Typography>
         </Box>
-        <Box className={styles.checkBoxesWrapper}></Box>
+        <Box className={styles.locationInputsWrapper} sx={{ gap: 1.5 }}>
+          {locationValuesInputs.map((value, index) => {
+            return (
+              <Box key={index} className={styles.inputsBox} sx={{ gap: 1.5 }}>
+                <Input
+                  name={value.city}
+                  label={'City'}
+                  value={value.city}
+                  sx={{}}
+                  onChange={(e) =>
+                    setLocationValuesInputs(
+                      locationValuesInputs.map((value, ind) => {
+                        if (index === ind) {
+                          return {
+                            ...value,
+                            city: e.target.value,
+                          };
+                        }
+                        return value;
+                      })
+                    )
+                  }
+                  type="text"
+                />
+                <Input
+                  name={value.street}
+                  label={'Street'}
+                  value={value.street}
+                  sx={{}}
+                  onChange={(e) =>
+                    setLocationValuesInputs(
+                      locationValuesInputs.map((value, ind) => {
+                        if (index === ind) {
+                          return {
+                            ...value,
+                            street: e.target.value,
+                          };
+                        }
+                        return value;
+                      })
+                    )
+                  }
+                  type="text"
+                />
+                <Input
+                  name={value.postCode}
+                  label={'Post code'}
+                  value={value.postCode}
+                  sx={{ maxWidth: '189px' }}
+                  onChange={(e) =>
+                    setLocationValuesInputs(
+                      locationValuesInputs.map((value, ind) => {
+                        if (index === ind) {
+                          return {
+                            ...value,
+                            postCode: e.target.value,
+                          };
+                        }
+                        return value;
+                      })
+                    )
+                  }
+                  type="number"
+                />
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+      <Box className={styles.locationsSection}>
+        <Typography
+          className={styles.locationBtn}
+          onClick={() => {
+            setLocationValuesInputs((prev) => [
+              ...prev,
+              {
+                city: '',
+                street: '',
+                postCode: '',
+              },
+            ]);
+          }}
+        >
+          + Add more locations
+        </Typography>
       </Box>
       <Box className={styles.btnSave} onClick={saveProfileInfo}>
         Save
@@ -261,7 +386,6 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
           />
         </CustomModel>
       )}
-
       {isSuccess && (
         <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
           <MessageBox

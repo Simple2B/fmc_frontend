@@ -61,8 +61,47 @@
             .subtitle 
                 font-size: 12px
                 color: #777777
+        .checkBoxesWrapper
+            width: 100%
+            display: flex
+            flex-direction: column
+            justify-content: flex-start
+            align-items: flex-start
+            .formGroup
+                width: 95%
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: flex-start
+                .formControlLabel
+                    width: 100%
+                    font-family: $font-inter
+                    font-weight: 400
+                    font-size: 14px
+                    color: #222222
+                .checkbox
+                    width: 30px 
+                    height: 30px 
+                    margin-left: 1.5%
+        .locationInputsWrapper
+            width: 100%
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            .inputsBox  
+                width: 100%
+                display: flex
+                justify-content: space-between
+                align-items: center   
         .uploadInputWrapper
             width: 100%
+        .locationBtn
+            cursor: pointer
+            font-family: $font-inter
+            font-weight: 600
+            font-size: 14px
+            color: #222222
                 
 
 @media (max-width: 1112px)  
@@ -90,4 +129,9 @@
             display: flex
             justify-content: center
             align-items: center
+        .certificatesSection, .sessionsSection, .locationsSection
+            .locationInputsWrapper
+                flex-wrap: wrap
+                .inputsBox    
+                    flex-wrap: wrap 
 
