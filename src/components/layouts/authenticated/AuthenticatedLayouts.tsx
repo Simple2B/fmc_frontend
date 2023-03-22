@@ -33,6 +33,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   const matches970 = useMediaQuery('(max-width:970px)');
 
   const [profile, setProfile] = React.useState<IStudentProfile>({
+    uuid: '',
     username: '',
     email: '',
     first_name: '',
