@@ -15,6 +15,7 @@ export default function Home() {
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
         <MainSection />
+        {/* <NewsLetter /> */}
       </main>
     </>
   );

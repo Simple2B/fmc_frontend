@@ -1,0 +1,45 @@
+@import "../../../styles/variables"
+@import "../../../styles/mixins"
+
+.modalMessageWrapper
+    position: relative
+    max-width: 90%
+    margin: 0 auto
+    display: flex
+    justify-content: space-between
+    align-items: center
+    border: 1px solid #fff
+    border-radius: 20px
+    z-index: 100
+    .imageWrapper
+        border-bottom-left-radius: 20px
+        border-top-left-radius: 20px
+        .image
+            width: 300px
+            border-bottom-left-radius: 20px
+            border-top-left-radius: 20px
+    .crossWrapper
+        color: #000
+        position: absolute
+        top: 20px
+        right: 20px
+        font-family: sans-serif
+        cursor: pointer
+    .modalTextWrapper
+        background-color: #fff
+        padding: 59px 29px
+        width: 527px
+        border-bottom-right-radius: 20px 
+        border-top-right-radius: 20px 
+        .title, .subtitle
+            font-family: $font-inter
+        .title
+            font-size: 24px
+            font-weight: 500
+            padding-bottom: 12px
+        .subtitle
+            font-size: 16px
+            font-weight: 400
+            line-height: 19.36px
+            padding-bottom: 24px
+        .inputsWrapper
