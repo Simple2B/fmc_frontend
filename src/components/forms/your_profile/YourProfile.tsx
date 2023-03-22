@@ -4,12 +4,14 @@ import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
+import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
   Checkbox,
   FormControlLabel,
   FormGroup,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
@@ -33,6 +35,7 @@ interface ILocation {
   city: string;
   street: string;
   postCode: string;
+  icon?: any;
 }
 
 export interface IYourProfile {
@@ -40,6 +43,8 @@ export interface IYourProfile {
 }
 
 const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
+  const matches600 = useMediaQuery('(max-width:600px)');
+
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,9 +77,11 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
     ]
   );
 
-  console.log('====================================');
-  console.log(' locationValuesInputs ===> ', locationValuesInputs);
-  console.log('====================================');
+  const deleteLocationInputs = (index: number) => {
+    setLocationValuesInputs(
+      locationValuesInputs.filter((item, ind) => ind !== index)
+    );
+  };
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -281,10 +288,17 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
             Choose one or two options.
           </Typography>
         </Box>
-        <Box className={styles.locationInputsWrapper} sx={{ gap: 1.5 }}>
+        <Box
+          className={styles.locationInputsWrapper}
+          sx={{ gap: matches600 ? 3 : 1.5 }}
+        >
           {locationValuesInputs.map((value, index) => {
             return (
-              <Box key={index} className={styles.inputsBox} sx={{ gap: 1.5 }}>
+              <Box
+                key={index}
+                className={styles.inputsBox}
+                sx={{ gap: 1.5, position: 'relative' }}
+              >
                 <Input
                   name={value.city}
                   label={'City'}
@@ -329,7 +343,7 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
                   name={value.postCode}
                   label={'Post code'}
                   value={value.postCode}
-                  sx={{ maxWidth: '189px' }}
+                  sx={{ maxWidth: matches600 ? '100%' : '189px' }}
                   onChange={(e) =>
                     setLocationValuesInputs(
                       locationValuesInputs.map((value, ind) => {
@@ -345,6 +359,21 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
                   }
                   type="number"
                 />
+                {value.icon && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      cursor: 'pointer',
+                      right: matches600 ? '-5px' : '-11.8px',
+                      top: matches600 ? '-15px' : '-10px',
+                      width: '15px',
+                      height: '15px',
+                    }}
+                    onClick={() => deleteLocationInputs(index)}
+                  >
+                    {value.icon}
+                  </Box>
+                )}
               </Box>
             );
           })}
@@ -360,6 +389,18 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
                 city: '',
                 street: '',
                 postCode: '',
+                icon: (
+                  <Close
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      color: '#CECECE',
+                      '&:hover': {
+                        color: '#000000',
+                      },
+                    }}
+                  />
+                ),
               },
             ]);
           }}

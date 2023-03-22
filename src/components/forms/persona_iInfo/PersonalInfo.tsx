@@ -8,7 +8,7 @@ import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/prof
 import { studentProfileApi } from '@/fast_api_backend/api/usersInstance/student/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
 import { UserType } from '@/store/types/user';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
@@ -32,6 +32,20 @@ export interface IPersonalInfo {
 }
 
 const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
+  const matches600 = useMediaQuery('(max-width:600px)');
+
+  const nameInputStyles = {
+    mt: matches600 ? 1.5 : 4,
+    '& .MuiInputBase-root': {
+      position: 'relative',
+    },
+    '& .MuiFormHelperText-root': {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: '-20px',
+    },
+  };
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);

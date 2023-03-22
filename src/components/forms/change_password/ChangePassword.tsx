@@ -8,29 +8,32 @@ import { studentProfileApi } from '@/fast_api_backend/api/usersInstance/student/
 import { checkedPassword } from '@/helper/checked_password';
 import { getErrorMessage } from '@/helper/error_function';
 import { UserType } from '@/store/types/user';
+import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './ChangePassword.module.sass';
-
-const nameInputStyles = {
-  mt: 4,
-  '& .MuiInputBase-root': {
-    position: 'relative',
-  },
-  '& .MuiFormHelperText-root': {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: '-20px',
-  },
-};
 
 export interface IChangePassword {
   userType: string;
 }
 
 const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
+  const matches600 = useMediaQuery('(max-width:600px)');
+
+  const nameInputStyles = {
+    mt: matches600 ? 1.5 : 4,
+    '& .MuiInputBase-root': {
+      position: 'relative',
+    },
+    '& .MuiFormHelperText-root': {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: '-20px',
+    },
+  };
+
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -144,7 +147,7 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
   return (
     <Box className={styles.wrapperChangePassword}>
       <Box className={styles.title}>Change password</Box>
-      <Box className={styles.inputs} sx={{ gap: 1 }}>
+      <Box className={styles.inputs} sx={{ gap: matches600 ? 0.3 : 1 }}>
         <Box className={styles.inputBox}>
           <Input
             helperText={errorCurrentPasswordMessage}
