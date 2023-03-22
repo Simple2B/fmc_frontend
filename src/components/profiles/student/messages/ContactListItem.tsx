@@ -17,7 +17,7 @@ import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 interface ContactListItemProps {
   contactData: IContact;
-  onSelected: (contactUUID: string) => void;
+  onSelected: () => void;
   selected: boolean;
 }
 
