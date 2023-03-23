@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface ChatHeaderProps {
   selectedContactUUID: string;
@@ -38,19 +38,25 @@ export function ChatHeader({
             marginLeft: '5%',
           }}
         >
-          {selectedContactFirstName} {selectedContactLastName}
+          <Typography
+            fontSize={{
+              lg: 18,
+              md: 14,
+              sm: 12,
+              xs: 8,
+            }}
+            fontFamily={'Inter'}
+            fontWeight={'bold'}
+          >
+            {selectedContactFirstName} {selectedContactLastName}
+          </Typography>
         </Box>
 
-        <Button
+        <Box
           onClick={handleClick}
           sx={{
-            fontFamily: 'Inter',
-            fontSize: '0.75rem',
-            lineHeight: '1.25rem',
-            fontWeight: 'bold',
             marginRight: '5%',
-            padding: '1%',
-            color: 'white',
+            padding: '0.75%',
             backgroundColor: '#222CDF',
             borderRadius: '10px',
             '&:hover': {
@@ -60,8 +66,23 @@ export function ChatHeader({
             },
           }}
         >
-          View Profile - {selectedContactUUID}
-        </Button>
+          <Typography
+            fontSize={{
+              lg: 14,
+              md: 10,
+              sm: 10,
+              xs: 8,
+            }}
+            sx={{
+              fontFamily: 'Inter',
+              lineHeight: '1.25rem',
+              fontWeight: 'bold',
+              color: 'white',
+            }}
+          >
+            View Profile - {selectedContactUUID}
+          </Typography>
+        </Box>
       </Box>
     </>
   );

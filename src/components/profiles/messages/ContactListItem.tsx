@@ -15,7 +15,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useState } from 'react';
 interface ContactListItemProps {
   contactData: IContact;
-  onSelected: (value: string) => void;
+  onSelected: (value: string) => void; // eslint-disable-line no-unused-vars
   selected: boolean;
 }
 
@@ -68,8 +68,8 @@ export default function ContactListItem({
               fontSize={{
                 lg: 18,
                 md: 14,
-                sm: 10,
-                xs: 8,
+                sm: 12,
+                xs: 10,
               }}
               fontFamily={'Inter'}
               fontWeight={'600'}
@@ -83,8 +83,8 @@ export default function ContactListItem({
               fontSize={{
                 lg: 14,
                 md: 10,
-                sm: 8,
-                xs: 6,
+                sm: 9,
+                xs: 7,
               }}
               component="span"
               fontFamily={'Inter'}
@@ -101,9 +101,9 @@ export default function ContactListItem({
         <Typography
           fontSize={{
             lg: 12,
-            md: 8,
-            sm: 6,
-            xs: 4,
+            md: 10,
+            sm: 8,
+            xs: 7,
           }}
           fontFamily={'Inter'}
           fontWeight={'400'}

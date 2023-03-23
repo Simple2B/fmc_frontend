@@ -16,7 +16,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
         <Box
           sx={{
             width: '100%',
-            height: 900,
+            height: 850,
             overflow: 'hidden',
             overflowY: 'scroll',
             border: '0.5px solid #DBDBDB',
@@ -27,8 +27,8 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
             selectedContactLastName={selectedContact.last_name}
             selectedContactUUID={selectedContact.uuid}
           />
-          <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
           <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
+          <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
         </Box>
       ) : (
         <Box
@@ -42,8 +42,13 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
           }}
         >
           <Typography
+            fontSize={{
+              lg: 20,
+              md: 16,
+              sm: 12,
+              xs: 10,
+            }}
             fontFamily={'Inter'}
-            fontSize={'1rem'}
             fontWeight={'bold'}
           >
             Please select a contact

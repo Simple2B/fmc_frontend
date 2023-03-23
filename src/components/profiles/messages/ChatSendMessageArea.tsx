@@ -48,13 +48,15 @@ export function ChatSendMessageArea({
         sx={{
           display: 'flex',
           width: '100%',
-          heght: '25%',
+          heght: '15%',
         }}
       >
         <Box
           sx={{
-            width: '95%',
+            position: 'sticky',
+            width: '97.5%',
             heght: '100%',
+            marginTop: '1%',
             marginRight: '2.5%',
             marginLeft: '2.5%',
             marginBottom: '1%',
@@ -94,7 +96,7 @@ export function ChatSendMessageArea({
                 </Button>
               ),
 
-              style: { fontSize: '1rem', fontFamily: 'Inter' },
+              style: { fontSize: '0.9rem', fontFamily: 'Inter' },
             }}
           ></TextField>
         </Box>

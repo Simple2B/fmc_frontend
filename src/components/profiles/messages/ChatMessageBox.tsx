@@ -35,10 +35,9 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
       <Box
         sx={{
           marginTop: '1%',
-          marginBottom: '1%',
+          marginBottom: '2.5%',
           width: '100%',
           height: 'auto',
-          minHeight: '80%',
         }}
       >
         {data &&
@@ -48,6 +47,7 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
                 key={item.uuid}
                 isOutgoing={item.author.uuid !== selectedContactUUID}
                 text={item.text}
+                date={item.created_at}
               />
             );
           })}

@@ -3,9 +3,14 @@ import { Box, Typography } from '@mui/material';
 interface IMessageProps {
   text: string;
   isOutgoing: boolean;
+  date: string;
 }
 
-export function Message({ text, isOutgoing }: IMessageProps) {
+export function Message({ text, isOutgoing, date }: IMessageProps) {
+  const messageDateObj = new Date(date);
+  const messageDate = `${messageDateObj.getDay()}/${messageDateObj.getMonth()}/${messageDateObj.getFullYear()}`;
+  const messageTime = `${messageDateObj.getHours()}:${messageDateObj.getMinutes()}`;
+  console.log(messageTime);
   return (
     <Box
       sx={{
@@ -18,9 +23,12 @@ export function Message({ text, isOutgoing }: IMessageProps) {
     >
       <Box
         sx={{
+          marginLeft: '1%',
+          marginRight: '1%',
           display: 'flex',
           minWidth: '10%',
-          maxWidth: '70%',
+          maxHeight: '100%',
+          maxWidth: 'auto',
           width: 'auto',
           height: 'auto',
         }}
@@ -34,18 +42,39 @@ export function Message({ text, isOutgoing }: IMessageProps) {
             backgroundColor: '#d2d4f9',
             borderRadius: '0.5rem / 3rem 3rem',
             marginLeft: '2%',
-            marginTop: '2%',
+            marginTop: '5%',
           }}
         >
           <Typography
-            sx={{
-              fontFamily: 'Inter',
-              fontSize: '0.75rem',
-              lineHeight: '1rem',
+            fontFamily={'Inter'}
+            fontSize={{
+              lg: 16,
+              md: 10,
+              sm: 10,
+              xs: 8,
             }}
+            lineHeight={'24px'}
           >
             {text}
           </Typography>
+          <Box>
+            <Typography
+              fontFamily={'Inter'}
+              fontWeight={'600'}
+              color={'#9E9E9E'}
+              fontSize={{
+                lg: 10,
+                md: 8,
+                sm: 7,
+                xs: 6,
+              }}
+              marginTop={'2.5%'}
+            >
+              {messageDate}
+              <br />
+              {messageTime}
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>

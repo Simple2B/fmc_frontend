@@ -6,7 +6,7 @@ import ContactListItem from './ContactListItem';
 export interface IChatContacts {
   contacts: IContact[];
   selectedContactUUID: string;
-  onContactSelected: (value: string) => void;
+  onContactSelected: (value: string) => void; // eslint-disable-line no-unused-vars
 }
 
 export const ChatContacts: React.FC<IChatContacts> = ({
@@ -19,7 +19,7 @@ export const ChatContacts: React.FC<IChatContacts> = ({
       <Box
         sx={{
           width: '30%',
-          height: 900,
+          height: 850,
           border: '0.5px solid #DBDBDB',
           borderRight: '1px solid #DBDBDB',
           overflow: 'hidden',
