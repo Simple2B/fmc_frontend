@@ -64,7 +64,11 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
     }
   }, [modalIsOpen, error]);
 
-  const subscribeNews = () => {};
+  const subscribeNews = () => {
+    closeModalNewsletter();
+    // TODO: add if user subscribe
+    // localStorage.setItem('subscribe', 'true');
+  };
 
   return (
     <CustomModel
