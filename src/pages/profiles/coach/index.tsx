@@ -1,10 +1,10 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
-import Messages from '@/components/profiles/coach/messages/Messages';
 import MyAppointments from '@/components/profiles/coach/my_appointments/MyAppointments';
 import Packages from '@/components/profiles/coach/packages/Packages';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
 import GetHelp from '@/components/profiles/get_help/GetHelp';
+import Messages from '@/components/profiles/messages/Messages';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
@@ -61,6 +61,7 @@ export default function ProfileCoach() {
   const [href, setHref] = useState<string>('my_appointments');
 
   const [profile, setProfile] = useState<IStudentProfile>({
+    uuid: '',
     username: '',
     email: '',
     first_name: '',
@@ -74,7 +75,7 @@ export default function ProfileCoach() {
     ['my_appointments']: <MyAppointments />,
     ['reviews']: <Reviews />,
     ['packages']: <Packages />,
-    ['message']: <Messages />,
+    ['message']: <Messages userType={UserType.coach} />,
     ['settings']: <Settings userType={UserType.coach} />,
     ['get_help']: <GetHelp userType={UserType.coach} email={profile.email} />,
   };

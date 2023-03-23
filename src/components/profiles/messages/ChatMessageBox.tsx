@@ -1,18 +1,30 @@
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { UserType } from '@/store/types/user';
 import { Box } from '@mui/material';
+import { useContext } from 'react';
 import { useQuery } from 'react-query';
 import { Message } from './Message';
+import { MessageContext } from './messageContext';
 
 interface IChatMessageBox {
   selectedContactUUID: string;
 }
 export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
+  const userType = useContext(MessageContext);
+  if (!userType) {
+    alert('NO USER TYPE');
+  }
+  console.log('USER TYPE ->', userType);
+
   const { data } = useQuery(
     ['contactMessageList', selectedContactUUID],
     async () => {
-      const result = await studentClientApi.studentGetMessageCoach(
-        selectedContactUUID
-      );
+      const request =
+        userType === UserType.student
+          ? studentClientApi.studentGetMessageCoach
+          : coachClientApi.coachGetMessageStudent;
+      const result = await request(selectedContactUUID);
       console.log('--------------> messages', result);
       return result.messages;
     }

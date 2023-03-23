@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
 import GetHelp from '@/components/profiles/get_help/GetHelp';
+import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
-import Messages from '@/components/profiles/student/messages/Messages';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import { getCurrentUser } from '@/helper/get_current_user';
@@ -53,6 +53,7 @@ export default function ProfileStudent() {
   const matches414 = useMediaQuery('(max-width:414px)');
   const router = useRouter();
   const [profile, setProfile] = useState<IStudentProfile>({
+    uuid: '',
     username: '',
     email: '',
     first_name: '',
@@ -65,7 +66,7 @@ export default function ProfileStudent() {
   const profileComponents: { [key: string]: JSX.Element } = {
     ['my_lessons']: <MyLessons />,
     ['favorite_coaches']: <FavoriteCoaches />,
-    ['messages']: <Messages />,
+    ['messages']: <Messages userType={UserType.student} />,
     ['settings']: <Settings userType={UserType.student} />,
     ['get_help']: <GetHelp userType={UserType.student} email={profile.email} />,
   };

@@ -19,7 +19,9 @@ export function Message({ text, isOutgoing }: IMessageProps) {
       <Box
         sx={{
           display: 'flex',
-          width: '60%',
+          minWidth: '10%',
+          maxWidth: '70%',
+          width: 'auto',
           height: 'auto',
         }}
       >

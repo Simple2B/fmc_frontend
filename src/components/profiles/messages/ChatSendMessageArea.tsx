@@ -1,7 +1,10 @@
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { UserType } from '@/store/types/user';
 import { Box, Button, TextField } from '@mui/material';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useContext, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { MessageContext } from './messageContext';
 interface ChatSendMessageAreaProps {
   receiverUUID: string;
 }
@@ -9,12 +12,18 @@ interface ChatSendMessageAreaProps {
 export function ChatSendMessageArea({
   receiverUUID,
 }: ChatSendMessageAreaProps) {
+  const userType = useContext(MessageContext);
   const [messageInput, setMessageInput] = useState<string>('');
   const queryClient = useQueryClient();
 
   const sendMessageMutation = useMutation(
     async () => {
-      await studentClientApi.studentSendMessageCoach({
+      const request =
+        userType === UserType.student
+          ? studentClientApi.studentSendMessageCoach
+          : coachClientApi.coachSendMessageStudent;
+
+      await request({
         receiver_id: receiverUUID,
         text: messageInput,
       });
@@ -58,6 +67,9 @@ export function ChatSendMessageArea({
             multiline
             rows={2}
             fullWidth
+            inputProps={{
+              maxLength: 1024,
+            }}
             InputProps={{
               endAdornment: (
                 <Button
