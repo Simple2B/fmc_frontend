@@ -10,8 +10,8 @@ export default function RestPasswordSuccessStudent() {
   return (
     <>
       <Head>
-        <title>Rest Password Success Student</title>
-        <meta name="description" content="Rest Password Success Student" />
+        <title>Rest Password Success Athlete</title>
+        <meta name="description" content="Rest Password Success Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

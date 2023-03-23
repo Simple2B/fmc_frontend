@@ -80,8 +80,8 @@ export default function SignInStudent() {
   return (
     <>
       <Head>
-        <title>Sign In Student</title>
-        <meta name="description" content="Sign In Student" />
+        <title>Sign In Athlete</title>
+        <meta name="description" content="Sign In Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -114,7 +114,7 @@ export default function SignInStudent() {
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           >
             <MessageBox
-              error={error}
+              message={error}
               handleClick={() => setModalIsOpen(!modalIsOpen)}
             />
           </CustomModel>

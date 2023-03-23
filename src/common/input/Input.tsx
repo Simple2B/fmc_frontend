@@ -2,8 +2,8 @@ import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
 export interface IInput {
-  isError: boolean;
-  helperText: string;
+  isError?: boolean;
+  helperText?: string;
   name: string;
   label: string;
   value: string;
@@ -11,6 +11,7 @@ export interface IInput {
   onChange(e: { target: { value: string } }): void;
   sx?: any;
   type?: string;
+  disabled?: boolean;
 }
 
 // eslint-disable-next-line no-empty-pattern
@@ -23,6 +24,7 @@ const Input: React.FC<IInput> = ({
   onChange,
   sx,
   type,
+  disabled,
 }) => {
   const inputStyle = {
     WebkitBoxShadow: '0 0 0 1000px #FFF inset',
@@ -42,6 +44,7 @@ const Input: React.FC<IInput> = ({
       sx={sx}
       type={type}
       inputProps={{ style: inputStyle }}
+      disabled={disabled}
     />
   );
 };

@@ -1,0 +1,87 @@
+.wrapperPersonalInfo
+    position: relative
+    max-width: 900px
+    .titleSection
+        width: 100%
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+    .namesSection
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        flex-wrap: wrap
+        .inputBox:first-child
+            margin-right: 10px
+        .inputBox
+            width: 421px
+            padding-bottom: 20px
+    .uploadSection
+        margin-top: 17px
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        
+        .avatarImg
+            width: 90px
+            height: 90px
+            align-self: flex-start
+            .avatar
+                width: 100%
+                height: 100%
+        .uploadInputWrapper
+            .btnSave
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 725px
+                max-width: 725px
+                cursor: pointer
+                transition: all 0.5s ease-out 
+                color: #fff
+                background-color: #1876D1
+                border-radius: 8px
+                width: 100%
+                margin-top: 25px
+                padding-top: 11px
+                padding-bottom: 12px
+                &:hover
+                    transition: all 0.5s ease-out 
+                    background-color: #222CDF    
+
+@media (max-width: 1112px)  
+    .wrapperPersonalInfo
+        .titleSection
+        .namesSection
+        .uploadSection
+            flex-wrap: wrap
+
+
+
+@media (max-width: 600px)
+    .wrapperPersonalInfo
+        width: 310px
+        .titleSection
+            width: 100%
+        .namesSection
+            width: 100%
+            .inputBox:first-child
+                margin-right: 0
+            .inputBox
+                width: 100%
+                padding: 0
+        .uploadSection
+            margin-top: 10px
+            display: flex
+            justify-content: center
+            align-items: center
+            .avatarImg
+                width: 60px
+                height: 60px
+                .avatar
+                    width: 100%
+                    height: 100%
+            .uploadInputWrapper

@@ -114,7 +114,7 @@ export default function SignInCoach() {
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           >
             <MessageBox
-              error={error}
+              message={error}
               handleClick={() => setModalIsOpen(!modalIsOpen)}
             />
           </CustomModel>

@@ -1,11 +1,12 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
+import GetHelp from '@/components/profiles/get_help/GetHelp';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
-import GetHelp from '@/components/profiles/student/get_help/GetHelp';
 import Messages from '@/components/profiles/student/messages/Messages';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { UserType } from '@/store/types/user';
+import { IStudentProfile } from '@/store/types/users/student/studentType';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -14,7 +15,7 @@ import {
   Settings as Sett,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
-// import useMediaQuery from '@mui/material/useMediaQuery';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -49,15 +50,24 @@ const listItemsStudent = [
 
 export default function ProfileStudent() {
   // const matches = useMediaQuery('(min-width:900px)');
+  const matches414 = useMediaQuery('(max-width:414px)');
   const router = useRouter();
+  const [profile, setProfile] = useState<IStudentProfile>({
+    username: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    profile_picture: '',
+    is_verified: false,
+  });
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
     ['my_lessons']: <MyLessons />,
     ['favorite_coaches']: <FavoriteCoaches />,
     ['messages']: <Messages />,
-    ['settings']: <Settings />,
-    ['get_help']: <GetHelp />,
+    ['settings']: <Settings userType={UserType.student} />,
+    ['get_help']: <GetHelp userType={UserType.student} email={profile.email} />,
   };
 
   useEffect(() => {
@@ -68,7 +78,7 @@ export default function ProfileStudent() {
     const redirectUrl = process.env.BASE_URL;
     getCurrentUser(
       UserType.student,
-      undefined,
+      setProfile,
       undefined,
       undefined,
       undefined,
@@ -79,8 +89,8 @@ export default function ProfileStudent() {
   return (
     <>
       <Head>
-        <title>Profile Student</title>
-        <meta name="description" content="Profile Student" />
+        <title>Profile Athlete</title>
+        <meta name="description" content="Profile Athlete" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -88,7 +98,7 @@ export default function ProfileStudent() {
         userType={UserType.student}
         listItems={listItemsStudent}
       >
-        <Box flex={1} p={2}>
+        <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
           {profileComponents[href]}
         </Box>
       </AuthenticatedLayout>

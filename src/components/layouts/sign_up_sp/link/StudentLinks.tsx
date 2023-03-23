@@ -52,7 +52,7 @@ const StudentLinks: React.FC<IStudentLinks> = ({ color }) => {
         onMouseEnter={() => handleMouseEnter(setIsHoverInput2)}
         onMouseLeave={() => handleMouseLeave(setIsHoverInput2)}
       >
-        Student
+        Athlete
       </Link>
     </Box>
   );

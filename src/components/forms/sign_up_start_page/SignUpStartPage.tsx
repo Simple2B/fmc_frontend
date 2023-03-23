@@ -16,7 +16,7 @@ const SignUpStartPage: React.FC<ISignUpStartPage> = () => {
       />
       <Box className={style.orBox}> or </Box>
       <SignUpStartPageCard
-        title={'I AM A STUDENT'}
+        title={'I AM A ATHLETE'}
         description={'I want to discover a coach and schedule a training.'}
         href={'/sign_up/student'}
       />

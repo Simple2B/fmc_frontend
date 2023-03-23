@@ -173,7 +173,7 @@ const TopBar: React.FC<ITopBar> = ({
                   }}
                   sx={{
                     boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
-                    ml: '200px',
+                    ml: '8%',
                   }}
                 >
                   <MenuItem
@@ -216,7 +216,7 @@ const TopBar: React.FC<ITopBar> = ({
                   onClick={() => router.push('/sign_in/student')}
                   className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
                 >
-                  Student
+                  Athlete
                 </Box>
                 <Button
                   onClick={() => router.push('/sign_up/coach_student')}
