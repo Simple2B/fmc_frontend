@@ -25,10 +25,10 @@ const nameInputStyles = {
 };
 
 interface INewsLetter {
-  setIsOpen: any;
+  closeModalNewsletter: () => void;
 }
 
-export const NewsLetter: React.FC<INewsLetter> = ({ setIsOpen }) => {
+export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
   // const [isLoad, setIsLoad] = useState<boolean>(false);
   // const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +71,7 @@ export const NewsLetter: React.FC<INewsLetter> = ({ setIsOpen }) => {
       isOpen={modalIsOpen}
       handleClick={() => {
         setModalIsOpen(!modalIsOpen);
-        setIsOpen(false);
+        closeModalNewsletter();
       }}
     >
       <Box className={styles.modalMessageWrapper}>
@@ -79,7 +79,7 @@ export const NewsLetter: React.FC<INewsLetter> = ({ setIsOpen }) => {
           className={styles.crossWrapper}
           onClick={() => {
             setModalIsOpen(!modalIsOpen);
-            setIsOpen(false);
+            closeModalNewsletter();
           }}
         >
           <Close sx={{ width: '18px', height: '18px' }} />

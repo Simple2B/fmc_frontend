@@ -7,43 +7,29 @@ import LandingPage from '../components/landing_page/LandingPage';
 import styles from '../styles/Home.module.sass';
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState<boolean | null>(false);
-  // const [user, setUser] = useState('')
-  // const user = localStorage.getItem('userType');
-  // const isClose = localStorage.getItem('isClose');
-
-  // const localDate = new Date();
-  // const localTime = localDate.getTime();
-  // const localTimePlus20 = localTime + 5;
-
-  // useEffect(() => {
-  //   const time = new Date();
-  //   const timeDate = time.getTime();
-  //   localStorage.setItem('time', timeDate.toString());
-  //   localStorage.setItem('isClose', 'true');
-  // }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     localStorage.removeItem('time');
-  //     localStorage.removeItem('isClose');
-  //   } else {
-  //     console.log('====================================');
-  //     console.log(
-  //       " localTimePlus20.toString() === localStorage.getItem('time') ",
-  //       localTimePlus20.toString() === localStorage.getItem('time')
-  //     );
-  //     console.log('====================================');
-  //     if (localTimePlus20.toString() === localStorage.getItem('time')) {
-  //       localStorage.setItem('isClose', 'false');
-  //     }
-  //   }
-  // }, [localDate, localTimePlus20, user]);
+  const [show, setShow] = useState(false);
+  const [user, setUser] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const user = localStorage.getItem('userType');
+    setUser(user);
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      const timeId = setTimeout(() => {
+        setShow(true);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timeId);
+      };
+    }
+  }, [user]);
+
+  const closeModalNewsletter = () => {
+    setShow(false);
+  };
 
   return (
     <>
@@ -56,7 +42,7 @@ export default function Home() {
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
         <MainSection />
-        {isOpen && <NewsLetter setIsOpen={setIsOpen} />}
+        {show && <NewsLetter closeModalNewsletter={closeModalNewsletter} />}
       </main>
     </>
   );

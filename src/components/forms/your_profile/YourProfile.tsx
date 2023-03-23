@@ -4,19 +4,24 @@ import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { getErrorMessage } from '@/helper/error_function';
 import { UserType } from '@/store/types/user';
+import { ISportInput } from '@/store/types/users/coach/profileType';
 import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
+  Autocomplete,
   Checkbox,
   FormControlLabel,
   FormGroup,
+  TextField,
   Typography,
   useMediaQuery,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './YourProfile.module.sass';
 
 const nameInputStyles = {
@@ -31,7 +36,6 @@ const nameInputStyles = {
     bottom: '-20px',
   },
 };
-
 interface ILocation {
   city: string;
   street: string;
@@ -51,6 +55,7 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
   const [error, setError] = useState<string | null>(null);
 
   const [sport, setSport] = useState<string>('');
+
   const [errorSportMessage, setErrorSportMessage] = useState<string>('');
   const [isErrorSport, setIsErrorSport] = useState<boolean>(false);
 
@@ -85,6 +90,21 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
       locationValuesInputs.filter((item, ind) => ind !== index)
     );
   };
+
+  const [options, setOptions] = useState<ISportInput[] | []>([]);
+
+  useEffect(() => {
+    const getSports = async () => {
+      try {
+        const res = await coachProfileApi.getTypeSports();
+        setOptions(res.map((item) => ({ label: item.name, id: item.uuid })));
+      } catch (error) {
+        console.log(`POST [your profile] error message: ${error}`);
+        setOptions([]);
+      }
+    };
+    getSports();
+  }, []);
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -139,24 +159,31 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
         location: locationValuesInputs,
       });
       const saveData = async (userType: string) => {
+        const locations = locationValuesInputs.map((location) => ({
+          city: location.city,
+          street: location.street,
+          postal_code: location.postCode,
+        }));
         try {
           // TODO: send data to backend
           if (userType === UserType.coach) {
             setIsLoad(true);
-            // const response = await coachProfileApi.savePersonalInfoCoach(
-            //   name,
-            //   lastName,
-            //   fileToSave
-            // );
-            // console.log('POST [/personal_info] coach successfully', response);
-            // setIsLoad(false);
-            // setSuccess(true);
+            const response = await coachProfileApi.updateProfileCoach(
+              sport,
+              about,
+              files,
+              String(checkedAdults),
+              String(checkedChildren),
+              locations
+            );
+            setIsLoad(false);
+            setSuccess(true);
           }
         } catch (error: any) {
           setIsLoad(false);
           console.log(`POST [your profile] error message: ${error.message}`);
           setSuccess(false);
-          // getErrorMessage(error.message, setError);
+          getErrorMessage(error.message, setError);
         }
       };
       saveData(userType);
@@ -175,17 +202,18 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
       </Box>
       <Box className={styles.namesSection}>
         <Box className={styles.inputBox}>
-          <Input
-            helperText={errorSportMessage}
-            isError={isErrorSport}
-            name={'sport'}
-            label={'Sport'}
-            value={sport}
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={options}
+            getOptionLabel={(option) => option.label}
+            onChange={(event, newValue) => {
+              if (newValue) setSport(newValue.label);
+            }}
             sx={nameInputStyles}
-            onChange={(e) =>
-              handleOnChange(e, setSport, setIsErrorSport, setErrorSportMessage)
-            }
-            type="text"
+            renderInput={(params) => (
+              <TextField {...params} label="Sport" value={sport} />
+            )}
           />
         </Box>
         <Box className={styles.inputBox}>
