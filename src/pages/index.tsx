@@ -10,14 +10,17 @@ import styles from '../styles/Home.module.sass';
 export default function Home() {
   const [show, setShow] = useState(false);
   const [user, setUser] = useState<string | null>(null);
+  const [isSubscribe, setIsSubscribe] = useState<string | null>(null);
 
   useEffect(() => {
     const user = localStorage.getItem('userType');
     setUser(user);
+    const subscribe = localStorage.getItem('subscribe');
+    setIsSubscribe(subscribe);
   }, []);
 
   useEffect(() => {
-    if (!user) {
+    if (!user || !isSubscribe) {
       const timeId = setTimeout(() => {
         setShow(true);
       }, INTERVAL_NEWS_LETTER_POP_UP);

@@ -86,7 +86,7 @@ export const coachProfileApi = {
 
   getTypeSports: async (): Promise<ISport[]> => {
     try {
-      const response = await instance().get('/sports/');
+      const response = await instance().get('/sports/types');
       const res = response.data;
       console.log(`[GET] type of sports -> res data  ${res}`);
       return res.sport_types;
