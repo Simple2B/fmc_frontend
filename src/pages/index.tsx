@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { NewsLetter } from '@/components/forms/news_letter/NewsLetter';
 import MainSection from '@/components/landing_page/main_section/MainSection';
+import { INTERVAL_NEWS_LETTER_POP_UP } from '@/store/constants';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import LandingPage from '../components/landing_page/LandingPage';
@@ -19,7 +20,7 @@ export default function Home() {
     if (!user) {
       const timeId = setTimeout(() => {
         setShow(true);
-      }, 5000);
+      }, INTERVAL_NEWS_LETTER_POP_UP);
 
       return () => {
         clearTimeout(timeId);

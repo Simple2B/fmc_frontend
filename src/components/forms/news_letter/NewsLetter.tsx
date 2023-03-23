@@ -101,6 +101,7 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
               label={'Email address'}
               value={email}
               sx={nameInputStyles}
+              // TODO: remove error
               onChange={(e) =>
                 handleOnChange(
                   e,
