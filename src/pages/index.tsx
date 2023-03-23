@@ -8,10 +8,12 @@ import styles from '../styles/Home.module.sass';
 
 export default function Home() {
   const [show, setShow] = useState(false);
-  const user = localStorage.getItem('userType');
-  console.log('====================================');
-  console.log(' user ', user);
-  console.log('====================================');
+  const [user, setUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem('userType');
+    setUser(user);
+  }, []);
 
   useEffect(() => {
     if (!user) {
