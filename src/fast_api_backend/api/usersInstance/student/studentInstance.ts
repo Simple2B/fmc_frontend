@@ -101,20 +101,6 @@ export const studentClientApi = {
     }
   },
 
-  studentContactList: async (): Promise<IContacts> => {
-    try {
-      const response = await instance().get(
-        '/message/student/list-of-contacts'
-      );
-      const res = response.data;
-      console.log('[GET] student list of contacts ->', res);
-      return res;
-    } catch (error: any) {
-      console.log(`[GET: ] student -> error message => ${error.message}`);
-      throw error.message;
-    }
-  },
-
   studentUpcomingLessons: async () => {
     try {
       const response = await instance().get('/lesson/lessons/upcoming');
@@ -126,17 +112,16 @@ export const studentClientApi = {
       throw error.message;
     }
   },
-
-  studentDeleteMessageCoach: async (coach_uuid: string): Promise<string> => {
+  studentContactList: async (): Promise<IContacts> => {
     try {
-      const response = await instance().delete(
-        `/message/student/messages/${coach_uuid}`
+      const response = await instance().get(
+        '/message/student/list-of-contacts'
       );
       const res = response.data;
-      console.log('[DELETE] student delete messages with coach:->', coach_uuid);
+      console.log('[GET] student list of contacts ->', res);
       return res;
     } catch (error: any) {
-      console.log(`[DELETE: ] student -> error message => ${error.message}`);
+      console.log(`[GET: ] student -> error message => ${error.message}`);
       throw error.message;
     }
   },

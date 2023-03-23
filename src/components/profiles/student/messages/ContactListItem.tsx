@@ -11,13 +11,11 @@ import {
   Typography,
 } from '@mui/material';
 
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
-import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useState } from 'react';
 interface ContactListItemProps {
   contactData: IContact;
-  onSelected: () => void;
+  onSelected: (value: string) => void;
   selected: boolean;
 }
 
@@ -26,11 +24,12 @@ export default function ContactListItem({
   onSelected,
   selected,
 }: ContactListItemProps) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const date = new Date(contactData.message.created_at);
+  const date = new Date(
+    contactData.message ? contactData.message.created_at : ''
+  );
   const last_message_date = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-  const queryClient = useQueryClient();
   const handleSelect = () => {
     onSelected(contactData.user.uuid);
   };
@@ -38,22 +37,9 @@ export default function ContactListItem({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const deleteTransaction = useMutation(
-    async () => {
-      await studentClientApi.studentDeleteMessageCoach(contactData.user.uuid);
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('contacts');
-      },
-    }
-  );
+
   const handleDelete = () => {
-    setAnchorEl(null);
-    deleteTransaction.mutate();
+    console.log('Deleted');
   };
   return (
     <Box onClick={handleSelect}>
@@ -136,7 +122,7 @@ export default function ContactListItem({
             fontWeight: 'bold',
           }}
           aria-haspopup="true"
-          onClick={handleClick}
+          // onClick={handleClick}
         >
           <MoreHorizIcon />
         </IconButton>

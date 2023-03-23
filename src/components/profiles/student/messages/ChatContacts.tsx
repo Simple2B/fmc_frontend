@@ -6,7 +6,7 @@ import ContactListItem from './ContactListItem';
 export interface IChatContacts {
   contacts: IContact[];
   selectedContactUUID: string;
-  onContactSelected: () => void;
+  onContactSelected: (value: string) => void;
 }
 
 export const ChatContacts: React.FC<IChatContacts> = ({

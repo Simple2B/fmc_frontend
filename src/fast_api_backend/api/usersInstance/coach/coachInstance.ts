@@ -1,3 +1,4 @@
+import { IContacts, IMessages } from '@/store/types/message/messsageType';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
@@ -92,6 +93,48 @@ export const coachClientApi = {
       console.log(
         `[POST: coachResetPassword] coach -> error message => ${error.message}`
       );
+      throw error.message;
+    }
+  },
+
+  // MESSAGES ROUTES
+  coachContactList: async (): Promise<IContacts> => {
+    try {
+      const response = await instance().get('/message/coach/list-of-contacts');
+      const res = response.data;
+      console.log('[GET] coach list of contacts ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] coach -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  coachGetMessageStudent: async (student_uuid: string): Promise<IMessages> => {
+    try {
+      const response = await instance().get(
+        `/message/coach/messages/${student_uuid}`
+      );
+      const res = response.data;
+      console.log('[GET] coach messages with student:->', student_uuid);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] coach -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  coachSendMessageStudent: async (data: {
+    receiver_id: string;
+    text: string;
+  }) => {
+    try {
+      const response = await instance().post(`/message/coach/create`, data);
+      const res = response.data;
+      console.log('[POST] coach send message to :->', data.receiver_id);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] coach -> error message => ${error.message}`);
       throw error.message;
     }
   },

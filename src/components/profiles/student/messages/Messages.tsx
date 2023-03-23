@@ -15,6 +15,7 @@ const Messages: React.FC<IMessages> = () => {
   >(null);
   const { data } = useQuery(['contacts'], async () => {
     const result = await studentClientApi.studentContactList();
+
     console.log('--------------> contacts', result);
     return result.contacts;
   });
