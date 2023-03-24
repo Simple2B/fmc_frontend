@@ -19,8 +19,6 @@ export default function Home() {
     setIsSubscribe(subscribe);
   }, []);
 
-  INTERVAL_NEWS_LETTER_POP_UP;
-
   useEffect(() => {
     if (!user) {
       if (isSubscribe) {
@@ -28,7 +26,7 @@ export default function Home() {
       }
       const timeId = setTimeout(() => {
         setShow(true);
-      }, 1000);
+      }, INTERVAL_NEWS_LETTER_POP_UP);
 
       return () => {
         clearTimeout(timeId);
