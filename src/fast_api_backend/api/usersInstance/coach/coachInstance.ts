@@ -41,8 +41,10 @@ export const coachClientApi = {
       console.log(`[GET] check coach -> res data  ${res}`);
       return res;
     } catch (error: any) {
-      console.log(`[GET] check coach -> error message => ${error.message}`);
-      throw error;
+      console.log(
+        `[GET] check coach -> error message => ${error.response.status}`
+      );
+      throw error.response.status;
     }
   },
 
@@ -53,9 +55,7 @@ export const coachClientApi = {
       console.log(`[GET: get profile] coach -> res data  ${res}`);
       return res;
     } catch (error: any) {
-      console.log(
-        `[GET: get profile] coach -> error message => ${error.message}`
-      );
+      console.log(`[GET: get profile] coach -> error message => ${error}`);
       throw error;
     }
   },

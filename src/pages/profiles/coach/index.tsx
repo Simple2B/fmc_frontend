@@ -5,6 +5,7 @@ import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
 import GetHelp from '@/components/profiles/get_help/GetHelp';
 import Messages from '@/components/profiles/messages/Messages';
+import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
@@ -57,10 +58,29 @@ const listItemsCoach = [
 
 export default function ProfileCoach() {
   const router = useRouter();
+
+  useEffect(() => {
+    const whoAmI = async () => {
+      try {
+        const response = await instance().get('/whoami/coach');
+        const res = response.data;
+        console.log(`[GET] check coach -> res data  ${res}`);
+        return res;
+      } catch (error: any) {
+        console.log(
+          `[GET] check coach -> error message => ${error.response.status}`
+        );
+        localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        router.push('/');
+        return;
+      }
+    };
+    whoAmI();
+  }, []);
+
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
-
   const [href, setHref] = useState<string>('my_appointments');
-
   const [profile, setProfile] = useState<IStudentProfile>({
     uuid: '',
     username: '',

@@ -11,7 +11,6 @@ export async function getCurrentUser(
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
   setError?: React.Dispatch<React.SetStateAction<string | null>>,
-  // error?: string | null
   href?: string
 ) {
   if (setSuccess) setSuccess(false);

@@ -4,6 +4,7 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
+import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { UserType } from '@/store/types/user';
 import { IStudentProfile } from '@/store/types/users/student/studentType';
@@ -49,9 +50,30 @@ const listItemsStudent = [
 ];
 
 export default function ProfileStudent() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const whoAmI = async () => {
+      try {
+        const response = await instance().get('/whoami/student');
+        const res = response.data;
+        console.log(`[GET] check student -> res data  ${res}`);
+        return res;
+      } catch (error: any) {
+        console.log(
+          `[GET] check student -> error message => ${error.response.status}`
+        );
+        localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        router.push('/');
+        return;
+      }
+    };
+    whoAmI();
+  }, []);
+
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const matches414 = useMediaQuery('(max-width:414px)');
-  const router = useRouter();
   const [profile, setProfile] = useState<IStudentProfile>({
     uuid: '',
     username: '',
