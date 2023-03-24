@@ -31,7 +31,7 @@ const MyLessons: React.FC<IMyLessons> = () => {
   React.useEffect(() => {
     const getUpcomingSessions = async () => {
       const result = await studentClientApi.studentUpcomingLessons();
-      console.log('-------------------------> Sessions:', result);
+
       setUpcomingSessions(result);
     };
     getUpcomingSessions();
@@ -40,20 +40,24 @@ const MyLessons: React.FC<IMyLessons> = () => {
   const pastSessions: ISessions = {
     lessons: [
       {
-        name: '1 on 1 Tennis Lesson',
-        location: {
-          name: 'DeWitt Clinton Park, W 54th St, New York, NY',
-          city: 'New York',
-          street: 'Wall Street',
-          postal_code: '123',
+        lesson: {
+          date: 'Aug 16, 2021',
+          name: '',
+          location: {
+            name: 'DeWitt Clinton Park, W 54th St, New York, NY',
+            city: 'New York',
+            street: 'Wall Street',
+            postal_code: '123',
+          },
+          sport: {
+            name: 'Tennis',
+          },
+          price: 999,
+          notes: 'Bring a tennis racket and wear tennis shoes.',
         },
-        sport: {
-          name: 'Tennis',
-        },
-        appointment_time: '12:30PM- 2:30PM',
+        appointment_time: '12-03-2222',
+
         date: 'Aug 16, 2021',
-        price: 999,
-        notes: 'Bring a tennis racket and wear tennis shoes.',
         coach: {
           uuid: 'abc-def-ghj',
           username: 'johndoe',
