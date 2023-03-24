@@ -38,6 +38,7 @@ const drawerWidth = 240;
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
+  const matches414 = useMediaQuery('(max-width:414px)');
   const matches320 = useMediaQuery('(max-width:320px)');
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
@@ -292,7 +293,13 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             <SearchInput />
             <Box
               sx={{
-                width: matches845 ? '200px' : matches1920 ? '225px' : '237px',
+                width: matches414
+                  ? '142px'
+                  : matches845
+                  ? '200px'
+                  : matches1920
+                  ? '225px'
+                  : '237px',
                 height: matches320 ? '30px' : matches845 ? '40px' : '45px',
                 display: 'flex',
                 justifyContent: 'space-between',

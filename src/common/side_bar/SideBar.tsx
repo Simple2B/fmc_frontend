@@ -15,9 +15,10 @@ export interface IItem {
 
 export interface ISideBar {
   listItems: IItem[];
+  closeOpenMobSideBar?: () => void;
 }
 
-const SideBar: React.FC<ISideBar> = ({ listItems }) => {
+const SideBar: React.FC<ISideBar> = ({ listItems, closeOpenMobSideBar }) => {
   // const matches970 = useMediaQuery('(max-width:970px)');
 
   const router = useRouter();
@@ -61,6 +62,7 @@ const SideBar: React.FC<ISideBar> = ({ listItems }) => {
                 <ListItemButton
                   component="a"
                   onClick={() => {
+                    if (closeOpenMobSideBar) closeOpenMobSideBar();
                     router.push(item.href, undefined, { shallow: true });
                   }}
                 >

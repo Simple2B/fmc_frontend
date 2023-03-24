@@ -49,7 +49,7 @@ const listItemsStudent = [
 ];
 
 export default function ProfileStudent() {
-  // const matches = useMediaQuery('(min-width:900px)');
+  const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const matches414 = useMediaQuery('(max-width:414px)');
   const router = useRouter();
   const [profile, setProfile] = useState<IStudentProfile>({
@@ -87,6 +87,10 @@ export default function ProfileStudent() {
     );
   }, []);
 
+  const closeOpenMobSideBar = () => {
+    setIsOpenMobSideBar(!isOpenMobSideBar);
+  };
+
   return (
     <>
       <Head>
@@ -98,6 +102,8 @@ export default function ProfileStudent() {
       <AuthenticatedLayout
         userType={UserType.student}
         listItems={listItemsStudent}
+        isOpenMobSideBar={isOpenMobSideBar}
+        closeOpenMobSideBar={closeOpenMobSideBar}
       >
         <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
           {profileComponents[href]}

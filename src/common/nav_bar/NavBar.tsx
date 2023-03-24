@@ -37,7 +37,7 @@ export interface INavBar {
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
   setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
-  setIsOpenMobSideBar: React.Dispatch<React.SetStateAction<boolean>>;
+  closeOpenMobSideBar: () => void;
   isOpenMobSideBar: boolean;
 }
 
@@ -47,7 +47,7 @@ const NavBar: React.FC<INavBar> = ({
   userType,
   setIsLoad,
   setProfile,
-  setIsOpenMobSideBar,
+  closeOpenMobSideBar,
   isOpenMobSideBar,
 }) => {
   const [isOpen, setOpen] = React.useState<boolean>(false);
@@ -81,7 +81,7 @@ const NavBar: React.FC<INavBar> = ({
           color="#000"
           sx={{ display: matches970 ? 'flex' : 'none', cursor: 'pointer' }}
           // sx={{ display: { xs: 'flex', sm: 'none' } }}
-          onClick={() => setIsOpenMobSideBar(!isOpenMobSideBar)}
+          onClick={closeOpenMobSideBar}
         >
           {!isOpenMobSideBar ? <IconMenu /> : <Close />}
         </Typography>

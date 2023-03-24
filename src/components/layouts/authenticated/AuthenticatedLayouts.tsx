@@ -15,19 +15,22 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useState } from 'react';
 import style from './AuthenticatedLayouts.module.sass';
 
 export interface IStudentAuthenticatedLayout {
   children: any;
   userType: string;
   listItems: IItem[];
+  isOpenMobSideBar: boolean;
+  closeOpenMobSideBar: () => void;
 }
 
 const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   children,
   userType,
   listItems,
+  isOpenMobSideBar,
+  closeOpenMobSideBar,
 }) => {
   const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
@@ -76,8 +79,6 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     }
   }, [modalIsOpen, error]);
 
-  const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
-
   const MobSideBar = () => {
     return (
       <Box
@@ -90,7 +91,10 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
           zIndex: 3,
         }}
       >
-        <SideBar listItems={listItems} />
+        <SideBar
+          listItems={listItems}
+          closeOpenMobSideBar={closeOpenMobSideBar}
+        />
       </Box>
     );
   };
@@ -103,7 +107,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         userType={userType}
         setIsLoad={setIsLoad}
         setProfile={setProfile}
-        setIsOpenMobSideBar={setIsOpenMobSideBar}
+        closeOpenMobSideBar={closeOpenMobSideBar}
         isOpenMobSideBar={isOpenMobSideBar}
       />
       <Stack direction="row" justifyContent="space-between">
@@ -115,7 +119,10 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
             height: '100vh',
           }}
         >
-          <SideBar listItems={listItems} />
+          <SideBar
+            listItems={listItems}
+            // closeOpenMobSideBar={closeOpenMobSideBar}
+          />
         </Box>
         {isOpenMobSideBar && <MobSideBar />}
         <Box

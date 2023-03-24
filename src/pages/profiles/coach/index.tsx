@@ -57,6 +57,7 @@ const listItemsCoach = [
 
 export default function ProfileCoach() {
   const router = useRouter();
+  const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
 
   const [href, setHref] = useState<string>('my_appointments');
 
@@ -96,6 +97,10 @@ export default function ProfileCoach() {
     setHref(router.asPath.split('?')[1]);
   }, [router.asPath]);
 
+  const closeOpenMobSideBar = () => {
+    setIsOpenMobSideBar(!isOpenMobSideBar);
+  };
+
   return (
     <>
       <Head>
@@ -104,7 +109,12 @@ export default function ProfileCoach() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AuthenticatedLayout userType={UserType.coach} listItems={listItemsCoach}>
+      <AuthenticatedLayout
+        userType={UserType.coach}
+        listItems={listItemsCoach}
+        isOpenMobSideBar={isOpenMobSideBar}
+        closeOpenMobSideBar={closeOpenMobSideBar}
+      >
         <Box flex={1} p={2}>
           {profileComponents[href]}
         </Box>
