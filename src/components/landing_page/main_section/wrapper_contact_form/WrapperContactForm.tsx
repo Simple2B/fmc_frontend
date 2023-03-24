@@ -1,3 +1,5 @@
+import { userApi } from '@/fast_api_backend/api/usersInstance/userInstance';
+import { getErrorMessage } from '@/helper/error_function';
 import { Box, Button, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Input from '../../../../common/input/Input';
@@ -20,7 +22,7 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const sendQuestion = () => {
+  const sendQuestion = async () => {
     console.log(' question => ', {
       email: email,
       question: question,
@@ -33,6 +35,30 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
       setIsLoad(false);
       setIsErrorEmail(true);
       setErrorEmailMessage('Email cannot be empty');
+    }
+    if (question === '') {
+      setIsLoad(false);
+      setError('Question cannot be empty');
+    }
+    if (email !== '' && question !== '') {
+      const data = {
+        email_from: email,
+        message: question,
+      };
+      try {
+        setIsLoad(true);
+        const response = await userApi.question(data);
+        console.log(
+          `POST landing page [/personal_info] successfully`,
+          response
+        );
+        setIsLoad(false);
+        setSuccess(true);
+      } catch (error: any) {
+        setIsLoad(false);
+        setSuccess(false);
+        getErrorMessage(error.message, setError, 'getHelp');
+      }
     }
     setEmail('');
     setQuestion('');
@@ -51,6 +77,11 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
     }
   }, [modalIsOpen, error]);
 
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+  };
+
   return (
     <Box className={styles.wrapperCards}>
       <Box
@@ -63,6 +94,7 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
       <Box
         className={`${styles.wrapperCard} ${styles.wrapperCard2} ${styles.wrapperText}`}
       >
+        <Box id="contact_us" />
         <Box className={styles.title}>Still have questions?</Box>
         <Box className={styles.description}>
           Fill the form below and we’ll contact you shortly
@@ -132,6 +164,14 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
           <MessageBox
             message={error}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+      {isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Send question successfully'}
+            handleClick={closeSuccessMessage}
           />
         </CustomModel>
       )}
