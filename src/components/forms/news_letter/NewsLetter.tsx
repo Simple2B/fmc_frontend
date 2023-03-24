@@ -18,10 +18,6 @@ const nameInputStyles = {
   '& .MuiInputBase-root': {
     position: 'relative',
   },
-  // '&. .css-11dl6sg-MuiFormControl-root-MuiTextField-root': {
-  //   borderBottomRightRadius: 'none',
-  //   borderTopRightRadius: 'none',
-  // },
   '& .MuiFormHelperText-root': {
     position: 'absolute',
     left: 0,
@@ -31,10 +27,14 @@ const nameInputStyles = {
 };
 
 interface INewsLetter {
+  show: boolean;
   closeModalNewsletter: () => void;
 }
 
-export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
+export const NewsLetter: React.FC<INewsLetter> = ({
+  show,
+  closeModalNewsletter,
+}) => {
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -111,6 +111,7 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
           console.log('[POST] subscribe newsletter successfully', response);
           setIsLoad(false);
           setSuccess(true);
+          closeModalNewsletter();
           localStorage.setItem('subscribe', 'true');
         } catch (error: any) {
           setIsLoad(false);
@@ -131,14 +132,21 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
     setEmail('');
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      if (isSuccess) {
+        setSuccess(false);
+      }
+    }, 3000);
+  }, [isSuccess]);
+
   return (
     <>
-      <CustomModel isOpen={modalIsOpen}>
+      <CustomModel isOpen={show}>
         <Box className={styles.modalMessageWrapper}>
           <Box
             className={styles.crossWrapper}
             onClick={() => {
-              setModalIsOpen(!modalIsOpen);
               closeModalNewsletter();
             }}
           >
@@ -206,7 +214,6 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
               className={styles.crossWrapper}
               onClick={() => {
                 setModalIsOpenSuccess(!modalIsOpen);
-                closeModalNewsletter();
               }}
             >
               <Close sx={{ width: '18px', height: '18px' }} />

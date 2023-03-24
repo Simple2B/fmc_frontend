@@ -11,9 +11,6 @@ export default function Home() {
   const [show, setShow] = useState(false);
   const [user, setUser] = useState<string | null>(null);
   const [isSubscribe, setIsSubscribe] = useState<string | null>(null);
-  isSubscribe;
-
-  console.log(' isSubscribe ', isSubscribe);
 
   useEffect(() => {
     const user = localStorage.getItem('userType');
@@ -22,6 +19,8 @@ export default function Home() {
     setIsSubscribe(subscribe);
   }, []);
 
+  INTERVAL_NEWS_LETTER_POP_UP;
+
   useEffect(() => {
     if (!user) {
       if (isSubscribe) {
@@ -29,7 +28,7 @@ export default function Home() {
       }
       const timeId = setTimeout(() => {
         setShow(true);
-      }, INTERVAL_NEWS_LETTER_POP_UP);
+      }, 1000);
 
       return () => {
         clearTimeout(timeId);
@@ -52,7 +51,7 @@ export default function Home() {
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
         <MainSection />
-        {show && <NewsLetter closeModalNewsletter={closeModalNewsletter} />}
+        <NewsLetter closeModalNewsletter={closeModalNewsletter} show={show} />
       </main>
     </>
   );
