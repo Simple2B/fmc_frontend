@@ -1,8 +1,6 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { UserType } from '@/store/types/user';
-import { ICoachProfile } from '@/store/types/users/coach/coachType';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile, UserType } from '@/store/types/user';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
@@ -16,9 +14,9 @@ export interface IMessagesProps {
 }
 
 const Messages: React.FC<IMessagesProps> = ({ userType }) => {
-  const [selectedContact, setSelectedContact] = useState<
-    ICoachProfile | IStudentProfile | null
-  >(null);
+  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
+    null
+  );
   const { data } = useQuery(
     ['contacts'],
     async () => {

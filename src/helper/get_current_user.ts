@@ -1,17 +1,14 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { UserType } from '@/store/types/user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
-import { redirect } from 'next/navigation';
+import { IUserProfile, UserType } from '@/store/types/user';
 import { getErrorMessage } from './error_function';
 
 export async function getCurrentUser(
   userType: string,
-  setProfile?: React.Dispatch<React.SetStateAction<IStudentProfile>>,
+  setProfile?: React.Dispatch<React.SetStateAction<IUserProfile>>,
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
-  setError?: React.Dispatch<React.SetStateAction<string | null>>,
-  href?: string
+  setError?: React.Dispatch<React.SetStateAction<string | null>>
 ) {
   if (setSuccess) setSuccess(false);
   try {
@@ -27,7 +24,6 @@ export async function getCurrentUser(
         } catch (error: any) {
           if (setIsLoad) setIsLoad(false);
           if (setError) getErrorMessage(error.message, setError);
-          redirect('/sign_in/student');
         }
       }
     }
@@ -43,7 +39,6 @@ export async function getCurrentUser(
         } catch (error: any) {
           if (setIsLoad) setIsLoad(false);
           if (setError) getErrorMessage(error.message, setError);
-          redirect('/sign_in/coach');
         }
       }
     }
@@ -51,7 +46,6 @@ export async function getCurrentUser(
     if (setIsLoad) setIsLoad(false);
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
-    if (href) window.location.href = href;
   }
   if (setIsLoad) setIsLoad(false);
 }

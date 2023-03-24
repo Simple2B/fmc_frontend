@@ -2,14 +2,15 @@ import RightBar from '@/common/right_bar/RightBar';
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { ISessions } from '@/store/types/session/sessionTypes';
+import { IUserProfile } from '@/store/types/user';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
 
-import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
+import styles from './MyLessons.module.sass';
 
 const boxStyle = {
   width: '100%',
@@ -21,10 +22,10 @@ const boxStyle = {
 };
 
 export interface IMyLessons {
-  name: string;
+  profile: IUserProfile;
 }
 
-const MyLessons: React.FC<IMyLessons> = ({ name }) => {
+const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   // const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
   const [upcomingSessions, setUpcomingSessions] = useState<ISessions | null>(
@@ -80,12 +81,13 @@ const MyLessons: React.FC<IMyLessons> = ({ name }) => {
     <Box className={styles.wrapper} flex={1} p={2}>
       <Box>
         <Box sx={boxStyle}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ mr: '5px', fontSize: '32px', fontWeight: '600' }}>
-              Hello Adam
-            </Typography>
-          </Box>
-          <WelcomeBox name={name} />
+          <WelcomeBox
+            name={
+              profile.first_name.length > 0
+                ? `${profile.first_name} ${profile.last_name}`
+                : profile.username
+            }
+          />
           <Box>
             <Typography sx={{ mr: '5px', fontSize: '14px', fontWeight: '700' }}>
               Upcoming sessions

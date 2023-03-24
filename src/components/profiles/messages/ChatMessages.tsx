@@ -1,12 +1,11 @@
-import { ICoachProfile } from '@/store/types/users/coach/coachType';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile } from '@/store/types/user';
 import { Box, Typography } from '@mui/material';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessageBox } from './ChatMessageBox';
 import { ChatSendMessageArea } from './ChatSendMessageArea';
 
 interface IChatMessagesProps {
-  selectedContact: ICoachProfile | IStudentProfile | null;
+  selectedContact: IUserProfile | null;
 }
 
 export function ChatMessages({ selectedContact }: IChatMessagesProps) {

@@ -1,6 +1,5 @@
 import { logout } from '@/helper/logout/logout';
-import { UserType } from '@/store/types/user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -28,13 +27,13 @@ import style from '../LandingPage.module.sass';
 
 export interface ITopBar {
   handleDrawerToggle: () => void;
-  profile: IStudentProfile;
+  profile: IUserProfile;
   // eslint-disable-next-line no-unused-vars
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
   setUserType: (value: React.SetStateAction<string | null | undefined>) => void;
   // eslint-disable-next-line no-unused-vars
-  setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
+  setProfile: (value: React.SetStateAction<IUserProfile>) => void;
   userType: string | null | undefined;
 }
 
@@ -153,7 +152,11 @@ const TopBar: React.FC<ITopBar> = ({
                         position: 'relative',
                       }}
                     >
-                      <Box sx={{ color: 'white' }}>{profile.username}</Box>
+                      <Box sx={{ color: 'white' }}>
+                        {profile.first_name.length > 0
+                          ? `${profile.first_name} ${profile.last_name}`
+                          : profile.username}
+                      </Box>
                       {isOpen ? (
                         <ArrowDropDown sx={{ color: 'white' }} />
                       ) : (

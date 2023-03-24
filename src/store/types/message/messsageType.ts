@@ -1,5 +1,4 @@
-import { ICoachProfile } from '../users/coach/coachType';
-import { IStudentProfile } from '../users/student/studentType';
+import { IUserProfile } from '../user';
 
 interface IMessageBase {
   uuid: string;
@@ -8,8 +7,8 @@ interface IMessageBase {
   is_read: boolean;
 }
 export interface IMessage extends IMessageBase {
-  author: IStudentProfile | ICoachProfile;
-  receiver: IStudentProfile | ICoachProfile;
+  author: IUserProfile;
+  receiver: IUserProfile;
 }
 
 export interface IMessages {
@@ -17,7 +16,7 @@ export interface IMessages {
 }
 
 export interface IContact {
-  user: IStudentProfile | ICoachProfile;
+  user: IUserProfile;
   message: IMessageBase;
 }
 export interface IContacts {

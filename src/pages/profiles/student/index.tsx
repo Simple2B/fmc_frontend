@@ -4,10 +4,9 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
-import { getCurrentUser } from '@/helper/get_current_user';
-import { UserType } from '@/store/types/user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile, UserType } from '@/store/types/user';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -17,9 +16,12 @@ import {
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+
+const LoginPage = dynamic(() => import('../../sign_in/student'));
 
 const listItemsStudent = [
   {
@@ -50,31 +52,13 @@ const listItemsStudent = [
 ];
 
 export default function ProfileStudent() {
-  const router = useRouter();
+  const matches414 = useMediaQuery('(max-width:414px)');
 
-  useEffect(() => {
-    const whoAmI = async () => {
-      try {
-        const response = await instance().get('/whoami/student');
-        const res = response.data;
-        console.log(`[GET] check student -> res data  ${res}`);
-        return res;
-      } catch (error: any) {
-        console.log(
-          `[GET] check student -> error message => ${error.response.status}`
-        );
-        localStorage.removeItem('token');
-        localStorage.removeItem('userType');
-        router.push('/');
-        return;
-      }
-    };
-    whoAmI();
-  }, []);
+  const router = useRouter();
+  const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
-  const matches414 = useMediaQuery('(max-width:414px)');
-  const [profile, setProfile] = useState<IStudentProfile>({
+  const [profile, setProfile] = useState<IUserProfile>({
     uuid: '',
     username: '',
     email: '',
@@ -83,10 +67,37 @@ export default function ProfileStudent() {
     profile_picture: '',
     is_verified: false,
   });
+
+  console.log('====================================');
+  console.log('[student] profile ', profile);
+  console.log('====================================');
+
+  useEffect(() => {
+    const whoAmI = async () => {
+      try {
+        const response = await instance().get('/whoami/student');
+        const res = response.data;
+        console.log(`[GET] check student -> res data  ${res}`);
+        setIsLogIn(true);
+        const studentProfile = await studentClientApi.studentGetProfile();
+        setProfile(studentProfile);
+      } catch (error: any) {
+        console.log(
+          `[GET] check student -> error message => ${error.response.status}`
+        );
+        localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        setIsLogIn(false);
+        router.push('/sign_in/student');
+      }
+    };
+    whoAmI();
+  }, []);
+
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
-    ['my_lessons']: <MyLessons name={profile.username} />,
+    ['my_lessons']: <MyLessons profile={profile} />,
     ['favorite_coaches']: <FavoriteCoaches />,
     ['messages']: <Messages userType={UserType.student} />,
     ['settings']: <Settings userType={UserType.student} />,
@@ -97,17 +108,15 @@ export default function ProfileStudent() {
     setHref(router.asPath.split('?')[1]);
   }, [router.asPath]);
 
-  useEffect(() => {
-    const redirectUrl = process.env.BASE_URL;
-    getCurrentUser(
-      UserType.student,
-      setProfile,
-      undefined,
-      undefined,
-      undefined,
-      redirectUrl
-    );
-  }, []);
+  // useEffect(() => {
+  //   getCurrentUser(
+  //     UserType.student,
+  //     setProfile,
+  //     undefined,
+  //     undefined,
+  //     undefined
+  //   );
+  // }, []);
 
   const closeOpenMobSideBar = () => {
     setIsOpenMobSideBar(!isOpenMobSideBar);
@@ -121,16 +130,20 @@ export default function ProfileStudent() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AuthenticatedLayout
-        userType={UserType.student}
-        listItems={listItemsStudent}
-        isOpenMobSideBar={isOpenMobSideBar}
-        closeOpenMobSideBar={closeOpenMobSideBar}
-      >
-        <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
-          {profileComponents[href]}
-        </Box>
-      </AuthenticatedLayout>
+      {isLogIn ? (
+        <AuthenticatedLayout
+          userType={UserType.student}
+          listItems={listItemsStudent}
+          isOpenMobSideBar={isOpenMobSideBar}
+          closeOpenMobSideBar={closeOpenMobSideBar}
+        >
+          <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
+            {profileComponents[href]}
+          </Box>
+        </AuthenticatedLayout>
+      ) : (
+        <LoginPage />
+      )}
     </>
   );
 }

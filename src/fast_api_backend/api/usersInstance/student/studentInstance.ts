@@ -1,8 +1,6 @@
 import { IContacts, IMessages } from '@/store/types/message/messsageType';
-import {
-  IStudent,
-  IStudentProfile,
-} from '@/store/types/users/student/studentType';
+import { IUserProfile } from '@/store/types/user';
+import { IStudent } from '@/store/types/users/student/studentType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -50,7 +48,7 @@ export const studentClientApi = {
     }
   },
 
-  studentGetProfile: async (): Promise<IStudentProfile> => {
+  studentGetProfile: async (): Promise<IUserProfile> => {
     try {
       const response = await instance().get('/profile/student');
       const res = response.data;

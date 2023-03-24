@@ -1,5 +1,6 @@
 import CardSubscription from '@/common/card_subscription/CardSubscription';
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
+import { IUserProfile } from '@/store/types/user';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
@@ -15,17 +16,23 @@ const boxStyle = {
 };
 
 export interface IMyAppointments {
-  name: string;
+  profile: IUserProfile;
 }
 
-const MyAppointments: React.FC<IMyAppointments> = ({ name }) => {
+const MyAppointments: React.FC<IMyAppointments> = ({ profile }) => {
   // const router = useRouter();
 
   return (
     <Box className={styles.wrapper} flex={1} p={2}>
       <Box>
         <Box sx={boxStyle}>
-          <WelcomeBox name={name} />
+          <WelcomeBox
+            name={
+              profile.first_name.length > 0
+                ? `${profile.first_name} ${profile.last_name}`
+                : profile.username
+            }
+          />
         </Box>
         <Box className={styles.subTitle}>
           <Typography className={styles.title}>
