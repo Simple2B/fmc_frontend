@@ -2,3 +2,49 @@
 @import "../../../../styles/mixins"
 
 .wrapper
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    align-items: flex-start
+    .title
+        font-family: $font-inter
+        font-weight: 600
+        font-size: 20px
+        margin-bottom: 29px
+    .wrapperCards
+        width: 100%
+        .card
+            width: 100%
+            margin-bottom: 29px
+            padding: 27px 21px
+            display: flex
+            flex-direction: column
+            justify-content: flex-end
+            border: 0.5px solid #CECECE
+            border-radius: 8px
+            .cardTitle, .cardRating, .cardText, .cardDate
+                font-family: $font-inter
+            .cardTitle
+                font-size: 18px
+                font-weight: 600
+                color: #000000
+                padding-left: 3px
+                padding-bottom: 8px
+            .cardRating
+                padding-bottom: 13px
+            .cardText
+                font-size: 18px
+                font-weight: 400
+                color: #394454
+                padding-left: 3px
+                padding-bottom: 13px
+            .cardDate
+                align-self: flex-end
+                font-weight: 400
+                font-size: 14px
+                color: #5D6D6F
+
+@media screen and ( max-width: 600px )
+    .wrapper
+        flex-wrap: wrap
