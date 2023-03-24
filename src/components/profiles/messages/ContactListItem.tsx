@@ -11,8 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { UserType } from '@/store/types/user';
 import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+import { MessageContext } from './messageContext';
 interface ContactListItemProps {
   contactData: IContact;
   onSelected: (value: string) => void; // eslint-disable-line no-unused-vars
@@ -25,13 +30,34 @@ export default function ContactListItem({
   selected,
 }: ContactListItemProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const queryClient = useQueryClient();
+  const userType = useContext(MessageContext);
   const open = Boolean(anchorEl);
   const date = new Date(
     contactData.message ? contactData.message.created_at : ''
   );
   const last_message_date = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+
+  const readMessageMutation = useMutation(
+    async () => {
+      const request =
+        userType === UserType.student
+          ? studentClientApi.studentReadMessageCoach
+          : coachClientApi.coachReadMessageStudent;
+
+      await request(contactData.user.uuid);
+    },
+    {
+      onSuccess: () => {
+        // todo
+        queryClient.invalidateQueries('newNotificationsCount');
+      },
+    }
+  );
+
   const handleSelect = () => {
     onSelected(contactData.user.uuid);
+    readMessageMutation.mutate();
   };
 
   const handleClose = () => {
