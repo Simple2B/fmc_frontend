@@ -1,10 +1,9 @@
 import RightBar from '@/common/right_bar/RightBar';
+import WelcomeBox from '@/common/welcom_box/WelcomeBox';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
-import Image from 'next/image';
 import * as React from 'react';
-import armIcon from '../../../../../public/arm_icon.png';
 import CardsSessions from './card/CardsSessions';
 import styles from './MyLessons.module.sass';
 
@@ -17,9 +16,11 @@ const boxStyle = {
   gap: 3,
 };
 
-export interface IMyLessons {}
+export interface IMyLessons {
+  name: string;
+}
 
-const MyLessons: React.FC<IMyLessons> = () => {
+const MyLessons: React.FC<IMyLessons> = ({ name }) => {
   // const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
 
@@ -60,12 +61,7 @@ const MyLessons: React.FC<IMyLessons> = () => {
     <Box className={styles.wrapper} flex={1} p={2}>
       <Box>
         <Box sx={boxStyle}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography sx={{ mr: '5px', fontSize: '32px', fontWeight: '600' }}>
-              Hello Adam
-            </Typography>
-            <Image src={armIcon} alt={'hello'} width={25} height={25} />
-          </Box>
+          <WelcomeBox name={name} />
           <Box>
             <Typography sx={{ mr: '5px', fontSize: '14px', fontWeight: '700' }}>
               Upcoming sessions
