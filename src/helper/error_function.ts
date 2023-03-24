@@ -34,6 +34,8 @@ export const getErrorMessage = (
     setError('You haven`t been signed up before');
   } else if (Number(errorNumber) === 500) {
     setError('Something went wrong');
+  } else if (Number(errorNumber) === 208) {
+    setError('Newsletter subscription already exists');
   } else {
     setError(`${axiosError}`);
   }
