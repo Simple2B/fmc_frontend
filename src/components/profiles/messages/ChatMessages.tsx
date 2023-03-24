@@ -16,7 +16,8 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
         <Box
           sx={{
             width: '100%',
-            height: 850,
+            height: '850px',
+            position: 'relative',
 
             border: '0.5px solid #DBDBDB',
           }}
@@ -34,7 +35,17 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
           >
             <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
           </Box>
-          <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
+          <Box
+            sx={{
+              position: 'absolute',
+              width: '100%',
+              bottom: '0',
+              right: '0',
+              left: '0',
+            }}
+          >
+            <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
+          </Box>
         </Box>
       ) : (
         <Box
