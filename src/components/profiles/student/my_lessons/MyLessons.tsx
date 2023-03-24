@@ -1,17 +1,16 @@
 import RightBar from '@/common/right_bar/RightBar';
+import WelcomeBox from '@/common/welcom_box/WelcomeBox';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { ISessions } from '@/store/types/session/sessionTypes';
-import WelcomeBox from '@/common/welcom_box/WelcomeBox';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
-import armIcon from '../../../../../public/arm_icon.png';
-import CardsSessions from './card/CardsSessions';
 
 import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
+
 const boxStyle = {
   width: '100%',
   display: 'flex',
@@ -85,7 +84,6 @@ const MyLessons: React.FC<IMyLessons> = ({ name }) => {
             <Typography sx={{ mr: '5px', fontSize: '32px', fontWeight: '600' }}>
               Hello Adam
             </Typography>
-            <Image src={armIcon} alt={'hello'} width={25} height={25} />
           </Box>
           <WelcomeBox name={name} />
           <Box>
