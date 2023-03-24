@@ -243,7 +243,9 @@ const MainSection: React.FC<IMainSection> = () => {
       </Box>
       <Box className={styles.wrapperContactForm}>
         <WrapperContactForm />
+        <Box id="contact_us" />
       </Box>
+
       <Box className={styles.mainSectionFooter}>
         <Box className={styles.wrapperFooter}>
           <Box className={styles.cards}>
@@ -266,7 +268,9 @@ const MainSection: React.FC<IMainSection> = () => {
             <Box className={styles.card2}>
               <Box className={styles.c2}>Privacy&policy</Box>
               <Box className={styles.c2}>Become an investor</Box>
-              <Box className={styles.c2}>Contact us</Box>
+              <Box className={styles.c2} component={'a'} href="#contact_us">
+                Contact us
+              </Box>
             </Box>
             <Box className={styles.card3}>
               <Box className={styles.c3}>Follow us</Box>

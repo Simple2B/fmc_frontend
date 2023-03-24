@@ -68,10 +68,6 @@ export default function ProfileStudent() {
     is_verified: false,
   });
 
-  console.log('====================================');
-  console.log('[student] profile ', profile);
-  console.log('====================================');
-
   useEffect(() => {
     const whoAmI = async () => {
       try {
@@ -107,16 +103,6 @@ export default function ProfileStudent() {
   useEffect(() => {
     setHref(router.asPath.split('?')[1]);
   }, [router.asPath]);
-
-  // useEffect(() => {
-  //   getCurrentUser(
-  //     UserType.student,
-  //     setProfile,
-  //     undefined,
-  //     undefined,
-  //     undefined
-  //   );
-  // }, []);
 
   const closeOpenMobSideBar = () => {
     setIsOpenMobSideBar(!isOpenMobSideBar);
