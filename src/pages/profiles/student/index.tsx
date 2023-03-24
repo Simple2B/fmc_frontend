@@ -63,7 +63,7 @@ export default function ProfileStudent() {
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
-    ['my_lessons']: <MyLessons />,
+    ['my_lessons']: <MyLessons name={profile.username} />,
     ['favorite_coaches']: <FavoriteCoaches />,
     ['messages']: <Messages />,
     ['settings']: <Settings userType={UserType.student} />,

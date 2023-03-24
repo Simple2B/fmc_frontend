@@ -1,12 +1,18 @@
 /* eslint-disable no-unused-vars */
 import Input from '@/common/input/Input';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
-import { Close } from '@mui/icons-material';
+import { newsApi } from '@/fast_api_backend/api/usersInstance/newsInstance';
+import { getErrorMessage } from '@/helper/error_function';
+import { Close, DoneAll } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import picture from '../../../../public/picture_newsletter.png';
 import styles from './NewsLetter.module.sass';
+
+const re = /\S+@\S+\.\S+/;
 
 const nameInputStyles = {
   '& .MuiInputBase-root': {
@@ -29,9 +35,10 @@ interface INewsLetter {
 }
 
 export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
-  // const [isLoad, setIsLoad] = useState<boolean>(false);
-  // const [isSuccess, setSuccess] = useState<boolean>(false);
+  const [isLoad, setIsLoad] = useState<boolean>(false);
+  const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
   const [email, setEmail] = useState<string>('');
@@ -59,69 +66,165 @@ export const NewsLetter: React.FC<INewsLetter> = ({ closeModalNewsletter }) => {
       setTimeout(() => {
         setModalIsOpen(true);
         setError(null);
-        // setIsLoad(false);
+        setIsLoad(false);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
+  const [modalIsOpenSuccess, setModalIsOpenSuccess] = useState<boolean>(true);
+  const [modalIsOpenError, setModalIsOpenError] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpenSuccess(true);
+        setError(null);
+        setIsLoad(false);
       }, 1000);
     }
   }, [modalIsOpen, error]);
 
   const subscribeNews = () => {
-    closeModalNewsletter();
-    // TODO: add if user subscribe
-    // localStorage.setItem('subscribe', 'true');
+    if (email === '') {
+      setIsErrorEmail(true);
+      setErrorEmailMessage('Email cannot be empty');
+    } else {
+      setIsErrorEmail(false);
+      setErrorEmailMessage('');
+    }
+    if (re.test(email.toLowerCase())) {
+      setIsErrorEmail(false);
+      setErrorEmailMessage('');
+    } else {
+      setIsErrorEmail(true);
+      setErrorEmailMessage('Email is not valid');
+    }
+
+    if (email !== '') {
+      const data = {
+        email: email,
+      };
+      const sendData = async () => {
+        try {
+          setIsLoad(true);
+          const response = await newsApi.subscribeNews(data);
+          console.log('[POST] subscribe newsletter successfully', response);
+          setIsLoad(false);
+          setSuccess(true);
+          localStorage.setItem('subscribe', 'true');
+        } catch (error: any) {
+          setIsLoad(false);
+          console.log(
+            `[POST] subscribe newsletter  error message: ${error.message}`
+          );
+          setSuccess(false);
+          getErrorMessage(error.message, setError);
+        }
+      };
+      sendData();
+    }
+  };
+
+  const closeSuccessMessage = () => {
+    setModalIsOpenSuccess(!modalIsOpenSuccess);
+    setSuccess(false);
+    setEmail('');
   };
 
   return (
-    <CustomModel
-      isOpen={modalIsOpen}
-      handleClick={() => {
-        setModalIsOpen(!modalIsOpen);
-        closeModalNewsletter();
-      }}
-    >
-      <Box className={styles.modalMessageWrapper}>
-        <Box
-          className={styles.crossWrapper}
-          onClick={() => {
-            setModalIsOpen(!modalIsOpen);
-            closeModalNewsletter();
-          }}
-        >
-          <Close sx={{ width: '18px', height: '18px' }} />
-        </Box>
-        <Box className={styles.imageWrapper}>
-          <Image src={picture} alt={'news letter'} className={styles.image} />
-        </Box>
-        <Box className={styles.modalTextWrapper}>
-          <Box className={styles.title}>Sign up for updates on our launch!</Box>
-          <Box className={styles.subtitle}>
-            Sign up for our newsletter now and stay in the loop on all things
-            FindMyCoach.
+    <>
+      <CustomModel isOpen={modalIsOpen}>
+        <Box className={styles.modalMessageWrapper}>
+          <Box
+            className={styles.crossWrapper}
+            onClick={() => {
+              setModalIsOpen(!modalIsOpen);
+              closeModalNewsletter();
+            }}
+          >
+            <Close sx={{ width: '18px', height: '18px' }} />
           </Box>
-          <Box className={styles.inputsWrapper}>
-            <Input
-              helperText={errorEmailMessage}
-              isError={isErrorEmail}
-              name={'email'}
-              label={'Email address'}
-              value={email}
-              sx={nameInputStyles}
-              // TODO: remove error
-              onChange={(e) =>
-                handleOnChange(
-                  e,
-                  setEmail,
-                  setIsErrorEmail,
-                  setErrorEmailMessage
-                )
-              }
-              type="text"
-            />
-            <Box className={styles.btnSave} onClick={subscribeNews}>
-              Subscribe
+          <Box className={styles.imageWrapper}>
+            <Image src={picture} alt={'news letter'} className={styles.image} />
+          </Box>
+          <Box className={styles.modalTextWrapper}>
+            <Box className={styles.title}>
+              Sign up for updates on our launch!
+            </Box>
+            <Box className={styles.subtitle}>
+              Sign up for our newsletter now and stay in the loop on all things
+              FindMyCoach.
+            </Box>
+            <Box className={styles.inputsWrapper}>
+              <Input
+                helperText={errorEmailMessage}
+                isError={isErrorEmail}
+                name={'email'}
+                label={'Email address'}
+                value={email}
+                sx={nameInputStyles}
+                // TODO: remove error
+                onChange={(e) =>
+                  handleOnChange(
+                    e,
+                    setEmail,
+                    setIsErrorEmail,
+                    setErrorEmailMessage
+                  )
+                }
+                type="text"
+              />
+              <Box className={styles.btnSave} onClick={subscribeNews}>
+                Subscribe
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>
-    </CustomModel>
+      </CustomModel>
+
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel isOpen={modalIsOpenError}>
+          <MessageBox
+            message={error}
+            handleClick={() => setModalIsOpenError(!modalIsOpenError)}
+          />
+        </CustomModel>
+      )}
+
+      {isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpenSuccess}
+          handleClick={closeSuccessMessage}
+        >
+          <Box className={styles.modalMessageWrapper}>
+            <Box
+              className={styles.crossWrapper}
+              onClick={() => {
+                setModalIsOpenSuccess(!modalIsOpen);
+                closeModalNewsletter();
+              }}
+            >
+              <Close sx={{ width: '18px', height: '18px' }} />
+            </Box>
+            <Box className={styles.imageWrapper}>
+              <Image
+                src={picture}
+                alt={'news letter'}
+                className={styles.image}
+              />
+            </Box>
+            <Box className={styles.modalTextSuccessWrapper}>
+              <DoneAll sx={{ color: 'green' }} />
+              <Box className={styles.title}>Thank you for subscribing!</Box>
+            </Box>
+          </Box>
+        </CustomModel>
+      )}
+    </>
   );
 };
