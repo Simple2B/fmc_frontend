@@ -91,10 +91,10 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
           backgroundImage: 'url(../../../../pexels-shvets-production.png)',
         }}
       />
+      <Box id="contact_us" />
       <Box
         className={`${styles.wrapperCard} ${styles.wrapperCard2} ${styles.wrapperText}`}
       >
-        <Box id="contact_us" />
         <Box className={styles.title}>Still have questions?</Box>
         <Box className={styles.description}>
           Fill the form below and we’ll contact you shortly
