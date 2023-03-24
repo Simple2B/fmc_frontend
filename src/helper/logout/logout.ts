@@ -21,6 +21,7 @@ export const logout = (
     localStorage.removeItem('userType');
     if (setUserType) setUserType(null);
     setProfile({
+      uuid: '',
       username: '',
       email: '',
       first_name: '',

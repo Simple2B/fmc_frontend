@@ -1,7 +1,8 @@
+import { IContacts, IMessages } from '@/store/types/message/messsageType';
 import {
   IStudent,
   IStudentProfile,
-} from '../../../../store/types/users/student/studentType';
+} from '@/store/types/users/student/studentType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -96,6 +97,60 @@ export const studentClientApi = {
       console.log(
         `[POST: studentResetPassword] student -> error message => ${error.message}`
       );
+      throw error.message;
+    }
+  },
+
+  studentUpcomingLessons: async () => {
+    try {
+      const response = await instance().get('/lesson/lessons/upcoming');
+      const res = response.data;
+      console.log('[GET] student list of upcoming sessions:->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+  studentContactsList: async (): Promise<IContacts> => {
+    try {
+      const response = await instance().get(
+        '/message/student/list-of-contacts'
+      );
+      const res = response.data;
+      console.log('[GET] student list of contacts ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentGetMessageCoach: async (coach_uuid: string): Promise<IMessages> => {
+    try {
+      const response = await instance().get(
+        `/message/student/messages/${coach_uuid}`
+      );
+      const res = response.data;
+      console.log('[GET] student messages with coach:->', coach_uuid);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentSendMessageCoach: async (data: {
+    receiver_id: string;
+    text: string;
+  }) => {
+    try {
+      const response = await instance().post(`/message/student/create`, data);
+      const res = response.data;
+      console.log('[POST] student send message to :->', data.receiver_id);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] student -> error message => ${error.message}`);
       throw error.message;
     }
   },

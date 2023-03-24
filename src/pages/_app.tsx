@@ -4,6 +4,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import Loader from '../common/loader/Loader';
 import CustomModel from '../common/modal/Modal';
 import '../styles/main.sass';
@@ -45,12 +46,15 @@ const Loading = () => {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <>
-      <AuthProvider>
-        <Loading />
-        <Component {...pageProps} />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Loading />
+          <Component {...pageProps} />
+        </AuthProvider>
+      </QueryClientProvider>
     </>
   );
 }
