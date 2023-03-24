@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { NewsLetter } from '@/components/forms/news_letter/NewsLetter';
 import MainSection from '@/components/landing_page/main_section/MainSection';
+import { INTERVAL_NEWS_LETTER_POP_UP } from '@/store/constants';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import LandingPage from '../components/landing_page/LandingPage';
@@ -21,8 +22,6 @@ export default function Home() {
     setIsSubscribe(subscribe);
   }, []);
 
-  // INTERVAL_NEWS_LETTER_POP_UP
-
   useEffect(() => {
     if (!user) {
       if (isSubscribe) {
@@ -30,7 +29,7 @@ export default function Home() {
       }
       const timeId = setTimeout(() => {
         setShow(true);
-      }, 1000);
+      }, INTERVAL_NEWS_LETTER_POP_UP);
 
       return () => {
         clearTimeout(timeId);
