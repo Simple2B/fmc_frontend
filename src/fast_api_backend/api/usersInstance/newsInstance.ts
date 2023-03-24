@@ -3,7 +3,10 @@ import { applicationInstance } from '../_axiosInstance';
 export const newsApi = {
   subscribeNews: async (data: { email: string }): Promise<number | string> => {
     try {
-      const response = await applicationInstance().post('/newsletter/', data);
+      const response = await applicationInstance().post(
+        '/newsletter/subscribe',
+        data
+      );
       console.log(`[POST: newsletter]  -> res data  ${response}`);
 
       return response.data;
