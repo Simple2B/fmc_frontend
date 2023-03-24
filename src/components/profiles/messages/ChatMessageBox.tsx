@@ -25,7 +25,6 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
           ? studentClientApi.studentGetMessageCoach
           : coachClientApi.coachGetMessageStudent;
       const result = await request(selectedContactUUID);
-      console.log('--------------> messages', result);
       return result.messages;
     }
   );

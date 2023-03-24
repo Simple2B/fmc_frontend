@@ -9,7 +9,9 @@ interface IMessageProps {
 export function Message({ text, isOutgoing, date }: IMessageProps) {
   const messageDateObj = new Date(date);
   const messageDate = `${messageDateObj.getDay()}/${messageDateObj.getMonth()}/${messageDateObj.getFullYear()}`;
-  const messageTime = `${messageDateObj.getHours()}:${messageDateObj.getMinutes()}`;
+  const messageTime = `${messageDateObj.getHours()}:${
+    (messageDateObj.getMinutes() < 10 ? '0' : '') + messageDateObj.getMinutes()
+  }`;
   console.log(messageTime);
   return (
     <Box
@@ -23,8 +25,7 @@ export function Message({ text, isOutgoing, date }: IMessageProps) {
     >
       <Box
         sx={{
-          marginLeft: '1%',
-          marginRight: '1%',
+          margin: 'auto 1%',
           display: 'flex',
           minWidth: '10%',
           maxHeight: '100%',

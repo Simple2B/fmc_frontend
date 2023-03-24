@@ -20,7 +20,6 @@ export function ChatHeader({
       <Box
         sx={{
           display: 'flex',
-          width: '100%',
           height: '7.5%',
           backgroundColor: '#F2F2F2',
           justifyContent: 'space-between',

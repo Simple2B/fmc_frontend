@@ -56,10 +56,7 @@ export function ChatSendMessageArea({
             position: 'sticky',
             width: '97.5%',
             heght: '100%',
-            marginTop: '1%',
-            marginRight: '2.5%',
-            marginLeft: '2.5%',
-            marginBottom: '1%',
+            margin: '1% 2.5%',
           }}
         >
           <TextField
