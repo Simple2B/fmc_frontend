@@ -1,3 +1,4 @@
+import { ILocation, ISport } from '@/store/types/users/coach/profileType';
 import { instance, instanceFormData } from '../../_axiosInstance';
 
 const formatPersonalInfoRequestBody = (
@@ -19,23 +20,21 @@ const formatPersonalInfoRequestBody = (
 const formatProfileInfoRequestBody = (
   sport_category: string,
   about: string,
-  certificates: Blob,
+  certificates: File[],
   is_for_adult: string,
   is_for_children: string,
-  city: string,
-  street: string,
-  postal_code: string
+  locations: ILocation[]
 ) => {
   const formData = new FormData();
   formData.append('grant_type', '');
   formData.append('sport_category', sport_category);
   formData.append('about', about);
-  formData.append('certificates', certificates);
+  for (let i = 0; i < certificates.length; i++) {
+    formData.append('certificates', certificates[i]);
+  }
   formData.append('is_for_adult', is_for_adult);
   formData.append('is_for_children', is_for_children);
-  formData.append('city', city);
-  formData.append('street', street);
-  formData.append('postal_code', postal_code);
+  formData.append('locations', JSON.stringify(locations));
   formData.append('scope', '');
   formData.append('client_id', '');
   formData.append('client_secret', '');
@@ -85,15 +84,24 @@ export const coachProfileApi = {
     }
   },
 
+  getTypeSports: async (): Promise<ISport[]> => {
+    try {
+      const response = await instance().get('/sports/types');
+      const res = response.data;
+      console.log(`[GET] type of sports -> res data  ${res}`);
+      return res.sport_types;
+    } catch (error: any) {
+      console.log(`[GET] type of sports -> error message => ${error.message}`);
+      throw error;
+    }
+  },
   updateProfileCoach: async (
     sport_category: string,
     about: string,
-    certificates: Blob,
+    certificates: File[],
     is_for_adult: string,
     is_for_children: string,
-    city: string,
-    street: string,
-    postal_code: string
+    locations: ILocation[]
   ): Promise<string> => {
     try {
       const response = await instanceFormData().post(
@@ -104,9 +112,7 @@ export const coachProfileApi = {
           certificates,
           is_for_adult,
           is_for_children,
-          city,
-          street,
-          postal_code
+          locations
         )
       );
       const res = response.data;

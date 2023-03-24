@@ -72,7 +72,7 @@ export default function ProfileCoach() {
 
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
-    ['my_appointments']: <MyAppointments />,
+    ['my_appointments']: <MyAppointments name={profile.username} />,
     ['reviews']: <Reviews />,
     ['packages']: <Packages />,
     ['message']: <Messages userType={UserType.coach} />,

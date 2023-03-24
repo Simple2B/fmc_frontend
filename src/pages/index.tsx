@@ -1,49 +1,45 @@
 /* eslint-disable no-undef */
 import { NewsLetter } from '@/components/forms/news_letter/NewsLetter';
 import MainSection from '@/components/landing_page/main_section/MainSection';
+import { INTERVAL_NEWS_LETTER_POP_UP } from '@/store/constants';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import LandingPage from '../components/landing_page/LandingPage';
 import styles from '../styles/Home.module.sass';
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState<boolean | null>(false);
-  // const [user, setUser] = useState('')
-  // const user = localStorage.getItem('userType');
-  // const isClose = localStorage.getItem('isClose');
+  const [show, setShow] = useState(false);
+  const [user, setUser] = useState<string | null>(null);
+  const [isSubscribe, setIsSubscribe] = useState<string | null>(null);
+  isSubscribe;
 
-  // const localDate = new Date();
-  // const localTime = localDate.getTime();
-  // const localTimePlus20 = localTime + 5;
-
-  // useEffect(() => {
-  //   const time = new Date();
-  //   const timeDate = time.getTime();
-  //   localStorage.setItem('time', timeDate.toString());
-  //   localStorage.setItem('isClose', 'true');
-  // }, []);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     localStorage.removeItem('time');
-  //     localStorage.removeItem('isClose');
-  //   } else {
-  //     console.log('====================================');
-  //     console.log(
-  //       " localTimePlus20.toString() === localStorage.getItem('time') ",
-  //       localTimePlus20.toString() === localStorage.getItem('time')
-  //     );
-  //     console.log('====================================');
-  //     if (localTimePlus20.toString() === localStorage.getItem('time')) {
-  //       localStorage.setItem('isClose', 'false');
-  //     }
-  //   }
-  // }, [localDate, localTimePlus20, user]);
+  console.log(' isSubscribe ', isSubscribe);
 
   useEffect(() => {
-    setIsOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const user = localStorage.getItem('userType');
+    setUser(user);
+    const subscribe = localStorage.getItem('subscribe');
+    setIsSubscribe(subscribe);
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      if (isSubscribe) {
+        return;
+      }
+      const timeId = setTimeout(() => {
+        setShow(true);
+      }, INTERVAL_NEWS_LETTER_POP_UP);
+
+      return () => {
+        clearTimeout(timeId);
+      };
+    }
+  }, [isSubscribe, user]);
+
+  const closeModalNewsletter = () => {
+    setShow(false);
+  };
 
   return (
     <>
@@ -56,7 +52,7 @@ export default function Home() {
       <main className={styles.main}>
         <LandingPage wrapperClassName={styles.wrapper} />
         <MainSection />
-        {isOpen && <NewsLetter setIsOpen={setIsOpen} />}
+        {show && <NewsLetter closeModalNewsletter={closeModalNewsletter} />}
       </main>
     </>
   );
