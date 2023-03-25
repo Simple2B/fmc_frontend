@@ -38,12 +38,13 @@ export default function SignInCoach() {
         const res = await coachAuthApi.googleAuthCoach(data);
         setIsLoad(false);
         setSuccess(true);
-        console.log('CoachGoogleAuth: res ', res);
+        // console.log('CoachGoogleAuth: res ', res);
         localStorage.setItem(
           'token',
           (res as IResponseStudentData).access_token
         );
         localStorage.setItem('userType', UserType.coach);
+        localStorage.setItem('googleAuth', 'true');
         router.push({
           pathname: '/profiles/coach',
           query: 'my_appointments',
@@ -52,6 +53,7 @@ export default function SignInCoach() {
         setIsLoad(false);
         setSuccess(false);
         console.log('CoachGoogleAuth: error ', error);
+        localStorage.removeItem('googleAuth');
         getErrorMessage(error, setError);
         router.push('/sign_in/coach');
       }
@@ -62,6 +64,7 @@ export default function SignInCoach() {
   const onFailure = (res: any) => {
     console.log('[SignInCoach] onFailure: res ', res);
     router.push('/sign_in/coach');
+    localStorage.removeItem('googleAuth');
     setSuccess(false);
     getErrorMessage(res, setError);
   };

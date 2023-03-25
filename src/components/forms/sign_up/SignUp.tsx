@@ -95,6 +95,7 @@ const SignUp: React.FC<ISignUp> = ({
           if (userType === UserType.coach) {
             const response = await coachClientApi.signUpCoach(data);
             console.log('POST [/sign_up] coach successfully', response);
+            localStorage.setItem('googleAuth', 'false');
             setIsLoad(false);
             setSuccess(true);
             router.push({
@@ -107,6 +108,7 @@ const SignUp: React.FC<ISignUp> = ({
             setIsLoad(false);
             setSuccess(true);
             console.log('POST [/sign_up] student successfully', response);
+            localStorage.setItem('googleAuth', 'false');
             router.push({
               pathname: '/sign_up/success_student',
               query: email,
@@ -116,7 +118,6 @@ const SignUp: React.FC<ISignUp> = ({
         } catch (error: any) {
           setIsLoad(false);
           // setSuccess(false);
-
           if (userType === UserType.coach) {
             router.push('/sign_up/coach');
             console.log(
@@ -132,6 +133,7 @@ const SignUp: React.FC<ISignUp> = ({
             getErrorMessage(error.message, setError);
           }
           console.log(`POST [/sign_up] error message: ${error.message}`);
+          localStorage.removeItem('googleAuth');
         }
       };
       getRegistrationMessage(userType);

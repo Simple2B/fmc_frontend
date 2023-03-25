@@ -3,6 +3,7 @@ import PersonalInfo from '@/components/forms/persona_iInfo/PersonalInfo';
 import YourProfile from '@/components/forms/your_profile/YourProfile';
 import Box from '@mui/material/Box';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Settings.module.sass';
 
 export interface ISettings {
@@ -10,6 +11,16 @@ export interface ISettings {
 }
 
 const Settings: React.FC<ISettings> = ({ userType }) => {
+  const [isGoogleAuth, setIsGoogleAuth] = useState(false);
+  console.log('====================================');
+  console.log(' isGoogleAuth ', isGoogleAuth);
+  console.log('====================================');
+  useEffect(() => {
+    const googleAuth = localStorage.getItem('googleAuth');
+    if (googleAuth) {
+      setIsGoogleAuth(Boolean(googleAuth));
+    }
+  }, [isGoogleAuth]);
   return (
     <Box className={styles.wrapper}>
       <Box className={styles.container}>
@@ -19,9 +30,11 @@ const Settings: React.FC<ISettings> = ({ userType }) => {
         <Box className={styles.changeYourProfileContainer}>
           <YourProfile userType={userType} />
         </Box>
-        <Box className={styles.changePasswordContainer}>
-          <ChangePassword userType={userType} />
-        </Box>
+        {isGoogleAuth ? null : (
+          <Box className={styles.changePasswordContainer}>
+            <ChangePassword userType={userType} />
+          </Box>
+        )}
       </Box>
     </Box>
   );

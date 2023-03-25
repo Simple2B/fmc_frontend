@@ -88,6 +88,7 @@ export default function ProfileStudent() {
       }
     };
     whoAmI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [href, setHref] = useState<string>('my_lessons');

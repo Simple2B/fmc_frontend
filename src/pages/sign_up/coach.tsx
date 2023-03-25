@@ -30,8 +30,6 @@ export default function SignUpCoach() {
       picture: res.profileObj.imageUrl ?? '',
     };
 
-    console.log('[onSuccess] Google sign up,  data', data);
-
     // save user data from google to fast api db
     const CoachGoogleAuth = async () => {
       setIsLoad(true);
@@ -39,12 +37,13 @@ export default function SignUpCoach() {
         const res = await coachAuthApi.googleAuthCoach(data);
         setIsLoad(false);
         setSuccess(true);
-        console.log('CoachGoogleAuth: res ', res);
+        // console.log('CoachGoogleAuth: res ', res);
         localStorage.setItem(
           'token',
           (res as IResponseStudentData).access_token
         );
         localStorage.setItem('userType', UserType.coach);
+        localStorage.setItem('googleAuth', 'true');
         router.push({
           pathname: '/profiles/coach',
           query: 'my_appointments',
@@ -53,6 +52,7 @@ export default function SignUpCoach() {
         setIsLoad(false);
         setSuccess(false);
         console.log('CoachGoogleAuth: error ', error);
+        localStorage.removeItem('googleAuth');
         getErrorMessage(error, setError);
         router.push('/sign_up/coach');
       }
@@ -63,6 +63,7 @@ export default function SignUpCoach() {
   const onFailure = (res: any) => {
     console.log('[SignUpCoach] onFailure: res ', res);
     router.push('/sign_up/coach');
+    localStorage.removeItem('googleAuth');
     setSuccess(false);
     getErrorMessage('500', setError);
   };
