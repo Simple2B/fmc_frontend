@@ -12,7 +12,6 @@ export function Message({ text, isOutgoing, date }: IMessageProps) {
   const messageTime = `${messageDateObj.getHours()}:${
     (messageDateObj.getMinutes() < 10 ? '0' : '') + messageDateObj.getMinutes()
   }`;
-  console.log(messageTime);
   return (
     <Box
       sx={{
