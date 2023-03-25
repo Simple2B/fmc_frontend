@@ -1,5 +1,8 @@
-
-import { IContacts, IMessages } from '@/store/types/message/messsageType';
+import {
+  IContacts,
+  IMessageCount,
+  IMessages,
+} from '@/store/types/message/messsageType';
 import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
 import { applicationInstance, instance } from '../../_axiosInstance';

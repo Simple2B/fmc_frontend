@@ -62,7 +62,7 @@ export default function SignUpStudent() {
     console.log('[SignUpStudent] onFailure: res ', res);
     router.push('/sign_up/student');
     setSuccess(false);
-    getErrorMessage(res, setError);
+    getErrorMessage('500', setError);
   };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);

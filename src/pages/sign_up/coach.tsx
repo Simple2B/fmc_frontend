@@ -30,6 +30,8 @@ export default function SignUpCoach() {
       picture: res.profileObj.imageUrl ?? '',
     };
 
+    console.log('[onSuccess] Google sign up,  data', data);
+
     // save user data from google to fast api db
     const CoachGoogleAuth = async () => {
       setIsLoad(true);
@@ -62,7 +64,7 @@ export default function SignUpCoach() {
     console.log('[SignUpCoach] onFailure: res ', res);
     router.push('/sign_up/coach');
     setSuccess(false);
-    getErrorMessage(res, setError);
+    getErrorMessage('500', setError);
   };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);

@@ -58,7 +58,7 @@ const GoogleLoginBtn: React.FC<IGoogleLoginBtn> = ({
             />
             {typeSign === TypeSign.up
               ? 'Sign up with Google'
-              : 'Sign in with Google'}
+              : '`Sign in with Google`'}
           </Button>
         );
       }}

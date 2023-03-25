@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Input from '@/common/input/Input';
+import PasswordInput from '@/common/input_password/PasswordInput';
 import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
@@ -43,16 +43,36 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
     useState<string>('');
   const [isErrorCurrentPassword, setIsErrorCurrentPassword] =
     useState<boolean>(false);
+  // setHideCurrentPassword
+
+  const [hideCurrentPassword, setHideCurrentPassword] = useState<boolean>(true);
 
   const [password, setPassword] = useState<string>('');
   const [errorPasswordMessage, setErrorPasswordMessage] = useState<string>('');
   const [isErrorPassword, setIsErrorPassword] = useState<boolean>(false);
+  const [hidePassword, setHidePassword] = useState<boolean>(true);
 
   const [verifyPassword, setVerifyPassword] = useState<string>('');
   const [errorVerifyPasswordMessage, setErrorVerifyPasswordMessage] =
     useState<string>('');
   const [isErrorVerifyPassword, setIsErrorVerifyPassword] =
     useState<boolean>(false);
+  const [hideVerifyPassword, setHideVerifyPassword] = useState<boolean>(true);
+
+  const showPassword = (
+    // eslint-disable-next-line no-unused-vars
+    setPasswordHideState: (arg0: (prevState: boolean) => boolean) => void
+  ) => {
+    setPasswordHideState((prevState: boolean) => !prevState);
+  };
+
+  const handleChange = (
+    // eslint-disable-next-line no-unused-vars
+    setPasswordState: (p: string) => void,
+    e: { target: { value: string } }
+  ) => {
+    setPasswordState(e.target.value);
+  };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
@@ -90,7 +110,8 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
     }
   };
 
-  const saveInfoForChangePassword = () => {
+  const saveInfoForChangePassword = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     checkedPassword(
       password,
       verifyPassword,
@@ -99,7 +120,11 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
       setIsErrorVerifyPassword,
       setErrorVerifyPasswordMessage
     );
-    if (currentPassword !== '' && password === verifyPassword) {
+    if (
+      currentPassword !== '' &&
+      password !== '' &&
+      password === verifyPassword
+    ) {
       const ChangePassword = async () => {
         const data = {
           old_password: currentPassword,
@@ -126,18 +151,15 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
         } catch (error: any) {
           if (userType === UserType.coach) {
             console.log(`POST [ChangePassword] coach error message: ${error}`);
-            setIsLoad(false);
-            setSuccess(false);
-            getErrorMessage(error, setError, 'changePass');
           }
           if (userType === UserType.student) {
             console.log(
               `POST [ChangePassword] student error message ===> : ${error}`
             );
-            setIsLoad(false);
-            setSuccess(false);
-            getErrorMessage(error, setError, 'changePass');
           }
+          setIsLoad(false);
+          setSuccess(false);
+          getErrorMessage(error, setError, 'changePass');
         }
       };
       ChangePassword();
@@ -149,61 +171,42 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
       <Box className={styles.title}>Change password</Box>
       <Box className={styles.inputs} sx={{ gap: matches600 ? 0.3 : 1 }}>
         <Box className={styles.inputBox}>
-          <Input
-            helperText={errorCurrentPasswordMessage}
-            isError={isErrorCurrentPassword}
-            name={'currentPassword'}
-            label={'Current password'}
+          <PasswordInput
+            label="Current password"
             value={currentPassword}
-            sx={nameInputStyles}
-            onChange={(e) =>
-              handleOnChange(
-                e,
-                setCurrentPassword,
-                setIsErrorCurrentPassword,
-                setErrorCurrentPasswordMessage
-              )
-            }
-            type="text"
+            setPassword={setCurrentPassword}
+            hidePassword={hideCurrentPassword}
+            handleChange={handleChange}
+            showPassword={showPassword}
+            setHidePassword={setHideCurrentPassword}
+            isError={isErrorCurrentPassword}
+            helperText={errorCurrentPasswordMessage}
           />
         </Box>
         <Box className={styles.inputBox}>
-          <Input
-            helperText={errorPasswordMessage}
-            isError={isErrorPassword}
-            name={'password'}
-            label={'New password'}
+          <PasswordInput
+            label="New password"
             value={password}
-            sx={nameInputStyles}
-            onChange={(e) =>
-              handleOnChange(
-                e,
-                setPassword,
-                setIsErrorPassword,
-                setErrorPasswordMessage
-              )
-            }
-            type="text"
+            setPassword={setPassword}
+            hidePassword={hidePassword}
+            handleChange={handleChange}
+            showPassword={showPassword}
+            setHidePassword={setHidePassword}
+            isError={isErrorPassword}
+            helperText={errorPasswordMessage}
           />
         </Box>
-
         <Box className={styles.inputBox}>
-          <Input
-            helperText={errorVerifyPasswordMessage}
-            isError={isErrorVerifyPassword}
-            name={'verifyPassword'}
-            label={'Confirm password'}
+          <PasswordInput
+            label="Confirm password"
             value={verifyPassword}
-            sx={nameInputStyles}
-            onChange={(e) =>
-              handleOnChange(
-                e,
-                setVerifyPassword,
-                setIsErrorVerifyPassword,
-                setErrorVerifyPasswordMessage
-              )
-            }
-            type="text"
+            setPassword={setVerifyPassword}
+            hidePassword={hideVerifyPassword}
+            handleChange={handleChange}
+            showPassword={showPassword}
+            setHidePassword={setHideVerifyPassword}
+            isError={isErrorVerifyPassword}
+            helperText={errorVerifyPasswordMessage}
           />
         </Box>
       </Box>
@@ -212,7 +215,6 @@ const ChangePassword: React.FC<IChangePassword> = ({ userType }) => {
           Save
         </Box>
       </Box>
-
       {isLoad && (
         <CustomModel isOpen={isLoad}>
           <Loader />

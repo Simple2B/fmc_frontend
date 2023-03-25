@@ -113,21 +113,17 @@ const ResetPassword: React.FC<IResetPassword> = ({ userType }) => {
           }
         } catch (error: any) {
           if (userType === UserType.coach) {
-            router.push('/');
             console.log(`POST [ResetPassword] coach error message: ${error}`);
-            setIsLoad(false);
-            setSuccess(false);
-            getErrorMessage(error, setError, 'resetPass');
           }
           if (userType === UserType.student) {
-            router.push('/');
             console.log(
               `POST [ResetPassword] student error message ===> : ${error}`
             );
-            setIsLoad(false);
-            setSuccess(false);
-            getErrorMessage(error, setError, 'resetPass');
           }
+          router.push('/');
+          setIsLoad(false);
+          setSuccess(false);
+          getErrorMessage(error, setError, 'resetPass');
         }
       };
       ResetPassword();
