@@ -1,8 +1,7 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
-import { UserType } from '@/store/types/user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -39,7 +38,7 @@ export interface INavBar {
   // eslint-disable-next-line no-unused-vars
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
-  setProfile: (value: React.SetStateAction<IStudentProfile>) => void;
+  setProfile: (value: React.SetStateAction<IUserProfile>) => void;
   closeOpenMobSideBar: () => void;
   isOpenMobSideBar: boolean;
 }

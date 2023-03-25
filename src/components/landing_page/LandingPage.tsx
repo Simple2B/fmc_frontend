@@ -3,8 +3,7 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
-import { UserType } from '@/store/types/user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile, UserType } from '@/store/types/user';
 import { Logout } from '@mui/icons-material';
 import {
   Avatar,
@@ -53,7 +52,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const [profile, setProfile] = React.useState<IStudentProfile>({
+  const [profile, setProfile] = React.useState<IUserProfile>({
     uuid: '',
     username: '',
     email: '',
@@ -154,7 +153,9 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                         : router.push('/profiles/coach?my_appointments');
                     }}
                   >
-                    {profile.username}
+                    {profile.first_name.length > 0
+                      ? `${profile.first_name} ${profile.last_name}`
+                      : profile.username}
                   </Box>
                   <Box
                     onClick={() =>

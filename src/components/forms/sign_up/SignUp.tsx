@@ -62,10 +62,10 @@ const SignUp: React.FC<ISignUp> = ({
 
   const handleSignUp = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setSuccess(false);
-    setIsLoad(true);
-    setIsErrorEmail(false);
-    setErrorEmailMessage('');
+    // setSuccess(false);
+
+    // setIsErrorEmail(false);
+    // setErrorEmailMessage('');
     if (email === '') {
       setIsErrorEmail(true);
       setErrorEmailMessage('Email cannot be empty');
@@ -78,7 +78,12 @@ const SignUp: React.FC<ISignUp> = ({
       setErrorEmailMessage('Email is not valid');
     }
 
-    if (email) {
+    if (password === '') {
+      setIsErrorPassword(true);
+      setErrorPasswordMessage('Password cannot be empty');
+    }
+
+    if (email !== '' && password !== '') {
       const data = {
         email: email,
         username: name,
@@ -86,6 +91,7 @@ const SignUp: React.FC<ISignUp> = ({
       };
       const getRegistrationMessage = async (userType: string) => {
         try {
+          setIsLoad(true);
           if (userType === UserType.coach) {
             const response = await coachClientApi.signUpCoach(data);
             console.log('POST [/sign_up] coach successfully', response);
@@ -138,6 +144,13 @@ const SignUp: React.FC<ISignUp> = ({
     e: { target: { value: string } }
   ) => {
     setPasswordState(e.target.value);
+    if (e.target.value !== '') {
+      setIsErrorPassword(false);
+      setErrorPasswordMessage('');
+    } else {
+      setIsErrorPassword(true);
+      setErrorPasswordMessage('Password cannot be empty');
+    }
   };
 
   const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);

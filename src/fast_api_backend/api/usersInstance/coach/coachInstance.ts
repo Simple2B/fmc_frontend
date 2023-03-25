@@ -1,8 +1,6 @@
-import {
-  IContacts,
-  IMessageCount,
-  IMessages,
-} from '@/store/types/message/messsageType';
+
+import { IContacts, IMessages } from '@/store/types/message/messsageType';
+import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
@@ -52,7 +50,7 @@ export const coachClientApi = {
     }
   },
 
-  coachGetProfile: async (): Promise<any> => {
+  coachGetProfile: async (): Promise<IUserProfile> => {
     try {
       const response = await instance().get('/profile/coach');
       const res = response.data;

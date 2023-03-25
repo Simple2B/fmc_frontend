@@ -5,7 +5,7 @@ import CustomModel from '@/common/modal/Modal';
 import NavBar from '@/common/nav_bar/NavBar';
 import SideBar, { IItem } from '@/common/side_bar/SideBar';
 import { getCurrentUser } from '@/helper/get_current_user';
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile } from '@/store/types/user';
 import {
   Box,
   createTheme,
@@ -35,7 +35,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
 
-  const [profile, setProfile] = React.useState<IStudentProfile>({
+  const [profile, setProfile] = React.useState<IUserProfile>({
     uuid: '',
     username: '',
     email: '',
@@ -102,7 +102,11 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   return (
     <Box>
       <NavBar
-        username={profile.username}
+        username={
+          profile.first_name.length > 0
+            ? `${profile.first_name} ${profile.last_name}`
+            : profile.username
+        }
         picture={profile.profile_picture}
         userType={userType}
         setIsLoad={setIsLoad}
@@ -119,10 +123,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
             height: '100vh',
           }}
         >
-          <SideBar
-            listItems={listItems}
-            // closeOpenMobSideBar={closeOpenMobSideBar}
-          />
+          <SideBar listItems={listItems} />
         </Box>
         {isOpenMobSideBar && <MobSideBar />}
         <Box

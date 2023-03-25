@@ -95,11 +95,10 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
         if (file) {
           fileToSave = file;
         } else {
-          fileToSave = new File(['example'], 'example.txt', {
+          fileToSave = new File(['example'], '', {
             type: 'text/plain',
           });
         }
-
         try {
           if (userType === UserType.coach) {
             setIsLoad(true);

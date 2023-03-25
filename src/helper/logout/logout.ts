@@ -1,11 +1,11 @@
-import { IStudentProfile } from '@/store/types/users/student/studentType';
+import { IUserProfile } from '@/store/types/user';
 import { NextRouter } from 'next/router';
 
 export const logout = (
   // eslint-disable-next-line no-unused-vars
   setIsLoad: (value: React.SetStateAction<boolean>) => void,
   // eslint-disable-next-line no-unused-vars
-  setProfile: (value: React.SetStateAction<IStudentProfile>) => void,
+  setProfile: (value: React.SetStateAction<IUserProfile>) => void,
   router: NextRouter,
   // eslint-disable-next-line no-unused-vars
   setMobileOpen?: (value: React.SetStateAction<boolean>) => void,

@@ -23,6 +23,8 @@ const CustomModel: React.FC<ICustomModel> = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
+        height: '100vh',
+        width: '100vw',
         position: 'absolute',
         top: 0,
         left: 0,

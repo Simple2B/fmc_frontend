@@ -142,14 +142,9 @@ export const NewsLetter: React.FC<INewsLetter> = ({
 
   return (
     <>
-      <CustomModel isOpen={show}>
+      <CustomModel isOpen={show} handleClick={closeModalNewsletter}>
         <Box className={styles.modalMessageWrapper}>
-          <Box
-            className={styles.crossWrapper}
-            onClick={() => {
-              closeModalNewsletter();
-            }}
-          >
+          <Box className={styles.crossWrapper} onClick={closeModalNewsletter}>
             <Close sx={{ width: '18px', height: '18px' }} />
           </Box>
           <Box className={styles.imageWrapper}>

@@ -61,6 +61,7 @@
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@storybook/testing-library": "^0.0.13",
+    "@types/react-scroll": "^1.8.6",
     "babel-loader": "^8.3.0",
     "cross-env": "^7.0.3",
     "eslint-plugin-storybook": "^0.6.11",
@@ -69,6 +70,7 @@
     "openapi-typescript": "^6.1.1",
     "prettier": "^2.8.4",
     "react-pro-sidebar": "^1.0.0",
+    "react-scroll": "^1.8.9",
     "sass": "^1.58.3",
     "storybook-addon-sass-postcss": "^0.1.3"
   },
