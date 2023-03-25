@@ -14,19 +14,6 @@ import * as React from 'react';
 import { useState } from 'react';
 import styles from './PersonalInfo.module.sass';
 
-const nameInputStyles = {
-  mt: 4,
-  '& .MuiInputBase-root': {
-    position: 'relative',
-  },
-  '& .MuiFormHelperText-root': {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: '-20px',
-  },
-};
-
 export interface IPersonalInfo {
   userType: string;
 }
