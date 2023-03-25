@@ -1,3 +1,4 @@
+
 import { IContacts, IMessages } from '@/store/types/message/messsageType';
 import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
@@ -136,6 +137,32 @@ export const coachClientApi = {
       return res;
     } catch (error: any) {
       console.log(`[POST: ] coach -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  coachGetNotificationCount: async (): Promise<IMessageCount> => {
+    try {
+      const response = await instance().get(`/notification/coach/new`);
+      const res = response.data;
+      console.log('[GET] coach notifications count ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] coach -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  coachReadMessageStudent: async (student_uuid: string) => {
+    try {
+      const response = await instance().post(
+        `/message/coach/messages/${student_uuid}/read`
+      );
+      const res = response.data;
+      console.log('[POST] coach read messages with student:->', student_uuid);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] student -> error message => ${error.message}`);
       throw error.message;
     }
   },

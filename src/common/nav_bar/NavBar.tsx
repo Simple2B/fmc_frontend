@@ -1,3 +1,5 @@
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
 import { IUserProfile, UserType } from '@/store/types/user';
 import {
@@ -6,8 +8,8 @@ import {
   CalendarMonth,
   Close,
   Home,
-  Logout,
   Menu as IconMenu,
+  Logout,
   Notifications,
 } from '@mui/icons-material';
 import {
@@ -25,6 +27,7 @@ import {
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import MarkedCalendar from '../marked_calendar/MarkedCalendar';
 import style from './NavBar.module.sass';
 
@@ -50,9 +53,9 @@ const NavBar: React.FC<INavBar> = ({
   isOpenMobSideBar,
 }) => {
   const [isOpen, setOpen] = React.useState<boolean>(false);
-  const router = useRouter();
-
+  const [notificationCount, setNotificationCount] = React.useState<number>(0);
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+  const router = useRouter();
 
   const matches970 = useMediaQuery('(max-width:970px)');
   // const open = Boolean(anchorEl);
@@ -62,6 +65,19 @@ const NavBar: React.FC<INavBar> = ({
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
+  useQuery(
+    ['newNotificationsCount'],
+    async () => {
+      const request =
+        userType === UserType.student
+          ? studentClientApi.studentGetNotificationCount
+          : coachClientApi.coachGetNotificationCount;
+      const result = await request();
+      setNotificationCount(result.count);
+      return result.count;
+    },
+    { refetchInterval: 10000 }
+  );
   return (
     <AppBar
       position="sticky"
@@ -125,7 +141,7 @@ const NavBar: React.FC<INavBar> = ({
             </Box>
           )}
           <Badge
-            // badgeContent={3}
+            badgeContent={notificationCount}
             color="primary"
             sx={{
               display: matches970 ? 'none' : 'inline-block',

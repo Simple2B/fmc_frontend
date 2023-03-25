@@ -22,3 +22,7 @@ export interface IContact {
 export interface IContacts {
   contacts: IContact[];
 }
+
+export interface IMessageCount {
+  count: number;
+}

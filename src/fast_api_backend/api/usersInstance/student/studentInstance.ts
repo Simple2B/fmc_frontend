@@ -1,6 +1,8 @@
+
 import { IContacts, IMessages } from '@/store/types/message/messsageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
+
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -146,6 +148,32 @@ export const studentClientApi = {
       const response = await instance().post(`/message/student/create`, data);
       const res = response.data;
       console.log('[POST] student send message to :->', data.receiver_id);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentGetNotificationCount: async (): Promise<IMessageCount> => {
+    try {
+      const response = await instance().get(`/notification/student/new`);
+      const res = response.data;
+      console.log('[GET] student notifications count ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentReadMessageCoach: async (coach_uuid: string) => {
+    try {
+      const response = await instance().post(
+        `/message/student/messages/${coach_uuid}/read`
+      );
+      const res = response.data;
+      console.log('[POST] student read messages with coach:->', coach_uuid);
       return res;
     } catch (error: any) {
       console.log(`[POST: ] student -> error message => ${error.message}`);

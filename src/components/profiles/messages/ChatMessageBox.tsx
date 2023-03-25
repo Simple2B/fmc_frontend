@@ -16,7 +16,6 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
     alert('NO USER TYPE');
   }
   console.log('USER TYPE ->', userType);
-
   const { data } = useQuery(
     ['contactMessageList', selectedContactUUID],
     async () => {
