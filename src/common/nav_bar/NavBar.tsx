@@ -8,8 +8,8 @@ import {
   CalendarMonth,
   Close,
   Home,
-  Menu as IconMenu,
   Logout,
+  Menu as IconMenu,
   Notifications,
 } from '@mui/icons-material';
 import {

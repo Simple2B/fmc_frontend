@@ -7,11 +7,12 @@ import DragDropFile from '@/common/upload_drag_and_drop_input/DragDropFile';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { studentProfileApi } from '@/fast_api_backend/api/usersInstance/student/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
-import { UserType } from '@/store/types/user';
+import { IUserProfile, UserType } from '@/store/types/user';
 import { Avatar, Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import styles from './PersonalInfo.module.sass';
 
 export interface IPersonalInfo {
@@ -35,7 +36,7 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
   };
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [errorMessage, setError] = React.useState<string | null>(null);
   // const router = useRouter();
   const [name, setFirstName] = React.useState<string>('');
   const [errorNameMessage, setErrorFirstNameMessage] =
@@ -50,6 +51,10 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
+
+  // profilePicture
+
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -142,16 +147,26 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
         setError(null);
       }, 1000);
     }
-  }, [modalIsOpen, error]);
+  }, [modalIsOpen, errorMessage]);
 
   const closeSuccessMessage = () => {
     setModalIsOpen(!modalIsOpen);
     setSuccess(false);
-    setFirstName('');
-    setLastName('');
     setFileName(null);
-    setPreviewUrl('');
   };
+
+  useQuery<IUserProfile, ErrorConstructor>(['userProfile'], async () => {
+    const request =
+      userType === UserType.student
+        ? studentProfileApi.getProfile()
+        : coachProfileApi.getProfile();
+    const result = await request;
+    if (result.first_name.length > 0) setFirstName(result.first_name);
+    if (result.last_name.length > 0) setLastName(result.last_name);
+    if (result.profile_picture) setProfilePicture(result.profile_picture);
+
+    return result;
+  });
 
   return (
     <Box className={styles.wrapperPersonalInfo}>
@@ -172,14 +187,7 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
             label={'First name'}
             value={name}
             sx={nameInputStyles}
-            onChange={(e) =>
-              handleOnChange(
-                e,
-                setFirstName,
-                setIsErrorFirstName,
-                setErrorFirstNameMessage
-              )
-            }
+            onChange={(e) => setFirstName(e.target.value)}
             type="text"
           />
         </Box>
@@ -192,12 +200,7 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
             value={lastName}
             sx={nameInputStyles}
             onChange={(e) => {
-              handleOnChange(
-                e,
-                setLastName,
-                setIsErrorLastName,
-                setErrorLastNameMessage
-              );
+              setLastName(e.target.value);
             }}
             type="text"
           />
@@ -205,7 +208,16 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
       </Box>
       <Box sx={{ gap: 3 }} className={styles.uploadSection}>
         <Box className={styles.avatarImg}>
-          <Avatar src={previewUrl} className={styles.avatar} />
+          <Avatar
+            src={
+              previewUrl.length > 0
+                ? previewUrl
+                : profilePicture
+                ? profilePicture
+                : previewUrl
+            }
+            className={styles.avatar}
+          />
         </Box>
         <Box className={styles.uploadInputWrapper}>
           <DragDropFile
@@ -224,18 +236,17 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
           <Loader />
         </CustomModel>
       )}
-      {error && !isSuccess && (
+      {errorMessage && !isSuccess && (
         <CustomModel
           isOpen={modalIsOpen}
           handleClick={() => setModalIsOpen(!modalIsOpen)}
         >
           <MessageBox
-            message={error}
+            message={errorMessage}
             handleClick={() => setModalIsOpen(!modalIsOpen)}
           />
         </CustomModel>
       )}
-
       {isSuccess && (
         <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
           <MessageBox

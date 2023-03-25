@@ -1,5 +1,6 @@
 import { ILocation, ISport } from '@/store/types/users/coach/profileType';
 import { instance, instanceFormData } from '../../_axiosInstance';
+import { IUserProfile } from './../../../../store/types/user';
 
 const formatPersonalInfoRequestBody = (
   first_name: string,
@@ -123,6 +124,18 @@ export const coachProfileApi = {
         `[POST: /coach/profile-info] -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  getProfile: async (): Promise<IUserProfile> => {
+    try {
+      const response = await instance().get('/profile/coach');
+      const res = response.data;
+      console.log(`[GET] profile coach -> res data  ${res}`);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET] profile coach -> error message => ${error.message}`);
+      throw error.message;
     }
   },
 };
