@@ -275,7 +275,6 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
               control={
                 <Checkbox
                   className={styles.checkbox}
-                  defaultChecked
                   checked={checkedAdults}
                   onChange={() => {
                     setCheckedAdults(!checkedAdults);
