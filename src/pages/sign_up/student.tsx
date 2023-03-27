@@ -30,6 +30,10 @@ export default function SignUpStudent() {
       picture: res.profileObj.imageUrl ?? '',
     };
 
+    console.log('====================================');
+    console.log(' [SignUp google] student data', data);
+    console.log('====================================');
+
     // save user data from google to fast api db
     const StudentGoogleAuth = async () => {
       setIsLoad(true);
@@ -37,12 +41,12 @@ export default function SignUpStudent() {
         const res = await studentAuthApi.googleAuthStudent(data);
         setIsLoad(false);
         setSuccess(true);
-        console.log('StudentGoogleAuth: res ', res);
         localStorage.setItem(
           'token',
           (res as IResponseStudentData).access_token
         );
         localStorage.setItem('userType', UserType.student);
+        localStorage.setItem('googleAuth', 'true');
         router.push({
           pathname: '/profiles/student',
           query: 'my_lessons',
@@ -52,6 +56,7 @@ export default function SignUpStudent() {
         setSuccess(false);
         console.log('StudentGoogleAuth: error ', error);
         getErrorMessage(error, setError);
+        localStorage.removeItem('googleAuth');
         router.push('/sign_up/student');
       }
     };
@@ -62,6 +67,7 @@ export default function SignUpStudent() {
     console.log('[SignUpStudent] onFailure: res ', res);
     router.push('/sign_up/student');
     setSuccess(false);
+    localStorage.removeItem('googleAuth');
     getErrorMessage('500', setError);
   };
 

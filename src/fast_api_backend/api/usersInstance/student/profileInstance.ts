@@ -1,3 +1,4 @@
+import { IUserProfile } from '@/store/types/user';
 import { instance, instanceFormData } from '../../_axiosInstance';
 
 const formatRequestBody = (
@@ -57,6 +58,18 @@ export const studentProfileApi = {
       console.log(
         `[POST: /change-password] create student -> error message => ${error.message}`
       );
+      throw error.message;
+    }
+  },
+
+  getProfile: async (): Promise<IUserProfile> => {
+    try {
+      const response = await instance().get('/profile/student');
+      const res = response.data;
+      console.log(`[GET] profile student -> res data  ${res}`);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET] profile student -> error message => ${error.message}`);
       throw error.message;
     }
   },

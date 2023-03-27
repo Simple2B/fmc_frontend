@@ -6,8 +6,9 @@ import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
+import { RE_POST_CODE } from '@/store/constants';
+import { ISport } from '@/store/types/sport/sportType';
 import { UserType } from '@/store/types/user';
-import { ISportInput } from '@/store/types/users/coach/profileType';
 import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
@@ -39,72 +40,128 @@ const nameInputStyles = {
 interface ILocation {
   city: string;
   street: string;
-  postCode: string;
+  postal_code: string;
   icon?: any;
 }
 
-export interface IYourProfile {
+export interface IYourProfileCoach {
   userType: string;
+  result: {
+    sports: {
+      name: string;
+      is_deleted: boolean;
+      uuid: string;
+    }[];
+    filesNames: string[];
+    filesUrls: string[];
+    checkedAdults: boolean;
+    checkedChildren: boolean;
+    about: string;
+    locationValuesInputs: {
+      city: string;
+      street: string;
+      postal_code: string;
+    }[];
+  };
 }
 
-const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
+const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const matches600 = useMediaQuery('(max-width:600px)');
+
+  const [options, setOptions] = useState<
+    { id: number; label: string; is_deleted: boolean }[]
+  >([]);
 
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [sport, setSport] = useState<string>('');
+  const [sport, setSport] = useState<
+    { id: number; label: string; is_deleted: boolean }[]
+  >([]);
+
+  // const [deletedSport, setDefaultSport] = useState<
+  //   { id: number; label: string }[]
+  // >([]);
+
+  console.log('=== [YourProfile] sport ===> ', sport);
 
   const [errorSportMessage, setErrorSportMessage] = useState<string>('');
   const [isErrorSport, setIsErrorSport] = useState<boolean>(false);
 
   const [skills, setSkills] = useState<string>('');
 
-  const [files, setFiles] = useState<File[]>([]);
   const [filesNames, setFilesNames] = useState<string[] | null>(null);
+  const [filesUrls, setFilesUrls] = useState<string[]>([]);
+  const [deletedFilesUrls, setDeletedFilesUrls] = useState<string[] | null>(
+    null
+  );
 
   const [checkedAdults, setCheckedAdults] = useState<boolean>(true);
   const [checkedChildren, setCheckedChildren] = useState<boolean>(false);
 
-  const [about, setAbout] = useState<string>('');
+  const [aboutCoach, setAbout] = useState<string>('');
 
   // Location
   const [locationValuesInputs, setLocationValuesInputs] = useState<ILocation[]>(
-    [
-      {
-        city: '',
-        street: '',
-        postCode: '',
-      },
-      {
-        city: '',
-        street: '',
-        postCode: '',
-      },
-    ]
+    []
   );
-
-  const deleteLocationInputs = (index: number) => {
-    setLocationValuesInputs(
-      locationValuesInputs.filter((item, ind) => ind !== index)
-    );
-  };
-
-  const [options, setOptions] = useState<ISportInput[] | []>([]);
 
   useEffect(() => {
     const getSports = async () => {
       try {
         const res = await coachProfileApi.getTypeSports();
-        setOptions(res.map((item) => ({ label: item.name, id: item.uuid })));
+        setOptions(
+          res.map((item: ISport, index) => ({
+            label: item.name,
+            id: index,
+            is_deleted: false,
+          }))
+        );
       } catch (error) {
         console.log(`POST [your profile] error message: ${error}`);
         setOptions([]);
       }
     };
     getSports();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setSport(
+      result.sports.map((s, i) => ({
+        id: i,
+        label: s.name,
+        is_deleted: s.is_deleted,
+      }))
+    );
+    setFilesNames(result.filesNames);
+    setFilesUrls(result.filesUrls);
+    setCheckedAdults(result.checkedAdults);
+    setCheckedChildren(result.checkedChildren);
+    setAbout(result.about);
+    setLocationValuesInputs(result.locationValuesInputs);
+  }, [
+    result.about,
+    result.checkedAdults,
+    result.checkedChildren,
+    result.filesNames,
+    result.filesUrls,
+    result.locationValuesInputs,
+    result.sports,
+    userType,
+  ]);
+
+  const [files, setFiles] = useState<File[]>([]);
+  // TODO: download link of certificate
+  // {/* <Link to="/files/myfile.pdf" target="_blank" download>Download</Link> */}
+
+  const deleteLocationInputs = (index: number) => {
+    setLocationValuesInputs(
+      locationValuesInputs.filter((item, ind) => ind !== index)
+    );
+  };
 
   const handleOnChange = (
     e: { target: { value: string } },
@@ -136,46 +193,38 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
   const closeSuccessMessage = () => {
     setModalIsOpen(!modalIsOpen);
     setSuccess(false);
-    setSport('');
+    setSport([]);
     setSkills('');
   };
 
-  const saveProfileInfo = () => {
-    if (sport === '') {
+  const saveYourProfileInfo = () => {
+    if (sport.length === 0) {
       setIsErrorSport(true);
       setErrorSportMessage('Sport cannot be empty');
     } else {
       setIsErrorSport(false);
       setErrorSportMessage('');
     }
-
-    if (sport !== '') {
-      console.log('[Coach] Your profile data', {
-        sport: sport,
-        files: files,
-        about: about,
-        sessionForAdults: checkedAdults,
-        sessionForChildren: checkedChildren,
-        location: locationValuesInputs,
-      });
+    if (sport.length !== 0) {
       const saveData = async (userType: string) => {
         const locations = locationValuesInputs.map((location) => ({
           city: location.city,
           street: location.street,
-          postal_code: location.postCode,
+          postal_code: location.postal_code,
         }));
         try {
-          // TODO: send data to backend
           if (userType === UserType.coach) {
             setIsLoad(true);
-            const response = await coachProfileApi.updateProfileCoach(
-              sport,
-              about,
+            const responseProfile = await coachProfileApi.updateProfileCoach(
+              sport.length > 0 ? sport.map((s) => s.label) : [],
+              deletedFilesUrls ? deletedFilesUrls : [],
+              aboutCoach,
               files,
               String(checkedAdults),
               String(checkedChildren),
               locations
             );
+
             setIsLoad(false);
             setSuccess(true);
           }
@@ -203,16 +252,40 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
       <Box className={styles.namesSection}>
         <Box className={styles.inputBox}>
           <Autocomplete
-            disablePortal
-            id="combo-box-demo"
+            multiple
             options={options}
-            getOptionLabel={(option) => option.label}
+            getOptionLabel={(option) => `${option.label}`}
+            value={sport}
+            // defaultValue={[options[1], options[0]]}
+            isOptionEqualToValue={(sport, v) => sport.label === v.label}
+            renderOption={(props, options) => (
+              <Box component={'li'} {...props} key={options.id}>
+                {options.label}
+              </Box>
+            )}
             onChange={(event, newValue) => {
-              if (newValue) setSport(newValue.label);
+              if (newValue) {
+                setSport(newValue);
+                setIsErrorSport(false);
+                setErrorSportMessage('');
+              } else {
+                setIsErrorSport(true);
+                setErrorSportMessage('Sport cannot be empty');
+              }
             }}
             sx={nameInputStyles}
             renderInput={(params) => (
-              <TextField {...params} label="Sport" value={sport} />
+              <TextField
+                {...params}
+                label={'Sport'}
+                helperText={errorSportMessage}
+                sx={{
+                  '& .MuiFormHelperText-root': {
+                    color: 'red',
+                  },
+                }}
+                error={isErrorSport}
+              />
             )}
           />
         </Box>
@@ -234,10 +307,8 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
           placeholder="About"
           minRows={6}
           sx={{ width: '100%' }}
-          value={about}
-          onChange={(e) => {
-            setAbout(e.target.value);
-          }}
+          value={aboutCoach}
+          onChange={(e) => setAbout(e.target.value)}
         />
       </Box>
       <Box className={styles.certificatesSection}>
@@ -255,6 +326,8 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
             setFiles={setFiles}
             filesNames={filesNames}
             setFilesNames={setFilesNames}
+            certificateUrl={filesUrls}
+            setDeletedFilesNames={setDeletedFilesUrls}
           />
         </Box>
       </Box>
@@ -275,7 +348,6 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
               control={
                 <Checkbox
                   className={styles.checkbox}
-                  defaultChecked
                   checked={checkedAdults}
                   onChange={() => {
                     setCheckedAdults(!checkedAdults);
@@ -362,14 +434,17 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
                   type="text"
                 />
                 <Input
-                  name={value.postCode}
+                  name={value.postal_code}
                   label={'Post code'}
-                  value={value.postCode}
+                  value={value.postal_code}
                   sx={{ maxWidth: matches600 ? '100%' : '189px' }}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setLocationValuesInputs(
                       locationValuesInputs.map((value, ind) => {
-                        if (index === ind) {
+                        if (
+                          index === ind &&
+                          RE_POST_CODE.test(e.target.value)
+                        ) {
                           return {
                             ...value,
                             postCode: e.target.value,
@@ -377,9 +452,9 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
                         }
                         return value;
                       })
-                    )
-                  }
-                  type="number"
+                    );
+                  }}
+                  type="string"
                 />
                 {value.icon && (
                   <Box
@@ -410,7 +485,7 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
               {
                 city: '',
                 street: '',
-                postCode: '',
+                postal_code: '',
                 icon: (
                   <Close
                     sx={{
@@ -430,7 +505,7 @@ const YourProfile: React.FC<IYourProfile> = ({ userType }) => {
           + Add more locations
         </Typography>
       </Box>
-      <Box className={styles.btnSave} onClick={saveProfileInfo}>
+      <Box className={styles.btnSave} onClick={saveYourProfileInfo}>
         Save
       </Box>
       {isLoad && (

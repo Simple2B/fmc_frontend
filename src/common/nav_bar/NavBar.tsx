@@ -8,8 +8,8 @@ import {
   CalendarMonth,
   Close,
   Home,
-  Menu as IconMenu,
   Logout,
+  Menu as IconMenu,
   Notifications,
 } from '@mui/icons-material';
 import {
@@ -52,6 +52,7 @@ const NavBar: React.FC<INavBar> = ({
   closeOpenMobSideBar,
   isOpenMobSideBar,
 }) => {
+  const anchorRef = React.useRef();
   const [isOpen, setOpen] = React.useState<boolean>(false);
   const [notificationCount, setNotificationCount] = React.useState<number>(0);
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
@@ -65,6 +66,12 @@ const NavBar: React.FC<INavBar> = ({
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
+
+  const [anchorEl, setAnchorEl] = React.useState();
+  React.useEffect(() => {
+    setTimeout(() => setAnchorEl(anchorRef?.current), 1);
+  }, [anchorRef]);
+
   useQuery(
     ['newNotificationsCount'],
     async () => {
@@ -170,6 +177,7 @@ const NavBar: React.FC<INavBar> = ({
               alignItems: 'center',
             }}
             onClick={() => setOpen(!isOpen)}
+            ref={anchorRef}
           >
             <Box>{username}</Box>
             {isOpen ? <ArrowDropDown /> : <ArrowDropUp />}
@@ -193,6 +201,7 @@ const NavBar: React.FC<INavBar> = ({
               MenuListProps={{
                 'aria-labelledby': 'basic-button',
               }}
+              anchorEl={anchorEl}
             >
               <MenuItem
                 onClick={() => {

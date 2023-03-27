@@ -8,6 +8,8 @@ export interface IDragDropFiles {
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   filesNames: string[] | null;
   setFilesNames: React.Dispatch<React.SetStateAction<string[] | null>>;
+  certificateUrl: string[];
+  setDeletedFilesNames: React.Dispatch<React.SetStateAction<string[] | null>>;
 }
 
 const DragDropFiles: React.FC<IDragDropFiles> = ({
@@ -15,6 +17,8 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
   setFiles,
   filesNames,
   setFilesNames,
+  certificateUrl,
+  setDeletedFilesNames,
 }) => {
   // ref
   const inputRef = useRef<any>(null);
@@ -76,23 +80,29 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
     }
   };
 
-  const onDeleteFile = (name: string) => {
-    setFiles(files.filter((file) => file.name !== name));
-    if (filesNames) setFilesNames(filesNames.filter((item) => item !== name));
+  const onDeleteFile = (name: string, index: number) => {
+    setFiles(files.filter((file, i) => i !== index));
+    if (filesNames) setFilesNames(filesNames.filter((item, j) => j !== index));
+    if (filesNames)
+      setDeletedFilesNames((prev) =>
+        prev
+          ? [...prev, ...certificateUrl.filter((item, j) => j === index)]
+          : [...certificateUrl.filter((item, j) => j === index)]
+      );
   };
 
   return (
     <>
       <Box className={styles.formFilesUpload}>
         <form
-          id="formFileUpload"
+          id="formFilesUpload"
           onDragEnter={handleDrag}
           onSubmit={(e) => e.preventDefault()}
         >
           <input
             ref={inputRef}
             type="file"
-            id="inputFileUpload"
+            id="inputFilesUpload"
             accept="image/*"
             className={styles.inputFileUpload}
             multiple={true}
@@ -101,8 +111,8 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
             }}
           />
           <label
-            id="labelFileUpload"
-            htmlFor="inputFileUpload"
+            id="labelFilesUpload"
+            htmlFor="inputFilesUpload"
             className={
               dragActive ? `${styles.labelFileUpload} ${styles.dragActive}` : ''
             }
@@ -120,7 +130,7 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
           </label>
           {dragActive && (
             <div
-              id="dragFileElement"
+              id="dragFilesElement"
               className={styles.dragFileElement}
               onDragEnter={handleDrag}
               onDragLeave={handleDrag}
@@ -150,8 +160,9 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
                         top: '-1.5px',
                         cursor: 'pointer',
                       }}
-                      onClick={() => onDeleteFile(name)}
+                      onClick={() => onDeleteFile(name, index)}
                     />
+
                     <Box>{name}</Box>
                   </Box>
                 )}

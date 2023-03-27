@@ -88,7 +88,7 @@ export default function ProfileStudent() {
       }
     };
     whoAmI();
-  }, []);
+  }, [router, router.asPath]);
 
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef

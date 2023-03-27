@@ -39,12 +39,12 @@ export default function SignInStudent() {
         const res = await studentAuthApi.googleAuthStudent(data);
         setIsLoad(false);
         setSuccess(true);
-        console.log('StudentGoogleAuth: res ', res);
         localStorage.setItem(
           'token',
           (res as IResponseStudentData).access_token
         );
         localStorage.setItem('userType', UserType.student);
+        localStorage.setItem('googleAuth', 'true');
         router.push({
           pathname: '/profiles/student',
           query: 'my_lessons',
@@ -53,6 +53,7 @@ export default function SignInStudent() {
         setIsLoad(false);
         setSuccess(false);
         console.log('StudentGoogleAuth: error ', error);
+        localStorage.removeItem('googleAuth');
         getErrorMessage(error, setError);
         router.push('/sign_in/student');
       }
@@ -62,6 +63,7 @@ export default function SignInStudent() {
 
   const onFailure = (res: any) => {
     console.log('[SignUpStudent] onFailure: res ', res);
+    localStorage.removeItem('googleAuth');
     router.push('/sign_in/student');
     setSuccess(false);
     getErrorMessage(res, setError);

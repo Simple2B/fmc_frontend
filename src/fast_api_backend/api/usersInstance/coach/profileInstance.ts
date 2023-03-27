@@ -1,5 +1,10 @@
-import { ILocation, ISport } from '@/store/types/users/coach/profileType';
+import {
+  ILocation,
+  ISport,
+  IYourProfile,
+} from '@/store/types/users/coach/profileType';
 import { instance, instanceFormData } from '../../_axiosInstance';
+import { IUserProfile } from './../../../../store/types/user';
 
 const formatPersonalInfoRequestBody = (
   first_name: string,
@@ -18,7 +23,8 @@ const formatPersonalInfoRequestBody = (
 };
 
 const formatProfileInfoRequestBody = (
-  sport_category: string,
+  sport_category: string[],
+  deleted_certificates: string[],
   about: string,
   certificates: File[],
   is_for_adult: string,
@@ -27,7 +33,9 @@ const formatProfileInfoRequestBody = (
 ) => {
   const formData = new FormData();
   formData.append('grant_type', '');
-  formData.append('sport_category', sport_category);
+  // formData.append('sport_category', sport_category);
+  formData.append('sport_category', JSON.stringify(sport_category));
+  formData.append('deleted_certificates', JSON.stringify(deleted_certificates));
   formData.append('about', about);
   for (let i = 0; i < certificates.length; i++) {
     formData.append('certificates', certificates[i]);
@@ -96,7 +104,8 @@ export const coachProfileApi = {
     }
   },
   updateProfileCoach: async (
-    sport_category: string,
+    sport_category: string[],
+    deleted_certificates: string[],
     about: string,
     certificates: File[],
     is_for_adult: string,
@@ -108,6 +117,7 @@ export const coachProfileApi = {
         '/profile/coach/profile-info',
         formatProfileInfoRequestBody(
           sport_category,
+          deleted_certificates,
           about,
           certificates,
           is_for_adult,
@@ -123,6 +133,32 @@ export const coachProfileApi = {
         `[POST: /coach/profile-info] -> error message => ${error.message}`
       );
       throw error;
+    }
+  },
+
+  getProfile: async (): Promise<IUserProfile> => {
+    try {
+      const response = await instance().get('/profile/coach');
+      const res = response.data;
+      console.log(`[GET] profile coach -> res data  ${res}`);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET] profile coach -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  getInfoProfile: async (): Promise<IYourProfile> => {
+    try {
+      const response = await instance().get('/profile/info/coach');
+      const res = response.data;
+      console.log(`[GET] profile info coach -> res data  ${res}`);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[GET] profile info coach -> error message => ${error.message}`
+      );
+      throw error.message;
     }
   },
 };

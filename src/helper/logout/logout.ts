@@ -19,6 +19,7 @@ export const logout = (
     router.push('/');
     localStorage.removeItem('token');
     localStorage.removeItem('userType');
+    localStorage.removeItem('googleAuth');
     if (setUserType) setUserType(null);
     setProfile({
       uuid: '',

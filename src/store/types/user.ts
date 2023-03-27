@@ -11,8 +11,8 @@ export enum TypeSign {
 
 export interface IUserProfile {
   uuid: string;
-  username: string;
   email: string;
+  username: string;
   first_name: string;
   last_name: string;
   profile_picture: string;
