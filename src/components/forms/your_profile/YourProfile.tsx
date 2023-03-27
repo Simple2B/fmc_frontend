@@ -6,7 +6,7 @@ import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
-import { RE_POST_CODE } from '@/store/constants';
+import { emptyLocation, RE_POST_CODE } from '@/store/constants';
 import { TypeLocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/sport/sportType';
 import { UserType } from '@/store/types/user';
@@ -112,45 +112,30 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           setCheckedAdults(response.is_for_adults);
           setCheckedChildren(response.is_for_children);
           setAbout(response.about);
-          setLocationValuesInputs(
-            response.locations.length > 0
-              ? response.locations.map((location) => ({
-                  city: {
-                    name: location.city,
-                    isError: false,
-                    messageError: '',
-                  },
-                  street: {
-                    name: location.street,
-                    isError: false,
-                    messageError: '',
-                  },
-                  postal_code: {
-                    name: location.postal_code,
-                    isError: false,
-                    messageError: '',
-                  },
-                }))
-              : [
-                  {
-                    city: {
-                      name: '',
-                      isError: false,
-                      messageError: '',
-                    },
-                    street: {
-                      name: '',
-                      isError: false,
-                      messageError: '',
-                    },
-                    postal_code: {
-                      name: '',
-                      isError: false,
-                      messageError: '',
-                    },
-                  },
-                ]
-          );
+          setLocationValuesInputs(() => {
+            if (response.locations.length > 0) {
+              const locations = response.locations.map((location) => ({
+                city: {
+                  name: location.city,
+                  isError: false,
+                  messageError: '',
+                },
+                street: {
+                  name: location.street,
+                  isError: false,
+                  messageError: '',
+                },
+                postal_code: {
+                  name: location.postal_code,
+                  isError: false,
+                  messageError: '',
+                },
+              }));
+              return [...locations, emptyLocation];
+            } else {
+              return [emptyLocation];
+            }
+          });
         }
       } catch (error: any) {
         console.log(`POST [your profile] error message: ${error.message}`);
