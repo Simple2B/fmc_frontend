@@ -63,6 +63,9 @@ const SideBar: React.FC<ISideBar> = ({ listItems, closeOpenMobSideBar }) => {
                   component="a"
                   onClick={() => {
                     if (closeOpenMobSideBar) closeOpenMobSideBar();
+                    console.log('====================================');
+                    console.log(' item.href ', item.href);
+                    console.log('====================================');
                     router.push(item.href, undefined, { shallow: true });
                   }}
                 >

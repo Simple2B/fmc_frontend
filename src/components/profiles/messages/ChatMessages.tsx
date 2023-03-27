@@ -15,9 +15,8 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
         <Box
           sx={{
             width: '100%',
-            height: '850px',
+            height: '88vh',
             position: 'relative',
-
             border: '0.5px solid #DBDBDB',
           }}
         >

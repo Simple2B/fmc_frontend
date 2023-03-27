@@ -1,4 +1,4 @@
-import { IContact } from '@/store/types/message/messsageType';
+import { IContact } from '@/store/types/message/messageType';
 import {
   Avatar,
   Box,
