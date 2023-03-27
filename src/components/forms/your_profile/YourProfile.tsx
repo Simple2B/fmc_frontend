@@ -46,26 +46,9 @@ interface ILocation {
 
 export interface IYourProfileCoach {
   userType: string;
-  result: {
-    sports: {
-      name: string;
-      is_deleted: boolean;
-      uuid: string;
-    }[];
-    filesNames: string[];
-    filesUrls: string[];
-    checkedAdults: boolean;
-    checkedChildren: boolean;
-    about: string;
-    locationValuesInputs: {
-      city: string;
-      street: string;
-      postal_code: string;
-    }[];
-  };
 }
 
-const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
+const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
   const matches600 = useMediaQuery('(max-width:600px)');
 
   const [options, setOptions] = useState<
@@ -76,14 +59,49 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [sport, setSport] = useState<
-    { id: number; label: string; is_deleted: boolean }[]
-  >([]);
+  const getYourProfileInfo = () => {
+    const getData = async (userType: string) => {
+      try {
+        if (userType === UserType.coach) {
+          const response = await coachProfileApi.getInfoProfile();
+          setSport(
+            response.sports.map((s, i) => ({
+              id: i,
+              label: s.name,
+            }))
+          );
+          setFilesNames(
+            response.certificates
+              .filter((certificate) => !certificate.is_deleted)
+              .map(
+                (certificate) =>
+                  certificate.certificate_url.split('/')[
+                    certificate.certificate_url.split('/').length - 1
+                  ]
+              )
+          );
+          setFilesUrls(
+            response.certificates
+              .filter((certificate) => !certificate.is_deleted)
+              .map((certificate) => certificate.certificate_url)
+          );
+          setCheckedAdults(response.is_for_adults);
+          setCheckedChildren(response.is_for_children);
+          setAbout(response.about);
+          setLocationValuesInputs(
+            response.locations.length > 0
+              ? response.locations
+              : [{ city: '', street: '', postal_code: '' }]
+          );
+        }
+      } catch (error: any) {
+        console.log(`POST [your profile] error message: ${error.message}`);
+      }
+    };
+    getData(userType);
+  };
 
-  // const [deletedSport, setDefaultSport] = useState<
-  //   { id: number; label: string }[]
-  // >([]);
-
+  const [sport, setSport] = useState<{ id: number; label: string }[]>([]);
   console.log('=== [YourProfile] sport ===> ', sport);
 
   const [errorSportMessage, setErrorSportMessage] = useState<string>('');
@@ -124,34 +142,11 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
       }
     };
     getSports();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setSport(
-      result.sports.map((s, i) => ({
-        id: i,
-        label: s.name,
-        is_deleted: s.is_deleted,
-      }))
-    );
-    setFilesNames(result.filesNames);
-    setFilesUrls(result.filesUrls);
-    setCheckedAdults(result.checkedAdults);
-    setCheckedChildren(result.checkedChildren);
-    setAbout(result.about);
-    setLocationValuesInputs(result.locationValuesInputs);
-  }, [
-    result.about,
-    result.checkedAdults,
-    result.checkedChildren,
-    result.filesNames,
-    result.filesUrls,
-    result.locationValuesInputs,
-    result.sports,
-    userType,
-  ]);
+    getYourProfileInfo();
+  }, []);
 
   const [files, setFiles] = useState<File[]>([]);
   // TODO: download link of certificate
@@ -193,8 +188,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const closeSuccessMessage = () => {
     setModalIsOpen(!modalIsOpen);
     setSuccess(false);
-    setSport([]);
-    setSkills('');
   };
 
   const saveYourProfileInfo = () => {
@@ -224,7 +217,7 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
               String(checkedChildren),
               locations
             );
-
+            getYourProfileInfo();
             setIsLoad(false);
             setSuccess(true);
           }
@@ -256,8 +249,7 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
             options={options}
             getOptionLabel={(option) => `${option.label}`}
             value={sport}
-            // defaultValue={[options[1], options[0]]}
-            isOptionEqualToValue={(sport, v) => sport.label === v.label}
+            isOptionEqualToValue={(o, v) => o.label === v.label}
             renderOption={(props, options) => (
               <Box component={'li'} {...props} key={options.id}>
                 {options.label}
