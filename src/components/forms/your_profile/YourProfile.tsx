@@ -7,7 +7,7 @@ import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
 import { emptyLocation, RE_POST_CODE } from '@/store/constants';
-import { TypeLocation } from '@/store/types/location/locationType';
+import { ILocationUI, TypeLocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/sport/sportType';
 import { UserType } from '@/store/types/user';
 import { Close } from '@mui/icons-material';
@@ -19,12 +19,12 @@ import {
   FormGroup,
   TextField,
   Typography,
-  useMediaQuery,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './YourProfile.module.sass';
+import Locations from './your_profile_components/Locations';
 
 const nameInputStyles = {
   mt: 4,
@@ -38,43 +38,12 @@ const nameInputStyles = {
     bottom: '-20px',
   },
 };
-const inputStyles = {
-  '& .MuiInputBase-root': {
-    position: 'relative',
-  },
-  '& .MuiFormHelperText-root': {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: '-20px',
-  },
-};
-interface ILocation {
-  city: {
-    name: string;
-    isError: boolean;
-    messageError: string;
-  };
-  street: {
-    name: string;
-    isError: boolean;
-    messageError: string;
-  };
-  postal_code: {
-    name: string;
-    isError: boolean;
-    messageError: string;
-  };
-  icon?: any;
-}
 
 export interface IYourProfileCoach {
   userType: string;
 }
 
 const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
-  const matches600 = useMediaQuery('(max-width:600px)');
-
   const [options, setOptions] = useState<
     { id: number; label: string; is_deleted: boolean }[]
   >([]);
@@ -131,7 +100,7 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
                   messageError: '',
                 },
               }));
-              return [...locations, emptyLocation];
+              return [...locations];
             } else {
               return [emptyLocation];
             }
@@ -162,27 +131,27 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
   const [aboutCoach, setAbout] = useState<string>('');
 
   // Location
-  const [locationValuesInputs, setLocationValuesInputs] = useState<ILocation[]>(
-    [
-      {
-        city: {
-          name: '',
-          isError: false,
-          messageError: '',
-        },
-        street: {
-          name: '',
-          isError: false,
-          messageError: '',
-        },
-        postal_code: {
-          name: '',
-          isError: false,
-          messageError: '',
-        },
+  const [locationValuesInputs, setLocationValuesInputs] = useState<
+    ILocationUI[]
+  >([
+    {
+      city: {
+        name: '',
+        isError: false,
+        messageError: '',
       },
-    ]
-  );
+      street: {
+        name: '',
+        isError: false,
+        messageError: '',
+      },
+      postal_code: {
+        name: '',
+        isError: false,
+        messageError: '',
+      },
+    },
+  ]);
 
   useEffect(() => {
     const getSports = async () => {
@@ -220,7 +189,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
 
   const handleChangeLocation = (
     e: { target: { value: string } },
-    setLocationValuesInputs: (arg0: any) => void,
     locationIndex: number,
     typeLocation: string
   ) => {
@@ -497,7 +465,48 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           </FormGroup>
         </Box>
       </Box>
-      <Box className={styles.locationsSection}>
+
+      <Locations
+        locationValuesInputs={locationValuesInputs}
+        handleChangeLocation={handleChangeLocation}
+        deleteLocationInputs={deleteLocationInputs}
+        addMoreLocationInputs={() => {
+          setLocationValuesInputs((prev) => [
+            ...prev,
+            {
+              city: {
+                name: '',
+                isError: false,
+                messageError: '',
+              },
+              street: {
+                name: '',
+                isError: false,
+                messageError: '',
+              },
+              postal_code: {
+                name: '',
+                isError: false,
+                messageError: '',
+              },
+              icon: (
+                <Close
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    color: '#CECECE',
+                    '&:hover': {
+                      color: '#000000',
+                    },
+                  }}
+                />
+              ),
+            },
+          ]);
+        }}
+      />
+
+      {/* <Box className={styles.locationsSection}>
         <Box className={styles.locationsTitle}>
           <Typography variant="h4" className={styles.title}>
             Location
@@ -631,7 +640,8 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
         >
           + Add more locations
         </Typography>
-      </Box>
+      </Box> */}
+
       <Box className={styles.btnSave} onClick={saveYourProfileInfo}>
         Save
       </Box>
