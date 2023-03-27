@@ -35,6 +35,7 @@ export function ChatSendMessageArea({
       },
     }
   );
+
   function handleSendMessage(): void {
     sendMessageMutation.mutate();
   }

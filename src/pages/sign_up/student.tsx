@@ -30,6 +30,10 @@ export default function SignUpStudent() {
       picture: res.profileObj.imageUrl ?? '',
     };
 
+    console.log('====================================');
+    console.log(' [SignUp google] student data', data);
+    console.log('====================================');
+
     // save user data from google to fast api db
     const StudentGoogleAuth = async () => {
       setIsLoad(true);

@@ -88,8 +88,7 @@ export default function ProfileStudent() {
       }
     };
     whoAmI();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router, router.asPath]);
 
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
