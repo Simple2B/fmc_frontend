@@ -21,41 +21,9 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/coach'));
-
-const listItemsCoach = [
-  {
-    name: 'My Appointments ',
-    icon: <CalendarToday color={'primary'} />,
-    href: '/profiles/coach?my_appointments ',
-  },
-  {
-    name: 'Reviews',
-    icon: <FavoriteBorder color={'primary'} />,
-    href: '/profiles/coach?reviews',
-  },
-  {
-    name: 'Packages',
-    icon: <Mode color={'primary'} />,
-    href: '/profiles/coach?packages',
-  },
-  {
-    name: 'Messages',
-    icon: <Mess color={'primary'} />,
-    href: '/profiles/coach?message',
-  },
-  {
-    name: 'Settings',
-    icon: <Set color={'primary'} />,
-    href: '/profiles/coach?settings',
-  },
-  {
-    name: 'Get help',
-    icon: <Help color={'primary'} />,
-    href: '/profiles/coach?get_help',
-  },
-];
 
 export default function ProfileCoach() {
   const router = useRouter();
@@ -96,12 +64,102 @@ export default function ProfileCoach() {
     whoAmI();
   }, [router, router.asPath]);
 
+  const [uuidUser, setUUIDUser] = useState('');
+
+  const [listItemsCoach, setItemsCoach] = useState<
+    {
+      name: string;
+      icon: any;
+      href: string;
+    }[]
+  >([
+    {
+      name: 'My Appointments ',
+      icon: <CalendarToday color={'primary'} />,
+      href: '/profiles/coach?my_appointments ',
+    },
+    {
+      name: 'Reviews',
+      icon: <FavoriteBorder color={'primary'} />,
+      href: '/profiles/coach?reviews',
+    },
+    {
+      name: 'Packages',
+      icon: <Mode color={'primary'} />,
+      href: '/profiles/coach?packages',
+    },
+    {
+      name: 'Messages',
+      icon: <Mess color={'primary'} />,
+      href: `/profiles/coach?message&${uuidUser}`,
+    },
+    {
+      name: 'Settings',
+      icon: <Set color={'primary'} />,
+      href: '/profiles/coach?settings',
+    },
+    {
+      name: 'Get help',
+      icon: <Help color={'primary'} />,
+      href: '/profiles/coach?get_help',
+    },
+  ]);
+
+  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
+    null
+  );
+
+  const { data } = useQuery(
+    ['contactsCoach'],
+    async () => {
+      const request = coachClientApi.coachContactList;
+      const result = await request();
+      console.log('--------------> contacts', result);
+      return result;
+    },
+    {
+      refetchInterval: 10000,
+    }
+  );
+
+  const onContactSelected = (contactUUID: string) => {
+    const foundContact = data?.find((element) => {
+      if (element.user.uuid === contactUUID) {
+        setItemsCoach(
+          listItemsCoach.map((item) => {
+            if (item.name === 'Messages') {
+              return {
+                ...item,
+                href: `/profiles/coach?message&${element.user.uuid}`,
+              };
+            }
+            return item;
+          })
+        );
+        router.push(`/profiles/coach?message&${element.user.uuid}`);
+        setUUIDUser(element.user.uuid);
+      }
+      return element.user.uuid === contactUUID;
+    });
+    if (!foundContact) {
+      return;
+    }
+    setSelectedContact(foundContact.user);
+  };
+
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
     ['my_appointments']: <MyAppointments profile={profile} />,
     ['reviews']: <Reviews />,
     ['packages']: <Packages />,
-    ['message']: <Messages userType={UserType.coach} />,
+    [`message&${uuidUser}`]: (
+      <Messages
+        userType={UserType.coach}
+        data={data}
+        selectedContact={selectedContact}
+        onContactSelected={onContactSelected}
+      />
+    ),
     ['settings']: <Settings userType={UserType.coach} />,
     ['get_help']: <GetHelp userType={UserType.coach} email={profile.email} />,
   };

@@ -1,8 +1,8 @@
 import {
-  IContacts,
+  IContact,
   IMessageCount,
   IMessages,
-} from '@/store/types/message/messsageType';
+} from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
 
@@ -115,14 +115,14 @@ export const studentClientApi = {
       throw error.message;
     }
   },
-  studentContactsList: async (): Promise<IContacts> => {
+  studentContactsList: async (): Promise<IContact[]> => {
     try {
       const response = await instance().get(
         '/message/student/list-of-contacts'
       );
       const res = response.data;
       console.log('[GET] student list of contacts ->', res);
-      return res;
+      return res.contacts;
     } catch (error: any) {
       console.log(`[GET: ] student -> error message => ${error.message}`);
       throw error.message;

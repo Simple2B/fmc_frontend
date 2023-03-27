@@ -1,4 +1,4 @@
-import { IContact } from '@/store/types/message/messsageType';
+import { IContact } from '@/store/types/message/messageType';
 import { Box, List } from '@mui/material';
 import React from 'react';
 import ContactListItem from './ContactListItem';
@@ -19,7 +19,7 @@ export const ChatContacts: React.FC<IChatContacts> = ({
       <Box
         sx={{
           width: '30%',
-          height: 850,
+          height: '88vh',
           border: '0.5px solid #DBDBDB',
           borderRight: '1px solid #DBDBDB',
           overflow: 'hidden',

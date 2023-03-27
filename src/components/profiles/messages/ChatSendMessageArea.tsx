@@ -50,6 +50,7 @@ export function ChatSendMessageArea({
           display: 'flex',
           width: '100%',
           heght: '15%',
+          backgroundColor: '#fff',
         }}
       >
         <Box

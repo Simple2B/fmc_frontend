@@ -1,8 +1,8 @@
 import {
-  IContacts,
+  IContact,
   IMessageCount,
   IMessages,
-} from '@/store/types/message/messsageType';
+} from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
 import { applicationInstance, instance } from '../../_axiosInstance';
@@ -103,12 +103,13 @@ export const coachClientApi = {
   },
 
   // MESSAGES ROUTES
-  coachContactList: async (): Promise<IContacts> => {
+  // eslint-disable-next-line no-undef
+  coachContactList: async (): Promise<IContact[]> => {
     try {
       const response = await instance().get('/message/coach/list-of-contacts');
       const res = response.data;
       console.log('[GET] coach list of contacts ->', res);
-      return res;
+      return res.contacts;
     } catch (error: any) {
       console.log(`[GET: ] coach -> error message => ${error.message}`);
       throw error.message;
