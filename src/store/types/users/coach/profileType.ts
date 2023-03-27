@@ -44,7 +44,7 @@ export interface IYourProfile {
   last_name: string;
   locations: { city: string; street: string; postal_code: string }[];
   profile_picture: string;
-  sports: { name: string; uuid: string; is_deleted: boolean }[];
+  sports: { name: string; uuid: string }[];
   username: string;
   uuid: string;
 }
