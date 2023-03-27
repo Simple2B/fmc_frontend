@@ -56,22 +56,6 @@ const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
 
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
-  const handleOnChange = (
-    e: { target: { value: string } },
-    setName: (arg0: any) => void,
-    setIsErrorName: (arg0: boolean) => void,
-    setErrorNameMessage: (arg0: string) => void
-  ) => {
-    setName(e.target.value);
-    if (e.target.value !== '') {
-      setIsErrorName(false);
-      setErrorNameMessage('');
-    } else {
-      setIsErrorName(true);
-      setErrorNameMessage('Name cannot be empty');
-    }
-  };
-
   const savePersonalInfo = () => {
     if (name === '') {
       setIsErrorFirstName(true);

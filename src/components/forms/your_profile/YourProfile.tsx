@@ -13,11 +13,9 @@ import { UserType } from '@/store/types/user';
 import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
-  Autocomplete,
   Checkbox,
   FormControlLabel,
   FormGroup,
-  TextField,
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -25,6 +23,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './YourProfile.module.sass';
 import Locations from './your_profile_components/Locations';
+import Sport from './your_profile_components/Sport';
 
 const nameInputStyles = {
   mt: 4,
@@ -99,6 +98,7 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
                   isError: false,
                   messageError: '',
                 },
+                icon: true,
               }));
               return [...locations];
             } else {
@@ -345,44 +345,22 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
         </Typography>
       </Box>
       <Box className={styles.namesSection}>
-        <Box className={styles.inputBox}>
-          <Autocomplete
-            multiple
-            options={options}
-            getOptionLabel={(option) => `${option.label}`}
-            value={sport}
-            isOptionEqualToValue={(o, v) => o.label === v.label}
-            renderOption={(props, options) => (
-              <Box component={'li'} {...props} key={options.id}>
-                {options.label}
-              </Box>
-            )}
-            onChange={(event, newValue) => {
-              if (newValue) {
-                setSport(newValue);
-                setIsErrorSport(false);
-                setErrorSportMessage('');
-              } else {
-                setIsErrorSport(true);
-                setErrorSportMessage('Sport cannot be empty');
-              }
-            }}
-            sx={nameInputStyles}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={'Sport'}
-                helperText={errorSportMessage}
-                sx={{
-                  '& .MuiFormHelperText-root': {
-                    color: 'red',
-                  },
-                }}
-                error={isErrorSport}
-              />
-            )}
-          />
-        </Box>
+        <Sport
+          options={options}
+          sport={sport}
+          onChangeSport={(event, newValue) => {
+            if (newValue) {
+              setSport(newValue);
+              setIsErrorSport(false);
+              setErrorSportMessage('');
+            } else {
+              setIsErrorSport(true);
+              setErrorSportMessage('Sport cannot be empty');
+            }
+          }}
+          errorSportMessage={errorSportMessage}
+          isErrorSport={isErrorSport}
+        />
         <Box className={styles.inputBox}>
           <Input
             name={'skills'}
@@ -465,7 +443,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           </FormGroup>
         </Box>
       </Box>
-
       <Locations
         locationValuesInputs={locationValuesInputs}
         handleChangeLocation={handleChangeLocation}
@@ -505,143 +482,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           ]);
         }}
       />
-
-      {/* <Box className={styles.locationsSection}>
-        <Box className={styles.locationsTitle}>
-          <Typography variant="h4" className={styles.title}>
-            Location
-          </Typography>
-          <Typography variant="subtitle1" className={styles.subtitle}>
-            Choose one or two options.
-          </Typography>
-        </Box>
-        <Box
-          className={styles.locationInputsWrapper}
-          sx={{ gap: matches600 ? 3 : 2 }}
-        >
-          {locationValuesInputs.map((value, index) => {
-            return (
-              <Box
-                key={index}
-                className={styles.inputsBox}
-                sx={{ gap: matches600 ? 2.5 : 1.5, position: 'relative' }}
-              >
-                <Input
-                  helperText={value.city.messageError}
-                  isError={value.city.isError}
-                  name={value.city.name}
-                  label={'City'}
-                  value={value.city.name}
-                  sx={inputStyles}
-                  onChange={(e) =>
-                    handleChangeLocation(
-                      e,
-                      setLocationValuesInputs,
-                      index,
-                      TypeLocation.city
-                    )
-                  }
-                  type="text"
-                />
-                <Input
-                  name={value.street.name}
-                  label={'Street'}
-                  helperText={value.street.messageError}
-                  isError={value.street.isError}
-                  value={value.street.name}
-                  sx={inputStyles}
-                  onChange={(e) =>
-                    handleChangeLocation(
-                      e,
-                      setLocationValuesInputs,
-                      index,
-                      TypeLocation.street
-                    )
-                  }
-                  type="text"
-                />
-                <Input
-                  name={value.postal_code.name}
-                  label={'Post code'}
-                  helperText={value.postal_code.messageError}
-                  isError={value.postal_code.isError}
-                  value={value.postal_code.name}
-                  sx={{
-                    ...inputStyles,
-                    maxWidth: matches600 ? '100%' : '189px',
-                  }}
-                  onChange={(e) =>
-                    handleChangeLocation(
-                      e,
-                      setLocationValuesInputs,
-                      index,
-                      TypeLocation.postal_code
-                    )
-                  }
-                  type="string"
-                />
-                {value.icon && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      cursor: 'pointer',
-                      right: matches600 ? '-5px' : '-11.8px',
-                      top: matches600 ? '-15px' : '-10px',
-                      width: '15px',
-                      height: '15px',
-                    }}
-                    onClick={() => deleteLocationInputs(index)}
-                  >
-                    {value.icon}
-                  </Box>
-                )}
-              </Box>
-            );
-          })}
-        </Box>
-      </Box>
-      <Box className={styles.locationsSection}>
-        <Typography
-          className={styles.locationBtn}
-          onClick={() => {
-            setLocationValuesInputs((prev) => [
-              ...prev,
-              {
-                city: {
-                  name: '',
-                  isError: false,
-                  messageError: '',
-                },
-                street: {
-                  name: '',
-                  isError: false,
-                  messageError: '',
-                },
-                postal_code: {
-                  name: '',
-                  isError: false,
-                  messageError: '',
-                },
-                icon: (
-                  <Close
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      color: '#CECECE',
-                      '&:hover': {
-                        color: '#000000',
-                      },
-                    }}
-                  />
-                ),
-              },
-            ]);
-          }}
-        >
-          + Add more locations
-        </Typography>
-      </Box> */}
-
       <Box className={styles.btnSave} onClick={saveYourProfileInfo}>
         Save
       </Box>

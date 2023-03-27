@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import Input from '@/common/input/Input';
 import { ILocationUI, TypeLocation } from '@/store/types/location/locationType';
+import { Close } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
@@ -98,7 +99,7 @@ const Locations: React.FC<ILocations> = ({
                   }
                   type="string"
                 />
-                {value.icon && (
+                {index !== 0 && (
                   <Box
                     sx={{
                       position: 'absolute',
@@ -110,7 +111,16 @@ const Locations: React.FC<ILocations> = ({
                     }}
                     onClick={() => deleteLocationInputs(index)}
                   >
-                    {value.icon}
+                    <Close
+                      sx={{
+                        width: '100%',
+                        height: '100%',
+                        color: '#CECECE',
+                        '&:hover': {
+                          color: '#000000',
+                        },
+                      }}
+                    />
                   </Box>
                 )}
               </Box>
