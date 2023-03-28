@@ -11,9 +11,6 @@ export interface ISettings {
 
 const Settings: React.FC<ISettings> = ({ userType }) => {
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
-  console.log('====================================');
-  console.log(' isGoogleAuth ', isGoogleAuth);
-  console.log('====================================');
   useEffect(() => {
     const googleAuth = localStorage.getItem('googleAuth');
     if (googleAuth) {

@@ -20,9 +20,6 @@ const Messages: React.FC<IMessagesProps> = ({
   selectedContact,
   onContactSelected,
 }) => {
-  console.log('====================================');
-  console.log('!!!!![Message] data', data);
-  console.log('====================================');
   return (
     <MessageContext.Provider value={userType}>
       <Box
