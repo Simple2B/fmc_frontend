@@ -8,14 +8,12 @@ import {
   CalendarMonth,
   Close,
   Home,
-  Logout,
   Menu as IconMenu,
-  Notifications,
+  Logout,
 } from '@mui/icons-material';
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   InputBase,
   Menu,
@@ -29,6 +27,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import MarkedCalendar from '../marked_calendar/MarkedCalendar';
+import { MessageNotifications } from './MessageNotifications';
 import style from './NavBar.module.sass';
 
 export interface INavBar {
@@ -66,6 +65,7 @@ const NavBar: React.FC<INavBar> = ({
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
+  // const open = Boolean(notificationEl);
 
   const [anchorEl, setAnchorEl] = React.useState();
   React.useEffect(() => {
@@ -147,26 +147,7 @@ const NavBar: React.FC<INavBar> = ({
               )}
             </Box>
           )}
-          <Badge
-            badgeContent={notificationCount}
-            color="primary"
-            sx={{
-              display: matches970 ? 'none' : 'inline-block',
-              // display: { xs: 'none', sm: 'inline-block' },
-              boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',
-              border: '1px solid',
-              p: '7px 9px',
-              borderRadius: '50%',
-              '&:hover': {
-                boxShadow: '0px 0px 5px #1876D1',
-                border: '1px solid',
-                p: '7px 9px',
-                borderRadius: '50%',
-              },
-            }}
-          >
-            <Notifications color="action" />
-          </Badge>
+          <MessageNotifications notificationCount={notificationCount} />
           <Avatar src={picture} onClick={() => setOpen(!isOpen)} />
           <Box
             component="span"
