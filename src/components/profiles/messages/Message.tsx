@@ -37,7 +37,7 @@ export function Message({ text, isOutgoing, date }: IMessageProps) {
           sx={{
             width: '100%',
             height: 'auto',
-            padding: '1rem',
+            padding: '5%',
             color: 'black',
             backgroundColor: '#d2d4f9',
             borderRadius: '0.5rem / 3rem 3rem',
@@ -53,7 +53,7 @@ export function Message({ text, isOutgoing, date }: IMessageProps) {
               sm: 10,
               xs: 8,
             }}
-            lineHeight={'24px'}
+            lineHeight={'normal'}
           >
             {text}
           </Typography>

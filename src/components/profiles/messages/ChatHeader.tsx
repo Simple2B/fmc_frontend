@@ -79,7 +79,7 @@ export function ChatHeader({
               color: 'white',
             }}
           >
-            View Profile - {selectedContactUUID}
+            View Profile of {selectedContactFirstName}
           </Typography>
         </Box>
       </Box>
