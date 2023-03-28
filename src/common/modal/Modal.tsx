@@ -23,14 +23,6 @@ const CustomModel: React.FC<ICustomModel> = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
-        // height: '100vh',
-        // width: '100vw',
-        // position: 'absolute',
-        // top: 0,
-        // left: 0,
-        // right: 0,
-        // bottom: 0,
-        // // margin: '15% auto',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -38,7 +30,6 @@ const CustomModel: React.FC<ICustomModel> = ({
     >
       <Box
         sx={{
-          // height: '100vh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
