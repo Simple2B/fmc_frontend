@@ -118,9 +118,9 @@ const SignIn: React.FC<ISignIn> = ({
               'token',
               (coachToken as IResponseCoachData).access_token
             );
+            router.push('/profiles/coach?my_appointments');
             setIsLoad(false);
             setSuccess(true);
-            router.push('/profiles/coach?my_appointments');
           }
           if (userType === UserType.student) {
             const studentToken = await studentAuthApi.signInStudent(
@@ -270,14 +270,13 @@ const SignIn: React.FC<ISignIn> = ({
             <div style={{ color: '#717171' }}>Or</div>
             <div></div>
           </div>
-
-          <Box sx={{ width: '100%' }}>
-            <GoogleLoginBtn
-              onSuccess={onSuccess}
-              onError={onFailure}
-              typeSign={typeSign}
-            />
-          </Box>
+        </Box>
+        <Box sx={{ width: '100%' }}>
+          <GoogleLoginBtn
+            onSuccess={onSuccess}
+            onError={onFailure}
+            typeSign={typeSign}
+          />
         </Box>
       </Box>
     </Box>

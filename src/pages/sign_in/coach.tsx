@@ -66,7 +66,7 @@ export default function SignInCoach() {
     router.push('/sign_in/coach');
     localStorage.removeItem('googleAuth');
     setSuccess(false);
-    getErrorMessage(res, setError);
+    // getErrorMessage(res, setError);
   };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
