@@ -27,9 +27,7 @@ const LoginPage = dynamic(() => import('../../sign_in/coach'));
 
 export default function ProfileCoach() {
   const router = useRouter();
-
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
-
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [href, setHref] = useState<string>('my_appointments');
   const [profile, setProfile] = useState<IUserProfile>({
