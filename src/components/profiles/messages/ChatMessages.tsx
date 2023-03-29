@@ -1,7 +1,8 @@
 import { IUserProfile } from '@/store/types/user';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessageBox } from './ChatMessageBox';
+import { ChatNotSelected } from './ChatNotSelected';
 import { ChatSendMessageArea } from './ChatSendMessageArea';
 
 interface IChatMessagesProps {
@@ -46,29 +47,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
           </Box>
         </Box>
       ) : (
-        <Box
-          sx={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignContent: 'center',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography
-            fontSize={{
-              lg: 20,
-              md: 16,
-              sm: 12,
-              xs: 10,
-            }}
-            fontFamily={'Inter'}
-            fontWeight={'bold'}
-          >
-            Please select a contact
-          </Typography>
-        </Box>
+        <ChatNotSelected />
       )}
     </>
   );
