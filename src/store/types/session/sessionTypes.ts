@@ -12,6 +12,7 @@ export interface ILesson {
 }
 
 export interface ISession {
+  uuid: string;
   lesson: ILesson;
   coach: ICoachProfile;
   appointment_time: string;
@@ -20,4 +21,8 @@ export interface ISession {
 
 export interface ISessions {
   lessons: ISession[];
+}
+
+export interface IUnreviewedLessonsList extends ISessions {
+  count: number;
 }

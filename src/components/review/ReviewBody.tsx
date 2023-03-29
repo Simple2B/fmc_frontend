@@ -1,7 +1,15 @@
+import { ISession } from '@/store/types/session/sessionTypes';
 import { Box, Typography } from '@mui/material';
 import ReviewForm from './ReviewForm';
 
-function ReviewBody() {
+interface IReviewBodyProps {
+  lessonData: ISession | undefined;
+}
+
+const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
+  const date = new Date(lessonData ? lessonData.appointment_time : '');
+  const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+
   return (
     <>
       <Box
@@ -49,7 +57,7 @@ function ReviewBody() {
                   }}
                   sx={{ fontFamily: 'Inter', fontWeight: 'bold' }}
                 >
-                  John Johnson
+                  {lessonData?.coach.first_name} {lessonData?.coach.last_name}
                 </Typography>
                 <Typography
                   fontSize={{
@@ -59,7 +67,7 @@ function ReviewBody() {
                     xs: 8,
                   }}
                 >
-                  Tennis coach
+                  {lessonData?.lesson.sport.name} Coach
                 </Typography>
               </Box>
             </Box>
@@ -72,14 +80,14 @@ function ReviewBody() {
               }}
               sx={{ color: '#969696', fontWeight: '400', fontFamily: 'Inter' }}
             >
-              12.03.2023
+              {appointment_date}
             </Typography>
           </Box>
-          <ReviewForm />
+          <ReviewForm lessonUUID={lessonData?.uuid ?? ''} />
         </Box>
       </Box>
     </>
   );
-}
+};
 
 export default ReviewBody;

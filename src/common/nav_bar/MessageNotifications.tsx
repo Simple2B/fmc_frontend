@@ -1,3 +1,4 @@
+import { ISession } from '@/store/types/session/sessionTypes';
 import { Notifications } from '@mui/icons-material';
 import {
   Avatar,
@@ -15,10 +16,12 @@ import React from 'react';
 
 interface IMessageNotificationsProps {
   notificationCount: number;
+  notifications: ISession[];
 }
 
 export const MessageNotifications = ({
   notificationCount,
+  notifications,
 }: IMessageNotificationsProps) => {
   // eslint-disable-next-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -27,6 +30,8 @@ export const MessageNotifications = ({
   const toggle = () => {
     setIsOpen(!isOpen);
   };
+
+  console.log('NOTIFICATIONS ->>>>>>>>>>>>>>>>', notifications);
 
   const rateCoach = (sessionUUID: string) => {
     console.log('rate');
@@ -76,66 +81,79 @@ export const MessageNotifications = ({
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem
-              sx={{
-                backgroundColor: 'white',
-                width: '100%',
-                margin: '0',
-              }}
-              onClick={toggle}
-            >
-              <Card
-                sx={{
-                  width: '100%',
-                  height: '0 auto',
-                }}
-              >
-                <CardHeader
-                  sx={{ backgroundColor: 'white', borderColor: 'white' }}
-                  avatar={
-                    <Avatar
+            {notifications
+              ? notifications.map((notification, index) => {
+                  const date = new Date(notification.appointment_time);
+                  const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}}`;
+
+                  return (
+                    <MenuItem
+                      key={index}
                       sx={{
-                        width: '0 auto',
-                        height: '0 auto',
+                        backgroundColor: 'white',
+                        width: '100%',
+                        margin: '0',
                       }}
-                      src=""
-                      aria-label="recipe"
-                    ></Avatar>
-                  }
-                  titleTypographyProps={{
-                    color: 'black',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    lineHeight: '16px',
-                    fontFamily: 'Inter',
-                  }}
-                  title="How was your session with coach John on 16.08.2022?"
-                />
-                <Box
-                  sx={{
-                    width: '30%',
-                    padding: '2%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'start',
-                  }}
-                >
-                  <Box>
-                    <Button
-                      onClick={() => rateCoach('random_uuid')}
-                      sx={{
-                        fontSize: '12px',
-                        fontFamily: 'Inter',
-                        color: '#0814EF',
-                        fontWeight: 'bold',
-                      }}
+                      onClick={toggle}
                     >
-                      Rate coach
-                    </Button>
-                  </Box>
-                </Box>
-              </Card>
-            </MenuItem>
+                      <Card
+                        sx={{
+                          width: '100%',
+                          height: '0 auto',
+                        }}
+                      >
+                        <CardHeader
+                          sx={{
+                            backgroundColor: 'white',
+                            borderColor: 'white',
+                          }}
+                          avatar={
+                            <Avatar
+                              sx={{
+                                width: '0 auto',
+                                height: '0 auto',
+                              }}
+                              src={notification.coach.profile_picture}
+                              aria-label="recipe"
+                            ></Avatar>
+                          }
+                          titleTypographyProps={{
+                            color: 'black',
+                            fontSize: '12px',
+                            fontWeight: '400',
+                            lineHeight: '16px',
+                            fontFamily: 'Inter',
+                          }}
+                          title={`How was your session with coach ${notification.coach.first_name} on ${appointment_date}?`}
+                        />
+                        <Box
+                          sx={{
+                            width: '30%',
+                            padding: '2%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'start',
+                          }}
+                        >
+                          <Box>
+                            <Button
+                              onClick={() => rateCoach(notification.uuid)}
+                              sx={{
+                                fontSize: '12px',
+                                fontFamily: 'Inter',
+                                color: '#0814EF',
+                                fontWeight: 'bold',
+                              }}
+                            >
+                              Rate coach
+                            </Button>
+                          </Box>
+                        </Box>
+                      </Card>
+                    </MenuItem>
+                  );
+                })
+              : 'No pending reviews'}
           </Menu>
         </Box>
 

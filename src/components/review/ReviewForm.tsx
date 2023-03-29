@@ -1,12 +1,35 @@
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { Box, Rating, TextField, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useMutation } from 'react-query';
 
-function ReviewForm() {
-  const [ratingValue, setRatingValue] = useState<number | null>(0);
+interface IReviewFormProps {
+  lessonUUID: string;
+}
 
-  const handleClick = () => {
-    console.log('Leaving a review');
-  };
+const ReviewForm = ({ lessonUUID }: IReviewFormProps) => {
+  const router = useRouter();
+  const [ratingValue, setRatingValue] = useState<number>(0);
+  const [rateText, setRateText] = useState<string>('');
+
+  const sendReviewMutation = useMutation(
+    async () => {
+      const request = studentClientApi.studentSendSessionReview;
+      const data = { text: rateText, rate: ratingValue };
+      await request(data, lessonUUID);
+    },
+    {
+      onSuccess: () => {
+        router.push('/profiles/student?my_lessons');
+      },
+    }
+  );
+
+  function handleSendReview(): void {
+    sendReviewMutation.mutate();
+  }
+
   return (
     <>
       <Box
@@ -27,12 +50,14 @@ function ReviewForm() {
           value={ratingValue}
           size="large"
           onChange={(e, newValue) => {
-            setRatingValue(newValue);
+            setRatingValue(Number(newValue));
           }}
         />
         <TextField
           sx={{ width: '60%', marginTop: '2.5%' }}
           placeholder="Share your experience about coach"
+          value={rateText}
+          onChange={(e) => setRateText(e.target.value)}
           autoFocus={true}
           multiline
           rows={4}
@@ -57,8 +82,13 @@ function ReviewForm() {
             padding: '2%',
             gap: '10px',
             borderRadius: '8px',
+            '&:hover': {
+              background: ' #4d54e6',
+              transition: 0.6,
+              cursor: 'pointer',
+            },
           }}
-          onClick={handleClick}
+          onClick={handleSendReview}
         >
           <Typography
             fontSize={{
@@ -75,6 +105,6 @@ function ReviewForm() {
       </Box>
     </>
   );
-}
+};
 
 export default ReviewForm;

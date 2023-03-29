@@ -1,11 +1,18 @@
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 import ReviewBody from './ReviewBody';
 
 const CoachReview = () => {
   const router = useRouter();
-  console.log(router.query.id);
 
+  const { data } = useQuery(['getLesson'], async () => {
+    const lessonUUID = router.query ? router.query.id : '';
+    const request = studentClientApi.studentGetLessonData(lessonUUID as string);
+    const result = await request;
+    return result;
+  });
   return (
     <>
       <Box
@@ -49,7 +56,7 @@ const CoachReview = () => {
           Rate your coach
         </Typography>
       </Box>
-      <ReviewBody />
+      <ReviewBody lessonData={data} />
     </>
   );
 };
