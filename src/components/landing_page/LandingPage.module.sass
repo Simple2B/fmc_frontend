@@ -6,9 +6,11 @@
     position: relative
     margin: 0 auto
     .appBar
-        width: 100%
         box-shadow: none
         position: absolute
+        display: flex
+        justify-content: space-between
+        // align-items: center
         top: 0
         left: 0
         right: 0
@@ -254,7 +256,6 @@
     cursor: pointer
     .signInText
         padding-top: 12px
-        color: $color-text
         margin-right: 15px 
         text-align: center
     .text
@@ -287,8 +288,8 @@
 
 .btnLanding
     padding-top: 12px
-    color: $color-main-text
-    border-bottom: 2px solid $color-main-text
+    // color: $color-main-text
+    // border-bottom: 2px solid $color-main-text
     margin-right: 15px
     text-align: center
     &:hover

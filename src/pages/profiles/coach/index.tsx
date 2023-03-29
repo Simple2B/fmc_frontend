@@ -40,7 +40,7 @@ export default function ProfileCoach() {
 
   const [isSubscription, setIsSubscription] = useState<boolean>(false);
 
-  useQuery<ICoachSubscription | null, ErrorConstructor>(
+  const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
     ['coachSubscription'],
     async () => {
       const request = coachSubscriptionApi.getSubscription();
@@ -56,6 +56,10 @@ export default function ProfileCoach() {
     },
     {}
   );
+  // TODO: change logic with setIsSubscription!!!
+  console.log('====================================');
+  console.log(' coachQuery ', coachQuery);
+  console.log('====================================');
 
   const [isSubscriptionSuccess, setIsSubscriptionSuccess] =
     useState<boolean>(false);

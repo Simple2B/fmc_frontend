@@ -6,12 +6,7 @@ import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
-import {
-  emptyLocation,
-  RE_CITY,
-  RE_POST_CODE,
-  RE_STREET,
-} from '@/store/constants';
+import { emptyLocation, RE_ONLY_LETTER, RE_POST_CODE } from '@/store/constants';
 import { ILocationUI, TypeLocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/sport/sportType';
 import { UserType } from '@/store/types/user';
@@ -209,13 +204,13 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
             }
             if (
               typeLocation === TypeLocation.city &&
-              !RE_CITY.test(e.target.value.toLowerCase())
+              !RE_ONLY_LETTER.test(e.target.value.toLowerCase())
             ) {
               return item;
             }
             if (
               typeLocation === TypeLocation.street &&
-              !RE_STREET.test(e.target.value.toLowerCase())
+              !RE_ONLY_LETTER.test(e.target.value.toLowerCase())
             ) {
               return item;
             }
