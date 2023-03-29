@@ -23,14 +23,13 @@ const SideBar: React.FC<ISideBar> = ({ listItems, closeOpenMobSideBar }) => {
 
   const router = useRouter();
   return (
-    <Box flex={1} p={2}>
-      <Box className={style.fixedBox} position={'fixed'}>
+    <Box flex={1} pt={2}>
+      <Box className={style.fixedBox}>
         <List
           sx={{
             // boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',
             // selected and (selected + hover) states
             '&& .Mui-selected, && .Mui-selected:hover': {
-              width: '100%',
               bgcolor: 'rgba(24, 118, 209, 0.3)',
               '&, & .MuiListItemIcon-root': {
                 color: '#fff',
@@ -39,7 +38,6 @@ const SideBar: React.FC<ISideBar> = ({ listItems, closeOpenMobSideBar }) => {
             },
             // hover states
             '& .MuiListItemButton-root:hover': {
-              width: '100%',
               bgcolor: 'rgba(24, 118, 209, 0.3)',
               '&, & .MuiListItemIcon-root': {
                 color: '#fff',
@@ -63,9 +61,7 @@ const SideBar: React.FC<ISideBar> = ({ listItems, closeOpenMobSideBar }) => {
                   component="a"
                   onClick={() => {
                     if (closeOpenMobSideBar) closeOpenMobSideBar();
-                    console.log('====================================');
-                    console.log(' item.href ', item.href);
-                    console.log('====================================');
+
                     router.push(item.href, undefined, { shallow: true });
                   }}
                 >
