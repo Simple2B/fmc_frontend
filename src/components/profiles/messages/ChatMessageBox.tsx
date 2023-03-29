@@ -2,7 +2,7 @@ import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coach
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '@/store/types/user';
 import { Box } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useQuery } from 'react-query';
 import { Message } from './Message';
 import { MessageContext } from './messageContext';
@@ -16,6 +16,10 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
     alert('NO USER TYPE');
   }
   console.log('USER TYPE ->', userType);
+
+  const endAnchorRef = useRef<HTMLDivElement>(null);
+  const firstRenderRef = useRef<boolean>(true);
+
   const { data } = useQuery(
     ['contactMessageList', selectedContactUUID],
     async () => {
@@ -28,6 +32,15 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
     }
   );
 
+  useEffect(() => {
+    if (endAnchorRef.current && data) {
+      endAnchorRef.current.scrollIntoView({
+        behavior: firstRenderRef.current ? 'auto' : 'smooth',
+      });
+      firstRenderRef.current = false;
+    }
+  }, [data]);
+
   return (
     <>
       <Box
@@ -36,8 +49,12 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
           marginBottom: '2.5%',
           width: '100%',
           height: 'auto',
+          display: 'flex',
+          flexDirection: 'column-reverse',
         }}
       >
+        <div className="end-anchor" ref={endAnchorRef}></div>
+
         {data &&
           data.map((item) => {
             return (
