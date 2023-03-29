@@ -10,7 +10,7 @@ import {
   MenuItem,
   useMediaQuery,
 } from '@mui/material';
-import { red } from '@mui/material/colors';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 interface IMessageNotificationsProps {
@@ -23,19 +23,15 @@ export const MessageNotifications = ({
   // eslint-disable-next-line no-unused-vars
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  // const open = Boolean(anchorEl);
-
-  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-
+  const router = useRouter();
   const toggle = () => {
     setIsOpen(!isOpen);
   };
 
+  const rateCoach = (sessionUUID: string) => {
+    console.log('rate');
+    router.push(`/profiles/review/${sessionUUID}`);
+  };
   const matches970 = useMediaQuery('(max-width:970px)');
   return (
     <Box sx={{ postion: 'relative' }}>
@@ -88,7 +84,12 @@ export const MessageNotifications = ({
               }}
               onClick={toggle}
             >
-              <Card sx={{ width: '100%', height: '0 auto' }}>
+              <Card
+                sx={{
+                  width: '100%',
+                  height: '0 auto',
+                }}
+              >
                 <CardHeader
                   sx={{ backgroundColor: 'white', borderColor: 'white' }}
                   avatar={
@@ -96,8 +97,8 @@ export const MessageNotifications = ({
                       sx={{
                         width: '0 auto',
                         height: '0 auto',
-                        bgcolor: red[500],
                       }}
+                      src=""
                       aria-label="recipe"
                     ></Avatar>
                   }
@@ -121,60 +122,7 @@ export const MessageNotifications = ({
                 >
                   <Box>
                     <Button
-                      sx={{
-                        fontSize: '12px',
-                        fontFamily: 'Inter',
-                        color: '#0814EF',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      Rate coach
-                    </Button>
-                  </Box>
-                </Box>
-              </Card>
-            </MenuItem>
-            <MenuItem
-              sx={{
-                backgroundColor: 'white',
-                width: '100%',
-                margin: '0',
-              }}
-              onClick={toggle}
-            >
-              <Card sx={{ width: '100%', height: '0 auto' }}>
-                <CardHeader
-                  sx={{ backgroundColor: 'white', borderColor: 'white' }}
-                  avatar={
-                    <Avatar
-                      sx={{
-                        width: '0 auto',
-                        height: '0 auto',
-                        bgcolor: red[500],
-                      }}
-                      aria-label="recipe"
-                    ></Avatar>
-                  }
-                  titleTypographyProps={{
-                    color: 'black',
-                    fontSize: '12px',
-                    fontWeight: '400',
-                    lineHeight: '16px',
-                    fontFamily: 'Inter',
-                  }}
-                  title="How was your session with coach John on 16.08.2022?"
-                />
-                <Box
-                  sx={{
-                    width: '30%',
-                    padding: '2%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'start',
-                  }}
-                >
-                  <Box>
-                    <Button
+                      onClick={() => rateCoach('random_uuid')}
                       sx={{
                         fontSize: '12px',
                         fontFamily: 'Inter',

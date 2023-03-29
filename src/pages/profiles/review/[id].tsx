@@ -4,6 +4,7 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
+import CoachReview from '@/components/review/CoachReview';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
@@ -125,17 +126,7 @@ export default function RateCoach() {
         >
           <Box flex={matches414 ? 0 : 1} p={matches414 ? 0 : 2}>
             {profileComponents[href]}
-            <Box
-              sx={{
-                width: '100%',
-                height: '0 auto',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              Review
-            </Box>
+            <CoachReview />
           </Box>
         </AuthenticatedLayout>
       ) : (
