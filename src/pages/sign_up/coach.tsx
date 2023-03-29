@@ -30,10 +30,6 @@ export default function SignUpCoach() {
       picture: res.profileObj.imageUrl ?? '',
     };
 
-    console.log('====================================');
-    console.log(' [SignUp google] coach data', data);
-    console.log('====================================');
-
     // save user data from google to fast api db
     const CoachGoogleAuth = async () => {
       setIsLoad(true);

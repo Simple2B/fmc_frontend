@@ -3,54 +3,53 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/api/auth/student/login": {
+  '/api/auth/student/login': {
     /** Student Login */
-    post: operations["student_login_api_auth_student_login_post"];
+    post: operations['student_login_api_auth_student_login_post'];
   };
-  "/api/auth/student/sign-up": {
+  '/api/auth/student/sign-up': {
     /** Student Sign Up */
-    post: operations["student_sign_up_api_auth_student_sign_up_post"];
+    post: operations['student_sign_up_api_auth_student_sign_up_post'];
   };
-  "/api/auth/student/account-confirmation": {
+  '/api/auth/student/account-confirmation': {
     /** Student Account Confirmation */
-    get: operations["student_account_confirmation_api_auth_student_account_confirmation_get"];
+    get: operations['student_account_confirmation_api_auth_student_account_confirmation_get'];
   };
-  "/api/auth/student/google-oauth": {
+  '/api/auth/student/google-oauth': {
     /** Student Google Auth */
-    post: operations["student_google_auth_api_auth_student_google_oauth_post"];
+    post: operations['student_google_auth_api_auth_student_google_oauth_post'];
   };
-  "/api/auth/coach/login": {
+  '/api/auth/coach/login': {
     /** Coach Login */
-    post: operations["coach_login_api_auth_coach_login_post"];
+    post: operations['coach_login_api_auth_coach_login_post'];
   };
-  "/api/auth/coach/sign-up": {
+  '/api/auth/coach/sign-up': {
     /** Coach Sign Up */
-    post: operations["coach_sign_up_api_auth_coach_sign_up_post"];
+    post: operations['coach_sign_up_api_auth_coach_sign_up_post'];
   };
-  "/api/auth/coach/account-confirmation": {
+  '/api/auth/coach/account-confirmation': {
     /** Coach Account Confirmation */
-    get: operations["coach_account_confirmation_api_auth_coach_account_confirmation_get"];
+    get: operations['coach_account_confirmation_api_auth_coach_account_confirmation_get'];
   };
-  "/api/auth/coach/forgot-password": {
+  '/api/auth/coach/forgot-password': {
     /** Forgot Password */
-    post: operations["forgot_password_api_auth_coach_forgot_password_post"];
+    post: operations['forgot_password_api_auth_coach_forgot_password_post'];
   };
-  "/api/auth/coach/reset-password/{verification_token}": {
+  '/api/auth/coach/reset-password/{verification_token}': {
     /** Coach Reset Password */
-    post: operations["coach_reset_password_api_auth_coach_reset_password__verification_token__post"];
+    post: operations['coach_reset_password_api_auth_coach_reset_password__verification_token__post'];
   };
-  "/api/auth/coach/google-oauth": {
+  '/api/auth/coach/google-oauth': {
     /** Coach Google Auth */
-    post: operations["coach_google_auth_api_auth_coach_google_oauth_post"];
+    post: operations['coach_google_auth_api_auth_coach_google_oauth_post'];
   };
-  "/": {
+  '/': {
     /**
-     * Root 
+     * Root
      * @description Redirect to documentation
      */
-    get: operations["root__get"];
+    get: operations['root__get'];
   };
 }
 
@@ -67,7 +66,7 @@ export interface components {
       /** Password */
       password: string;
       /**
-       * Scope 
+       * Scope
        * @default
        */
       scope?: string;
@@ -85,7 +84,7 @@ export interface components {
       /** Password */
       password: string;
       /**
-       * Scope 
+       * Scope
        * @default
        */
       scope?: string;
@@ -97,7 +96,7 @@ export interface components {
     /** HTTPValidationError */
     HTTPValidationError: {
       /** Detail */
-      detail?: (components["schemas"]["ValidationError"])[];
+      detail?: components['schemas']['ValidationError'][];
     };
     /** Token */
     Token: {
@@ -109,13 +108,13 @@ export interface components {
     /** UserEmail */
     UserEmail: {
       /**
-       * Email 
+       * Email
        * Format: email
        */
       email: string;
     };
     /**
-     * UserGoogleLogin 
+     * UserGoogleLogin
      * @description Scheme for validating user`s sign in via Google OAuth data
      */
     UserGoogleLogin: {
@@ -136,7 +135,7 @@ export interface components {
     /** UserSignUp */
     UserSignUp: {
       /**
-       * Email 
+       * Email
        * Format: email
        */
       email: string;
@@ -163,25 +162,24 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
-
   student_login_api_auth_student_login_post: {
     /** Student Login */
     requestBody: {
       content: {
-        "application/x-www-form-urlencoded": components["schemas"]["Body_student_login_api_auth_student_login_post"];
+        'application/x-www-form-urlencoded': components['schemas']['Body_student_login_api_auth_student_login_post'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Token"];
+          'application/json': components['schemas']['Token'];
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -190,20 +188,20 @@ export interface operations {
     /** Student Sign Up */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserSignUp"];
+        'application/json': components['schemas']['UserSignUp'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -219,13 +217,13 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -234,20 +232,20 @@ export interface operations {
     /** Student Google Auth */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserGoogleLogin"];
+        'application/json': components['schemas']['UserGoogleLogin'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -256,20 +254,20 @@ export interface operations {
     /** Coach Login */
     requestBody: {
       content: {
-        "application/x-www-form-urlencoded": components["schemas"]["Body_coach_login_api_auth_coach_login_post"];
+        'application/x-www-form-urlencoded': components['schemas']['Body_coach_login_api_auth_coach_login_post'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": components["schemas"]["Token"];
+          'application/json': components['schemas']['Token'];
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -278,20 +276,20 @@ export interface operations {
     /** Coach Sign Up */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserSignUp"];
+        'application/json': components['schemas']['UserSignUp'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -307,13 +305,13 @@ export interface operations {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -322,20 +320,20 @@ export interface operations {
     /** Forgot Password */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserEmail"];
+        'application/json': components['schemas']['UserEmail'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -349,20 +347,20 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserResetPassword"];
+        'application/json': components['schemas']['UserResetPassword'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -371,34 +369,34 @@ export interface operations {
     /** Coach Google Auth */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserGoogleLogin"];
+        'application/json': components['schemas']['UserGoogleLogin'];
       };
     };
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
       /** @description Validation Error */
       422: {
         content: {
-          "application/json": components["schemas"]["HTTPValidationError"];
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
   };
   root__get: {
     /**
-     * Root 
+     * Root
      * @description Redirect to documentation
      */
     responses: {
       /** @description Successful Response */
       200: {
         content: {
-          "application/json": Record<string, never>;
+          'application/json': Record<string, never>;
         };
       };
     };

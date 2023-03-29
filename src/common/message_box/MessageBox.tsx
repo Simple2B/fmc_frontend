@@ -35,7 +35,7 @@ const MessageBox: React.FC<IMessageBox> = ({ message, handleClick }) => {
           cursor: 'pointer',
         }}
       >
-        X
+        &times;
       </Box>
       <Typography
         id="modal-modal-title"
