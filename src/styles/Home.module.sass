@@ -18,3 +18,31 @@
     display: flex
     padding-left: 24px
     padding-right: 24px
+
+.mainCoachSearch
+  max-width: 1140px
+  position: relative
+  top: 0
+  left: 0
+  right: 0
+  height: 100vh
+  @include box-center(center)
+  margin: 0 auto
+  flex-direction: column
+  justify-content: flex-start
+  .boxCoachSearch
+    width: 100%
+    @include box-center(center)
+  .boxCoachSearchContent
+    width: 100%
+    @include box-center(center)
+    margin-top: 230px
+
+@media (max-width: 599px)
+  .mainCoachSearch
+    @include box-center(center)
+    justify-content: unset 
+    flex-direction: column
+    .boxCoachSearch
+    .boxCoachSearchContent
+      margin-top: 130px

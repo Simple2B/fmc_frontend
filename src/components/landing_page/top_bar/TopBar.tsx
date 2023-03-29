@@ -1,5 +1,5 @@
 import { logout } from '@/helper/logout/logout';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { IUserProfile, TypeTheme, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -23,6 +23,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import linkLogo from '../../../../public/LOGO(WHITE).svg';
+import linkLogoDark from '../../../../public/LOGO.svg';
+
 import style from '../LandingPage.module.sass';
 
 export interface ITopBar {
@@ -35,6 +37,7 @@ export interface ITopBar {
   // eslint-disable-next-line no-unused-vars
   setProfile: (value: React.SetStateAction<IUserProfile>) => void;
   userType: string | null | undefined;
+  theme?: string;
 }
 
 const TopBar: React.FC<ITopBar> = ({
@@ -44,6 +47,7 @@ const TopBar: React.FC<ITopBar> = ({
   setUserType,
   setProfile,
   userType,
+  theme,
 }) => {
   const matches1920 = useMediaQuery('(max-width:1920px)');
   const matches845 = useMediaQuery('(max-width:845px)');
@@ -59,7 +63,17 @@ const TopBar: React.FC<ITopBar> = ({
     setAnchorEl(null);
   };
   return (
-    <AppBar component="nav" color={'transparent'} className={style.appBar}>
+    <AppBar
+      component="nav"
+      color={'transparent'}
+      className={style.appBar}
+      sx={{
+        maxWidth: TypeTheme.dark === theme ? '1140px' : '100% ',
+        left: 'auto',
+        right: 'auto',
+        boxShadow: 'none',
+      }}
+    >
       <Toolbar>
         <IconButton
           id="basic-button"
@@ -69,7 +83,9 @@ const TopBar: React.FC<ITopBar> = ({
           onClick={handleDrawerToggle}
           sx={{ mr: 2, display: { sm: 'none' } }}
         >
-          <MenuIcon sx={{ color: '#fff' }} />
+          <MenuIcon
+            sx={{ color: TypeTheme.dark === theme ? '#000' : '#fff' }}
+          />
         </IconButton>
         <Box
           component="div"
@@ -90,7 +106,7 @@ const TopBar: React.FC<ITopBar> = ({
             }}
           >
             <Image
-              src={linkLogo}
+              src={TypeTheme.dark === theme ? linkLogoDark : linkLogo}
               alt="LOGO"
               width={matches845 ? 100 : 124}
               height={matches845 ? 80 : 104}
@@ -207,10 +223,23 @@ const TopBar: React.FC<ITopBar> = ({
               </Box>
             ) : (
               <>
-                <Box className={style.signInText}>Sign in</Box>
+                {/* color: $color-text */}
+                <Box
+                  className={style.signInText}
+                  sx={{ color: TypeTheme.dark === theme ? '#000' : '#ffffff' }}
+                >
+                  Sign in
+                </Box>
                 <Box
                   onClick={() => router.push('/sign_in/coach')}
                   className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
+                  sx={{
+                    color: TypeTheme.dark === theme ? '#000' : '#ffffff',
+                    borderBottom:
+                      TypeTheme.dark === theme
+                        ? '2px solid #000'
+                        : '2px solid #ffffff',
+                  }}
                 >
                   Coach
                 </Box>
@@ -218,6 +247,13 @@ const TopBar: React.FC<ITopBar> = ({
                 <Box
                   onClick={() => router.push('/sign_in/student')}
                   className={`${style.commonTextStyle} ${style.btnText} ${style.btnLanding}`}
+                  sx={{
+                    color: TypeTheme.dark === theme ? '#000' : '#ffffff',
+                    borderBottom:
+                      TypeTheme.dark === theme
+                        ? '2px solid #000'
+                        : '2px solid #ffffff',
+                  }}
                 >
                   Athlete
                 </Box>
