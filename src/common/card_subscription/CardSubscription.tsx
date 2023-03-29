@@ -1,5 +1,7 @@
+import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { Box, Card, CardActions, CardContent, Typography } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import arrow from '../../../public/arrow.png';
 import styles from './CardSubscription.module.sass';
@@ -22,13 +24,26 @@ const orders = [
 ];
 
 const CardSubscription: React.FC<ICardSubscription> = () => {
-  // const router = useRouter();
+  const router = useRouter();
+  const getSession = async () => {
+    try {
+      const result = await coachSubscriptionApi.getCheckoutSession();
+      console.log('--------------> url session sub', result.url);
+      if (result.url && result.url.length > 0) {
+        window.location.href = result.url;
+      }
+      return result.url;
+    } catch (error) {
+      router.push('/profiles/coach?my_appointments');
+      console.log('[CardSubscription] error => ', error);
+    }
+  };
 
   return (
     <Card className={styles.card}>
       <CardContent className={styles.cardContent}>
         <Box className={styles.wrapperTitle}>
-          <Typography className={styles.title}>$20</Typography>
+          <Typography className={styles.title}>19,99 £</Typography>
           <Typography className={styles.subtitle}>per month</Typography>
         </Box>
         <Box className={styles.wrapperLists}>
@@ -59,7 +74,9 @@ const CardSubscription: React.FC<ICardSubscription> = () => {
           alignItems: 'center',
         }}
       >
-        <Box className={styles.btn}>Get started</Box>
+        <Box className={styles.btn} onClick={() => getSession()}>
+          Get started
+        </Box>
       </CardActions>
     </Card>
   );

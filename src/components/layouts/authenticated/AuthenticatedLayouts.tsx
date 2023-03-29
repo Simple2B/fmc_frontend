@@ -13,7 +13,6 @@ import {
   Stack,
   useMediaQuery,
 } from '@mui/material';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import style from './AuthenticatedLayouts.module.sass';
 
@@ -32,7 +31,6 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   isOpenMobSideBar,
   closeOpenMobSideBar,
 }) => {
-  const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
 
   const [profile, setProfile] = React.useState<IUserProfile>({

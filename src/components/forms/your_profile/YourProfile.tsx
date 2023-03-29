@@ -6,24 +6,29 @@ import CustomModel from '@/common/modal/Modal';
 import DragDropFiles from '@/common/upload_drag_and_drop_input/DragDropFiles';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getErrorMessage } from '@/helper/error_function';
-import { RE_POST_CODE } from '@/store/constants';
+import {
+  emptyLocation,
+  RE_CITY,
+  RE_POST_CODE,
+  RE_STREET,
+} from '@/store/constants';
+import { ILocationUI, TypeLocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/sport/sportType';
 import { UserType } from '@/store/types/user';
 import { Close } from '@mui/icons-material';
 import Textarea from '@mui/joy/Textarea';
 import {
-  Autocomplete,
   Checkbox,
   FormControlLabel,
   FormGroup,
-  TextField,
   Typography,
-  useMediaQuery,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './YourProfile.module.sass';
+import Locations from './your_profile_components/Locations';
+import Sport from './your_profile_components/Sport';
 
 const nameInputStyles = {
   mt: 4,
@@ -37,37 +42,12 @@ const nameInputStyles = {
     bottom: '-20px',
   },
 };
-interface ILocation {
-  city: string;
-  street: string;
-  postal_code: string;
-  icon?: any;
-}
 
 export interface IYourProfileCoach {
   userType: string;
-  result: {
-    sports: {
-      name: string;
-      is_deleted: boolean;
-      uuid: string;
-    }[];
-    filesNames: string[];
-    filesUrls: string[];
-    checkedAdults: boolean;
-    checkedChildren: boolean;
-    about: string;
-    locationValuesInputs: {
-      city: string;
-      street: string;
-      postal_code: string;
-    }[];
-  };
 }
 
-const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
-  const matches600 = useMediaQuery('(max-width:600px)');
-
+const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
   const [options, setOptions] = useState<
     { id: number; label: string; is_deleted: boolean }[]
   >([]);
@@ -76,15 +56,68 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [sport, setSport] = useState<
-    { id: number; label: string; is_deleted: boolean }[]
-  >([]);
-
-  // const [deletedSport, setDefaultSport] = useState<
-  //   { id: number; label: string }[]
-  // >([]);
-
-  console.log('=== [YourProfile] sport ===> ', sport);
+  const getYourProfileInfo = () => {
+    const getData = async (userType: string) => {
+      try {
+        if (userType === UserType.coach) {
+          const response = await coachProfileApi.getInfoProfile();
+          setSport(
+            response.sports.map((s, i) => ({
+              id: i,
+              label: s.name,
+            }))
+          );
+          setFilesNames(
+            response.certificates
+              .filter((certificate) => !certificate.is_deleted)
+              .map(
+                (certificate) =>
+                  certificate.certificate_url.split('/')[
+                    certificate.certificate_url.split('/').length - 1
+                  ]
+              )
+          );
+          setFilesUrls(
+            response.certificates
+              .filter((certificate) => !certificate.is_deleted)
+              .map((certificate) => certificate.certificate_url)
+          );
+          setCheckedAdults(response.is_for_adults);
+          setCheckedChildren(response.is_for_children);
+          setAbout(response.about);
+          setLocationValuesInputs(() => {
+            if (response.locations.length > 0) {
+              const locations = response.locations.map((location) => ({
+                city: {
+                  name: location.city,
+                  isError: false,
+                  messageError: '',
+                },
+                street: {
+                  name: location.street,
+                  isError: false,
+                  messageError: '',
+                },
+                postal_code: {
+                  name: location.postal_code,
+                  isError: false,
+                  messageError: '',
+                },
+                icon: true,
+              }));
+              return [...locations];
+            } else {
+              return [emptyLocation];
+            }
+          });
+        }
+      } catch (error: any) {
+        console.log(`POST [your profile] error message: ${error.message}`);
+      }
+    };
+    getData(userType);
+  };
+  const [sport, setSport] = useState<{ id: number; label: string }[]>([]);
 
   const [errorSportMessage, setErrorSportMessage] = useState<string>('');
   const [isErrorSport, setIsErrorSport] = useState<boolean>(false);
@@ -103,9 +136,27 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const [aboutCoach, setAbout] = useState<string>('');
 
   // Location
-  const [locationValuesInputs, setLocationValuesInputs] = useState<ILocation[]>(
-    []
-  );
+  const [locationValuesInputs, setLocationValuesInputs] = useState<
+    ILocationUI[]
+  >([
+    {
+      city: {
+        name: '',
+        isError: false,
+        messageError: '',
+      },
+      street: {
+        name: '',
+        isError: false,
+        messageError: '',
+      },
+      postal_code: {
+        name: '',
+        isError: false,
+        messageError: '',
+      },
+    },
+  ]);
 
   useEffect(() => {
     const getSports = async () => {
@@ -124,34 +175,12 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
       }
     };
     getSports();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    setSport(
-      result.sports.map((s, i) => ({
-        id: i,
-        label: s.name,
-        is_deleted: s.is_deleted,
-      }))
-    );
-    setFilesNames(result.filesNames);
-    setFilesUrls(result.filesUrls);
-    setCheckedAdults(result.checkedAdults);
-    setCheckedChildren(result.checkedChildren);
-    setAbout(result.about);
-    setLocationValuesInputs(result.locationValuesInputs);
-  }, [
-    result.about,
-    result.checkedAdults,
-    result.checkedChildren,
-    result.filesNames,
-    result.filesUrls,
-    result.locationValuesInputs,
-    result.sports,
-    userType,
-  ]);
+    getYourProfileInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [files, setFiles] = useState<File[]>([]);
   // TODO: download link of certificate
@@ -163,20 +192,55 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
     );
   };
 
-  const handleOnChange = (
+  const handleChangeLocation = (
     e: { target: { value: string } },
-    setName: (arg0: any) => void,
-    setIsErrorName: (arg0: boolean) => void,
-    setErrorNameMessage: (arg0: string) => void
+    locationIndex: number,
+    typeLocation: string
   ) => {
-    setName(e.target.value);
-    if (e.target.value !== '') {
-      setIsErrorName(false);
-      setErrorNameMessage('');
-    } else {
-      setIsErrorName(true);
-      setErrorNameMessage('Sport cannot be empty');
-    }
+    setLocationValuesInputs(
+      locationValuesInputs.map((item, index) => {
+        if (index === locationIndex) {
+          if (e.target.value !== '') {
+            if (
+              typeLocation === TypeLocation.postal_code &&
+              !RE_POST_CODE.test(e.target.value.toLowerCase())
+            ) {
+              return item;
+            }
+            if (
+              typeLocation === TypeLocation.city &&
+              !RE_CITY.test(e.target.value.toLowerCase())
+            ) {
+              return item;
+            }
+            if (
+              typeLocation === TypeLocation.street &&
+              !RE_STREET.test(e.target.value.toLowerCase())
+            ) {
+              return item;
+            }
+            return {
+              ...item,
+              [typeLocation]: {
+                name: e.target.value,
+                isError: false,
+                messageError: '',
+              },
+            };
+          } else {
+            return {
+              ...item,
+              [typeLocation]: {
+                name: e.target.value,
+                isError: true,
+                messageError: 'Field is required',
+              },
+            };
+          }
+        }
+        return item;
+      })
+    );
   };
 
   const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
@@ -193,8 +257,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
   const closeSuccessMessage = () => {
     setModalIsOpen(!modalIsOpen);
     setSuccess(false);
-    setSport([]);
-    setSkills('');
   };
 
   const saveYourProfileInfo = () => {
@@ -205,7 +267,53 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
       setIsErrorSport(false);
       setErrorSportMessage('');
     }
-    if (sport.length !== 0) {
+    const location = locationValuesInputs.map((item) => {
+      if (item.city.name === '') {
+        return {
+          ...item,
+          city: {
+            ...item.city,
+            isError: true,
+            messageError: 'Field is required',
+          },
+        };
+      }
+      if (item.street.name === '') {
+        return {
+          ...item,
+          street: {
+            ...item.street,
+            isError: true,
+            messageError: 'Field is required',
+          },
+        };
+      }
+      if (item.postal_code.name === '') {
+        return {
+          ...item,
+          postal_code: {
+            ...item.postal_code,
+            isError: true,
+            messageError: 'Field is required',
+          },
+        };
+      }
+      return item;
+    });
+    setLocationValuesInputs(location);
+
+    const isLocation = location.map((item) => {
+      if (
+        item.city.isError ||
+        item.street.isError ||
+        item.postal_code.isError
+      ) {
+        return false;
+      }
+      return true;
+    });
+
+    if (sport.length !== 0 && isLocation.every((v) => v === true)) {
       const saveData = async (userType: string) => {
         const locations = locationValuesInputs.map((location) => ({
           city: location.city,
@@ -222,9 +330,13 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
               files,
               String(checkedAdults),
               String(checkedChildren),
-              locations
+              locations.map((location) => ({
+                city: location.city.name,
+                street: location.street.name,
+                postal_code: location.postal_code.name,
+              }))
             );
-
+            getYourProfileInfo();
             setIsLoad(false);
             setSuccess(true);
           }
@@ -250,45 +362,22 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
         </Typography>
       </Box>
       <Box className={styles.namesSection}>
-        <Box className={styles.inputBox}>
-          <Autocomplete
-            multiple
-            options={options}
-            getOptionLabel={(option) => `${option.label}`}
-            value={sport}
-            // defaultValue={[options[1], options[0]]}
-            isOptionEqualToValue={(sport, v) => sport.label === v.label}
-            renderOption={(props, options) => (
-              <Box component={'li'} {...props} key={options.id}>
-                {options.label}
-              </Box>
-            )}
-            onChange={(event, newValue) => {
-              if (newValue) {
-                setSport(newValue);
-                setIsErrorSport(false);
-                setErrorSportMessage('');
-              } else {
-                setIsErrorSport(true);
-                setErrorSportMessage('Sport cannot be empty');
-              }
-            }}
-            sx={nameInputStyles}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={'Sport'}
-                helperText={errorSportMessage}
-                sx={{
-                  '& .MuiFormHelperText-root': {
-                    color: 'red',
-                  },
-                }}
-                error={isErrorSport}
-              />
-            )}
-          />
-        </Box>
+        <Sport
+          options={options}
+          sport={sport}
+          onChangeSport={(event, newValue) => {
+            if (newValue) {
+              setSport(newValue);
+              setIsErrorSport(false);
+              setErrorSportMessage('');
+            } else {
+              setIsErrorSport(true);
+              setErrorSportMessage('Sport cannot be empty');
+            }
+          }}
+          errorSportMessage={errorSportMessage}
+          isErrorSport={isErrorSport}
+        />
         <Box className={styles.inputBox}>
           <Input
             name={'skills'}
@@ -331,7 +420,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
           />
         </Box>
       </Box>
-
       <Box className={styles.sessionsSection}>
         <Box className={styles.sessionsTitle}>
           <Typography variant="h4" className={styles.title}>
@@ -372,139 +460,45 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType, result }) => {
           </FormGroup>
         </Box>
       </Box>
-
-      <Box className={styles.locationsSection}>
-        <Box className={styles.locationsTitle}>
-          <Typography variant="h4" className={styles.title}>
-            Location
-          </Typography>
-          <Typography variant="subtitle1" className={styles.subtitle}>
-            Choose one or two options.
-          </Typography>
-        </Box>
-        <Box
-          className={styles.locationInputsWrapper}
-          sx={{ gap: matches600 ? 3 : 1.5 }}
-        >
-          {locationValuesInputs.map((value, index) => {
-            return (
-              <Box
-                key={index}
-                className={styles.inputsBox}
-                sx={{ gap: 1.5, position: 'relative' }}
-              >
-                <Input
-                  name={value.city}
-                  label={'City'}
-                  value={value.city}
-                  sx={{}}
-                  onChange={(e) =>
-                    setLocationValuesInputs(
-                      locationValuesInputs.map((value, ind) => {
-                        if (index === ind) {
-                          return {
-                            ...value,
-                            city: e.target.value,
-                          };
-                        }
-                        return value;
-                      })
-                    )
-                  }
-                  type="text"
-                />
-                <Input
-                  name={value.street}
-                  label={'Street'}
-                  value={value.street}
-                  sx={{}}
-                  onChange={(e) =>
-                    setLocationValuesInputs(
-                      locationValuesInputs.map((value, ind) => {
-                        if (index === ind) {
-                          return {
-                            ...value,
-                            street: e.target.value,
-                          };
-                        }
-                        return value;
-                      })
-                    )
-                  }
-                  type="text"
-                />
-                <Input
-                  name={value.postal_code}
-                  label={'Post code'}
-                  value={value.postal_code}
-                  sx={{ maxWidth: matches600 ? '100%' : '189px' }}
-                  onChange={(e) => {
-                    setLocationValuesInputs(
-                      locationValuesInputs.map((value, ind) => {
-                        if (
-                          index === ind &&
-                          RE_POST_CODE.test(e.target.value)
-                        ) {
-                          return {
-                            ...value,
-                            postCode: e.target.value,
-                          };
-                        }
-                        return value;
-                      })
-                    );
-                  }}
-                  type="string"
-                />
-                {value.icon && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      cursor: 'pointer',
-                      right: matches600 ? '-5px' : '-11.8px',
-                      top: matches600 ? '-15px' : '-10px',
-                      width: '15px',
-                      height: '15px',
-                    }}
-                    onClick={() => deleteLocationInputs(index)}
-                  >
-                    {value.icon}
-                  </Box>
-                )}
-              </Box>
-            );
-          })}
-        </Box>
-      </Box>
-      <Box className={styles.locationsSection}>
-        <Typography
-          className={styles.locationBtn}
-          onClick={() => {
-            setLocationValuesInputs((prev) => [
-              ...prev,
-              {
-                city: '',
-                street: '',
-                postal_code: '',
-                icon: (
-                  <Close
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      color: '#CECECE',
-                      '&:hover': {
-                        color: '#000000',
-                      },
-                    }}
-                  />
-                ),
+      <Locations
+        locationValuesInputs={locationValuesInputs}
+        handleChangeLocation={handleChangeLocation}
+        deleteLocationInputs={deleteLocationInputs}
+        addMoreLocationInputs={() => {
+          setLocationValuesInputs((prev) => [
+            ...prev,
+            {
+              city: {
+                name: '',
+                isError: false,
+                messageError: '',
               },
-            ]);
-          }}
-        >
-          + Add more locations
-        </Typography>
-      </Box>
+              street: {
+                name: '',
+                isError: false,
+                messageError: '',
+              },
+              postal_code: {
+                name: '',
+                isError: false,
+                messageError: '',
+              },
+              icon: (
+                <Close
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    color: '#CECECE',
+                    '&:hover': {
+                      color: '#000000',
+                    },
+                  }}
+                />
+              ),
+            },
+          ]);
+        }}
+      />
       <Box className={styles.btnSave} onClick={saveYourProfileInfo}>
         Save
       </Box>

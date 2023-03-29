@@ -1,4 +1,4 @@
-import { IContact } from '@/store/types/message/messsageType';
+import { IContact } from '@/store/types/message/messageType';
 import {
   Avatar,
   Box,
@@ -80,6 +80,8 @@ export default function ContactListItem({
       >
         <Avatar
           sx={{
+            width: ' 0 auto',
+            height: '0 auto',
             marginTop: '2.5%',
             marginLeft: '2.5%',
           }}
@@ -99,7 +101,7 @@ export default function ContactListItem({
               }}
               fontFamily={'Inter'}
               fontWeight={'600'}
-              lineHeight={'24px'}
+              lineHeight={'18px'}
             >
               {contactData.user.first_name} {contactData.user.last_name}
             </Typography>
@@ -116,7 +118,7 @@ export default function ContactListItem({
               fontFamily={'Inter'}
               fontWeight={'400'}
               color={'Inter'}
-              lineHeight={'18px'}
+              lineHeight={'normal'}
             >
               {contactData.message
                 ? contactData.message.text.replace(/(.{20})..+/, '$1…')

@@ -20,36 +20,9 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/student'));
-
-const listItemsStudent = [
-  {
-    name: 'My lessons',
-    icon: <CalendarToday color={'primary'} />,
-    href: '/profiles/student?my_lessons',
-  },
-  {
-    name: 'Favorite coaches',
-    icon: <FavoriteBorder color={'primary'} />,
-    href: '/profiles/student?favorite_coaches',
-  },
-  {
-    name: 'Messages',
-    icon: <Mess color={'primary'} />,
-    href: '/profiles/student?messages',
-  },
-  {
-    name: 'Settings',
-    icon: <Sett color={'primary'} />,
-    href: '/profiles/student?settings',
-  },
-  {
-    name: 'Get help',
-    icon: <Help color={'primary'} />,
-    href: '/profiles/student?get_help',
-  },
-];
 
 export default function ProfileStudent() {
   const matches414 = useMediaQuery('(max-width:414px)');
@@ -90,12 +63,101 @@ export default function ProfileStudent() {
     whoAmI();
   }, [router, router.asPath]);
 
+  const [uuidUser, setUUIDUser] = useState('');
+  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
+    null
+  );
+
+  const [listItemsStudent, setItemsStudent] = useState<
+    {
+      name: string;
+      icon: any;
+      href: string;
+    }[]
+  >([
+    {
+      name: 'My lessons',
+      icon: <CalendarToday color={'primary'} />,
+      href: '/profiles/student?my_lessons',
+    },
+    {
+      name: 'Favorite coaches',
+      icon: <FavoriteBorder color={'primary'} />,
+      href: '/profiles/student?favorite_coaches',
+    },
+    {
+      name: 'Messages',
+      icon: <Mess color={'primary'} />,
+      href: `/profiles/student?page=messages&user=${uuidUser}`,
+    },
+    {
+      name: 'Settings',
+      icon: <Sett color={'primary'} />,
+      href: '/profiles/student?settings',
+    },
+    {
+      name: 'Get help',
+      icon: <Help color={'primary'} />,
+      href: '/profiles/student?get_help',
+    },
+  ]);
+
+  const { data } = useQuery(
+    ['contactsStudent'],
+    async () => {
+      const request = studentClientApi.studentContactsList;
+      const result = await request();
+      console.log('--------------> contacts', result);
+      return result;
+    },
+    {
+      refetchInterval: 10000,
+    }
+  );
+
+  console.log('[Student page] message data', data);
+
+  const onContactSelected = (contactUUID: string) => {
+    const foundContact = data?.find((element) => {
+      if (element.user.uuid === contactUUID) {
+        console.log('element.user.uuid', element.user.uuid);
+        setItemsStudent(
+          listItemsStudent.map((item) => {
+            if (item.name === 'Messages') {
+              return {
+                ...item,
+                href: `/profiles/student?page=messages&user=${element.user.uuid}`,
+              };
+            }
+            return item;
+          })
+        );
+        router.push(
+          `/profiles/student?page=messages&user=${element.user.uuid}`
+        );
+        setUUIDUser(element.user.uuid);
+      }
+      return element.user.uuid === contactUUID;
+    });
+    if (!foundContact) {
+      return;
+    }
+    setSelectedContact(foundContact.user);
+  };
+
   const [href, setHref] = useState<string>('my_lessons');
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element } = {
     ['my_lessons']: <MyLessons profile={profile} />,
     ['favorite_coaches']: <FavoriteCoaches />,
-    ['messages']: <Messages userType={UserType.student} />,
+    [`page=messages&user=${uuidUser}`]: (
+      <Messages
+        userType={UserType.student}
+        data={data}
+        selectedContact={selectedContact}
+        onContactSelected={onContactSelected}
+      />
+    ),
     ['settings']: <Settings userType={UserType.student} />,
     ['get_help']: <GetHelp userType={UserType.student} email={profile.email} />,
   };
