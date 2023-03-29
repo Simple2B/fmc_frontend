@@ -12,7 +12,7 @@ export const CoachProfileContextProvider: React.FC<PropsWithChildren> = ({
   const [coachDetailProfile, setCoachDetailProfile] =
     useState<ICoachSubscription | null>(null);
 
-  useQuery<ICoachSubscription, ErrorConstructor>(
+  useQuery<ICoachSubscription | null, ErrorConstructor>(
     ['coachSubscription'],
     async () => {
       const request = coachSubscriptionApi.getSubscription();
