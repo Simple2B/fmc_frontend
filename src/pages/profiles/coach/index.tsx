@@ -40,13 +40,13 @@ export default function ProfileCoach() {
 
   const [isSubscription, setIsSubscription] = useState<boolean>(false);
 
-  useQuery<ICoachSubscription, ErrorConstructor>(
+  useQuery<ICoachSubscription | null, ErrorConstructor>(
     ['coachSubscription'],
     async () => {
       const request = coachSubscriptionApi.getSubscription();
       const result = await request;
       console.log('[coach subscription] coach result', result);
-      if (result.is_active) {
+      if (result && result.is_active) {
         setIsSubscription(true);
       } else {
         setIsSubscription(false);
