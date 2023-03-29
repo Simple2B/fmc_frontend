@@ -1,10 +1,14 @@
-export const getErrorMessage = (
+export const getErrorMessage: any = (
   axiosError: string,
   // eslint-disable-next-line no-unused-vars
   setError: (value: React.SetStateAction<string | null>) => void,
   type?: string
 ) => {
   const errorNumber = axiosError.replace(/\D/g, '');
+  console.log('====================================');
+  console.log(' axiosError ', axiosError);
+  console.log('====================================');
+  console.log(' errorNumber ', errorNumber);
   if (Number(errorNumber) === 403) {
     setError('Invalid credentials');
   } else if (Number(errorNumber) === 409) {
