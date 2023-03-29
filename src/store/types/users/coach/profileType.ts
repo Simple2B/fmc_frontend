@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { IUserProfile } from '../../user';
 
 export interface ILocation {
@@ -72,4 +73,10 @@ export interface ICoachSubscription {
   created: string;
   status: string;
   is_active: boolean;
+}
+
+export enum SubscriptionCheckState {
+  PENDING,
+  ACTIVE,
+  CANCELLED,
 }
