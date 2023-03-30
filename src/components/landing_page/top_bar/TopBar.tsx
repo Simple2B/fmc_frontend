@@ -72,6 +72,7 @@ const TopBar: React.FC<ITopBar> = ({
         left: 'auto',
         right: 'auto',
         boxShadow: 'none',
+        backgroundColor: TypeTheme.dark === theme ? '#ffffff' : 'transparent',
       }}
     >
       <Toolbar>

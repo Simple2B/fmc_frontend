@@ -37,6 +37,31 @@ export default function CoachSearchPage() {
             <Btns />
           </Box>
           <CoachCards />
+          <Box sx={{ pt: '75px', pb: '88px' }}>
+            <Box
+              sx={{
+                width: '353px',
+                height: '65px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontSize: '24px',
+                fontWeight: '400',
+                color: '#FFFFFF',
+                backgroundColor: '#1664C0',
+                fontFamily: 'Inter',
+                transition: '.3s ease all',
+                borderRadius: '15px',
+                cursor: 'pointer',
+                '&:hover': {
+                  backgroundColor: '#222CDF',
+                  transition: '.3s ease all',
+                },
+              }}
+            >
+              Load more coaches
+            </Box>
+          </Box>
         </div>
         {/* {isLoad && (
           <CustomModel isOpen={isLoad}>

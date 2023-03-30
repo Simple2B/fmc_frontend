@@ -1,15 +1,20 @@
 import { FilterAlt } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import * as React from 'react';
+import { useState } from 'react';
+import FilterForm from './FilterForm';
 
 export interface IFilterBtn {}
 
 const FilterBtn: React.FC<IFilterBtn> = () => {
-  // const matches845 = useMediaQuery('(max-width:845px)');
-
+  const [isOpenFilterForm, setIsOpenFilterForm] = useState<boolean>(false);
+  const toggleFilterForm = () => {
+    setIsOpenFilterForm(!isOpenFilterForm);
+  };
   return (
     <Box
       sx={{
+        position: 'relative',
         width: '100%',
         display: 'flex',
         justifyContent: 'flex-end',
@@ -31,6 +36,7 @@ const FilterBtn: React.FC<IFilterBtn> = () => {
             borderRadius: '8px',
           },
         }}
+        onClick={toggleFilterForm}
       >
         <FilterAlt sx={{ color: '#1876D1' }} />
         <Box
@@ -44,6 +50,7 @@ const FilterBtn: React.FC<IFilterBtn> = () => {
           Filter
         </Box>
       </Box>
+      {isOpenFilterForm && <FilterForm toggleFilterForm={toggleFilterForm} />}
     </Box>
   );
 };
