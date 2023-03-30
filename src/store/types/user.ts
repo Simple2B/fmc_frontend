@@ -9,6 +9,11 @@ export enum TypeSign {
   in = 'in',
 }
 
+export enum TypeTheme {
+  dark = 'dark',
+  light = 'light',
+}
+
 export interface IUserProfile {
   uuid: string;
   email: string;

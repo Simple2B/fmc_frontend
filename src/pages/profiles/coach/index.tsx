@@ -1,5 +1,9 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
+
+import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
+
 import MessageSubscription from '@/components/message_subscription/MessageSubscription';
+
 import MyAppointments from '@/components/profiles/coach/my_appointments/MyAppointments';
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import Packages from '@/components/profiles/coach/packages/Packages';
@@ -7,7 +11,11 @@ import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
 import GetHelp from '@/components/profiles/get_help/GetHelp';
 import Messages from '@/components/profiles/messages/Messages';
+
+import SubscriptionCheck from '@/components/subscription_check_state/SubscriptionCheckState';
+
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
+
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
@@ -31,69 +39,16 @@ const LoginPage = dynamic(() => import('../../sign_in/coach'));
 
 export default function ProfileCoach() {
   const router = useRouter();
-  const [coachDetailProfile, setCoachDetailProfile] =
-    useState<ICoachSubscription | null>(null);
-
-  console.log('====================================');
-  console.log('[ProfileCoach] coachDetailProfile => ', coachDetailProfile);
-  console.log('====================================');
-
-  const [isSubscription, setIsSubscription] = useState<boolean>(false);
-
-  useQuery<ICoachSubscription | null, ErrorConstructor>(
+  const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
     ['coachSubscription'],
     async () => {
       const request = coachSubscriptionApi.getSubscription();
       const result = await request;
       console.log('[coach subscription] coach result', result);
-      if (result && result.is_active) {
-        setIsSubscription(true);
-      } else {
-        setIsSubscription(false);
-      }
-      setCoachDetailProfile(result);
       return result;
     },
     {}
   );
-
-  const [isSubscriptionSuccess, setIsSubscriptionSuccess] =
-    useState<boolean>(false);
-
-  const [isSubscriptionCancel, setIsSubscriptionCancel] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    const success = router.asPath.includes('success');
-    const cancel = router.asPath.includes('cancel');
-    if (success) {
-      setIsSubscriptionSuccess(true);
-    }
-    if (cancel) {
-      setIsSubscriptionCancel(true);
-    }
-  }, [router.asPath]);
-
-  useEffect(() => {
-    if (isSubscriptionSuccess) {
-      setTimeout(() => {
-        setIsSubscriptionSuccess(false);
-        router.push('/profiles/coach?my_appointments#lesson_requests');
-      }, 3000);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSubscriptionSuccess]);
-
-  const closeSuccessMessage = () => {
-    setIsSubscriptionSuccess(false);
-    router.push('/profiles/coach?my_appointments#lesson_requests');
-  };
-
-  const closeCancelMessage = () => {
-    setIsSubscriptionCancel(false);
-    router.push('/profiles/coach?my_appointments');
-  };
-
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [href, setHref] = useState<string>('my_appointments');
@@ -222,12 +177,12 @@ export default function ProfileCoach() {
 
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element | null } = {
-    ['my_appointments']: !isSubscription ? (
-      <MyAppointments profile={profile} />
-    ) : (
+    ['my_appointments']: coachQuery.data?.is_active ? (
       <LessonRequestsCalendar />
+    ) : (
+      <MyAppointments profile={profile} />
     ),
-    ['my_appointments#lesson_requests']: isSubscription ? (
+    ['my_appointments#lesson_requests']: coachQuery.data?.is_active ? (
       <LessonRequestsCalendar />
     ) : null,
     ['reviews']: <Reviews />,
@@ -246,6 +201,7 @@ export default function ProfileCoach() {
 
   return (
     <>
+      {/* TODO: add component Head */}
       <Head>
         <title>Profile Coach</title>
         <meta name="description" content="Profile Coach" />
@@ -253,7 +209,6 @@ export default function ProfileCoach() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isLogIn ? (
-        // <CoachProfileContextProvider>
         <AuthenticatedLayout
           userType={UserType.coach}
           listItems={listItemsCoach}
@@ -263,23 +218,9 @@ export default function ProfileCoach() {
           <Box flex={1} p={2}>
             {profileComponents[href]}
           </Box>
-          {isSubscriptionSuccess && (
-            <MessageSubscription
-              message={'You have successfully subscribed'}
-              isSubscription={isSubscriptionSuccess}
-              closeSuccessMessage={closeSuccessMessage}
-            />
-          )}
-          {isSubscriptionCancel && (
-            <MessageSubscription
-              message={'Subscription was not completed'}
-              isSubscription={isSubscriptionCancel}
-              closeSuccessMessage={closeCancelMessage}
-            />
-          )}
+          <SubscriptionCheck />
         </AuthenticatedLayout>
       ) : (
-        // </CoachProfileContextProvider>
         <LoginPage />
       )}
     </>
