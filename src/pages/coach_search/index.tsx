@@ -40,7 +40,8 @@ export default function CoachSearchPage() {
           <Box sx={{ pt: '75px', pb: '88px' }}>
             <Box
               sx={{
-                width: '353px',
+                maxWidth: '353px',
+                width: '100%',
                 height: '65px',
                 display: 'flex',
                 justifyContent: 'center',
