@@ -1,15 +1,23 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
+
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
+
+import MessageSubscription from '@/components/message_subscription/MessageSubscription';
+
 import MyAppointments from '@/components/profiles/coach/my_appointments/MyAppointments';
+import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import Packages from '@/components/profiles/coach/packages/Packages';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
 import GetHelp from '@/components/profiles/get_help/GetHelp';
 import Messages from '@/components/profiles/messages/Messages';
+
 import SubscriptionCheck from '@/components/subscription_check_state/SubscriptionCheckState';
+
+import { instance } from '@/fast_api_backend/api/_axiosInstance';
+
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
 import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
@@ -78,6 +86,9 @@ export default function ProfileCoach() {
   }, [router, router.asPath]);
 
   const [uuidUser, setUUIDUser] = useState('');
+  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
+    null
+  );
 
   const [listItemsCoach, setItemsCoach] = useState<
     {
@@ -117,10 +128,6 @@ export default function ProfileCoach() {
       href: '/profiles/coach?get_help',
     },
   ]);
-
-  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
-    null
-  );
 
   const { data } = useQuery(
     ['contactsCoach'],

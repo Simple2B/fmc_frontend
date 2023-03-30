@@ -98,7 +98,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   };
 
   return (
-    <Box>
+    <Stack sx={{ height: '100vh' }}>
       <NavBar
         username={
           profile.first_name.length > 0
@@ -112,13 +112,11 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         closeOpenMobSideBar={closeOpenMobSideBar}
         isOpenMobSideBar={isOpenMobSideBar}
       />
-      <Stack direction="row" justifyContent="space-between">
+      <Stack direction="row" justifyContent="space-between" flex={1}>
         <Box
           className={style.wrapperSideBar}
           sx={{
             display: matches970 ? 'none' : 'block',
-            width: matches970 ? 'none' : '25%',
-            height: '100vh',
           }}
         >
           <SideBar listItems={listItems} />
@@ -127,7 +125,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         <Box
           sx={{
             borderLeft: matches970 ? '' : '.5px solid #DBDBDB',
-            width: matches970 ? '100%' : '88%',
+            flex: 1,
           }}
         >
           {children}
@@ -149,7 +147,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
           />
         </CustomModel>
       )}
-    </Box>
+    </Stack>
   );
 };
 
