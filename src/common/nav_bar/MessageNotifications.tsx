@@ -96,6 +96,7 @@ export const MessageNotifications = ({
                       onClick={toggle}
                     >
                       <Card
+                        onClick={() => rateCoach(notification.uuid)}
                         sx={{
                           width: '100%',
                           height: '0 auto',
@@ -136,7 +137,6 @@ export const MessageNotifications = ({
                         >
                           <Box>
                             <Button
-                              onClick={() => rateCoach(notification.uuid)}
                               sx={{
                                 fontSize: '12px',
                                 fontFamily: 'Inter',
