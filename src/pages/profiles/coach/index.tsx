@@ -2,10 +2,7 @@ import AuthenticatedLayout from '@/components/layouts/authenticated/Authenticate
 
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 
-import MessageSubscription from '@/components/message_subscription/MessageSubscription';
-
 import MyAppointments from '@/components/profiles/coach/my_appointments/MyAppointments';
-import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import Packages from '@/components/profiles/coach/packages/Packages';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
