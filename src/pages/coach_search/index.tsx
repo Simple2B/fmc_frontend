@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import Btns from '@/components/coach_search/Btns';
+import CoachCards from '@/components/coach_search/CoachCards';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
@@ -35,6 +36,7 @@ export default function CoachSearchPage() {
             <CoachSearchInput />
             <Btns />
           </Box>
+          <CoachCards />
         </div>
         {/* {isLoad && (
           <CustomModel isOpen={isLoad}>
