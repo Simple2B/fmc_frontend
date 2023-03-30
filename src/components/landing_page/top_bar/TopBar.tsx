@@ -169,15 +169,30 @@ const TopBar: React.FC<ITopBar> = ({
                         position: 'relative',
                       }}
                     >
-                      <Box sx={{ color: 'white' }}>
+                      <Box
+                        sx={{
+                          color:
+                            TypeTheme.dark === theme ? '#000000' : '#ffffff',
+                        }}
+                      >
                         {profile.first_name.length > 0
                           ? `${profile.first_name} ${profile.last_name}`
                           : profile.username}
                       </Box>
                       {isOpen ? (
-                        <ArrowDropDown sx={{ color: 'white' }} />
+                        <ArrowDropDown
+                          sx={{
+                            color:
+                              TypeTheme.dark === theme ? '#000000' : '#ffffff',
+                          }}
+                        />
                       ) : (
-                        <ArrowDropUp sx={{ color: 'white' }} />
+                        <ArrowDropUp
+                          sx={{
+                            color:
+                              TypeTheme.dark === theme ? '#000000' : '#ffffff',
+                          }}
+                        />
                       )}
                     </Box>
                   </Box>
@@ -192,7 +207,6 @@ const TopBar: React.FC<ITopBar> = ({
                     'aria-labelledby': 'basic-button',
                   }}
                   sx={{
-                    boxShadow: '0px 2px 14px rgba(107, 106, 106, 0.12)',
                     ml: '8%',
                   }}
                 >

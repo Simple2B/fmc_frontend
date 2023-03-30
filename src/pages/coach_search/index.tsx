@@ -4,11 +4,40 @@ import CoachCards from '@/components/coach_search/CoachCards';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
+import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { Box, Typography } from '@mui/material';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import styles from '../../styles/Home.module.sass';
 
 export default function CoachSearchPage() {
+  const router = useRouter();
+  const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
+
+  useEffect(() => {
+    const whoAmI = async () => {
+      try {
+        const response = await instance().get('/whoami/student');
+        const res = response.data;
+        console.log(`[GET] check student -> res data  ${res}`);
+        setIsLogIn(true);
+        setUserType(localStorage.getItem('userType') ?? '');
+        // const studentProfile = await studentClientApi.studentGetProfile();
+        // setProfile(studentProfile);
+      } catch (error: any) {
+        console.log(
+          `[GET] check student -> error message => ${error.response.status}`
+        );
+        localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        setIsLogIn(false);
+        // router.push('/sign_in/student');
+      }
+    };
+    whoAmI();
+  }, [router, router.asPath]);
   return (
     <>
       <Head>
@@ -36,7 +65,7 @@ export default function CoachSearchPage() {
             <CoachSearchInput />
             <Btns />
           </Box>
-          <CoachCards />
+          <CoachCards isLogIn={isLogIn} userType={userType} />
           <Box
             sx={{
               display: 'flex',

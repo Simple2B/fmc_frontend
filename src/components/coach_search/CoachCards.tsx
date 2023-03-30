@@ -1,3 +1,4 @@
+import { UserType } from '@/store/types/user';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import {
   Box,
@@ -61,13 +62,15 @@ const testDataCoachesProfiles = [
   },
 ];
 
-export interface ICoachCards {}
+export interface ICoachCards {
+  isLogIn: boolean | null;
+  userType: string | null;
+}
 
-const CoachCards: React.FC<ICoachCards> = () => {
+const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
   const matches1136 = useMediaQuery('(max-width:1136px)');
   const matches1061 = useMediaQuery('(max-width:1061px)');
   const matches986 = useMediaQuery('(max-width:986px)');
-
   const matches897 = useMediaQuery('(max-width:897px)');
 
   const [dataCoachesProfiles, setDataCoachesProfiles] = useState<
@@ -85,9 +88,6 @@ const CoachCards: React.FC<ICoachCards> = () => {
   >(testDataCoachesProfiles);
 
   const toggleLike = (uuid: string) => {
-    console.log('====================================');
-    console.log(' click -> ' + uuid);
-    console.log('====================================');
     setDataCoachesProfiles(
       dataCoachesProfiles.map((item) => {
         if (item.uuid === uuid) {
@@ -211,23 +211,27 @@ const CoachCards: React.FC<ICoachCards> = () => {
                   {item.address}
                 </Typography>
               </Box>
-              <IconButton
-                onClick={() => toggleLike(item.uuid)}
-                aria-label="add to favorites"
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                }}
-              >
-                {item.isLike ? (
-                  <Favorite sx={{ width: 40, height: 34, color: '#F05547' }} />
-                ) : (
-                  <FavoriteBorder
-                    sx={{ width: 40, height: 34, color: '#fff' }}
-                  />
-                )}
-              </IconButton>
+              {isLogIn && userType === UserType.student && (
+                <IconButton
+                  onClick={() => toggleLike(item.uuid)}
+                  aria-label="add to favorites"
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                  }}
+                >
+                  {item.isLike ? (
+                    <Favorite
+                      sx={{ width: 40, height: 34, color: '#F05547' }}
+                    />
+                  ) : (
+                    <FavoriteBorder
+                      sx={{ width: 40, height: 34, color: '#fff' }}
+                    />
+                  )}
+                </IconButton>
+              )}
             </Box>
             <CardContent
               sx={{
