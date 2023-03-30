@@ -85,7 +85,6 @@ export const MessageNotifications = ({
               ? notifications.map((notification, index) => {
                   const date = new Date(notification.appointment_time);
                   const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}}`;
-
                   return (
                     <MenuItem
                       key={index}
@@ -153,7 +152,7 @@ export const MessageNotifications = ({
                     </MenuItem>
                   );
                 })
-              : 'No pending reviews'}
+              : ''}
           </Menu>
         </Box>
 

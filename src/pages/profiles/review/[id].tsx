@@ -13,7 +13,8 @@ import {
   FavoriteBorder,
   Help,
   Message as Mess,
-  Settings as Sett,
+  Mode,
+  Settings as Set,
 } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -21,44 +22,72 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/student'));
 
-const listItemsStudent = [
-  {
-    name: 'My lessons',
-    icon: <CalendarToday color={'primary'} />,
-    href: '/profiles/student?my_lessons',
-  },
-  {
-    name: 'Favorite coaches',
-    icon: <FavoriteBorder color={'primary'} />,
-    href: '/profiles/student?favorite_coaches',
-  },
-  {
-    name: 'Messages',
-    icon: <Mess color={'primary'} />,
-    href: '/profiles/student?messages',
-  },
-  {
-    name: 'Settings',
-    icon: <Sett color={'primary'} />,
-    href: '/profiles/student?settings',
-  },
-  {
-    name: 'Get help',
-    icon: <Help color={'primary'} />,
-    href: '/profiles/student?get_help',
-  },
-];
-
 export default function RateCoach() {
   const matches414 = useMediaQuery('(max-width:414px)');
-
+  const [uuidUser, setUUIDUser] = useState('');
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
+  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
+    null
+  );
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
+  const [listItemsStudent, setItemsStudent] = useState<
+    {
+      name: string;
+      icon: any;
+      href: string;
+    }[]
+  >([
+    {
+      name: 'My Appointments ',
+      icon: <CalendarToday color={'primary'} />,
+      href: '/profiles/student?my_appointments',
+    },
+    {
+      name: 'Reviews',
+      icon: <FavoriteBorder color={'primary'} />,
+      href: '/profiles/student?reviews',
+    },
+    {
+      name: 'Packages',
+      icon: <Mode color={'primary'} />,
+      href: '/profiles/student?packages',
+    },
+    {
+      name: 'Messages',
+      icon: <Mess color={'primary'} />,
+      href: `/profiles/student?message&${uuidUser}`,
+    },
+    {
+      name: 'Settings',
+      icon: <Set color={'primary'} />,
+      href: '/profiles/student?settings',
+    },
+    {
+      name: 'Get help',
+      icon: <Help color={'primary'} />,
+      href: '/profiles/student?get_help',
+    },
+  ]);
+
+  const { data } = useQuery(
+    ['contactsStudent'],
+    async () => {
+      const request = studentClientApi.studentContactsList;
+      const result = await request();
+      console.log('--------------> contacts', result);
+      return result;
+    },
+    {
+      refetchInterval: 10000,
+    }
+  );
+
   const [profile, setProfile] = useState<IUserProfile>({
     uuid: '',
     username: '',
@@ -68,6 +97,31 @@ export default function RateCoach() {
     profile_picture: '',
     is_verified: false,
   });
+
+  const onContactSelected = (contactUUID: string) => {
+    const foundContact = data?.find((element) => {
+      if (element.user.uuid === contactUUID) {
+        setItemsStudent(
+          listItemsStudent.map((item) => {
+            if (item.name === 'Messages') {
+              return {
+                ...item,
+                href: `/profiles/student?message&${element.user.uuid}`,
+              };
+            }
+            return item;
+          })
+        );
+        router.push(`/profiles/student?message&${element.user.uuid}`);
+        setUUIDUser(element.user.uuid);
+      }
+      return element.user.uuid === contactUUID;
+    });
+    if (!foundContact) {
+      return;
+    }
+    setSelectedContact(foundContact.user);
+  };
 
   useEffect(() => {
     const whoAmI = async () => {
@@ -96,7 +150,13 @@ export default function RateCoach() {
   const profileComponents: { [key: string]: JSX.Element } = {
     ['my_lessons']: <MyLessons profile={profile} />,
     ['favorite_coaches']: <FavoriteCoaches />,
-    ['messages']: <Messages userType={UserType.student} />,
+    ['messages']: (
+      <Messages
+        userType={UserType.student}
+        selectedContact={selectedContact}
+        onContactSelected={onContactSelected}
+      />
+    ),
     ['settings']: <Settings userType={UserType.student} />,
     ['get_help']: <GetHelp userType={UserType.student} email={profile.email} />,
   };

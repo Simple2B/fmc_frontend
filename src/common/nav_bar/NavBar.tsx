@@ -141,10 +141,13 @@ const NavBar: React.FC<INavBar> = ({
               )}
             </Box>
           )}
-          <MessageNotifications
-            notificationCount={notificationCount}
-            notifications={notifications}
-          />
+          {userType === UserType.student && (
+            <MessageNotifications
+              notificationCount={notificationCount}
+              notifications={notifications}
+            />
+          )}
+
           <Avatar src={picture} onClick={() => setOpen(!isOpen)} />
           <Box
             component="span"
