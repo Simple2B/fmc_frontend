@@ -1,11 +1,6 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
 
-import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
-
-import MessageSubscription from '@/components/message_subscription/MessageSubscription';
-
 import MyAppointments from '@/components/profiles/coach/my_appointments/MyAppointments';
-import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import Packages from '@/components/profiles/coach/packages/Packages';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import Settings from '@/components/profiles/coach/settings/Settings';
@@ -16,6 +11,7 @@ import SubscriptionCheck from '@/components/subscription_check_state/Subscriptio
 
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
 
+import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
