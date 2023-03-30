@@ -197,7 +197,6 @@ const TopBar: React.FC<ITopBar> = ({
                     </Box>
                   </Box>
                 </Button>
-
                 <Menu
                   id="basic-menu"
                   anchorEl={anchorEl}
