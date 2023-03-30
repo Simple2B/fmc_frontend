@@ -1,7 +1,9 @@
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { Box, Rating, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 
 interface IReviewFormProps {
@@ -13,22 +15,30 @@ const ReviewForm = ({ lessonUUID }: IReviewFormProps) => {
   const [ratingValue, setRatingValue] = useState<number>(0);
   const [rateText, setRateText] = useState<string>('');
 
-  const sendReviewMutation = useMutation(
-    async () => {
-      const request = studentClientApi.studentSendSessionReview;
-      const data = { text: rateText, rate: ratingValue };
-      await request(data, lessonUUID);
-    },
-    {
-      onSuccess: () => {
-        router.push('/profiles/student?my_lessons');
-      },
-    }
-  );
+  const sendReviewMutation = useMutation(async () => {
+    const request = studentClientApi.studentSendSessionReview;
+    const data = { text: rateText, rate: ratingValue };
+    await request(data, lessonUUID);
+  });
 
   function handleSendReview(): void {
     sendReviewMutation.mutate();
   }
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        router.push('/profiles/student?my_lessons');
+      }, 1000);
+    }
+  }, [modalIsOpen]);
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    router.push('/profiles/student?my_lessons');
+  };
 
   return (
     <>
@@ -103,6 +113,26 @@ const ReviewForm = ({ lessonUUID }: IReviewFormProps) => {
           </Typography>
         </Box>
       </Box>
+
+      {sendReviewMutation.isError && !sendReviewMutation.isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            message={'Error while sendig a review'}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+      {sendReviewMutation.isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Review has been created'}
+            handleClick={closeSuccessMessage}
+          />
+        </CustomModel>
+      )}
     </>
   );
 };

@@ -202,7 +202,7 @@ export const studentClientApi = {
       rate: number;
     },
     lesson_uuid: string
-  ) => {
+  ): Promise<number> => {
     try {
       const response = await instance().post(`/review/${lesson_uuid}`, data);
       const res = response.data;
