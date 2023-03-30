@@ -44,6 +44,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   const pastSessions: ISessions = {
     lessons: [
       {
+        uuid: 'itjv-fifje-rjfj21-3uhfsas',
         lesson: {
           date: 'Aug 16, 2021',
           name: '',
@@ -53,6 +54,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             street: 'Wall Street',
             postal_code: '123',
           },
+
           sport: {
             name: 'Tennis',
           },

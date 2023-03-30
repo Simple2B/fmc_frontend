@@ -1,11 +1,11 @@
-import {
-  IContact,
-  IMessageCount,
-  IMessages,
-} from '@/store/types/message/messageType';
+import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
 
+import {
+  ISession,
+  IUnreviewedLessonsList,
+} from '@/store/types/session/sessionTypes';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -158,9 +158,9 @@ export const studentClientApi = {
     }
   },
 
-  studentGetNotificationCount: async (): Promise<IMessageCount> => {
+  studentGetReviewNotifications: async (): Promise<IUnreviewedLessonsList> => {
     try {
-      const response = await instance().get(`/notification/student/new`);
+      const response = await instance().get(`/notification/student/reviews`);
       const res = response.data;
       console.log('[GET] student notifications count ->', res);
       return res;
@@ -177,6 +177,36 @@ export const studentClientApi = {
       );
       const res = response.data;
       console.log('[POST] student read messages with coach:->', coach_uuid);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentGetLessonData: async (session_uuid: string): Promise<ISession> => {
+    try {
+      const response = await instance().get(`/lesson/${session_uuid}`);
+      const res = response.data;
+      console.log('[GET] student lesson ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentSendSessionReview: async (
+    data: {
+      text: string;
+      rate: number;
+    },
+    lesson_uuid: string
+  ): Promise<number> => {
+    try {
+      const response = await instance().post(`/review/${lesson_uuid}`, data);
+      const res = response.data;
+      console.log('[POST] student leaving review for lesson :->', lesson_uuid);
       return res;
     } catch (error: any) {
       console.log(`[POST: ] student -> error message => ${error.message}`);
