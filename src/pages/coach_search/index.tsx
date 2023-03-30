@@ -4,7 +4,7 @@ import CoachCards from '@/components/coach_search/CoachCards';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Head from 'next/head';
 import styles from '../../styles/Home.module.sass';
 
@@ -37,20 +37,25 @@ export default function CoachSearchPage() {
             <Btns />
           </Box>
           <CoachCards />
-          <Box sx={{ pt: '75px', pb: '88px' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              pt: '75px',
+              pb: '88px',
+            }}
+          >
             <Box
               sx={{
-                maxWidth: '353px',
-                width: '100%',
+                width: '320px',
+                maxWidth: '98%',
+                backgroundColor: '#1664C0',
                 height: '65px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                fontSize: '24px',
-                fontWeight: '400',
-                color: '#FFFFFF',
-                backgroundColor: '#1664C0',
-                fontFamily: 'Inter',
+                textAlign: 'center',
                 transition: '.3s ease all',
                 borderRadius: '15px',
                 cursor: 'pointer',
@@ -60,7 +65,17 @@ export default function CoachSearchPage() {
                 },
               }}
             >
-              Load more coaches
+              <Typography
+                sx={{
+                  color: '#FFFFFF',
+
+                  fontFamily: 'Inter',
+                  fontSize: '24px',
+                  fontWeight: '400',
+                }}
+              >
+                Load more coaches
+              </Typography>
             </Box>
           </Box>
         </div>
