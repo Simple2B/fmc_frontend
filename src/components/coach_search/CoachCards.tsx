@@ -12,6 +12,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -68,6 +69,7 @@ export interface ICoachCards {
 }
 
 const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
+  const router = useRouter();
   const matches1136 = useMediaQuery('(max-width:1136px)');
   const matches1061 = useMediaQuery('(max-width:1061px)');
   const matches986 = useMediaQuery('(max-width:986px)');
@@ -275,6 +277,7 @@ const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
               }}
             >
               <Button
+                onClick={() => router.push(`/coach_search/${item.uuid}`)}
                 sx={{
                   width: '180px',
                   height: '44px',
