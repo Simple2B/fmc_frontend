@@ -24,6 +24,7 @@ const SubscriptionCheck: React.FC<ISubscriptionCheckState> = () => {
       setIsSubscriptionCheck(SubscriptionCheckState.CANCELLED);
       router.push('/profiles/coach?my_appointments');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
   useEffect(() => {

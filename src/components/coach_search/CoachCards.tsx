@@ -1,4 +1,6 @@
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { UserType } from '@/store/types/user';
+import { IYourProfile } from '@/store/types/users/coach/profileType';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import {
   Box,
@@ -15,6 +17,8 @@ import {
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
+// import { useQuery } from 'react-query';
 
 const testDataCoachesProfiles = [
   {
@@ -89,6 +93,20 @@ const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
     }[]
   >(testDataCoachesProfiles);
 
+  const { data } = useQuery<IYourProfile[], ErrorConstructor>(
+    ['coachesProfilesCards'],
+    async () => {
+      const request =
+        isLogIn && userType === UserType.student
+          ? coachProfileApi.getCoachesCardsWithLikes
+          : coachProfileApi.getCoachesCards;
+      const result = await request();
+      return result;
+    }
+  );
+
+  console.log('[CoachCards ] data => ', data);
+
   const toggleLike = (uuid: string) => {
     setDataCoachesProfiles(
       dataCoachesProfiles.map((item) => {
@@ -117,187 +135,192 @@ const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
       }}
       gap={1.5}
     >
-      {dataCoachesProfiles.map((item, index) => {
-        return (
-          <Card
-            key={index}
-            sx={{
-              maxWidth: matches986
-                ? 275
-                : matches1061
-                ? 305
-                : matches1136
-                ? 330
-                : 355,
-            }}
-          >
-            <Box
+      {data &&
+        data.map((item, index) => {
+          return (
+            <Card
+              key={index}
               sx={{
-                position: 'relative',
-                width: '100%',
-                maxHeight: matches1061 ? 300 : matches1136 ? 325 : 350,
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  width: '100%',
-                  height: '74px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.78)',
-                  zIndex: 0,
-                },
+                maxWidth: matches986
+                  ? 275
+                  : matches1061
+                  ? 305
+                  : matches1136
+                  ? 330
+                  : 355,
               }}
             >
-              <CardMedia
-                component="img"
-                alt="picture"
-                height="100%"
-                image={'../../../test_picture_coach_profile.png'}
-              />
               <Box
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  flexDirection: 'column',
+                  position: 'relative',
                   width: '100%',
-                  height: '74px',
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  zIndex: 1,
+                  maxHeight: matches1061 ? 300 : matches1136 ? 325 : 350,
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: '100%',
+                    height: '74px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.78)',
+                    zIndex: 0,
+                  },
                 }}
-                gap={1}
               >
+                <CardMedia
+                  component="img"
+                  alt="picture"
+                  height="100%"
+                  image={'../../../test_picture_coach_profile.png'}
+                />
                 <Box
                   sx={{
                     display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    ml: '16px',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    flexDirection: 'column',
+                    width: '100%',
+                    height: '74px',
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 1,
                   }}
                   gap={1}
                 >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      ml: '16px',
+                    }}
+                    gap={1}
+                  >
+                    <Typography
+                      sx={{
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '16px',
+                        fontWeight: '700',
+                        color: '#777777',
+                      }}
+                    >
+                      {item.first_name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '16px',
+                        fontWeight: '700',
+                        color: '#777777',
+                      }}
+                    >
+                      {item.last_name}
+                    </Typography>
+                  </Box>
                   <Typography
                     sx={{
+                      ml: '16px',
                       fontFamily: 'Inter, sans-serif',
                       fontSize: '16px',
-                      fontWeight: '700',
+                      fontWeight: '400',
                       color: '#777777',
                     }}
                   >
-                    {item.first_name}
+                    {item.locations && item.locations.length > 0
+                      ? item.locations
+                          .map((location) => location.city)
+                          .join(', ')
+                      : ''}
                   </Typography>
-                  <Typography
+                </Box>
+                {isLogIn && userType === UserType.student && (
+                  <IconButton
+                    onClick={() => toggleLike(item.uuid)}
+                    aria-label="add to favorites"
                     sx={{
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '16px',
-                      fontWeight: '700',
-                      color: '#777777',
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
                     }}
                   >
-                    {item.last_name}
-                  </Typography>
+                    {item.is_favourite ? (
+                      <Favorite
+                        sx={{ width: 40, height: 34, color: '#F05547' }}
+                      />
+                    ) : (
+                      <FavoriteBorder
+                        sx={{ width: 40, height: 34, color: '#fff' }}
+                      />
+                    )}
+                  </IconButton>
+                )}
+              </Box>
+              <CardContent
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  flexDirection: 'column',
+                }}
+              >
+                <Box>
+                  <Rating
+                    name="simple-controlled"
+                    // TODO: rate must be add in backend
+                    // value={item.rate}
+                    value={3}
+                    color={'#FFA629'}
+                    readOnly
+                    // onChange={(event, newValue) => {
+                    //   setValue(newValue);
+                    // }}
+                  />
                 </Box>
                 <Typography
                   sx={{
-                    ml: '16px',
                     fontFamily: 'Inter, sans-serif',
                     fontSize: '16px',
                     fontWeight: '400',
                     color: '#777777',
                   }}
                 >
-                  {item.address}
+                  {item.about}
                 </Typography>
-              </Box>
-              {isLogIn && userType === UserType.student && (
-                <IconButton
-                  onClick={() => toggleLike(item.uuid)}
-                  aria-label="add to favorites"
+              </CardContent>
+              <CardActions
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}
+              >
+                <Button
+                  onClick={() => router.push(`/coach_search/${item.uuid}`)}
                   sx={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
+                    width: '180px',
+                    height: '44px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white',
+                    backgroundColor: '#F05547',
+                    borderRadius: '15px',
+                    '&:hover': {
+                      backgroundColor: '#1664C0',
+                    },
                   }}
                 >
-                  {item.isLike ? (
-                    <Favorite
-                      sx={{ width: 40, height: 34, color: '#F05547' }}
-                    />
-                  ) : (
-                    <FavoriteBorder
-                      sx={{ width: 40, height: 34, color: '#fff' }}
-                    />
-                  )}
-                </IconButton>
-              )}
-            </Box>
-            <CardContent
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'flex-start',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Box>
-                <Rating
-                  name="simple-controlled"
-                  value={item.rate}
-                  color={'#FFA629'}
-                  readOnly
-                  // onChange={(event, newValue) => {
-                  //   setValue(newValue);
-                  // }}
-                />
-              </Box>
-              <Typography
-                sx={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '400',
-                  color: '#777777',
-                }}
-              >
-                Lorem Ipsum is dummy text and you what evr see thats proven
-                1500.Lorem Ipsum is dummy text and you what evr see thats proven
-                1500.
-              </Typography>
-            </CardContent>
-            <CardActions
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}
-            >
-              <Button
-                onClick={() => router.push(`/coach_search/${item.uuid}`)}
-                sx={{
-                  width: '180px',
-                  height: '44px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  color: 'white',
-                  backgroundColor: '#F05547',
-                  borderRadius: '15px',
-                  '&:hover': {
-                    backgroundColor: '#1664C0',
-                  },
-                }}
-              >
-                View profile
-              </Button>
-            </CardActions>
-          </Card>
-        );
-      })}
+                  View profile
+                </Button>
+              </CardActions>
+            </Card>
+          );
+        })}
     </Box>
   );
 };

@@ -34,6 +34,7 @@ const ReviewForm = ({ lessonUUID }: IReviewFormProps) => {
         router.push('/profiles/student?my_lessons');
       }, 1000);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalIsOpen]);
   const closeSuccessMessage = () => {
     setModalIsOpen(!modalIsOpen);
