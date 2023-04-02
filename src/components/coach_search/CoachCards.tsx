@@ -280,16 +280,18 @@ const CoachCards: React.FC<ICoachCards> = ({ isLogIn, userType }) => {
                     // }}
                   />
                 </Box>
-                <Typography
-                  sx={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    color: '#777777',
-                  }}
-                >
-                  {item.about}
-                </Typography>
+                <Box sx={{ height: '90px', overflow: 'scroll' }}>
+                  <Typography
+                    sx={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '16px',
+                      fontWeight: '400',
+                      color: '#777777',
+                    }}
+                  >
+                    {item.about}
+                  </Typography>
+                </Box>
               </CardContent>
               <CardActions
                 sx={{
