@@ -193,7 +193,13 @@ const CoachCards: React.FC<ICoachCards> = ({
                 <Box
                   sx={{
                     position: 'relative',
-                    width: '100%',
+                    width: matches986
+                      ? 275
+                      : matches1061
+                      ? 305
+                      : matches1136
+                      ? 330
+                      : 355,
                     maxHeight: matches1061 ? 300 : matches1136 ? 325 : 350,
                     '&::after': {
                       content: '""',
@@ -201,7 +207,13 @@ const CoachCards: React.FC<ICoachCards> = ({
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      width: '100%',
+                      width: matches986
+                        ? 275
+                        : matches1061
+                        ? 305
+                        : matches1136
+                        ? 330
+                        : 355,
                       height: '74px',
                       backgroundColor: 'rgba(255, 255, 255, 0.78)',
                       zIndex: 0,
@@ -211,8 +223,9 @@ const CoachCards: React.FC<ICoachCards> = ({
                   <CardMedia
                     component="img"
                     alt="picture"
-                    height="100%"
-                    image={'../../../test_picture_coach_profile.png'}
+                    width="100%"
+                    height={matches1061 ? 300 : matches1136 ? 325 : 350}
+                    image={item.profile_picture}
                   />
                   <Box
                     sx={{
