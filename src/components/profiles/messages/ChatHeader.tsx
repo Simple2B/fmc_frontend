@@ -16,6 +16,7 @@ export function ChatHeader({
 
   const viewProfile = () => {
     router.push(`/coach_search/${selectedContactUUID}`);
+
   };
 
   return (

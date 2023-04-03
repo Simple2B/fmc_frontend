@@ -33,9 +33,10 @@ export default function ContactListItem({
   const queryClient = useQueryClient();
   const userType = useContext(MessageContext);
   const open = Boolean(anchorEl);
-  const date = new Date(
-    contactData.message ? contactData.message.created_at : ''
-  );
+
+  const date = contactData.message
+    ? new Date(contactData.message.created_at)
+    : new Date();
   const last_message_date = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
 
   const readMessageMutation = useMutation(
@@ -137,7 +138,7 @@ export default function ContactListItem({
           fontWeight={'400'}
           color="#9E9E9E"
         >
-          {last_message_date ? last_message_date : ''}
+          {last_message_date ? last_message_date : '...'}
         </Typography>
 
         <IconButton
