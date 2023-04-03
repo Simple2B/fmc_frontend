@@ -13,8 +13,10 @@ export function ChatHeader({
   selectedContactUUID,
 }: ChatHeaderProps) {
   const router = useRouter();
-  const handleClick = (uuid: string) => {
-    router.push(`/coach_search/${uuid}`);
+
+  const viewProfile = () => {
+    router.push(`/coach_search/${selectedContactUUID}`);
+
   };
 
   return (
@@ -54,7 +56,7 @@ export function ChatHeader({
         </Box>
 
         <Box
-          onClick={() => handleClick(selectedContactUUID)}
+          onClick={viewProfile}
           sx={{
             marginRight: '5%',
             padding: '0.75%',

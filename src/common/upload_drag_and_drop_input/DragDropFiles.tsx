@@ -91,6 +91,15 @@ const DragDropFiles: React.FC<IDragDropFiles> = ({
       );
   };
 
+  {
+    /* <a
+  href={}
+  target="_blank"
+  rel="noopener noreferrer"
+  download
+>  */
+  }
+
   return (
     <>
       <Box className={styles.formFilesUpload}>

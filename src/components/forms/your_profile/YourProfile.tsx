@@ -21,9 +21,9 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import styles from './YourProfile.module.sass';
 import Locations from './your_profile_components/Locations';
 import Sport from './your_profile_components/Sport';
+import styles from './YourProfile.module.sass';
 
 const nameInputStyles = {
   mt: 4,
@@ -199,12 +199,6 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
             if (
               typeLocation === TypeLocation.postal_code &&
               !RE_POST_CODE.test(e.target.value.toLowerCase())
-            ) {
-              return item;
-            }
-            if (
-              typeLocation === TypeLocation.city &&
-              !RE_ONLY_LETTER.test(e.target.value.toLowerCase())
             ) {
               return item;
             }

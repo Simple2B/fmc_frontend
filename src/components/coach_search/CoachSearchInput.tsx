@@ -9,11 +9,16 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 
-export interface ICoachSearchInput {}
+export interface ICoachSearchInput {
+  name: string;
+  // eslint-disable-next-line no-unused-vars
+  onChangeName: (value: string) => void;
+}
 
-const CoachSearchInput: React.FC<ICoachSearchInput> = () => {
-  // const matches845 = useMediaQuery('(max-width:845px)');
-
+const CoachSearchInput: React.FC<ICoachSearchInput> = ({
+  name,
+  onChangeName,
+}) => {
   return (
     <Paper
       component="form"
@@ -50,14 +55,14 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = () => {
         >
           <InputBase
             sx={{ ml: 1, flex: 1, fontSize: '' }}
-            placeholder={'Search a coach, sport'}
+            placeholder={'Search a coach'}
             inputProps={{ 'aria-label': 'search google maps' }}
             autoFocus
+            value={name}
+            onChange={(e) => onChangeName(e.target.value)}
           />
-
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         </Box>
-
         <Box
           flex={1}
           sx={{
@@ -68,14 +73,13 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = () => {
         >
           <InputBase
             sx={{ ml: 1, flex: 1, fontSize: '' }}
-            placeholder={'City/District'}
+            placeholder={'City'}
             inputProps={{ 'aria-label': 'search google maps' }}
           />
-
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         </Box>
 
-        <Box
+        {/* <Box
           flex={1}
           sx={{
             display: 'flex',
@@ -88,7 +92,7 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = () => {
             placeholder={'Address'}
             inputProps={{ 'aria-label': 'search google maps' }}
           />
-        </Box>
+        </Box> */}
       </Box>
 
       <Box>

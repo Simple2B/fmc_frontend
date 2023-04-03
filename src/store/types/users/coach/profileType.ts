@@ -8,6 +8,7 @@ export interface ILocation {
 }
 
 export interface ISport {
+  id?: number;
   uuid: string;
   name: string;
 }
@@ -48,8 +49,12 @@ export interface IYourProfile {
   sports: { name: string; uuid: string }[];
   username: string;
   uuid: string;
+  is_favourite?: boolean;
 }
 
+export interface IFavouriteCoach extends IYourProfile {
+  is_favourite: boolean;
+}
 interface IPrice {
   stripe_price_id: string;
   currency: string;
