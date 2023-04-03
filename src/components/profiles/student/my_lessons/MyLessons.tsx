@@ -35,7 +35,6 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   React.useEffect(() => {
     const getUpcomingSessions = async () => {
       const result = await studentClientApi.studentUpcomingLessons();
-
       setUpcomingSessions(result);
     };
     getUpcomingSessions();

@@ -4,8 +4,8 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
 import {
   CalendarToday,
