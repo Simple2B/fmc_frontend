@@ -38,8 +38,8 @@ export default function ProfileCoach() {
   const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
     ['coachSubscription'],
     async () => {
-      const request = coachSubscriptionApi.getSubscription();
-      const result = await request;
+      const request = coachSubscriptionApi.getSubscription;
+      const result = await request();
       console.log('[coach subscription] coach result', result);
       return result;
     },
