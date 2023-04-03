@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 
 interface ChatHeaderProps {
   selectedContactUUID: string;
@@ -11,8 +12,9 @@ export function ChatHeader({
   selectedContactLastName,
   selectedContactUUID,
 }: ChatHeaderProps) {
-  const handleClick = () => {
-    alert('Navigate to ' + selectedContactUUID);
+  const router = useRouter();
+  const handleClick = (uuid: string) => {
+    router.push(`/coach_search/${uuid}`);
   };
 
   return (
@@ -52,7 +54,7 @@ export function ChatHeader({
         </Box>
 
         <Box
-          onClick={handleClick}
+          onClick={() => handleClick(selectedContactUUID)}
           sx={{
             marginRight: '5%',
             padding: '0.75%',
