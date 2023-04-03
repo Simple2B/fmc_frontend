@@ -1,9 +1,11 @@
 import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
 import { IUserProfile, UserType } from '@/store/types/user';
+import { ISport } from '@/store/types/users/coach/profileType';
 import { Logout } from '@mui/icons-material';
 import {
   Avatar,
@@ -20,6 +22,8 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
 import style from './LandingPage.module.sass';
 import SearchInput from './search_box/SearchBox';
@@ -236,6 +240,57 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     }
   }, [modalIsOpen, error]);
 
+  const [sports, setSports] = useState<
+    {
+      id: number;
+      name: string;
+      isActive: boolean;
+    }[]
+  >([
+    {
+      id: 0,
+      name: '',
+      isActive: false,
+    },
+  ]);
+
+  const sportsQuery = useQuery<ISport[], ErrorConstructor>(
+    ['sports'],
+    async () => {
+      const request = coachProfileApi.getTypeSports;
+      const result = await request();
+      if (result) {
+        setSports(
+          result.map((s) => ({
+            id: s.id ? s.id : 0,
+            name: s.name,
+            isActive: false,
+          }))
+        );
+      }
+
+      return result;
+    }
+  );
+
+  const toggleSport = (sport: {
+    id: number;
+    name: string;
+    isActive: boolean;
+  }) => {
+    setSports(
+      sports.map((s) => {
+        if (sport.id === s.id) {
+          return {
+            ...s,
+            isActive: !s.isActive,
+          };
+        }
+        return s;
+      })
+    );
+  };
+
   return (
     <Box className={`${wrapperClassName}`}>
       <Box className={style.wrapperAppBar}>
@@ -291,7 +346,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                 : {}
             }
           >
-            <SearchInput />
+            <SearchInput sports={sports} />
             <Box
               sx={{
                 width: matches414
@@ -305,11 +360,39 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                // flexWrap: 'wrap',
               }}
+              gap={0.3}
             >
-              <Box className={style.searchBtn}>Soccer</Box>
-              <Box className={style.searchBtn}>Rugby</Box>
-              <Box className={style.searchBtn}>Golf</Box>
+              {sportsQuery.data &&
+                sports.length > 0 &&
+                sports.map((sport, index) => {
+                  if (
+                    sport.name === 'Football' ||
+                    sport.name === 'Rugby' ||
+                    sport.name === 'Golf'
+                  ) {
+                    return (
+                      <Box
+                        key={index}
+                        className={style.searchBtn}
+                        sx={{
+                          color: sport.isActive ? '#fff' : '#1A1B4B',
+                          backgroundColor: sport.isActive ? 'grey' : '#fff',
+                          '&:hover': {
+                            // color: '#fff',
+                            // backgroundColor: 'grey',
+                            // fontSize: '16px',
+                            // padding: '9px 17px',
+                          },
+                        }}
+                        onClick={() => toggleSport(sport)}
+                      >
+                        {sport.name}
+                      </Box>
+                    );
+                  }
+                })}
             </Box>
           </Box>
         </Box>

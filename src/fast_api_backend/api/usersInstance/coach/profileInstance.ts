@@ -98,7 +98,7 @@ export const coachProfileApi = {
 
   getTypeSports: async (): Promise<ISport[]> => {
     try {
-      const response = await instance().get('/sports/types');
+      const response = await applicationInstance().get('/sports/types');
       const res = response.data;
       console.log(`[GET] type of sports -> res data  ${res}`);
       return res.sport_types;
@@ -166,9 +166,18 @@ export const coachProfileApi = {
     }
   },
 
-  getCoachesCards: async (): Promise<IYourProfile[]> => {
+  getCoachesCards: async (
+    name: string,
+    sport_ids: string | string[]
+  ): Promise<IYourProfile[]> => {
+    const ids =
+      typeof sport_ids === 'string'
+        ? `&sport_ids=${sport_ids}`
+        : sport_ids.map((id) => `&sport_ids=${id}`).join('');
     try {
-      const response = await applicationInstance().get('/profile/cards');
+      const response = await applicationInstance().get(
+        `/profile/profiles/search/cards?name=${name}${ids}`
+      );
       const res = response.data;
       console.log(
         `[GET]  coaches profiles cards, without likes -> res data  ${res}`
@@ -176,7 +185,7 @@ export const coachProfileApi = {
       return res.coaches;
     } catch (error: any) {
       console.log(
-        `[GET] coaches profiles cards (without likes) -> error message ${error.message}`
+        `[GET] coaches profiles cards (without likes) -> error message ${error}`
       );
       throw error.message;
     }
@@ -184,7 +193,7 @@ export const coachProfileApi = {
 
   getCoachesCardsWithLikes: async (): Promise<IYourProfile[]> => {
     try {
-      const response = await instance().get('/profile/cards_with_like');
+      const response = await instance().get('/like/coach/coaches');
       const res = response.data;
       console.log(
         `[GET]  coaches profiles cards (with likes) -> res data  ${res}`

@@ -5,16 +5,91 @@ import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
-import { Box, Typography } from '@mui/material';
+import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { ISport } from '@/store/types/users/coach/profileType';
+import { Box } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import styles from '../../styles/Home.module.sass';
 
 export default function CoachSearchPage() {
   const router = useRouter();
+
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
+
+  const [searchName, setName] = useState<string | null>(
+    router.query.name as string
+  );
+
+  const onChangeName = (value: string) => {
+    setName(value);
+  };
+
+  const [sports, setSports] = useState<
+    {
+      id: number;
+      name: string;
+      isActive: boolean;
+    }[]
+  >([
+    {
+      id: 0,
+      name: '',
+      isActive: false,
+    },
+  ]);
+
+  // eslint-disable-next-line no-unused-vars
+  const sportsQuery = useQuery<ISport[], ErrorConstructor>(
+    ['sports'],
+    async () => {
+      const request = coachProfileApi.getTypeSports;
+      const result = await request();
+      if (result) {
+        setSports(
+          result.map((s) => {
+            if (
+              router.query.sportsIdes &&
+              router.query.sportsIdes.includes(String(s.id))
+            ) {
+              return {
+                id: s.id ? s.id : 0,
+                name: s.name,
+                isActive: true,
+              };
+            }
+            return {
+              id: s.id ? s.id : 0,
+              name: s.name,
+              isActive: false,
+            };
+          })
+        );
+      }
+      return result;
+    }
+  );
+
+  const toggleSport = (sport: {
+    id: number;
+    name: string;
+    isActive: boolean;
+  }) => {
+    setSports(
+      sports.map((s) => {
+        if (sport.id === s.id) {
+          return {
+            ...s,
+            isActive: !s.isActive,
+          };
+        }
+        return s;
+      })
+    );
+  };
 
   useEffect(() => {
     const whoAmI = async () => {
@@ -27,9 +102,7 @@ export default function CoachSearchPage() {
         // const studentProfile = await studentClientApi.studentGetProfile();
         // setProfile(studentProfile);
       } catch (error: any) {
-        console.log(
-          `[GET] check student -> error message => ${error.response.status}`
-        );
+        console.log(`[GET] check student -> error message => ${error}`);
         localStorage.removeItem('token');
         localStorage.removeItem('userType');
         setIsLogIn(false);
@@ -38,6 +111,7 @@ export default function CoachSearchPage() {
     };
     whoAmI();
   }, [router, router.asPath]);
+
   return (
     <>
       <Head>
@@ -62,58 +136,31 @@ export default function CoachSearchPage() {
             gap={1}
           >
             <FilterBtn />
-            <CoachSearchInput />
-            <Btns />
+            <CoachSearchInput
+              name={searchName as string}
+              onChangeName={onChangeName}
+            />
+            <Btns
+              sportsIdes={router.query.sportsIdes}
+              sports={sports}
+              toggleSport={toggleSport}
+            />
           </Box>
-          <CoachCards isLogIn={isLogIn} userType={userType} />
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              pt: '75px',
-              pb: '88px',
-            }}
-          >
-            <Box
-              sx={{
-                width: '320px',
-                maxWidth: '98%',
-                backgroundColor: '#1664C0',
-                height: '65px',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-                transition: '.3s ease all',
-                borderRadius: '15px',
-                cursor: 'pointer',
-                '&:hover': {
-                  backgroundColor: '#222CDF',
-                  transition: '.3s ease all',
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  color: '#FFFFFF',
-
-                  fontFamily: 'Inter',
-                  fontSize: '24px',
-                  fontWeight: '400',
-                }}
-              >
-                Load more coaches
-              </Typography>
-            </Box>
-          </Box>
+          <CoachCards
+            isLogIn={isLogIn}
+            userType={userType}
+            name={searchName as string}
+            sportsIdes={sports
+              .filter((s) => s.isActive)
+              .map((s) => String(s.id))}
+          />
         </div>
         {/* {isLoad && (
           <CustomModel isOpen={isLoad}>
             <Loader />
           </CustomModel>
-        )}
-        {error && !isSuccess && (
+        )} */}
+        {/* {error && !isSuccess && (
           <CustomModel
             isOpen={modalIsOpen}
             handleClick={() => setModalIsOpen(!modalIsOpen)}

@@ -11,7 +11,7 @@ const stylesBtn = {
   alignItems: 'center',
   fontWeight: '400',
   fontSize: '14px',
-  color: '#777777',
+  // color: '#777777',
   cursor: 'pointer',
   fontFamily: 'Inter',
   '&:hover': {
@@ -20,9 +20,18 @@ const stylesBtn = {
   },
 };
 
-export interface IBtns {}
+export interface IBtns {
+  sportsIdes: string | string[] | undefined;
+  sports: {
+    id: number;
+    name: string;
+    isActive: boolean;
+  }[];
+  // eslint-disable-next-line no-unused-vars
+  toggleSport: (sport: { id: number; name: string; isActive: boolean }) => void;
+}
 
-const Btns: React.FC<IBtns> = () => {
+const Btns: React.FC<IBtns> = ({ sports, toggleSport }) => {
   return (
     <Box
       sx={{
@@ -41,9 +50,28 @@ const Btns: React.FC<IBtns> = () => {
         }}
         gap={0.5}
       >
-        <Box sx={stylesBtn}>Football</Box>
+        {/* <Box sx={stylesBtn}>Football</Box>
         <Box sx={stylesBtn}>Golf</Box>
-        <Box sx={stylesBtn}>Tennis</Box>
+        <Box sx={stylesBtn}>Tennis</Box> */}
+        {sports &&
+          sports.length > 0 &&
+          sports.map((sport, index) => {
+            if (sport.name !== 'Swimming') {
+              return (
+                <Box
+                  key={index}
+                  sx={{
+                    ...stylesBtn,
+                    color: sport.isActive ? '#1A1B4B' : '#777777',
+                    backgroundColor: sport.isActive ? 'grey' : '#fff',
+                  }}
+                  onClick={() => toggleSport(sport)}
+                >
+                  {sport.name}
+                </Box>
+              );
+            }
+          })}
       </Box>
     </Box>
   );

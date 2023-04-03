@@ -8,6 +8,7 @@ export interface ILocation {
 }
 
 export interface ISport {
+  id?: number;
   uuid: string;
   name: string;
 }

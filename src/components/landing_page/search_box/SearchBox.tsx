@@ -4,13 +4,39 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-export interface ISearchInput {}
+export interface ISearchInput {
+  sports: {
+    id: number;
+    name: string;
+    isActive: boolean;
+  }[];
+}
 
-const SearchInput: React.FC<ISearchInput> = () => {
+const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
+  const router = useRouter();
+
   const matches845 = useMediaQuery('(max-width:845px)');
   const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
+
+  const [name, setName] = useState('');
+
+  const searchCoaches = () => {
+    router.push(
+      {
+        pathname: '/coach_search',
+        query: {
+          name: name,
+          sportsIdes: sports.filter((s) => s.isActive).map((s) => s.id),
+        },
+      },
+      '/coach_search'
+    );
+  };
+
   return (
     <Paper
       component="form"
@@ -32,9 +58,11 @@ const SearchInput: React.FC<ISearchInput> = () => {
       </IconButton>
       <InputBase
         sx={{ ml: 1, flex: 1, fontSize: matches845 ? '12px' : '' }}
-        placeholder={matches445 ? 'Search' : 'Search a coach, sport'}
+        placeholder={matches445 ? 'Search' : 'Search a coach'}
         inputProps={{ 'aria-label': 'search google maps' }}
         autoFocus
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
 
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
@@ -54,6 +82,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
               backgroundColor: 'grey',
             },
           }}
+          onClick={searchCoaches}
         >
           Search
         </Button>
