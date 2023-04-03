@@ -79,7 +79,16 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   };
 
   return (
-    <Box className={styles.wrapper} flex={1} p={2}>
+    <Box
+      className={styles.wrapper}
+      flex={1}
+      p={2}
+      sx={{
+        height: '90vh',
+        overflow: 'hidden',
+        overflowY: 'scroll',
+      }}
+    >
       <Box>
         <Box sx={boxStyle}>
           <WelcomeBox
@@ -132,7 +141,6 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
           </Box>
         </Box>
       </Box>
-
       <Box
         sx={{
           width: matches970 ? 0 : '410px',

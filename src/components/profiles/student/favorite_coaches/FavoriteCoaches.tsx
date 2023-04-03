@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import CoachesCards from './card/CoachesCards';
 import styles from './FavoriteCoaches.module.sass';
+import CoachesCards from './card/CoachesCards';
 
 export interface IFavoriteCoaches {}
 
@@ -32,7 +32,15 @@ const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
   ];
 
   return (
-    <Box className={styles.wrapper} sx={{ gap: 2 }}>
+    <Box
+      className={styles.wrapper}
+      sx={{
+        height: '90vh',
+        overflow: 'hidden',
+        overflowY: 'scroll',
+      }}
+      gap={2}
+    >
       <Box
         sx={{
           fontFamily: 'Inter, sens-serif',
