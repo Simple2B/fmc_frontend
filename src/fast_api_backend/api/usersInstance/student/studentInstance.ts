@@ -106,7 +106,7 @@ export const studentClientApi = {
 
   studentUpcomingLessons: async () => {
     try {
-      const response = await instance().get('/lesson/lessons/upcoming');
+      const response = await instance().get('/lesson/lessons/student/upcoming');
       const res = response.data;
       console.log('[GET] student list of upcoming sessions:->', res);
       return res;
