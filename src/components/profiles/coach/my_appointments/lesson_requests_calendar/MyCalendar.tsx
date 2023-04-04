@@ -23,14 +23,15 @@ export interface IMyCalendar {}
 
 const MyCalendar: React.FC<IMyCalendar> = () => {
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <Calendar
         localizer={localizer}
         // events={myEventsList}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: '75vh' }}
       />
+      {/* <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" /> */}
     </Box>
   );
 };

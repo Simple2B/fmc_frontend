@@ -44,7 +44,8 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
         p: matches320 ? '' : '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 400 : 566,
+        justifyContent: 'center',
+        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 488 : 674,
         height: matches445 ? 33 : matches845 ? 45 : 60,
         position: 'relative',
         left: matches320 ? '-15px' : 0,
@@ -56,17 +57,53 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />
       </IconButton>
-      <InputBase
-        sx={{ ml: 1, flex: 1, fontSize: matches845 ? '12px' : '' }}
-        placeholder={matches445 ? 'Search' : 'Search a coach'}
-        inputProps={{ 'aria-label': 'search google maps' }}
-        autoFocus
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      <Box
+        sx={{
+          ml: 1,
+          width: matches320 ? 140 : matches445 ? 150 : matches845 ? 200 : 283,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        }}
+        flex={1}
+      >
+        <InputBase
+          sx={{
+            ml: 1,
+            width: '100%',
+            fontSize: matches845 ? '12px' : '',
+          }}
+          placeholder={matches445 ? 'Search' : 'Search a coach'}
+          inputProps={{ 'aria-label': 'search google maps' }}
+          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Box sx={{ pr: matches445 ? '150px' : matches845 ? '210px' : '330px' }}>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      </Box>
+      <Box
+        sx={{
+          ml: 1,
+          width: matches320 ? 140 : matches445 ? 150 : matches845 ? 200 : 283,
+        }}
+        flex={1}
+      >
+        <InputBase
+          sx={{
+            ml: 1,
+            fontSize: matches845 ? '12px' : '',
+            width: '100%',
+          }}
+          placeholder={'Address'}
+          inputProps={{ 'aria-label': 'search google maps' }}
+          // autoFocus
+          // value={name}
+          // onChange={(e) => setName(e.target.value)}
+        />
+      </Box>
+
+      <Box sx={{ width: matches445 ? '' : matches845 ? '88px' : '108px' }}>
         <Button
           sx={{
             position: 'absolute',
