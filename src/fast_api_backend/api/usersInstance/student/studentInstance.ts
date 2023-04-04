@@ -6,6 +6,7 @@ import {
   ISession,
   IUnreviewedLessonsList,
 } from '@/store/types/session/sessionTypes';
+import { IYourProfile } from '@/store/types/users/coach/profileType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -214,6 +215,21 @@ export const studentClientApi = {
     }
   },
 
+  getCoachesCardsWithLikes: async (): Promise<IYourProfile[]> => {
+    try {
+      const response = await instance().get('/like/student/favourites');
+      const res = response.data;
+      console.log(
+        `[GET]  coaches profiles cards (with likes) -> res data  ${res}`
+      );
+      return res.coaches;
+    } catch (error: any) {
+      console.log(
+        `[GET] coaches profiles cards (with likes) -> error message ${error.message}`
+      );
+      throw error.message;
+    }
+  },
   studentLikeCoach: async (coach_uuid: string) => {
     try {
       const response = await instance().post(`/like/coach/${coach_uuid}`);

@@ -139,7 +139,7 @@ const CoachCards: React.FC<ICoachCards> = ({
     async () => {
       const result =
         isLogIn && userType === UserType.student
-          ? await coachProfileApi.getCoachesCardsWithLikes()
+          ? await studentClientApi.getCoachesCardsWithLikes()
           : null;
       return result;
     }

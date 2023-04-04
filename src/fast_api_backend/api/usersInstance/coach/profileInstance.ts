@@ -190,20 +190,4 @@ export const coachProfileApi = {
       throw error.message;
     }
   },
-
-  getCoachesCardsWithLikes: async (): Promise<IYourProfile[]> => {
-    try {
-      const response = await instance().get('/like/coach/coaches');
-      const res = response.data;
-      console.log(
-        `[GET]  coaches profiles cards (with likes) -> res data  ${res}`
-      );
-      return res.coaches;
-    } catch (error: any) {
-      console.log(
-        `[GET] coaches profiles cards (with likes) -> error message ${error.message}`
-      );
-      throw error.message;
-    }
-  },
 };

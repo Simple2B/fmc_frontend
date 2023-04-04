@@ -1,3 +1,4 @@
+import { IYourProfile } from '@/store/types/users/coach/profileType';
 import { Star } from '@mui/icons-material';
 import {
   Button,
@@ -8,22 +9,18 @@ import {
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
-interface ICoach {
-  name: string;
-  picture: string;
-  type: string;
-  rate: string;
-  about: string;
-}
-
 export interface ICoaches {
-  sessions: ICoach[];
+  sessions: IYourProfile[];
 }
 
 const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
-  // const router = useRouter();
+  const router = useRouter();
+  const viewProfile = (uuid: string) => {
+    router.push(`/coach_search/${uuid}`);
+  };
 
   return (
     <>
@@ -56,7 +53,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                 component="img"
                 alt="green iguana"
                 height="140"
-                image={item.picture}
+                image={item.profile_picture}
               />
               <Box sx={{ ml: '21px' }}>
                 <Typography
@@ -70,7 +67,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                     fontWeight: 600,
                   }}
                 >
-                  {item.name}
+                  {item.first_name} {item.last_name}
                 </Typography>
                 <Typography
                   gutterBottom
@@ -84,7 +81,14 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                     color: '#9E9E9E',
                   }}
                 >
-                  {item.type}
+                  {item.sports.length > 0
+                    ? item.sports
+                        .map((sport) => {
+                          return sport.name;
+                        })
+                        .join(', ')
+                    : ''}{' '}
+                  coach
                 </Typography>
                 <Box
                   sx={{
@@ -112,7 +116,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                       fontWeight: 600,
                     }}
                   >
-                    {item.rate}
+                    {item.total_rate}
                   </Box>
                 </Box>
               </Box>
@@ -164,6 +168,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                       bgcolor: '#222CDF',
                     },
                   }}
+                  onClick={() => viewProfile(item.uuid)}
                 >
                   View profile
                 </Button>

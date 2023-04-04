@@ -1,36 +1,23 @@
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { IYourProfile } from '@/store/types/users/coach/profileType';
 import Box from '@mui/material/Box';
 import * as React from 'react';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import styles from './FavoriteCoaches.module.sass';
 import CoachesCards from './card/CoachesCards';
 
 export interface IFavoriteCoaches {}
 
 const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
+  const [favouriteCoaches, setFavouriteCoaches] = useState<IYourProfile[]>([]);
   // const router = useRouter();
-  const sessions = [
-    {
-      name: 'John Johnson',
-      picture: '../../../../../example/example_picture_avatar.png',
-      type: 'Tennis coach',
-      rate: '5.0',
-      about: 'Tennis coach with experience training over 25,000 students',
-    },
-    {
-      name: 'John Johnson',
-      picture: '../../../../../example/example_picture_avatar.png',
-      type: 'Tennis coach',
-      rate: '5.0',
-      about: 'Tennis coach with experience training over 25,000 students',
-    },
-    {
-      name: 'John Johnson',
-      picture: '../../../../../example/example_picture_avatar.png',
-      type: 'Tennis coach',
-      rate: '5.0',
-      about: 'Tennis coach with experience training over 25,000 students',
-    },
-  ];
-
+  useQuery(['coachesProfilesCards'], async () => {
+    const request = studentClientApi.getCoachesCardsWithLikes;
+    const result = await request();
+    console.log('COACHES I LIKED ->>>>>>>>>>>>>:', result);
+    setFavouriteCoaches(result);
+  });
   return (
     <Box
       className={styles.wrapper}
@@ -53,8 +40,9 @@ const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
       >
         Coaches you’ve liked
       </Box>
+
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <CoachesCards sessions={sessions} />
+        <CoachesCards sessions={favouriteCoaches} />
       </Box>
     </Box>
   );

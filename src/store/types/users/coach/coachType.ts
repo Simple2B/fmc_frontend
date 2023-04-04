@@ -1,3 +1,5 @@
+import { ISport } from '../../sport/sportType';
+
 // created coach (save to db info student)
 export interface ICoach {
   email: string;
@@ -22,4 +24,6 @@ export interface ICoachProfile {
   profile_picture: string;
   is_verified: boolean;
   about: string | null;
+  total_rate: number | null;
+  sports: ISport[] | null;
 }

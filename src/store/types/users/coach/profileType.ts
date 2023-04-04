@@ -50,6 +50,7 @@ export interface IYourProfile {
   username: string;
   uuid: string;
   is_favourite?: boolean;
+  total_rate?: number;
 }
 
 export interface IFavouriteCoach extends IYourProfile {
