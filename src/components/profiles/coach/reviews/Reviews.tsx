@@ -19,14 +19,16 @@ const reviewsData = [
   },
 ];
 
-export interface IReviews {}
+export interface IReviews {
+  title?: string;
+}
 
-const Reviews: React.FC<IReviews> = () => {
+const Reviews: React.FC<IReviews> = ({ title }) => {
   // const router = useRouter();
-
+  // Your Reviews
   return (
     <Box className={styles.wrapper} flex={1} p={2}>
-      <Typography className={styles.title}>Your Reviews</Typography>
+      <Typography className={styles.title}>{title}</Typography>
       <Box className={styles.wrapperCards}>
         {reviewsData.map((review, index) => (
           <Box className={styles.card} key={index}>

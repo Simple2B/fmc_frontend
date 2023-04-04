@@ -73,7 +73,7 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
         >
           <InputBase
             sx={{ ml: 1, flex: 1, fontSize: '' }}
-            placeholder={'City'}
+            placeholder={'Address'}
             inputProps={{ 'aria-label': 'search google maps' }}
           />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />

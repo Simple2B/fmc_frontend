@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import * as React from 'react';
 import LessonsOfferedCards from './lessons_offere_card/LessonsOfferedCard';
+import PriceCard from './lessons_offere_card/PriceCard';
 
 const testDataOneToOne = {
   title: '1-on-1 Tennis Lessons',
@@ -88,8 +89,9 @@ const LessonsOffered: React.FC<ILessonsOffered> = () => {
         description={testDataOneToOne.description}
         itemsDescription={testDataOneToOne.itemsDescription}
         location={testDataOneToOne.location}
-        // children={}
-      />
+      >
+        <PriceCard />
+      </LessonsOfferedCards>
 
       <LessonsOfferedCards
         title={testDataGroup.title}

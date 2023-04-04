@@ -76,10 +76,12 @@ const Schedule: React.FC<ISchedule> = () => {
       </Box>
       <Box
         sx={{
+          position: 'relative',
+          height: '72%',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          p: '42.32px 29.32px',
+          p: '29px',
           border: '1px solid #CBCBCB',
           borderRadius: '16px',
         }}
@@ -92,22 +94,93 @@ const Schedule: React.FC<ISchedule> = () => {
             padding: '4px',
             transform: 'rotate(135deg)',
             cursor: 'pointer',
+            position: 'absolute',
+            top: '36px',
+            left: '17px',
           }}
         />
-        <Box sx={{ display: 'flex' }}>
+        <Box
+          flex={4}
+          sx={{
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+          }}
+        >
           {testDayData.map((item, index) => {
             return (
-              <Box key={index}>
-                <Box sx={{}}>
-                  <Box>{item.day}</Box>
-                  <Box>{item.date}</Box>
+              <Box
+                key={index}
+                sx={{
+                  height: '100%',
+                  alignSelf: 'flex-start',
+                  display: 'flex',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    mb: '6px',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      fontFamily: 'Inter',
+                      fontWeight: 400,
+                      fontSize: '12px',
+                      mb: '5px',
+                    }}
+                  >
+                    {item.day}
+                  </Box>
+                  <Box
+                    sx={{
+                      fontFamily: 'Inter',
+                      fontWeight: 600,
+                      fontSize: '12px',
+                    }}
+                  >
+                    {item.date}
+                  </Box>
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    mt: '5px',
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
                   {item.time.map((time, i) => {
                     if (time.length === 0) {
                       return <Box key={i}>-</Box>;
                     }
-                    return <Box key={i}>{time}</Box>;
+                    return (
+                      <Box
+                        key={i}
+                        sx={{
+                          cursor: 'pointer',
+                          fontFamily: 'Inter',
+                          fontWeight: 500,
+                          fontSize: '12px',
+                          color: '#333333',
+                          p: '9px 11px',
+                          background: 'rgba(34, 44, 223, 0.1)',
+                          borderRadius: '4px',
+                        }}
+                      >
+                        {time}
+                      </Box>
+                    );
                   })}
                 </Box>
               </Box>
@@ -122,6 +195,9 @@ const Schedule: React.FC<ISchedule> = () => {
             padding: '4px',
             transform: 'rotate(-45deg)',
             cursor: 'pointer',
+            position: 'absolute',
+            top: '36px',
+            right: '17px',
           }}
         />
       </Box>

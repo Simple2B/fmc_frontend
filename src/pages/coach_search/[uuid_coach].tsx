@@ -1,8 +1,10 @@
 /* eslint-disable no-undef */
-import AboutCoachProfile from '@/components/coach_profile/about_coach_profile/AboutCoachProfile';
 import CardCoachProfile from '@/components/coach_profile/CardCoachProfile';
+import AboutCoachProfile from '@/components/coach_profile/about_coach_profile/AboutCoachProfile';
 import LessonsOffered from '@/components/coach_profile/lessons_offered/LessonsOffered';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
+import Reviews from '@/components/profiles/coach/reviews/Reviews';
+import { Box } from '@mui/material';
 import Head from 'next/head';
 import styles from '../../styles/Home.module.sass';
 
@@ -44,6 +46,13 @@ export default function CoachProfilePage() {
           <CardCoachProfile />
           <AboutCoachProfile />
           <LessonsOffered />
+          <Box
+            sx={{
+              width: '96%',
+              borderBottom: '1px solid #EBF6FF',
+            }}
+          />
+          <Reviews />
         </div>
         {/* {isLoad && (
           <CustomModel isOpen={isLoad}>
