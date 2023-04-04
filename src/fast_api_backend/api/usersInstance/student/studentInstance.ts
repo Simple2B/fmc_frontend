@@ -213,4 +213,18 @@ export const studentClientApi = {
       throw error.message;
     }
   },
+
+  studentLikeCoach: async (coach_uuid: string) => {
+    try {
+      const response = await instance().post(`/like/coach/${coach_uuid}`);
+      const res = response.data;
+      console.log('[POST] student like coach', res);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ]  student like coach, error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
 };

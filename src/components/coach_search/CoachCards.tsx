@@ -1,6 +1,7 @@
 import Loader from '@/common/loader/Loader';
 import CustomModel from '@/common/modal/Modal';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '@/store/types/user';
 import { IYourProfile } from '@/store/types/users/coach/profileType';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
@@ -19,7 +20,7 @@ import {
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 // import { useQuery } from 'react-query';
 
 const testDataCoachesProfiles = [
@@ -85,6 +86,7 @@ const CoachCards: React.FC<ICoachCards> = ({
   sportsIdes,
 }) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const matches1136 = useMediaQuery('(max-width:1136px)');
   const matches1061 = useMediaQuery('(max-width:1061px)');
@@ -143,7 +145,16 @@ const CoachCards: React.FC<ICoachCards> = ({
     }
   );
 
-  console.log('[CoachCards] likesCoachesQuery ', likesCoachesQuery);
+  const mutationLikeFunction = useMutation(
+    async (coach_uuid: string) => {
+      return await studentClientApi.studentLikeCoach(coach_uuid);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('coachesProfilesCards');
+      },
+    }
+  );
 
   const toggleLike = (uuid: string) => {
     setDataCoachesProfiles(
@@ -300,6 +311,7 @@ const CoachCards: React.FC<ICoachCards> = ({
                       }}
                     >
                       {likesCoachesQuery.data &&
+                      likesCoachesQuery.data.length > 0 &&
                       likesCoachesQuery.data.filter(
                         (value) => value.uuid === item.uuid
                       ).length === 1 ? (
@@ -308,7 +320,14 @@ const CoachCards: React.FC<ICoachCards> = ({
                         />
                       ) : (
                         <FavoriteBorder
-                          sx={{ width: 40, height: 34, color: '#fff' }}
+                          sx={{
+                            width: 40,
+                            height: 34,
+                            color: 'rgba(236, 236, 236, 1)',
+                          }}
+                          onClick={() => {
+                            mutationLikeFunction.mutate(item.uuid);
+                          }}
                         />
                       )}
                     </IconButton>
