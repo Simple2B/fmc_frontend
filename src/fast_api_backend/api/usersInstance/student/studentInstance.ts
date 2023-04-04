@@ -227,4 +227,20 @@ export const studentClientApi = {
       throw error.message;
     }
   },
+
+  studentUnLikeCoach: async (coach_uuid: string) => {
+    try {
+      const response = await instance().post(
+        `/like/coach/unlike/${coach_uuid}`
+      );
+      const res = response.data;
+      console.log('[POST] student unlike coach', res);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ]  student unlike coach, error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
 };
