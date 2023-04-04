@@ -181,7 +181,7 @@ export default function ProfileCoach() {
     ['my_appointments#lesson_requests']: coachQuery.data?.is_active ? (
       <LessonRequestsCalendar />
     ) : null,
-    ['reviews']: <Reviews />,
+    ['reviews']: <Reviews title={'Your Reviews'} />,
     ['packages']: <Packages />,
     [`message&${uuidUser}`]: (
       <Messages
