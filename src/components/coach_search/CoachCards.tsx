@@ -135,7 +135,7 @@ const CoachCards: React.FC<ICoachCards> = ({
   console.log('[CoachCards] data ', data);
 
   const likesCoachesQuery = useQuery<IYourProfile[] | null, ErrorConstructor>(
-    ['coachesProfilesCards'],
+    ['likesCoachesQuery'],
     async () => {
       const result =
         isLogIn && userType === UserType.student
@@ -151,7 +151,18 @@ const CoachCards: React.FC<ICoachCards> = ({
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('coachesProfilesCards');
+        queryClient.invalidateQueries('likesCoachesQuery');
+      },
+    }
+  );
+
+  const mutationUnLikeFunction = useMutation(
+    async (coach_uuid: string) => {
+      return await studentClientApi.studentUnLikeCoach(coach_uuid);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('likesCoachesQuery');
       },
     }
   );
@@ -317,6 +328,9 @@ const CoachCards: React.FC<ICoachCards> = ({
                       ).length === 1 ? (
                         <Favorite
                           sx={{ width: 40, height: 34, color: '#F05547' }}
+                          onClick={() => {
+                            mutationUnLikeFunction.mutate(item.uuid);
+                          }}
                         />
                       ) : (
                         <FavoriteBorder
