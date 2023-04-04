@@ -73,6 +73,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png',
           is_verified: true,
           about: 'Dummy coach',
+          total_rate: 5,
         },
       },
     ],
