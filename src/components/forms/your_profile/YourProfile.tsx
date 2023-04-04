@@ -208,6 +208,12 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
             ) {
               return item;
             }
+            if (
+              typeLocation === TypeLocation.city &&
+              !RE_ONLY_LETTER.test(e.target.value.toLowerCase())
+            ) {
+              return item;
+            }
             return {
               ...item,
               [typeLocation]: {
