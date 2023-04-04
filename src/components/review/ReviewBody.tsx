@@ -15,7 +15,7 @@ const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
       <Box
         sx={{
           display: 'flex',
-          width: '100%',
+          width: '80%',
           height: '0 auto',
           justifyContent: 'space-between',
         }}
@@ -47,7 +47,7 @@ const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
                 flexDirection: 'column',
               }}
             >
-              <Box sx={{ marginLeft: '5%' }}>
+              <Box>
                 <Typography
                   fontSize={{
                     lg: 18,

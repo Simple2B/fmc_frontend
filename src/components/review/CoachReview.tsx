@@ -56,7 +56,11 @@ const CoachReview = () => {
           Rate your coach
         </Typography>
       </Box>
-      <ReviewBody lessonData={data} />
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <ReviewBody lessonData={data} />
+      </Box>
     </>
   );
 };
