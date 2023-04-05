@@ -3,7 +3,11 @@ import {
   ISport,
   IYourProfile,
 } from '@/store/types/users/coach/profileType';
-import { instance, instanceFormData } from '../../_axiosInstance';
+import {
+  applicationInstance,
+  instance,
+  instanceFormData,
+} from '../../_axiosInstance';
 import { IUserProfile } from './../../../../store/types/user';
 
 const formatPersonalInfoRequestBody = (
@@ -94,7 +98,7 @@ export const coachProfileApi = {
 
   getTypeSports: async (): Promise<ISport[]> => {
     try {
-      const response = await instance().get('/sports/types');
+      const response = await applicationInstance().get('/sports/types');
       const res = response.data;
       console.log(`[GET] type of sports -> res data  ${res}`);
       return res.sport_types;
@@ -157,6 +161,32 @@ export const coachProfileApi = {
     } catch (error: any) {
       console.log(
         `[GET] profile info coach -> error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+
+  getCoachesCards: async (
+    name: string,
+    sport_ids: string | string[],
+    address: string
+  ): Promise<IYourProfile[]> => {
+    const ids =
+      typeof sport_ids === 'string'
+        ? `&sport_ids=${sport_ids}`
+        : sport_ids.map((id) => `&sport_ids=${id}`).join('');
+    try {
+      const response = await applicationInstance().get(
+        `/profile/profiles/search/cards?name=${name}${ids}&address=${address}`
+      );
+      const res = response.data;
+      console.log(
+        `[GET]  coaches profiles cards, without likes -> res data  ${res}`
+      );
+      return res.coaches;
+    } catch (error: any) {
+      console.log(
+        `[GET] coaches profiles cards (without likes) -> error message ${error}`
       );
       throw error.message;
     }

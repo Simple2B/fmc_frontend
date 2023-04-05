@@ -6,9 +6,11 @@
     position: relative
     margin: 0 auto
     .appBar
-        width: 100%
         box-shadow: none
         position: absolute
+        display: flex
+        justify-content: space-between
+        // align-items: center
         top: 0
         left: 0
         right: 0
@@ -42,14 +44,10 @@
             justify-content: center
             align-items: center
             text-transform: capitalize
-            color: #1A1B4B
-            background-color: #fff
             cursor: pointer
             border-radius: 4px
             padding: 7px 15px
-            &:hover
-                color: #fff
-                background-color: grey
+
 
 @media (max-width: 1920px)
     .wrapperAppBar
@@ -109,11 +107,7 @@
                 padding-bottom: 22px
             .searchBtn
                 text-transform: capitalize
-                color: #1A1B4B
-                background-color: #fff
-                &:hover
-                    color: #fff
-                    background-color: grey
+                
 
 @media (max-width: 845px)
     .wrapperAppBar
@@ -129,12 +123,8 @@
                 padding-bottom: 12px
             .searchBtn
                 text-transform: capitalize
-                color: #1A1B4B
-                background-color: #fff
                 font-size: 12px
-                &:hover
-                    color: #fff
-                    background-color: grey
+
 
 @media (max-width: 605px)
     .wrapperAppBar
@@ -197,9 +187,6 @@
             .searchBtn
                 width: 30px
                 height: 20px
-                &:hover
-                    color: #fff
-                    background-color: grey
 
 @media (max-width: 445px)
     .wrapperAppBar
@@ -219,10 +206,7 @@
             .searchBtn
                 width: 30px
                 height: 20px
-                backgroundColor: rgba(255, 255, 255, 0.7)
-                &:hover
-                    color: #fff
-                    background-color: grey
+
       
 @media (max-width: 320px)
     .wrapperAppBar
@@ -232,7 +216,6 @@
             .description
             .searchBtn
                 background-color: rgba(255, 255, 255, 0.7)
-                &:hover
 
 .commonTextStyle
     font-family: $font-inter
@@ -254,7 +237,6 @@
     cursor: pointer
     .signInText
         padding-top: 12px
-        color: $color-text
         margin-right: 15px 
         text-align: center
     .text
@@ -287,8 +269,8 @@
 
 .btnLanding
     padding-top: 12px
-    color: $color-main-text
-    border-bottom: 2px solid $color-main-text
+    // color: $color-main-text
+    // border-bottom: 2px solid $color-main-text
     margin-right: 15px
     text-align: center
     &:hover

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { IUserProfile } from '../../user';
 
 export interface ILocation {
@@ -7,6 +8,7 @@ export interface ILocation {
 }
 
 export interface ISport {
+  id?: number;
   uuid: string;
   name: string;
 }
@@ -47,8 +49,13 @@ export interface IYourProfile {
   sports: { name: string; uuid: string }[];
   username: string;
   uuid: string;
+  is_favourite?: boolean;
+  total_rate?: number;
 }
 
+export interface IFavouriteCoach extends IYourProfile {
+  is_favourite: boolean;
+}
 interface IPrice {
   stripe_price_id: string;
   currency: string;
@@ -72,4 +79,10 @@ export interface ICoachSubscription {
   created: string;
   status: string;
   is_active: boolean;
+}
+
+export enum SubscriptionCheckState {
+  PENDING,
+  ACTIVE,
+  CANCELLED,
 }

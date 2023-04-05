@@ -22,4 +22,5 @@ export interface ICoachProfile {
   profile_picture: string;
   is_verified: boolean;
   about: string | null;
+  total_rate: number | null;
 }

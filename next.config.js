@@ -17,6 +17,10 @@ module.exports = () => {
           source: '/api/:path*',
           destination: 'http://app:80/api/:path*', // Proxy to Backend
         },
+        {
+          source: '/api/stripe_webhook',
+          destination: 'http://app:80/api/stripe/webhook', // Proxy to Stripe
+        },
       ];
     },
   };

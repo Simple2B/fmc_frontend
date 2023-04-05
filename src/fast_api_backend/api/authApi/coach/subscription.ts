@@ -17,13 +17,13 @@ export const coachSubscriptionApi = {
   },
   getSubscription: async (): Promise<ICoachSubscription | null> => {
     try {
-      const response = await instance().get('/profile/coach/subscription');
+      const response = await instance().get('/profile/coach/subscription/info');
       const res = response.data;
-      console.log(`[GET: /coach/subscription] -> res data  ${res}`);
+      console.log(`[GET: /coach/subscription/info] -> res data  ${res}`);
       return res;
     } catch (error: any) {
       console.log(
-        `[GET: /coach/subscription] -> error message => ${error.message}`
+        `[GET: /coach/subscription/info] -> error message => ${error.message}`
       );
       throw error;
     }

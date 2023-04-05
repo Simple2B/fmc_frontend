@@ -4,13 +4,40 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-export interface ISearchInput {}
+export interface ISearchInput {
+  sports: {
+    id: number;
+    name: string;
+    isActive: boolean;
+  }[];
+}
 
-const SearchInput: React.FC<ISearchInput> = () => {
+const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
+  const router = useRouter();
+
   const matches845 = useMediaQuery('(max-width:845px)');
   const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
+
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const searchCoaches = () => {
+    router.push(
+      {
+        pathname: '/coach_search',
+        query: {
+          name: name,
+          sportsIdes: sports.filter((s) => s.isActive).map((s) => s.id),
+          address: address,
+        },
+      },
+      '/coach_search'
+    );
+  };
+
   return (
     <Paper
       component="form"
@@ -18,7 +45,8 @@ const SearchInput: React.FC<ISearchInput> = () => {
         p: matches320 ? '' : '2px 4px',
         display: 'flex',
         alignItems: 'center',
-        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 400 : 566,
+        justifyContent: 'center',
+        width: matches320 ? 280 : matches445 ? 300 : matches845 ? 488 : 674,
         height: matches445 ? 33 : matches845 ? 45 : 60,
         position: 'relative',
         left: matches320 ? '-15px' : 0,
@@ -30,15 +58,52 @@ const SearchInput: React.FC<ISearchInput> = () => {
       <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />
       </IconButton>
-      <InputBase
-        sx={{ ml: 1, flex: 1, fontSize: matches845 ? '12px' : '' }}
-        placeholder={matches445 ? 'Search' : 'Search a coach, sport'}
-        inputProps={{ 'aria-label': 'search google maps' }}
-        autoFocus
-      />
+      <Box
+        sx={{
+          ml: 1,
+          width: matches320 ? 140 : matches445 ? 150 : matches845 ? 200 : 283,
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+        }}
+        flex={1}
+      >
+        <InputBase
+          sx={{
+            ml: 1,
+            width: '100%',
+            fontSize: matches845 ? '12px' : '',
+          }}
+          placeholder={matches445 ? 'Search' : 'Search a coach'}
+          inputProps={{ 'aria-label': 'search google maps' }}
+          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
-      <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-      <Box sx={{ pr: matches445 ? '150px' : matches845 ? '210px' : '330px' }}>
+        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+      </Box>
+      <Box
+        sx={{
+          ml: 1,
+          width: matches320 ? 140 : matches445 ? 150 : matches845 ? 200 : 283,
+        }}
+        flex={1}
+      >
+        <InputBase
+          sx={{
+            ml: 1,
+            fontSize: matches845 ? '12px' : '',
+            width: '100%',
+          }}
+          placeholder={'Address'}
+          inputProps={{ 'aria-label': 'search google maps' }}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+      </Box>
+
+      <Box sx={{ width: matches445 ? '' : matches845 ? '88px' : '108px' }}>
         <Button
           sx={{
             position: 'absolute',
@@ -54,6 +119,7 @@ const SearchInput: React.FC<ISearchInput> = () => {
               backgroundColor: 'grey',
             },
           }}
+          onClick={searchCoaches}
         >
           Search
         </Button>

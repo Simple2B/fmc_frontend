@@ -28,7 +28,11 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
 
   const handleSendMessage = (item: ISession) => {
     console.log(item.coach.profile_picture);
-    router.push('/profiles/student?messages');
+    // router.push({
+    //   pathname: `/profiles/student?page=messages&user=`,
+    //   query: { uuid: item.uuid },
+    // });
+    router.push(`/profiles/student?page=messages&user=`);
   };
 
   return (
@@ -36,6 +40,9 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
       {sessions.lessons &&
         sessions.lessons.length > 0 &&
         sessions.lessons.map((item, index) => {
+          const date = new Date(item.appointment_time);
+          const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+          const time = `${date.getHours()}:${date.getMinutes()}`;
           return (
             <Card
               key={index}
@@ -97,7 +104,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                             mr: '3px',
                           }}
                         />
-                        <Typography>{item.date}</Typography>
+                        <Typography>{appointment_date}</Typography>
                       </Box>
                       <Box
                         sx={{
@@ -113,7 +120,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                             mr: '3px',
                           }}
                         />
-                        <Typography>{item.appointment_time}</Typography>
+                        <Typography>{time}</Typography>
                       </Box>
                       <Box
                         sx={{
@@ -130,7 +137,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                           }}
                         />
                         <Typography>
-                          {item.lesson ? item.lesson.price / 100 : ''}
+                          {item.lesson ? item.lesson.price / 100 : ''}&#163;
                         </Typography>
                       </Box>
                     </Box>

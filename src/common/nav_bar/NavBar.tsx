@@ -1,6 +1,6 @@
-import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
+import { ISession } from '@/store/types/session/sessionTypes';
 import { IUserProfile, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
@@ -10,12 +10,10 @@ import {
   Home,
   Logout,
   Menu as IconMenu,
-  Notifications,
 } from '@mui/icons-material';
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
   InputBase,
   Menu,
@@ -29,6 +27,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import MarkedCalendar from '../marked_calendar/MarkedCalendar';
+import { MessageNotifications } from './MessageNotifications';
 import style from './NavBar.module.sass';
 
 export interface INavBar {
@@ -55,17 +54,11 @@ const NavBar: React.FC<INavBar> = ({
   const anchorRef = React.useRef();
   const [isOpen, setOpen] = React.useState<boolean>(false);
   const [notificationCount, setNotificationCount] = React.useState<number>(0);
+  const [notifications, setNotifications] = React.useState<ISession[]>([]);
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const router = useRouter();
 
   const matches970 = useMediaQuery('(max-width:970px)');
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   const [anchorEl, setAnchorEl] = React.useState();
   React.useEffect(() => {
@@ -75,13 +68,14 @@ const NavBar: React.FC<INavBar> = ({
   useQuery(
     ['newNotificationsCount'],
     async () => {
-      const request =
-        userType === UserType.student
-          ? studentClientApi.studentGetNotificationCount
-          : coachClientApi.coachGetNotificationCount;
-      const result = await request();
-      setNotificationCount(result.count);
-      return result.count;
+      if (userType === UserType.student) {
+        const request = studentClientApi.studentGetReviewNotifications;
+        const result = await request();
+        console.log(result);
+        setNotificationCount(result.count);
+        setNotifications(result.lessons);
+        return result.count;
+      }
     },
     { refetchInterval: 10000 }
   );
@@ -147,26 +141,13 @@ const NavBar: React.FC<INavBar> = ({
               )}
             </Box>
           )}
-          <Badge
-            badgeContent={notificationCount}
-            color="primary"
-            sx={{
-              display: matches970 ? 'none' : 'inline-block',
-              // display: { xs: 'none', sm: 'inline-block' },
-              boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',
-              border: '1px solid',
-              p: '7px 9px',
-              borderRadius: '50%',
-              '&:hover': {
-                boxShadow: '0px 0px 5px #1876D1',
-                border: '1px solid',
-                p: '7px 9px',
-                borderRadius: '50%',
-              },
-            }}
-          >
-            <Notifications color="action" />
-          </Badge>
+          {userType === UserType.student && (
+            <MessageNotifications
+              notificationCount={notificationCount}
+              notifications={notifications}
+            />
+          )}
+
           <Avatar src={picture} onClick={() => setOpen(!isOpen)} />
           <Box
             component="span"

@@ -2,6 +2,7 @@ import { IContact } from '@/store/types/message/messageType';
 import { IUserProfile, UserType } from '@/store/types/user';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import { useRouter } from 'next/router';
 import { ChatContacts } from './ChatContacts';
 import { ChatMessages } from './ChatMessages';
 import { MessageContext } from './messageContext';
@@ -20,6 +21,8 @@ const Messages: React.FC<IMessagesProps> = ({
   selectedContact,
   onContactSelected,
 }) => {
+  const router = useRouter();
+  console.log('==== router uuid ', router.asPath.split('user=')[1]);
   return (
     <MessageContext.Provider value={userType}>
       <Box

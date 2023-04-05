@@ -1,11 +1,12 @@
-import {
-  IContact,
-  IMessageCount,
-  IMessages,
-} from '@/store/types/message/messageType';
+import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
 
+import {
+  ISession,
+  IUnreviewedLessonsList,
+} from '@/store/types/session/sessionTypes';
+import { IYourProfile } from '@/store/types/users/coach/profileType';
 import { applicationInstance, instance } from '../../_axiosInstance';
 
 export const studentClientApi = {
@@ -106,7 +107,7 @@ export const studentClientApi = {
 
   studentUpcomingLessons: async () => {
     try {
-      const response = await instance().get('/lesson/lessons/upcoming');
+      const response = await instance().get('/lesson/lessons/student/upcoming');
       const res = response.data;
       console.log('[GET] student list of upcoming sessions:->', res);
       return res;
@@ -158,9 +159,9 @@ export const studentClientApi = {
     }
   },
 
-  studentGetNotificationCount: async (): Promise<IMessageCount> => {
+  studentGetReviewNotifications: async (): Promise<IUnreviewedLessonsList> => {
     try {
-      const response = await instance().get(`/notification/student/new`);
+      const response = await instance().get(`/notification/student/reviews`);
       const res = response.data;
       console.log('[GET] student notifications count ->', res);
       return res;
@@ -180,6 +181,81 @@ export const studentClientApi = {
       return res;
     } catch (error: any) {
       console.log(`[POST: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentGetLessonData: async (session_uuid: string): Promise<ISession> => {
+    try {
+      const response = await instance().get(`/lesson/${session_uuid}`);
+      const res = response.data;
+      console.log('[GET] student lesson ->', res);
+      return res;
+    } catch (error: any) {
+      console.log(`[GET: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  studentSendSessionReview: async (
+    data: {
+      text: string;
+      rate: number;
+    },
+    lesson_uuid: string
+  ): Promise<number> => {
+    try {
+      const response = await instance().post(`/review/${lesson_uuid}`, data);
+      const res = response.data;
+      console.log('[POST] student leaving review for lesson :->', lesson_uuid);
+      return res;
+    } catch (error: any) {
+      console.log(`[POST: ] student -> error message => ${error.message}`);
+      throw error.message;
+    }
+  },
+
+  getCoachesCardsWithLikes: async (): Promise<IYourProfile[]> => {
+    try {
+      const response = await instance().get('/like/student/favourites');
+      const res = response.data;
+      console.log(
+        `[GET]  coaches profiles cards (with likes) -> res data  ${res}`
+      );
+      return res.coaches;
+    } catch (error: any) {
+      console.log(
+        `[GET] coaches profiles cards (with likes) -> error message ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+  studentLikeCoach: async (coach_uuid: string) => {
+    try {
+      const response = await instance().post(`/like/coach/${coach_uuid}`);
+      const res = response.data;
+      console.log('[POST] student like coach', res);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ]  student like coach, error message => ${error.message}`
+      );
+      throw error.message;
+    }
+  },
+
+  studentUnLikeCoach: async (coach_uuid: string) => {
+    try {
+      const response = await instance().post(
+        `/like/coach/unlike/${coach_uuid}`
+      );
+      const res = response.data;
+      console.log('[POST] student unlike coach', res);
+      return res;
+    } catch (error: any) {
+      console.log(
+        `[POST: ]  student unlike coach, error message => ${error.message}`
+      );
       throw error.message;
     }
   },

@@ -35,7 +35,6 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   React.useEffect(() => {
     const getUpcomingSessions = async () => {
       const result = await studentClientApi.studentUpcomingLessons();
-
       setUpcomingSessions(result);
     };
     getUpcomingSessions();
@@ -44,6 +43,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   const pastSessions: ISessions = {
     lessons: [
       {
+        uuid: 'itjv-fifje-rjfj21-3uhfsas',
         lesson: {
           date: 'Aug 16, 2021',
           name: '',
@@ -53,6 +53,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             street: 'Wall Street',
             postal_code: '123',
           },
+
           sport: {
             name: 'Tennis',
           },
@@ -72,13 +73,23 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png',
           is_verified: true,
           about: 'Dummy coach',
+          total_rate: 5,
         },
       },
     ],
   };
 
   return (
-    <Box className={styles.wrapper} flex={1} p={2}>
+    <Box
+      className={styles.wrapper}
+      flex={1}
+      p={2}
+      sx={{
+        height: '90vh',
+        overflow: 'hidden',
+        overflowY: 'scroll',
+      }}
+    >
       <Box>
         <Box sx={boxStyle}>
           <WelcomeBox
@@ -131,7 +142,6 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
           </Box>
         </Box>
       </Box>
-
       <Box
         sx={{
           width: matches970 ? 0 : '410px',
