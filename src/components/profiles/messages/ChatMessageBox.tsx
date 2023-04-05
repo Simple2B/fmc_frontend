@@ -1,7 +1,7 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '@/store/types/user';
-import { Box } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useContext, useEffect, useRef } from 'react';
 import { useQuery } from 'react-query';
 import { Message } from './Message';
@@ -15,7 +15,6 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
   if (!userType) {
     alert('NO USER TYPE');
   }
-  console.log('USER TYPE ->', userType);
 
   const endAnchorRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef<boolean>(true);
@@ -42,31 +41,20 @@ export function ChatMessageBox({ selectedContactUUID }: IChatMessageBox) {
   }, [data]);
 
   return (
-    <>
-      <Box
-        sx={{
-          marginTop: '1%',
-          marginBottom: '2.5%',
-          width: '100%',
-          height: 'auto',
-          display: 'flex',
-          flexDirection: 'column-reverse',
-        }}
-      >
-        <div className="end-anchor" ref={endAnchorRef}></div>
+    <Stack sx={{ overflowY: 'scroll' }}>
+      <div className="end-anchor" ref={endAnchorRef}></div>
 
-        {data &&
-          data.map((item) => {
-            return (
-              <Message
-                key={item.uuid}
-                isOutgoing={item.author.uuid !== selectedContactUUID}
-                text={item.text}
-                date={item.created_at}
-              />
-            );
-          })}
-      </Box>
-    </>
+      {data &&
+        data.map((item) => {
+          return (
+            <Message
+              key={item.uuid}
+              isOutgoing={item.author.uuid !== selectedContactUUID}
+              text={item.text}
+              date={item.created_at}
+            />
+          );
+        })}
+    </Stack>
   );
 }

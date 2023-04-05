@@ -26,6 +26,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
             selectedContactLastName={selectedContact.last_name}
             selectedContactUUID={selectedContact.uuid}
           />
+
           <Box
             sx={{
               maxHeight: '80%',
@@ -34,17 +35,8 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
           >
             <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
           </Box>
-          <Box
-            sx={{
-              position: 'absolute',
-              width: '100%',
-              bottom: '0',
-              right: '0',
-              left: '0',
-            }}
-          >
-            <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
-          </Box>
+
+          <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
         </Box>
       ) : (
         <ChatNotSelected />

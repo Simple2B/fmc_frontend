@@ -116,7 +116,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
         <Box
           className={style.wrapperSideBar}
           sx={{
-            display: matches970 ? 'none' : 'block',
+            display: matches970 ? 'none' : 'flex',
           }}
         >
           <SideBar listItems={listItems} />

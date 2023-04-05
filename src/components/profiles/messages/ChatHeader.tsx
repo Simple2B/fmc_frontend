@@ -26,6 +26,7 @@ export function ChatHeader({
           flexDirection: 'row',
           alignItems: 'center',
           position: 'sticky',
+          padding: '1rem',
         }}
       >
         <Box
@@ -34,7 +35,6 @@ export function ChatHeader({
             fontSize: '1rem',
             lineHeight: '1.25rem',
             fontWeight: 'bold',
-            marginLeft: '5%',
           }}
         >
           <Typography
@@ -54,8 +54,9 @@ export function ChatHeader({
         <Box
           onClick={handleClick}
           sx={{
-            marginRight: '5%',
-            padding: '0.75%',
+            paddingX: '1.5rem',
+
+            paddingY: '0.5rem',
             backgroundColor: '#222CDF',
             borderRadius: '10px',
             '&:hover': {

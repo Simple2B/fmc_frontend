@@ -49,7 +49,7 @@ export function ChatSendMessageArea({
         sx={{
           display: 'flex',
           width: '100%',
-          heght: '15%',
+          height: '15%',
           backgroundColor: '#fff',
         }}
       >
@@ -87,7 +87,7 @@ export function ChatSendMessageArea({
                     '&:hover': {
                       color: 'white',
                       backgroundColor: '#222CDF',
-                      tranparent: '0.8',
+                      opacity: '0.8',
                     },
                   }}
                 >
