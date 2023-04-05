@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import MarkedCalendar from '../marked_calendar/MarkedCalendar';
 
-export interface IRightBar {}
+export interface ICalendar {}
 
-const RightBar: React.FC<IRightBar> = () => {
+const Calendar: React.FC<ICalendar> = () => {
   return (
     <Box
       flex={1}
@@ -15,4 +15,4 @@ const RightBar: React.FC<IRightBar> = () => {
   );
 };
 
-export default RightBar;
+export default Calendar;
