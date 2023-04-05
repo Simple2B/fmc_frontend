@@ -23,11 +23,15 @@ export default function CoachSearchPage() {
   const [searchName, setName] = useState<string | null>(
     router.query.name as string
   );
-
+  const [searchAddress, setAddress] = useState<string | null>(
+    router.query.address as string
+  );
   const onChangeName = (value: string) => {
     setName(value);
   };
-
+  const onChangeAddress = (value: string) => {
+    setAddress(value);
+  };
   const [sports, setSports] = useState<
     {
       id: number;
@@ -139,6 +143,8 @@ export default function CoachSearchPage() {
             <CoachSearchInput
               name={searchName as string}
               onChangeName={onChangeName}
+              onChangeAddress={onChangeAddress}
+              address={searchAddress as string}
             />
             <Btns
               sportsIdes={router.query.sportsIdes}
@@ -153,6 +159,7 @@ export default function CoachSearchPage() {
             sportsIdes={sports
               .filter((s) => s.isActive)
               .map((s) => String(s.id))}
+            address={searchAddress as string}
           />
         </div>
         {/* {isLoad && (

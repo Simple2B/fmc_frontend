@@ -137,7 +137,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                           }}
                         />
                         <Typography>
-                          {item.lesson ? item.lesson.price / 100 : ''}
+                          {item.lesson ? item.lesson.price / 100 : ''}&#163;
                         </Typography>
                       </Box>
                     </Box>

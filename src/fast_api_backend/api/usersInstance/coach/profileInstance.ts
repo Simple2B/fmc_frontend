@@ -168,7 +168,8 @@ export const coachProfileApi = {
 
   getCoachesCards: async (
     name: string,
-    sport_ids: string | string[]
+    sport_ids: string | string[],
+    address: string
   ): Promise<IYourProfile[]> => {
     const ids =
       typeof sport_ids === 'string'
@@ -176,7 +177,7 @@ export const coachProfileApi = {
         : sport_ids.map((id) => `&sport_ids=${id}`).join('');
     try {
       const response = await applicationInstance().get(
-        `/profile/profiles/search/cards?name=${name}${ids}`
+        `/profile/profiles/search/cards?name=${name}${ids}&address=${address}`
       );
       const res = response.data;
       console.log(

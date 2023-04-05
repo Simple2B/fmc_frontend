@@ -11,13 +11,18 @@ import * as React from 'react';
 
 export interface ICoachSearchInput {
   name: string;
+  address: string;
   // eslint-disable-next-line no-unused-vars
   onChangeName: (value: string) => void;
+  // eslint-disable-next-line no-unused-vars
+  onChangeAddress: (value: string) => void;
 }
 
 const CoachSearchInput: React.FC<ICoachSearchInput> = ({
   name,
+  address,
   onChangeName,
+  onChangeAddress,
 }) => {
   return (
     <Paper
@@ -75,6 +80,8 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
             sx={{ ml: 1, flex: 1, fontSize: '' }}
             placeholder={'Address'}
             inputProps={{ 'aria-label': 'search google maps' }}
+            value={address}
+            onChange={(e) => onChangeAddress(e.target.value)}
           />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         </Box>

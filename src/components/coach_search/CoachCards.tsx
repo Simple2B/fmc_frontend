@@ -75,6 +75,7 @@ export interface ICoachCards {
   userType: string | null;
   name: string | null;
   sportsIdes: string | string[] | undefined;
+  address: string;
 }
 
 const cardsPerPage = 9;
@@ -84,6 +85,7 @@ const CoachCards: React.FC<ICoachCards> = ({
   userType,
   name,
   sportsIdes,
+  address,
 }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -126,7 +128,8 @@ const CoachCards: React.FC<ICoachCards> = ({
       console.log('===[CoachCards] sportsIdes ', sportsIdes);
       const result = await request(
         name ? name : '',
-        sportsIdes ? sportsIdes : ''
+        sportsIdes ? sportsIdes : '',
+        address ? address : ''
       );
       return result;
     }

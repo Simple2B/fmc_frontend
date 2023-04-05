@@ -23,7 +23,7 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
   const matches320 = useMediaQuery('(max-width:320px)');
 
   const [name, setName] = useState('');
-
+  const [address, setAddress] = useState('');
   const searchCoaches = () => {
     router.push(
       {
@@ -31,6 +31,7 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
         query: {
           name: name,
           sportsIdes: sports.filter((s) => s.isActive).map((s) => s.id),
+          address: address,
         },
       },
       '/coach_search'
@@ -97,9 +98,8 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
           }}
           placeholder={'Address'}
           inputProps={{ 'aria-label': 'search google maps' }}
-          // autoFocus
-          // value={name}
-          // onChange={(e) => setName(e.target.value)}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
         />
       </Box>
 
