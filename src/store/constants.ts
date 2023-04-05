@@ -2,6 +2,10 @@ export const INTERVAL_NEWS_LETTER_POP_UP = 10000;
 
 export const RE_POST_CODE = /^[0-9]*$/;
 
+export const RE_ONLY_NUMBER = /^[0-9]*$/;
+
+export const RE_PRICE = /^\d{0,4}(\.\d{0,4})?$/;
+
 export const RE_ONLY_LETTER = /^[a-zA-Z\s]*$/;
 
 export const emptyLocation = {
