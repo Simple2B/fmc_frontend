@@ -6,6 +6,7 @@ import enUS from 'date-fns/locale/en-US';
 import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import {
@@ -64,15 +65,6 @@ const CustomToolbar = (props: ToolbarProps) => {
 
   const goToNext = () => {
     props.onNavigate(Navigate.NEXT);
-  };
-
-  const goToToday = () => {
-    props.onNavigate(Navigate.TODAY);
-  };
-
-  // for a datepicker such as MUI or React Widgets ones ( function on datepicker onChange )
-  const goToSpecificDate = (newDate: Date) => {
-    props.onNavigate(Navigate.DATE, newDate);
   };
 
   return (
@@ -187,6 +179,7 @@ const CustomToolbar = (props: ToolbarProps) => {
 export interface IMyCalendar {}
 
 const MyCalendar: React.FC<IMyCalendar> = () => {
+  const router = useRouter();
   const [viewState, setViewState] = useState<View | undefined>('week');
 
   const goToDayView = (props: ToolbarProps) => {
@@ -201,19 +194,15 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     props.onView('month');
     setViewState('month');
   };
-
   const goToBack = (props: ToolbarProps) => {
     props.onNavigate(Navigate.PREVIOUS);
   };
-
   const goToNext = (props: ToolbarProps) => {
     props.onNavigate(Navigate.NEXT);
   };
-
   const goToToday = (props: ToolbarProps) => {
     props.onNavigate(Navigate.TODAY);
   };
-
   // for a datepicker such as MUI or React Widgets ones ( function on datepicker onChange )
   const goToSpecificDate = (props: ToolbarProps, newDate: Date) => {
     props.onNavigate(Navigate.DATE, newDate);
@@ -221,7 +210,18 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>
       <Box
-        sx={{ position: 'absolute', top: 0, right: '5px', cursor: 'pointer' }}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: '5px',
+          cursor: 'pointer',
+          fontFamily: 'Inter, sens-serif',
+          fontWeight: 600,
+          fontSize: '16px',
+          color: '#000000',
+          borderBottom: '1px solid #000000',
+        }}
+        onClick={() => router.push('/profiles/coach/calendar/add_hours')}
       >
         Edit available hours
       </Box>

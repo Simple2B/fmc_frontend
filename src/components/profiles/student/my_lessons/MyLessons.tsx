@@ -1,4 +1,3 @@
-import RightBar from '@/common/right_bar/RightBar';
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { ISessions } from '@/store/types/session/sessionTypes';
@@ -9,8 +8,9 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useState } from 'react';
 
-import CardsSessions from './card/CardsSessions';
+import Calendar from '@/common/calendar/Calendar';
 import styles from './MyLessons.module.sass';
+import CardsSessions from './card/CardsSessions';
 
 const boxStyle = {
   width: '100%',
@@ -168,7 +168,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             </Typography>
           </Box>
           <Box sx={boxStyle}>
-            <RightBar />
+            <Calendar />
           </Box>
         </Box>
       </Box>
