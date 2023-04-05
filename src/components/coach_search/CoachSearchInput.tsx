@@ -80,6 +80,7 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
             sx={{ ml: 1, flex: 1, fontSize: '' }}
             placeholder={'Address'}
             inputProps={{ 'aria-label': 'search google maps' }}
+            autoFocus
             value={address}
             onChange={(e) => onChangeAddress(e.target.value)}
           />
