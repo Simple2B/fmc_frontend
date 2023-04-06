@@ -40,7 +40,7 @@ export function Message({ text, isOutgoing, date }: IMessageProps) {
             xs: 8,
           }}
           lineHeight={'normal'}
-          style={{ wordWrap: 'break-word' }}
+          style={{ wordWrap: 'break-word', whiteSpace: 'pre-line' }}
         >
           {text}
         </Typography>
