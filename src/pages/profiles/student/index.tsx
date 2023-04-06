@@ -4,6 +4,7 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
+import { CalendarProvider } from '@/context/calendarContext';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { IUserProfile, UserType } from '@/store/types/user';
@@ -115,8 +116,6 @@ export default function ProfileStudent() {
     }
   );
 
-  console.log('[Student page] message data', data);
-
   const onContactSelected = (contactUUID: string) => {
     const foundContact = data?.find((element) => {
       if (element.user.uuid === contactUUID) {
@@ -171,7 +170,7 @@ export default function ProfileStudent() {
   };
 
   return (
-    <>
+    <CalendarProvider>
       <Head>
         <title>Profile Athlete</title>
         <meta name="description" content="Profile Athlete" />
@@ -192,6 +191,6 @@ export default function ProfileStudent() {
       ) : (
         <LoginPage />
       )}
-    </>
+    </CalendarProvider>
   );
 }

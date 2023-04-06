@@ -4,6 +4,7 @@ import { IStudent } from '@/store/types/users/student/studentType';
 
 import {
   ISession,
+  ISessions,
   IUnreviewedLessonsList,
 } from '@/store/types/session/sessionTypes';
 import { IYourProfile } from '@/store/types/users/coach/profileType';
@@ -105,7 +106,7 @@ export const studentClientApi = {
     }
   },
 
-  studentUpcomingLessons: async () => {
+  studentUpcomingLessons: async (): Promise<ISessions> => {
     try {
       const response = await instance().get('/lesson/lessons/student/upcoming');
       const res = response.data;

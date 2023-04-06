@@ -5,10 +5,9 @@ import { IUserProfile } from '@/store/types/user';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
-import * as React from 'react';
-import { useState } from 'react';
 
 import Calendar from '@/common/calendar/Calendar';
+import { useQuery } from 'react-query';
 import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
 
@@ -28,17 +27,23 @@ export interface IMyLessons {
 const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
   // const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
-  const [upcomingSessions, setUpcomingSessions] = useState<ISessions | null>(
-    null
-  );
+  // const [upcomingSessions, setUpcomingSessions] = useState<ISessions | null>(
+  //   null
+  // );
 
-  React.useEffect(() => {
-    const getUpcomingSessions = async () => {
-      const result = await studentClientApi.studentUpcomingLessons();
-      setUpcomingSessions(result);
-    };
-    getUpcomingSessions();
-  }, []);
+  const { data } = useQuery({
+    queryKey: 'studentSessions',
+    queryFn: studentClientApi.studentUpcomingLessons,
+    placeholderData: { lessons: [] },
+  });
+
+  // React.useEffect(() => {
+  //   const getUpcomingSessions = async () => {
+  //     const result = await studentClientApi.studentUpcomingLessons();
+  //     setUpcomingSessions(result);
+  //   };
+  //   getUpcomingSessions();
+  // }, []);
 
   const pastSessions: ISessions = {
     lessons: [
@@ -105,8 +110,8 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             </Typography>
           </Box>
           <Box sx={boxStyle}>
-            {upcomingSessions ? (
-              <CardsSessions sessions={upcomingSessions} type={'upcoming'} />
+            {data && data.lessons.length > 0 ? (
+              <CardsSessions sessions={data} type={'upcoming'} />
             ) : (
               <Box>
                 <Typography>No upcoming sessions</Typography>
