@@ -154,4 +154,43 @@ export const coachClientApi = {
       throw error.message;
     }
   },
+
+  coachGetLocations: async (): Promise<
+    {
+      id: number;
+      uuid: string;
+      name: string | null;
+      city: string;
+      street: string;
+      postal_code: string;
+    }[]
+  > => {
+    try {
+      const response = await instance().get('/profile/coach/locations/info');
+      const res = response.data;
+      console.log(`[GET: locations] coach -> res data  ${res}`);
+      return res.locations;
+    } catch (error: any) {
+      console.log(`[GET: locations] coach -> error message => ${error}`);
+      throw error;
+    }
+  },
+
+  coachGetSports: async (): Promise<
+    {
+      id: number;
+      uuid: string;
+      name: string;
+    }[]
+  > => {
+    try {
+      const response = await instance().get('/profile/coach/sports/info');
+      const res = response.data;
+      console.log(`[GET: sports] coach -> res data  ${res}`);
+      return res.sport_types;
+    } catch (error: any) {
+      console.log(`[GET: sports] coach -> error message => ${error}`);
+      throw error;
+    }
+  },
 };

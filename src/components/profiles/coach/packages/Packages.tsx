@@ -2,12 +2,18 @@ import Input from '@/common/input/Input';
 import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { coachPackageApi } from '@/fast_api_backend/api/usersInstance/coach/package';
+import { getErrorMessage } from '@/helper/error_function';
 import { RE_ONLY_NUMBER, RE_PRICE } from '@/store/constants';
+import { ILocation } from '@/store/types/location/locationType';
+import { ISport } from '@/store/types/users/coach/profileType';
 import { Autocomplete } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import styles from './Packages.module.sass';
 
 const nameInputStyles = {
@@ -23,7 +29,8 @@ const nameInputStyles = {
   },
 };
 
-const sessionsTypes = ['1 on 1 Session', 'Group Session'];
+// TODO: add to sessionsTypes 'Group Session' (need to be done in the next milestone)
+const sessionsTypes = ['1 on 1 Session'];
 
 export interface IPackages {}
 
@@ -36,21 +43,93 @@ const Packages: React.FC<IPackages> = () => {
   const [errorNameMessage, setErrorNameMessage] = useState<string>('');
   const [isErrorName, setIsErrorName] = useState<boolean>(false);
 
-  const [amount, setAmount] = useState<string>('');
-  // const [errorAmountMessage, setErrorAmountMessage] = useState<string>('');
-  // const [isErrorAmount, setIsErrorAmount] = useState<boolean>(false);
+  // TODO: add change amount of student
+  // eslint-disable-next-line no-unused-vars
+  const [amount, setAmount] = useState<string>('1');
 
-  const [price, setPrice] = useState<string>('');
+  // TODO: add change price
+  // eslint-disable-next-line no-unused-vars
+  const [price, setPrice] = useState<string>('65');
   const [errorPriceMessage, setErrorPriceMessage] = useState<string>('');
   const [isErrorPrice, setIsErrorPrice] = useState<boolean>(false);
-
-  const [typeSession, setTypeSession] = useState<string | null>(
-    sessionsTypes[0]
-  );
 
   const [aboutSession, setAboutSession] = useState<string>('');
 
   const [clothes, setClothes] = useState<string>('');
+  const [typeSession, setTypeSession] = useState<string | null>(
+    sessionsTypes[0]
+  );
+
+  //coach locations
+  const [locations, setLocations] = useState<
+    {
+      name: string;
+      locationData: ILocation;
+    }[]
+  >([
+    {
+      name: '',
+      locationData: {
+        id: 0,
+        uuid: '',
+        name: '',
+        city: '',
+        street: '',
+        postal_code: '',
+      },
+    },
+  ]);
+  const [location, setLocation] = useState<string | null>('');
+
+  useQuery(['locationsTypesQuery'], async () => {
+    const request = coachClientApi.coachGetLocations;
+    const result = await request();
+    console.log('[locationsTypesQuery] result => ', result);
+    if (result.length > 0) {
+      const locationResult = result.map((item) => ({
+        name: item.city + ', ' + item.street + ', ' + item.postal_code,
+        locationData: item,
+      }));
+      setLocations(locationResult);
+      setLocation(locationResult[0].name);
+    }
+    return result;
+  });
+  //
+
+  //coach sports
+  const [sports, setSports] = useState<
+    {
+      name: string;
+      sportData: ISport;
+    }[]
+  >([
+    {
+      name: '',
+      sportData: {
+        id: 0,
+        uuid: '',
+        name: '',
+      },
+    },
+  ]);
+  const [sport, setSport] = useState<string | null>(sports[0].name);
+
+  useQuery(['sportsTypesQuery'], async () => {
+    const request = coachClientApi.coachGetSports;
+    const result = await request();
+    console.log('[sessionsTypesQuery] result => ', result);
+    if (result.length > 0) {
+      const resultData = result.map((sport) => ({
+        name: sport.name,
+        sportData: sport,
+      }));
+      setSports(resultData);
+      setSport(resultData[0].name);
+    }
+    return result;
+  });
+  //
 
   const savePackage = () => {
     if (name === '') {
@@ -68,19 +147,41 @@ const Packages: React.FC<IPackages> = () => {
       setErrorPriceMessage('');
     }
 
+    const locData = locations.filter((loc) => loc.name === location);
+    const sportData = sports.filter((s) => s.name === sport);
+
     const dataPackage = {
-      name: name,
-      amount: amount,
-      typeSession: typeSession,
-      price: price,
-      aboutSession: aboutSession,
-      clothes: clothes,
+      title: name,
+      location: locData[0].locationData,
+      sport: sportData[0].sportData,
+      price: Number(price),
+      max_people: Number(amount),
+      about: aboutSession,
     };
 
-    console.log('[Packages] dataPackage => ', dataPackage);
+    if (name !== '' && price !== '') {
+      const createPackage = async () => {
+        try {
+          setIsLoad(true);
+          const response = await coachPackageApi.createPackage(dataPackage);
+          console.log('POST [/personal_info] coach successfully', response);
+          setIsLoad(false);
+          setSuccess(true);
+        } catch (error: any) {
+          setIsLoad(false);
 
-    // if (name !== '' && price !== '') {
-    // }
+          console.log(
+            `POST create package coach error message: ${error.message}`
+          );
+          setSuccess(false);
+          getErrorMessage(error.message, setError);
+        }
+      };
+      createPackage();
+      setName('');
+      setAboutSession('');
+      setClothes('');
+    }
   };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
@@ -144,7 +245,8 @@ const Packages: React.FC<IPackages> = () => {
               if (!RE_ONLY_NUMBER.test(e.target.value.toLowerCase())) {
                 return;
               }
-              setAmount(e.target.value);
+              // TODO: add change amount of students for lesson
+              // setAmount(e.target.value);
             }}
             type="text"
           />
@@ -172,7 +274,25 @@ const Packages: React.FC<IPackages> = () => {
             )}
           />
         </Box>
-        <Box sx={{ width: 206 }}>
+        <Box
+          sx={{
+            width: 206,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+            sx={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '24px',
+              fontWeight: 500,
+              color: 'rgba(0, 0, 0, 0.87)',
+              mr: '5px',
+            }}
+          >
+            £
+          </Box>
           <Input
             helperText={errorPriceMessage}
             isError={isErrorPrice}
@@ -184,11 +304,44 @@ const Packages: React.FC<IPackages> = () => {
               if (!RE_PRICE.test(e.target.value.toLowerCase())) {
                 return;
               }
-              setPrice(e.target.value);
+              // TODO: add change price
+              // setPrice(e.target.value);
             }}
             type="text"
           />
         </Box>
+      </Box>
+      <Box
+        sx={{
+          width: 642,
+          mb: '45px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Autocomplete
+          value={location}
+          onChange={(event: any, newValue: string | null) => {
+            setLocation(newValue);
+          }}
+          id="controllable-states-demo"
+          options={locations.map((loc) => loc.name)}
+          sx={{ ...nameInputStyles, width: '49%' }}
+          renderInput={(params: any) => (
+            <TextField {...params} label="Location" />
+          )}
+        />
+        <Autocomplete
+          value={sport}
+          onChange={(event: any, newValue: string | null) => {
+            setSport(newValue);
+          }}
+          id="controllable-states-demo"
+          options={sports.map((sport) => sport.name)}
+          sx={{ ...nameInputStyles, width: '49%' }}
+          renderInput={(params: any) => <TextField {...params} label="Sport" />}
+        />
       </Box>
       <Box sx={{ width: 642, mb: '45px' }}>
         <TextField
