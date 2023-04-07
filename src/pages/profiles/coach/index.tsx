@@ -9,12 +9,10 @@ import Messages from '@/components/profiles/messages/Messages';
 
 import SubscriptionCheck from '@/components/subscription_check_state/SubscriptionCheckState';
 
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
-
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { MessagesService, User } from '@/services';
+import { MessagesService, User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
@@ -63,7 +61,8 @@ export default function ProfileCoach() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        const response = await instance().get('/whoami/coach');
+        // const response = await instance().get('/whoami/coach');
+        const response = await WhoamiService.apiWhoamiCoach();
         const res = response.data;
         console.log(`[GET] check coach -> res data  ${res}`);
         setIsLogIn(true);

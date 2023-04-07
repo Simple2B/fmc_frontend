@@ -6,7 +6,6 @@ import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBookPro16.svg';
 import line_first from '../../../../public/lines/line_first.png';
 import line_second from '../../../../public/lines/line_second.png';
-import line_third from '../../../../public/lines/line_third.png';
 import TitleBox from '../title_box/TitleBox';
 import styles from './MainSection.module.sass';
 import Cards from './cards_sport_types/Cards';
@@ -124,17 +123,6 @@ const MainSection: React.FC<IMainSection> = () => {
           }}
         >
           <Image src={line_first} alt={'logo'} width={400} height={45} />
-        </Box>
-        <Box
-          sx={{
-            display: matches1111 ? 'none' : 'block',
-            position: 'absolute',
-            top: '765px',
-            left: '165px',
-            zIndex: 0,
-          }}
-        >
-          <Image src={line_third} alt={'logo'} width={410} height={45} />
         </Box>
       </Box>
       <TitleBox

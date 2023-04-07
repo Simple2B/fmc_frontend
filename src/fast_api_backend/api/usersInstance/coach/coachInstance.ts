@@ -1,3 +1,4 @@
+import { IPackageSchedule } from '@/store/types/coach_package/packageTypes';
 import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
@@ -152,6 +153,57 @@ export const coachClientApi = {
     } catch (error: any) {
       console.log(`[POST: ] student -> error message => ${error.message}`);
       throw error.message;
+    }
+  },
+
+  coachGetLocations: async (): Promise<
+    {
+      id: number;
+      uuid: string;
+      name: string | null;
+      city: string;
+      street: string;
+      postal_code: string;
+    }[]
+  > => {
+    try {
+      const response = await instance().get('/profile/coach/locations/info');
+      const res = response.data;
+      console.log(`[GET: locations] coach -> res data  ${res}`);
+      return res.locations;
+    } catch (error: any) {
+      console.log(`[GET: locations] coach -> error message => ${error}`);
+      throw error;
+    }
+  },
+
+  coachGetSports: async (): Promise<
+    {
+      id: number;
+      uuid: string;
+      name: string;
+    }[]
+  > => {
+    try {
+      const response = await instance().get('/profile/coach/sports/info');
+      const res = response.data;
+      console.log(`[GET: sports] coach -> res data  ${res}`);
+      return res.sport_types;
+    } catch (error: any) {
+      console.log(`[GET: sports] coach -> error message => ${error}`);
+      throw error;
+    }
+  },
+
+  coachGetPackages: async (): Promise<IPackageSchedule[]> => {
+    try {
+      const response = await instance().get('/package/packages');
+      const res = response.data;
+      console.log(`[GET: Packages] coach -> res data  ${res}`);
+      return res.lessons;
+    } catch (error: any) {
+      console.log(`[GET: Packages] coach -> error message => ${error}`);
+      throw error;
     }
   },
 };

@@ -12,7 +12,7 @@ import '../styles/main.sass';
 conf.autoAddCss = false;
 
 OpenAPI.TOKEN = async () => localStorage.getItem('token') ?? '';
-OpenAPI.BASE = process.env.NEXT_PUBLIC_API_URL ?? '';
+OpenAPI.BASE = process.env.NEXT_PUBLIC_MY_OPEN_API_URL ?? '';
 
 const Loading = () => {
   const router = useRouter();

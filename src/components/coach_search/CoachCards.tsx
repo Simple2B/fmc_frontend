@@ -122,7 +122,7 @@ const CoachCards: React.FC<ICoachCards> = ({
   };
 
   const { isLoading, data } = useQuery<IYourProfile[], ErrorConstructor>(
-    ['coachesProfilesCards', name, sportsIdes],
+    ['coachesProfilesCards', name, sportsIdes, address],
     async () => {
       const request = coachProfileApi.getCoachesCards;
       console.log('===[CoachCards] sportsIdes ', sportsIdes);
