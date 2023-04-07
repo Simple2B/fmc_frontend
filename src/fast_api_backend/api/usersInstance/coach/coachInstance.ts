@@ -1,3 +1,4 @@
+import { IPackageSchedule } from '@/store/types/coach_package/packageTypes';
 import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { ICoach } from '../../../../store/types/users/coach/coachType';
@@ -190,6 +191,18 @@ export const coachClientApi = {
       return res.sport_types;
     } catch (error: any) {
       console.log(`[GET: sports] coach -> error message => ${error}`);
+      throw error;
+    }
+  },
+
+  coachGetPackages: async (): Promise<IPackageSchedule[]> => {
+    try {
+      const response = await instance().get('/package/packages');
+      const res = response.data;
+      console.log(`[GET: Packages] coach -> res data  ${res}`);
+      return res.lessons;
+    } catch (error: any) {
+      console.log(`[GET: Packages] coach -> error message => ${error}`);
       throw error;
     }
   },

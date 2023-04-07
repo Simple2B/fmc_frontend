@@ -61,7 +61,7 @@ const Schedule: React.FC<ISchedule> = () => {
       <Box sx={{ width: '100%', mb: '8px' }}>
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
+          id="optionsLocations"
           options={optionsLocations}
           value={optionsLocations[0]}
           sx={{ width: '100%', borderRadius: '12px' }}

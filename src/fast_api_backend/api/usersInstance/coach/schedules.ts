@@ -1,4 +1,4 @@
-import { ISchedule } from '@/components/coach_profile/about_coach_profile/_Schedule';
+import { ISchedule } from '@/store/types/schedule/scheduleTypes';
 import { instance } from '../../_axiosInstance';
 
 export const coachSchedulesApi = {

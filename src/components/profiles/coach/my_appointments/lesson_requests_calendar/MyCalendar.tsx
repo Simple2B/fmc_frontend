@@ -1,13 +1,10 @@
 /* eslint-disable no-unused-vars */
-import Input from '@/common/input/Input';
-import {
-  Autocomplete,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-} from '@mui/material';
+import Loader from '@/common/loader/Loader';
+import MessageBox from '@/common/message_box/MessageBox';
+import CustomModel from '@/common/modal/Modal';
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { coachSchedulesApi } from '@/fast_api_backend/api/usersInstance/coach/schedules';
+import { getErrorMessage } from '@/helper/error_function';
 import Box from '@mui/material/Box';
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
@@ -17,7 +14,7 @@ import startOfWeek from 'date-fns/startOfWeek';
 import moment from 'moment';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Calendar,
   Navigate,
@@ -27,6 +24,8 @@ import {
   stringOrDate,
 } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import { useQuery } from 'react-query';
+import FormSchedule from '../form_schedule/FormSchedule';
 
 const locales = {
   'en-US': enUS,
@@ -56,23 +55,15 @@ const btnStyle = {
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
-const nameInputStyles = {
-  // mt: matches600 ? 1.5 : 4,
-  '& .MuiInputBase-root': {
-    position: 'relative',
-  },
-  '& .MuiFormHelperText-root': {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: '-20px',
-  },
-};
-
 export interface IMyCalendar {}
 
 const MyCalendar: React.FC<IMyCalendar> = () => {
   const router = useRouter();
+
+  const [isLoad, setIsLoad] = React.useState<boolean>(false);
+  const [isSuccess, setSuccess] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
+
   const [viewState, setViewState] = useState<View | undefined>('week');
 
   const goToDayView = (props: ToolbarProps) => {
@@ -152,10 +143,49 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   const [timeStartCreate, setTimeStartCreate] = useState<string>('');
   const [timeEndCreate, setTimeEndCreate] = useState<string>('');
 
+  const [startDatetime, setStartDatetime] = useState<Date | string>('');
+  const [endDatetime, setEndDatetime] = useState<Date | string>('');
+
   const [location, setLocation] = useState<string | null>('London');
-  const [packageSchedule, setPackage] = useState<string | null>(
-    '1 on 1 Session'
-  );
+
+  const [packagesSchedule, setPackagesSchedule] = useState<
+    {
+      name: string;
+      id: number;
+    }[]
+  >([
+    {
+      name: '',
+      id: 0,
+    },
+  ]);
+
+  const [packageSchedule, setPackage] = useState<{
+    name: string;
+    id: number;
+  } | null>({
+    name: packagesSchedule[0].name,
+    id: packagesSchedule[0].id,
+  });
+
+  useQuery(['packagesSchedule'], async () => {
+    const request = coachClientApi.coachGetPackages;
+    const result = await request();
+    console.log('[packageSchedule] result => ', result);
+    if (result.length > 0) {
+      const resultData = result.map((s) => ({
+        name: s.title,
+        id: s.id,
+      }));
+      setPackagesSchedule(resultData);
+      setPackage({
+        name: packagesSchedule[0].name,
+        id: packagesSchedule[0].id,
+      });
+    }
+
+    return result;
+  });
 
   const [name, setName] = useState<string>('');
 
@@ -167,7 +197,12 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     slots: Date[] | string[];
     action: 'select' | 'click' | 'doubleClick';
   }) {
-    const nowDate = new Date();
+    const nowDate = moment(new Date());
+    const eventDate = moment(slotInfo.start);
+
+    if (nowDate > eventDate) {
+      return;
+    }
 
     setDayNameCreate(moment(slotInfo.start).format('dddd, MMMM Do'));
     setTimeStartCreate(moment(slotInfo.start).format('LT'));
@@ -175,6 +210,9 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       moment(slotInfo.start).add(moment.duration(1, 'hours')).format('LT')
     );
     setIsOpenFormEventCreate(!openFormEventCreate);
+
+    setStartDatetime(new Date(slotInfo.start).toISOString());
+    setEndDatetime(new Date(slotInfo.end).toISOString());
 
     // const title = '';
     // const title = window.prompt('New Event name');
@@ -188,6 +226,34 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     // }
   }
 
+  const createSchedule = () => {
+    const data = {
+      lesson_id: packageSchedule?.id,
+      start_datetime: startDatetime,
+      end_datetime: endDatetime,
+    };
+    console.log('[createSchedule] => data ', data);
+    const create = async () => {
+      try {
+        const response = await coachSchedulesApi.createSchedule({
+          lesson_id: packageSchedule?.id,
+          start_datetime: startDatetime,
+          end_datetime: endDatetime,
+        });
+        console.log(' create coach schedule ', response);
+        setIsLoad(false);
+        setSuccess(true);
+      } catch (error: any) {
+        console.log(`POST create coach schedule error message ===> : ${error}`);
+        setIsLoad(false);
+        setSuccess(false);
+        getErrorMessage(error, setError, 'schedules');
+      }
+    };
+    create();
+    setIsOpenFormEventCreate(false);
+  };
+
   // const { defaultDate, scrollToTime } = useMemo(
   //   () => ({
   //     defaultDate: new Date(2015, 3, 12),
@@ -195,6 +261,23 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   //   }),
   //   []
   // );
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!modalIsOpen) {
+      setTimeout(() => {
+        setModalIsOpen(true);
+        setError(null);
+        setIsLoad(false);
+      }, 1000);
+    }
+  }, [modalIsOpen, error]);
+
+  const closeSuccessMessage = () => {
+    setModalIsOpen(!modalIsOpen);
+    setSuccess(false);
+  };
 
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>
@@ -218,8 +301,8 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       <Calendar
         localizer={localizer}
         events={myEvents}
-        // startAccessor="start"
-        // endAccessor="end"
+        startAccessor="start"
+        endAccessor="end"
         views={['month', 'week', 'day']}
         defaultView={viewState}
         style={{ height: '75vh' }}
@@ -348,499 +431,542 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         // scrollToTime={scrollToTime}
       />
 
-      {openFormEvent && (
-        <Box
-          sx={{
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'fixed',
-            top: 0,
-            zIndex: 10000,
-            // backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          <Box
-            sx={{
-              width: '396px',
-              display: 'flex',
-              justifyContent: 'flex-start',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              border: '1px solid #DBDBDB',
-              boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
-              borderRadius: '14px',
-              backgroundColor: '#FFFFFF',
-              p: '32px',
-            }}
-          >
-            <Box
-              sx={{
-                fontFamily: 'Inter, sens-serif',
-                fontSize: '20px',
-                fontWeight: 400,
-                color: '#333333',
-                borderBottom: '1px solid #333333',
-                mb: '20px',
-              }}
-            >
-              {dayName}
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mb: '16px',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: '#333333',
-                  p: '8px',
-                  border: '1px solid #DEDEDD',
-                  borderRadius: '6px',
-                  mr: '5px',
-                }}
-              >
-                {timeStart}
-              </Box>
-              <Box sx={{ mr: '5px' }}> - </Box>
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: '#333333',
-                  p: '8px',
-                  border: '1px solid #DEDEDD',
-                  borderRadius: '6px',
-                }}
-              >
-                {timeEnd}
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  color: '#9E9E9E',
-                  mb: '16px',
-                  mt: '16px',
-                }}
-              >
-                Location
-              </Box>
-              <FormControl>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="London_1"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="London_1"
-                    control={<Radio />}
-                    label="London 1"
-                  />
-                  <FormControlLabel
-                    value="London_2"
-                    control={<Radio />}
-                    label="London 2"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  color: '#9E9E9E',
-                  mb: '16px',
-                  mt: '16px',
-                }}
-              >
-                Repetition
-              </Box>
-              <FormControl>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="repeats_weekly"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="repeats_weekly"
-                    control={<Radio />}
-                    label="Repeats weekly"
-                  />
-                  <FormControlLabel
-                    value="repeats_monthly"
-                    control={<Radio />}
-                    label="Repeats monthly"
-                  />
-                  <FormControlLabel
-                    value="does_not_repeat"
-                    control={<Radio />}
-                    label="Does not repeat"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
+      {/* TODO: must implement edit schedule  */}
+      {/* {openFormEvent && (
+        <FormSchedule
+          dayName={dayName}
+          timeStart={timeStart}
+          timeEnd={timeEnd}
+          openForm={() => setIsOpenFormEvent(!openFormEvent)}
+          btnTitle={'Save'}
+        />
+        // <Box
+        //   sx={{
+        //     width: '100vw',
+        //     height: '100vh',
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     position: 'fixed',
+        //     top: 0,
+        //     zIndex: 10000,
+        //   }}
+        // >
+        //   <Box
+        //     sx={{
+        //       width: '396px',
+        //       display: 'flex',
+        //       justifyContent: 'flex-start',
+        //       flexDirection: 'column',
+        //       alignItems: 'flex-start',
+        //       border: '1px solid #DBDBDB',
+        //       boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
+        //       borderRadius: '14px',
+        //       backgroundColor: '#FFFFFF',
+        //       p: '32px',
+        //     }}
+        //   >
+        //     <Box
+        //       sx={{
+        //         fontFamily: 'Inter, sens-serif',
+        //         fontSize: '20px',
+        //         fontWeight: 400,
+        //         color: '#333333',
+        //         borderBottom: '1px solid #333333',
+        //         mb: '20px',
+        //       }}
+        //     >
+        //       {dayName}
+        //     </Box>
+        //     <Box
+        //       sx={{
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'center',
+        //         mb: '16px',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '14px',
+        //           fontWeight: 400,
+        //           color: '#333333',
+        //           p: '8px',
+        //           border: '1px solid #DEDEDD',
+        //           borderRadius: '6px',
+        //           mr: '5px',
+        //         }}
+        //       >
+        //         {timeStart}
+        //       </Box>
+        //       <Box sx={{ mr: '5px' }}> - </Box>
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '14px',
+        //           fontWeight: 400,
+        //           color: '#333333',
+        //           p: '8px',
+        //           border: '1px solid #DEDEDD',
+        //           borderRadius: '6px',
+        //         }}
+        //       >
+        //         {timeEnd}
+        //       </Box>
+        //     </Box>
+        //     <Box
+        //       sx={{
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         flexDirection: 'column',
+        //         alignItems: 'flex-start',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '12px',
+        //           fontWeight: 400,
+        //           textTransform: 'uppercase',
+        //           color: '#9E9E9E',
+        //           mb: '16px',
+        //           mt: '16px',
+        //         }}
+        //       >
+        //         Location
+        //       </Box>
+        //       <FormControl>
+        //         <RadioGroup
+        //           aria-labelledby="demo-radio-buttons-group-label"
+        //           defaultValue="London_1"
+        //           name="radio-buttons-group"
+        //         >
+        //           <FormControlLabel
+        //             value="London_1"
+        //             control={<Radio />}
+        //             label="London 1"
+        //           />
+        //           <FormControlLabel
+        //             value="London_2"
+        //             control={<Radio />}
+        //             label="London 2"
+        //           />
+        //         </RadioGroup>
+        //       </FormControl>
+        //     </Box>
+        //     <Box
+        //       sx={{
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'flex-start',
+        //         flexDirection: 'column',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '12px',
+        //           fontWeight: 400,
+        //           textTransform: 'uppercase',
+        //           color: '#9E9E9E',
+        //           mb: '16px',
+        //           mt: '16px',
+        //         }}
+        //       >
+        //         Repetition
+        //       </Box>
+        //       <FormControl>
+        //         <RadioGroup
+        //           aria-labelledby="demo-radio-buttons-group-label"
+        //           defaultValue="repeats_weekly"
+        //           name="radio-buttons-group"
+        //         >
+        //           <FormControlLabel
+        //             value="repeats_weekly"
+        //             control={<Radio />}
+        //             label="Repeats weekly"
+        //           />
+        //           <FormControlLabel
+        //             value="repeats_monthly"
+        //             control={<Radio />}
+        //             label="Repeats monthly"
+        //           />
+        //           <FormControlLabel
+        //             value="does_not_repeat"
+        //             control={<Radio />}
+        //             label="Does not repeat"
+        //           />
+        //         </RadioGroup>
+        //       </FormControl>
+        //     </Box>
 
-            <Box sx={{ mt: '36px', width: '100%' }}>
-              <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
-              <Box
-                sx={{
-                  mt: '16px',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end',
-                }}
-              >
-                <Box
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '64px',
-                    height: '32px',
-                    fontFamily: 'Inter, sens-serif',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: '#333333',
-                    transition: 'easeOut 0.3s all',
-                    '&:hover': {
-                      color: '#F05547',
-                      transition: 'easeOut 0.3s all',
-                    },
-                  }}
-                  onClick={() => setIsOpenFormEvent(!openFormEvent)}
-                >
-                  Cancel
-                </Box>
-                <Box
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '64px',
-                    height: '32px',
-                    fontFamily: 'Inter, sens-serif',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: '#ffffff',
-                    backgroundColor: '#F05547',
-                    borderRadius: '6px',
-                    transition: 'easeOut 0.3s all',
-                    '&:hover': {
-                      boxShadow: '0px 0px 5px #F05547',
-                      transition: 'easeOut 0.3s all',
-                    },
-                  }}
-                >
-                  Save
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      )}
+        //     <Box sx={{ mt: '36px', width: '100%' }}>
+        //       <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
+        //       <Box
+        //         sx={{
+        //           mt: '16px',
+        //           display: 'flex',
+        //           justifyContent: 'flex-end',
+        //           alignItems: 'flex-end',
+        //         }}
+        //       >
+        //         <Box
+        //           sx={{
+        //             cursor: 'pointer',
+        //             display: 'flex',
+        //             justifyContent: 'center',
+        //             alignItems: 'center',
+        //             width: '64px',
+        //             height: '32px',
+        //             fontFamily: 'Inter, sens-serif',
+        //             fontSize: '14px',
+        //             fontWeight: 500,
+        //             color: '#333333',
+        //             transition: 'easeOut 0.3s all',
+        //             '&:hover': {
+        //               color: '#F05547',
+        //               transition: 'easeOut 0.3s all',
+        //             },
+        //           }}
+        //           onClick={() => setIsOpenFormEvent(!openFormEvent)}
+        //         >
+        //           Cancel
+        //         </Box>
+        //         <Box
+        //           sx={{
+        //             cursor: 'pointer',
+        //             display: 'flex',
+        //             justifyContent: 'center',
+        //             alignItems: 'center',
+        //             width: '64px',
+        //             height: '32px',
+        //             fontFamily: 'Inter, sens-serif',
+        //             fontSize: '14px',
+        //             fontWeight: 500,
+        //             color: '#ffffff',
+        //             backgroundColor: '#F05547',
+        //             borderRadius: '6px',
+        //             transition: 'easeOut 0.3s all',
+        //             '&:hover': {
+        //               boxShadow: '0px 0px 5px #F05547',
+        //               transition: 'easeOut 0.3s all',
+        //             },
+        //           }}
+        //         >
+        //           Save
+        //         </Box>
+        //       </Box>
+        //     </Box>
+        //   </Box>
+        // </Box>
+      )} */}
 
       {openFormEventCreate && (
-        <Box
-          sx={{
-            width: '100vw',
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'fixed',
-            top: 0,
-            zIndex: 10000,
-          }}
-        >
-          <Box
-            sx={{
-              width: '396px',
-              display: 'flex',
-              justifyContent: 'flex-start',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              border: '1px solid #DBDBDB',
-              boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
-              borderRadius: '14px',
-              backgroundColor: '#FFFFFF',
-              p: '32px',
-            }}
-          >
-            <Box
-              sx={{
-                fontFamily: 'Inter, sens-serif',
-                fontSize: '20px',
-                fontWeight: 400,
-                color: '#333333',
-                borderBottom: '1px solid #333333',
-                mb: '20px',
-              }}
-            >
-              {dayNameCreate}
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mb: '16px',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: '#333333',
-                  p: '8px',
-                  border: '1px solid #DEDEDD',
-                  borderRadius: '6px',
-                  mr: '5px',
-                }}
-              >
-                {timeStartCreate}
-              </Box>
-              <Box sx={{ mr: '5px' }}> - </Box>
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: '#333333',
-                  p: '8px',
-                  border: '1px solid #DEDEDD',
-                  borderRadius: '6px',
-                }}
-              >
-                {timeEndCreate}
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              <Input
-                name={'name'}
-                label={'Title'}
-                value={name}
-                sx={{ ...nameInputStyles, width: '100%' }}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-              />
-            </Box>
-            {/* <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  color: '#9E9E9E',
-                  mb: '16px',
-                  mt: '16px',
-                }}
-              >
-                Location
-              </Box>
-              <Autocomplete
-                value={location}
-                onChange={(event: any, newValue: string | null) => {
-                  setLocation(newValue);
-                }}
-                id="controllable-states-demo"
-                options={[]}
-                sx={{ ...nameInputStyles, width: '100%' }}
-                renderInput={(params: any) => (
-                  <TextField {...params} label="Location" />
-                )}
-              />
-            </Box> */}
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  color: '#9E9E9E',
-                  mb: '16px',
-                  mt: '16px',
-                }}
-              >
-                Package
-              </Box>
-              <Autocomplete
-                value={packageSchedule}
-                onChange={(event: any, newValue: string | null) => {
-                  setPackage(newValue);
-                }}
-                id="controllable-states-demo"
-                options={[]}
-                sx={{ ...nameInputStyles, width: '100%' }}
-                renderInput={(params: any) => (
-                  <TextField {...params} label="Package" />
-                )}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              {/* <Box
-                sx={{
-                  fontFamily: 'Inter, sens-serif',
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  textTransform: 'uppercase',
-                  color: '#9E9E9E',
-                  mb: '16px',
-                  mt: '16px',
-                }}
-              >
-                Repetition
-              </Box> */}
-              {/* <FormControl>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="repeats_weekly"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="repeats_weekly"
-                    control={<Radio />}
-                    label="Repeats weekly"
-                  />
-                  <FormControlLabel
-                    value="repeats_monthly"
-                    control={<Radio />}
-                    label="Repeats monthly"
-                  />
-                  <FormControlLabel
-                    value="does_not_repeat"
-                    control={<Radio />}
-                    label="Does not repeat"
-                  />
-                </RadioGroup>
-              </FormControl> */}
-            </Box>
+        <FormSchedule
+          dayName={dayNameCreate}
+          timeStart={timeStartCreate}
+          timeEnd={timeEndCreate}
+          packageSchedule={packageSchedule}
+          packagesSchedule={packagesSchedule}
+          setPackage={setPackage}
+          openForm={() => setIsOpenFormEventCreate(!openFormEventCreate)}
+          btnTitle={'Create'}
+          handleClickSchedule={createSchedule}
+        />
+        // <Box
+        //   sx={{
+        //     width: '100vw',
+        //     height: '100vh',
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     position: 'fixed',
+        //     top: 0,
+        //     zIndex: 10000,
+        //   }}
+        // >
+        //   <Box
+        //     sx={{
+        //       width: '396px',
+        //       display: 'flex',
+        //       justifyContent: 'flex-start',
+        //       flexDirection: 'column',
+        //       alignItems: 'flex-start',
+        //       border: '1px solid #DBDBDB',
+        //       boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
+        //       borderRadius: '14px',
+        //       backgroundColor: '#FFFFFF',
+        //       p: '32px',
+        //     }}
+        //   >
+        //     <Box
+        //       sx={{
+        //         fontFamily: 'Inter, sens-serif',
+        //         fontSize: '20px',
+        //         fontWeight: 400,
+        //         color: '#333333',
+        //         borderBottom: '1px solid #333333',
+        //         mb: '20px',
+        //       }}
+        //     >
+        //       {dayNameCreate}
+        //     </Box>
+        //     <Box
+        //       sx={{
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'center',
+        //         mb: '16px',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '14px',
+        //           fontWeight: 400,
+        //           color: '#333333',
+        //           p: '8px',
+        //           border: '1px solid #DEDEDD',
+        //           borderRadius: '6px',
+        //           mr: '5px',
+        //         }}
+        //       >
+        //         {timeStartCreate}
+        //       </Box>
+        //       <Box sx={{ mr: '5px' }}> - </Box>
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '14px',
+        //           fontWeight: 400,
+        //           color: '#333333',
+        //           p: '8px',
+        //           border: '1px solid #DEDEDD',
+        //           borderRadius: '6px',
+        //         }}
+        //       >
+        //         {timeEndCreate}
+        //       </Box>
+        //     </Box>
+        //     {/* <Box
+        //       sx={{
+        //         width: '100%',
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         flexDirection: 'column',
+        //         alignItems: 'flex-start',
+        //       }}
+        //     >
+        //       <Input
+        //         name={'name'}
+        //         label={'Title'}
+        //         value={name}
+        //         sx={{ ...nameInputStyles, width: '100%' }}
+        //         onChange={(e) => setName(e.target.value)}
+        //         type="text"
+        //       />
+        //     </Box> */}
+        //     {/* <Box
+        //       sx={{
+        //         width: '100%',
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         flexDirection: 'column',
+        //         alignItems: 'flex-start',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '12px',
+        //           fontWeight: 400,
+        //           textTransform: 'uppercase',
+        //           color: '#9E9E9E',
+        //           mb: '16px',
+        //           mt: '16px',
+        //         }}
+        //       >
+        //         Location
+        //       </Box>
+        //       <Autocomplete
+        //         value={location}
+        //         onChange={(event: any, newValue: string | null) => {
+        //           setLocation(newValue);
+        //         }}
+        //         id="controllable-states-demo"
+        //         options={[]}
+        //         sx={{ ...nameInputStyles, width: '100%' }}
+        //         renderInput={(params: any) => (
+        //           <TextField {...params} label="Location" />
+        //         )}
+        //       />
+        //     </Box> */}
+        //     <Box
+        //       sx={{
+        //         width: '100%',
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'flex-start',
+        //         flexDirection: 'column',
+        //       }}
+        //     >
+        //       <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '12px',
+        //           fontWeight: 400,
+        //           textTransform: 'uppercase',
+        //           color: '#9E9E9E',
+        //           mb: '16px',
+        //           mt: '16px',
+        //         }}
+        //       >
+        //         Package
+        //       </Box>
+        //       <Autocomplete
+        //         value={packageSchedule}
+        //         onChange={(event: any, newValue: string | null) => {
+        //           setPackage(newValue);
+        //         }}
+        //         id="controllable-states-demo"
+        //         options={[]}
+        //         sx={{ ...nameInputStyles, width: '100%' }}
+        //         renderInput={(params: any) => (
+        //           <TextField {...params} label="Package" />
+        //         )}
+        //       />
+        //     </Box>
+        //     <Box
+        //       sx={{
+        //         display: 'flex',
+        //         justifyContent: 'center',
+        //         alignItems: 'flex-start',
+        //         flexDirection: 'column',
+        //       }}
+        //     >
+        //       {/* <Box
+        //         sx={{
+        //           fontFamily: 'Inter, sens-serif',
+        //           fontSize: '12px',
+        //           fontWeight: 400,
+        //           textTransform: 'uppercase',
+        //           color: '#9E9E9E',
+        //           mb: '16px',
+        //           mt: '16px',
+        //         }}
+        //       >
+        //         Repetition
+        //       </Box> */}
+        //       {/* <FormControl>
+        //         <RadioGroup
+        //           aria-labelledby="demo-radio-buttons-group-label"
+        //           defaultValue="repeats_weekly"
+        //           name="radio-buttons-group"
+        //         >
+        //           <FormControlLabel
+        //             value="repeats_weekly"
+        //             control={<Radio />}
+        //             label="Repeats weekly"
+        //           />
+        //           <FormControlLabel
+        //             value="repeats_monthly"
+        //             control={<Radio />}
+        //             label="Repeats monthly"
+        //           />
+        //           <FormControlLabel
+        //             value="does_not_repeat"
+        //             control={<Radio />}
+        //             label="Does not repeat"
+        //           />
+        //         </RadioGroup>
+        //       </FormControl> */}
+        //     </Box>
 
-            <Box sx={{ mt: '36px', width: '100%' }}>
-              <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
-              <Box
-                sx={{
-                  mt: '16px',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end',
-                }}
-              >
-                <Box
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '64px',
-                    height: '32px',
-                    fontFamily: 'Inter, sens-serif',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: '#333333',
-                    transition: 'easeOut 0.3s all',
-                    '&:hover': {
-                      color: '#F05547',
-                      transition: 'easeOut 0.3s all',
-                    },
-                  }}
-                  onClick={() => setIsOpenFormEventCreate(!openFormEventCreate)}
-                >
-                  Cancel
-                </Box>
-                <Box
-                  sx={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: '64px',
-                    height: '32px',
-                    fontFamily: 'Inter, sens-serif',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    color: '#ffffff',
-                    backgroundColor: '#F05547',
-                    borderRadius: '6px',
-                    transition: 'easeOut 0.3s all',
-                    '&:hover': {
-                      boxShadow: '0px 0px 5px #F05547',
-                      transition: 'easeOut 0.3s all',
-                    },
-                  }}
-                >
-                  Create
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
+        //     <Box sx={{ mt: '36px', width: '100%' }}>
+        //       <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
+        //       <Box
+        //         sx={{
+        //           mt: '16px',
+        //           display: 'flex',
+        //           justifyContent: 'flex-end',
+        //           alignItems: 'flex-end',
+        //         }}
+        //       >
+        //         <Box
+        //           sx={{
+        //             cursor: 'pointer',
+        //             display: 'flex',
+        //             justifyContent: 'center',
+        //             alignItems: 'center',
+        //             width: '64px',
+        //             height: '32px',
+        //             fontFamily: 'Inter, sens-serif',
+        //             fontSize: '14px',
+        //             fontWeight: 500,
+        //             color: '#333333',
+        //             transition: 'easeOut 0.3s all',
+        //             '&:hover': {
+        //               color: '#F05547',
+        //               transition: 'easeOut 0.3s all',
+        //             },
+        //           }}
+        //           onClick={() => setIsOpenFormEventCreate(!openFormEventCreate)}
+        //         >
+        //           Cancel
+        //         </Box>
+        //         <Box
+        //           sx={{
+        //             cursor: 'pointer',
+        //             display: 'flex',
+        //             justifyContent: 'center',
+        //             alignItems: 'center',
+        //             width: '64px',
+        //             height: '32px',
+        //             fontFamily: 'Inter, sens-serif',
+        //             fontSize: '14px',
+        //             fontWeight: 500,
+        //             color: '#ffffff',
+        //             backgroundColor: '#F05547',
+        //             borderRadius: '6px',
+        //             transition: 'easeOut 0.3s all',
+        //             '&:hover': {
+        //               boxShadow: '0px 0px 5px #F05547',
+        //               transition: 'easeOut 0.3s all',
+        //             },
+        //           }}
+        //         >
+        //           Create
+        //         </Box>
+        //       </Box>
+        //     </Box>
+        //   </Box>
+        // </Box>
+      )}
+
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+      {error && !isSuccess && (
+        <CustomModel
+          isOpen={modalIsOpen}
+          handleClick={() => setModalIsOpen(!modalIsOpen)}
+        >
+          <MessageBox
+            message={error}
+            handleClick={() => setModalIsOpen(!modalIsOpen)}
+          />
+        </CustomModel>
+      )}
+      {isSuccess && (
+        <CustomModel isOpen={modalIsOpen} handleClick={closeSuccessMessage}>
+          <MessageBox
+            message={'Schedule created successfully'}
+            handleClick={closeSuccessMessage}
+          />
+        </CustomModel>
       )}
     </Box>
   );

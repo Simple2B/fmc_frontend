@@ -1,7 +1,6 @@
 export interface ISchedule {
-  location_id: number;
-  week_day: number;
-  begin_hours: number;
-  begin_minutes: number;
-  duration?: number;
+  lesson_id?: number;
+  coach_id?: number;
+  start_datetime: Date | string;
+  end_datetime: Date | string;
 }
