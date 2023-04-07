@@ -1,8 +1,6 @@
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { IYourProfile } from '@/store/types/users/coach/profileType';
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styles from './FavoriteCoaches.module.sass';
 import CoachesCards from './card/CoachesCards';
@@ -10,13 +8,8 @@ import CoachesCards from './card/CoachesCards';
 export interface IFavoriteCoaches {}
 
 const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
-  const [favouriteCoaches, setFavouriteCoaches] = useState<IYourProfile[]>([]);
-  // const router = useRouter();
-  useQuery(['coachesProfilesCards'], async () => {
-    const request = studentClientApi.getCoachesCardsWithLikes;
-    const result = await request();
-    console.log('COACHES I LIKED ->>>>>>>>>>>>>:', result);
-    setFavouriteCoaches(result);
+  const { data } = useQuery(['coachesProfilesCards'], async () => {
+    return await studentClientApi.getCoachesCardsWithLikes();
   });
   return (
     <Box
@@ -42,7 +35,7 @@ const FavoriteCoaches: React.FC<IFavoriteCoaches> = () => {
       </Box>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        <CoachesCards sessions={favouriteCoaches} />
+        <CoachesCards sessions={data ?? []} />
       </Box>
     </Box>
   );

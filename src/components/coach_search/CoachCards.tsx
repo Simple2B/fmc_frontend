@@ -135,8 +135,6 @@ const CoachCards: React.FC<ICoachCards> = ({
     }
   );
 
-  console.log('[CoachCards] data ', data);
-
   const likesCoachesQuery = useQuery<IYourProfile[] | null, ErrorConstructor>(
     ['likesCoachesQuery'],
     async () => {

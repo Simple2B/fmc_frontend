@@ -31,10 +31,7 @@ export const MessageNotifications = ({
     setIsOpen(!isOpen);
   };
 
-  console.log('NOTIFICATIONS ->>>>>>>>>>>>>>>>', notifications);
-
   const rateCoach = (sessionUUID: string) => {
-    console.log('rate');
     router.push(`/profiles/review/${sessionUUID}`);
   };
   const matches970 = useMediaQuery('(max-width:970px)');

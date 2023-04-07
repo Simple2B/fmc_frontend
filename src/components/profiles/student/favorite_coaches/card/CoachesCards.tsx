@@ -124,7 +124,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
 
             <Box>
               <CardContent>
-                <Box sx={{}}>
+                <Box>
                   <Typography
                     sx={{
                       fontFamily: 'Inter, sense-serif',

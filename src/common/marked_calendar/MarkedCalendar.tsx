@@ -37,7 +37,9 @@ const MarkedCalendar = () => {
 
   const { data } = useQuery(['studentLessons'], async () => {
     const res = await LessonService.apiGetLessonsForStudent();
-    return res.map((lesson) => new Date(lesson.appointment_time).getTime());
+    return res.map((lesson) =>
+      new Date(lesson.appointment_time).setHours(0, 0, 0, 0)
+    );
   });
 
   return (

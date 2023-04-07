@@ -4,7 +4,9 @@ import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import Calendar from '@/common/calendar/Calendar';
+import { CalendarContext } from '@/context/calendarContext';
 import { LessonService, User } from '@/services';
+import { useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
@@ -23,11 +25,8 @@ export interface IMyLessons {
 }
 
 const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
-  // const router = useRouter();
   const matches970 = useMediaQuery('(max-width:970px)');
-  // const [upcomingSessions, setUpcomingSessions] = useState<ISessions | null>(
-  //   null
-  // );
+  const { calendarState } = useContext(CalendarContext);
 
   const { data } = useQuery({
     queryKey: 'studentSessions',
@@ -35,54 +34,29 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
     placeholderData: [],
   });
 
-  // React.useEffect(() => {
-  //   const getUpcomingSessions = async () => {
-  //     const result = await LessonService.apiGetLessonsForStudent();
-  //     return result.map((lesson) =>
-  //       new Date(lesson.appointment_time).getTime()
-  //     );
-  //   };
-  //   getUpcomingSessions();
-  // }, []);
-
-  // const pastSessions: ISessions = {
-  //   lessons: [
-  //     {
-  //       uuid: 'itjv-fifje-rjfj21-3uhfsas',
-  //       lesson: {
-  //         date: 'Aug 16, 2021',
-  //         name: '',
-  //         location: {
-  //           name: 'DeWitt Clinton Park, W 54th St, New York, NY',
-  //           city: 'New York',
-  //           street: 'Wall Street',
-  //           postal_code: '123',
-  //         },
-
-  //         sport: {
-  //           name: 'Tennis',
-  //         },
-  //         price: 999,
-  //         notes: 'Bring a tennis racket and wear tennis shoes.',
-  //       },
-  //       appointment_time: '12-03-2222',
-
-  //       date: 'Aug 16, 2021',
-  //       coach: {
-  //         uuid: 'abc-def-ghj',
-  //         username: 'johndoe',
-  //         email: 'johndoe@gmail.com',
-  //         first_name: 'john',
-  //         last_name: 'doe',
-  //         profile_picture:
-  //           'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png',
-  //         is_verified: true,
-  //         about: 'Dummy coach',
-  //         total_rate: 5,
-  //       },
-  //     },
-  //   ],
-  // };
+  const { upcoming, past } = useMemo(() => {
+    const currentMoment = new Date();
+    const todaysLessons =
+      data
+        ?.filter(
+          (lesson) =>
+            new Date(lesson.appointment_time).setHours(0, 0, 0, 0) ===
+            calendarState.selectedDate.setHours(0, 0, 0, 0)
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.appointment_time).getTime() -
+            new Date(a.appointment_time).getTime()
+        ) ?? [];
+    return {
+      upcoming: todaysLessons.filter(
+        (lesson) => new Date(lesson.appointment_time) > currentMoment
+      ),
+      past: todaysLessons.filter(
+        (lesson) => new Date(lesson.appointment_time) < currentMoment
+      ),
+    };
+  }, [data, calendarState.selectedDate]);
 
   return (
     <Box
@@ -110,8 +84,8 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             </Typography>
           </Box>
           <Box sx={boxStyle}>
-            {data && data.length > 0 ? (
-              <CardsSessions lessons={data} type={'upcoming'} />
+            {upcoming.length > 0 ? (
+              <CardsSessions lessons={upcoming} type={'upcoming'} />
             ) : (
               <Box>
                 <Typography>No upcoming sessions</Typography>
@@ -143,7 +117,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
               gap: 3,
             }}
           >
-            <CardsSessions lessons={data ?? []} type={'past'} />
+            <CardsSessions lessons={past} type={'past'} />
           </Box>
         </Box>
       </Box>
