@@ -1,4 +1,5 @@
 import { AuthProvider } from '@/context/authContext';
+import { OpenAPI } from '@/services';
 import { config as conf } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import type { AppProps } from 'next/app';
@@ -9,6 +10,8 @@ import Loader from '../common/loader/Loader';
 import CustomModel from '../common/modal/Modal';
 import '../styles/main.sass';
 conf.autoAddCss = false;
+
+OpenAPI.TOKEN = async () => localStorage.getItem('token') ?? '';
 
 const Loading = () => {
   const router = useRouter();

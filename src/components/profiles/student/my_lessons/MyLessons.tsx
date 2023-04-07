@@ -1,12 +1,11 @@
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { ISessions } from '@/store/types/session/sessionTypes';
 import { IUserProfile } from '@/store/types/user';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import Calendar from '@/common/calendar/Calendar';
+import { LessonService } from '@/services';
 import { useQuery } from 'react-query';
 import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
@@ -33,56 +32,58 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
 
   const { data } = useQuery({
     queryKey: 'studentSessions',
-    queryFn: studentClientApi.studentUpcomingLessons,
-    placeholderData: { lessons: [] },
+    queryFn: LessonService.apiGetLessonsForStudent,
+    placeholderData: [],
   });
 
   // React.useEffect(() => {
   //   const getUpcomingSessions = async () => {
-  //     const result = await studentClientApi.studentUpcomingLessons();
-  //     setUpcomingSessions(result);
+  //     const result = await LessonService.apiGetLessonsForStudent();
+  //     return result.map((lesson) =>
+  //       new Date(lesson.appointment_time).getTime()
+  //     );
   //   };
   //   getUpcomingSessions();
   // }, []);
 
-  const pastSessions: ISessions = {
-    lessons: [
-      {
-        uuid: 'itjv-fifje-rjfj21-3uhfsas',
-        lesson: {
-          date: 'Aug 16, 2021',
-          name: '',
-          location: {
-            name: 'DeWitt Clinton Park, W 54th St, New York, NY',
-            city: 'New York',
-            street: 'Wall Street',
-            postal_code: '123',
-          },
+  // const pastSessions: ISessions = {
+  //   lessons: [
+  //     {
+  //       uuid: 'itjv-fifje-rjfj21-3uhfsas',
+  //       lesson: {
+  //         date: 'Aug 16, 2021',
+  //         name: '',
+  //         location: {
+  //           name: 'DeWitt Clinton Park, W 54th St, New York, NY',
+  //           city: 'New York',
+  //           street: 'Wall Street',
+  //           postal_code: '123',
+  //         },
 
-          sport: {
-            name: 'Tennis',
-          },
-          price: 999,
-          notes: 'Bring a tennis racket and wear tennis shoes.',
-        },
-        appointment_time: '12-03-2222',
+  //         sport: {
+  //           name: 'Tennis',
+  //         },
+  //         price: 999,
+  //         notes: 'Bring a tennis racket and wear tennis shoes.',
+  //       },
+  //       appointment_time: '12-03-2222',
 
-        date: 'Aug 16, 2021',
-        coach: {
-          uuid: 'abc-def-ghj',
-          username: 'johndoe',
-          email: 'johndoe@gmail.com',
-          first_name: 'john',
-          last_name: 'doe',
-          profile_picture:
-            'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png',
-          is_verified: true,
-          about: 'Dummy coach',
-          total_rate: 5,
-        },
-      },
-    ],
-  };
+  //       date: 'Aug 16, 2021',
+  //       coach: {
+  //         uuid: 'abc-def-ghj',
+  //         username: 'johndoe',
+  //         email: 'johndoe@gmail.com',
+  //         first_name: 'john',
+  //         last_name: 'doe',
+  //         profile_picture:
+  //           'https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png',
+  //         is_verified: true,
+  //         about: 'Dummy coach',
+  //         total_rate: 5,
+  //       },
+  //     },
+  //   ],
+  // };
 
   return (
     <Box
@@ -110,8 +111,8 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
             </Typography>
           </Box>
           <Box sx={boxStyle}>
-            {data && data.lessons.length > 0 ? (
-              <CardsSessions sessions={data} type={'upcoming'} />
+            {data && data.length > 0 ? (
+              <CardsSessions lessons={data} type={'upcoming'} />
             ) : (
               <Box>
                 <Typography>No upcoming sessions</Typography>
@@ -143,7 +144,7 @@ const MyLessons: React.FC<IMyLessons> = ({ profile }) => {
               gap: 3,
             }}
           >
-            <CardsSessions sessions={pastSessions} type={'past'} />
+            <CardsSessions lessons={data ?? []} type={'past'} />
           </Box>
         </Box>
       </Box>

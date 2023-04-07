@@ -1,6 +1,6 @@
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
-import { ISession } from '@/store/types/session/sessionTypes';
+import { NotificationService, StudentLesson } from '@/services';
 import { IUserProfile, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
@@ -8,8 +8,8 @@ import {
   CalendarMonth,
   Close,
   Home,
-  Logout,
   Menu as IconMenu,
+  Logout,
 } from '@mui/icons-material';
 import {
   AppBar,
@@ -54,7 +54,7 @@ const NavBar: React.FC<INavBar> = ({
   const anchorRef = React.useRef();
   const [isOpen, setOpen] = React.useState<boolean>(false);
   const [notificationCount, setNotificationCount] = React.useState<number>(0);
-  const [notifications, setNotifications] = React.useState<ISession[]>([]);
+  const [notifications, setNotifications] = React.useState<StudentLesson[]>([]);
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const router = useRouter();
 
@@ -69,8 +69,8 @@ const NavBar: React.FC<INavBar> = ({
     ['newNotificationsCount'],
     async () => {
       if (userType === UserType.student) {
-        const request = studentClientApi.studentGetReviewNotifications;
-        const result = await request();
+        studentClientApi.studentGetReviewNotifications;
+        const result = await NotificationService.apiGetReviewNotifications();
         console.log(result);
         setNotificationCount(result.count);
         setNotifications(result.lessons);
