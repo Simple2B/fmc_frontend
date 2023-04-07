@@ -4,7 +4,7 @@
 
 import type { StudentLesson } from './StudentLesson';
 
-export type UpcomingLessonList = {
+export type StudentLessonList = {
     lessons: Array<StudentLesson>;
 };
 
