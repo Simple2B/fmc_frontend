@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       const gapiConnect = await import('gapi-script').then((pack) => pack.gapi);
 
       const gKeys = await KeysService.apiGetGapiKeys();
-      // const gKeys = await authApi.getGoogleKey();
+
       function start() {
         gapiConnect.client.init({
           clientId: gKeys.GOOGLE_CLIENT_ID,
