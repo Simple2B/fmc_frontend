@@ -130,7 +130,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         id: packagesSchedule[0].id,
       });
     }
-
     return result;
   });
 
@@ -139,12 +138,14 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       start: Date | string;
       end: Date | string;
       title: string;
+      uuid: string;
     }[]
   >([
     {
       start: '',
       end: '',
       title: '',
+      uuid: '',
     },
   ]);
 
@@ -156,6 +157,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         start: new Date(s.start_datetime),
         end: new Date(s.end_datetime),
         title: s.lesson.title,
+        uuid: s.lesson.uuid,
       }));
       setEvents(resultData);
     }
@@ -166,6 +168,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
 
   // Form edit data
   const [dayName, setDayName] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [timeStart, setTimeStart] = useState<string>('');
   const [timeEnd, setTimeEnd] = useState<string>('');
 
@@ -173,10 +176,12 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     useState<boolean>(false);
 
   const handleSelectSlot = useCallback(
-    ({ start, end }: any) => {
-      setDayName(moment(start).format('dddd, MMMM Do'));
-      setTimeStart(moment(start).format('LT'));
-      setTimeEnd(moment(end).format('LT'));
+    (selectSlot: any) => {
+      console.log(' selectSlot ', selectSlot);
+      setDayName(moment(selectSlot.start).format('dddd, MMMM Do'));
+      setTimeStart(moment(selectSlot.start).format('LT'));
+      setTimeEnd(moment(selectSlot.end).format('LT'));
+      setTitle(selectSlot.title);
       setIsOpenFormEvent(!openFormEvent);
     },
     [openFormEvent]
@@ -254,6 +259,36 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     mutation.mutate();
     setIsOpenFormEventCreate(false);
   };
+
+  const mutationDelete = useMutation({
+    mutationFn: async () => {
+      setIsLoad(true);
+      if (packageSchedule) {
+        const response = await coachSchedulesApi.createSchedule({
+          lesson_id: packageSchedule?.id,
+          start_datetime: startDatetime,
+          end_datetime: endDatetime,
+        });
+
+        console.log(' delete coach schedule ', response);
+        return response;
+      }
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['schedulesData'] });
+      setIsLoad(false);
+      // setSuccess(true);
+    },
+    onError: (error) => {
+      console.log(`POST create coach schedule error message ===> : ${error}`);
+      setIsLoad(false);
+      // setSuccess(false);
+      // getErrorMessage(error, setError, 'schedules');
+    },
+  });
+
+  const scheduleDelete = () => {};
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
@@ -426,235 +461,155 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       />
 
       {/* TODO: must implement edit schedule  */}
-      {/* {openFormEvent && (
-        <FormSchedule
-          dayName={dayName}
-          timeStart={timeStart}
-          timeEnd={timeEnd}
-          openForm={() => setIsOpenFormEvent(!openFormEvent)}
-          btnTitle={'Save'}
-        />
-        // <Box
-        //   sx={{
-        //     width: '100vw',
-        //     height: '100vh',
-        //     display: 'flex',
-        //     justifyContent: 'center',
-        //     alignItems: 'center',
-        //     position: 'fixed',
-        //     top: 0,
-        //     zIndex: 10000,
-        //   }}
-        // >
-        //   <Box
-        //     sx={{
-        //       width: '396px',
-        //       display: 'flex',
-        //       justifyContent: 'flex-start',
-        //       flexDirection: 'column',
-        //       alignItems: 'flex-start',
-        //       border: '1px solid #DBDBDB',
-        //       boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
-        //       borderRadius: '14px',
-        //       backgroundColor: '#FFFFFF',
-        //       p: '32px',
-        //     }}
-        //   >
-        //     <Box
-        //       sx={{
-        //         fontFamily: 'Inter, sens-serif',
-        //         fontSize: '20px',
-        //         fontWeight: 400,
-        //         color: '#333333',
-        //         borderBottom: '1px solid #333333',
-        //         mb: '20px',
-        //       }}
-        //     >
-        //       {dayName}
-        //     </Box>
-        //     <Box
-        //       sx={{
-        //         display: 'flex',
-        //         justifyContent: 'center',
-        //         alignItems: 'center',
-        //         mb: '16px',
-        //       }}
-        //     >
-        //       <Box
-        //         sx={{
-        //           fontFamily: 'Inter, sens-serif',
-        //           fontSize: '14px',
-        //           fontWeight: 400,
-        //           color: '#333333',
-        //           p: '8px',
-        //           border: '1px solid #DEDEDD',
-        //           borderRadius: '6px',
-        //           mr: '5px',
-        //         }}
-        //       >
-        //         {timeStart}
-        //       </Box>
-        //       <Box sx={{ mr: '5px' }}> - </Box>
-        //       <Box
-        //         sx={{
-        //           fontFamily: 'Inter, sens-serif',
-        //           fontSize: '14px',
-        //           fontWeight: 400,
-        //           color: '#333333',
-        //           p: '8px',
-        //           border: '1px solid #DEDEDD',
-        //           borderRadius: '6px',
-        //         }}
-        //       >
-        //         {timeEnd}
-        //       </Box>
-        //     </Box>
-        //     <Box
-        //       sx={{
-        //         display: 'flex',
-        //         justifyContent: 'center',
-        //         flexDirection: 'column',
-        //         alignItems: 'flex-start',
-        //       }}
-        //     >
-        //       <Box
-        //         sx={{
-        //           fontFamily: 'Inter, sens-serif',
-        //           fontSize: '12px',
-        //           fontWeight: 400,
-        //           textTransform: 'uppercase',
-        //           color: '#9E9E9E',
-        //           mb: '16px',
-        //           mt: '16px',
-        //         }}
-        //       >
-        //         Location
-        //       </Box>
-        //       <FormControl>
-        //         <RadioGroup
-        //           aria-labelledby="demo-radio-buttons-group-label"
-        //           defaultValue="London_1"
-        //           name="radio-buttons-group"
-        //         >
-        //           <FormControlLabel
-        //             value="London_1"
-        //             control={<Radio />}
-        //             label="London 1"
-        //           />
-        //           <FormControlLabel
-        //             value="London_2"
-        //             control={<Radio />}
-        //             label="London 2"
-        //           />
-        //         </RadioGroup>
-        //       </FormControl>
-        //     </Box>
-        //     <Box
-        //       sx={{
-        //         display: 'flex',
-        //         justifyContent: 'center',
-        //         alignItems: 'flex-start',
-        //         flexDirection: 'column',
-        //       }}
-        //     >
-        //       <Box
-        //         sx={{
-        //           fontFamily: 'Inter, sens-serif',
-        //           fontSize: '12px',
-        //           fontWeight: 400,
-        //           textTransform: 'uppercase',
-        //           color: '#9E9E9E',
-        //           mb: '16px',
-        //           mt: '16px',
-        //         }}
-        //       >
-        //         Repetition
-        //       </Box>
-        //       <FormControl>
-        //         <RadioGroup
-        //           aria-labelledby="demo-radio-buttons-group-label"
-        //           defaultValue="repeats_weekly"
-        //           name="radio-buttons-group"
-        //         >
-        //           <FormControlLabel
-        //             value="repeats_weekly"
-        //             control={<Radio />}
-        //             label="Repeats weekly"
-        //           />
-        //           <FormControlLabel
-        //             value="repeats_monthly"
-        //             control={<Radio />}
-        //             label="Repeats monthly"
-        //           />
-        //           <FormControlLabel
-        //             value="does_not_repeat"
-        //             control={<Radio />}
-        //             label="Does not repeat"
-        //           />
-        //         </RadioGroup>
-        //       </FormControl>
-        //     </Box>
+      {openFormEvent && (
+        <Box
+          sx={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'fixed',
+            top: 0,
+            zIndex: 10000,
+          }}
+        >
+          <Box
+            sx={{
+              width: '396px',
+              display: 'flex',
+              justifyContent: 'flex-start',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              border: '1px solid #DBDBDB',
+              boxShadow: '0px 2px 14px rgba(0, 0, 0, 0.12)',
+              borderRadius: '14px',
+              backgroundColor: '#FFFFFF',
+              p: '32px',
+            }}
+          >
+            <Box
+              sx={{
+                fontFamily: 'Inter, sens-serif',
+                fontSize: '20px',
+                fontWeight: 400,
+                color: '#333333',
+                borderBottom: '1px solid #333333',
+                mb: '20px',
+              }}
+            >
+              {dayName}
+            </Box>
+            <Box
+              sx={{
+                fontFamily: 'Inter, sens-serif',
+                fontSize: '16px',
+                fontWeight: 400,
+                color: '#333333',
+                mb: '20px',
+              }}
+            >
+              {title}
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: '16px',
+              }}
+            >
+              <Box
+                sx={{
+                  fontFamily: 'Inter, sens-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#333333',
+                  p: '8px',
+                  border: '1px solid #DEDEDD',
+                  borderRadius: '6px',
+                  mr: '5px',
+                }}
+              >
+                {timeStart}
+              </Box>
+              <Box sx={{ mr: '5px' }}> - </Box>
+              <Box
+                sx={{
+                  fontFamily: 'Inter, sens-serif',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#333333',
+                  p: '8px',
+                  border: '1px solid #DEDEDD',
+                  borderRadius: '6px',
+                }}
+              >
+                {timeEnd}
+              </Box>
+            </Box>
 
-        //     <Box sx={{ mt: '36px', width: '100%' }}>
-        //       <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
-        //       <Box
-        //         sx={{
-        //           mt: '16px',
-        //           display: 'flex',
-        //           justifyContent: 'flex-end',
-        //           alignItems: 'flex-end',
-        //         }}
-        //       >
-        //         <Box
-        //           sx={{
-        //             cursor: 'pointer',
-        //             display: 'flex',
-        //             justifyContent: 'center',
-        //             alignItems: 'center',
-        //             width: '64px',
-        //             height: '32px',
-        //             fontFamily: 'Inter, sens-serif',
-        //             fontSize: '14px',
-        //             fontWeight: 500,
-        //             color: '#333333',
-        //             transition: 'easeOut 0.3s all',
-        //             '&:hover': {
-        //               color: '#F05547',
-        //               transition: 'easeOut 0.3s all',
-        //             },
-        //           }}
-        //           onClick={() => setIsOpenFormEvent(!openFormEvent)}
-        //         >
-        //           Cancel
-        //         </Box>
-        //         <Box
-        //           sx={{
-        //             cursor: 'pointer',
-        //             display: 'flex',
-        //             justifyContent: 'center',
-        //             alignItems: 'center',
-        //             width: '64px',
-        //             height: '32px',
-        //             fontFamily: 'Inter, sens-serif',
-        //             fontSize: '14px',
-        //             fontWeight: 500,
-        //             color: '#ffffff',
-        //             backgroundColor: '#F05547',
-        //             borderRadius: '6px',
-        //             transition: 'easeOut 0.3s all',
-        //             '&:hover': {
-        //               boxShadow: '0px 0px 5px #F05547',
-        //               transition: 'easeOut 0.3s all',
-        //             },
-        //           }}
-        //         >
-        //           Save
-        //         </Box>
-        //       </Box>
-        //     </Box>
-        //   </Box>
-        // </Box>
-      )} */}
+            <Box sx={{ mt: '36px', width: '100%' }}>
+              <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
+              <Box
+                sx={{
+                  mt: '16px',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <Box
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '64px',
+                    height: '32px',
+                    fontFamily: 'Inter, sens-serif',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#333333',
+                    transition: 'easeOut 0.3s all',
+                    '&:hover': {
+                      color: '#F05547',
+                      transition: 'easeOut 0.3s all',
+                    },
+                  }}
+                  onClick={() => setIsOpenFormEvent(!openFormEvent)}
+                >
+                  Cancel
+                </Box>
+                {/* <Box
+                  sx={{
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '64px',
+                    height: '32px',
+                    fontFamily: 'Inter, sens-serif',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: '#ffffff',
+                    backgroundColor: '#F05547',
+                    borderRadius: '6px',
+                    transition: 'easeOut 0.3s all',
+                    '&:hover': {
+                      boxShadow: '0px 0px 5px #F05547',
+                      transition: 'easeOut 0.3s all',
+                    },
+                  }}
+                  onClick={scheduleDelete}
+                >
+                  Delete
+                </Box> */}
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      )}
 
       {openFormEventCreate && (
         <FormSchedule

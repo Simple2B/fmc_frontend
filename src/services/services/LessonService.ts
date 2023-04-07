@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { StudentLesson } from '../models/StudentLesson';
-import type { UpcomingLessonList } from '../models/UpcomingLessonList';
+import type { StudentLessonList } from '../models/StudentLessonList';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -23,23 +23,32 @@ export class LessonService {
     }
 
     /**
-     * Get Upcoming Lessons
-     * @returns UpcomingLessonList Successful Response
+     * Get Lesson
+     * @param lessonUuid
+     * @returns StudentLessonList Successful Response
      * @throws ApiError
      */
-    public static apiGetUpcomingLessons(): CancelablePromise<UpcomingLessonList> {
+    public static apiGetLesson(
+        lessonUuid: string,
+    ): CancelablePromise<StudentLessonList> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/lesson/lessons/student/upcoming',
+            query: {
+                'lesson_uuid': lessonUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
         });
     }
 
     /**
      * Get Upcoming Appointments
-     * @returns UpcomingLessonList Successful Response
+     * @returns StudentLessonList Successful Response
      * @throws ApiError
      */
-    public static apiGetUpcomingAppointments(): CancelablePromise<UpcomingLessonList> {
+    public static apiGetUpcomingAppointments(): CancelablePromise<StudentLessonList> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/lesson/lessons/coach/upcoming',
@@ -52,7 +61,7 @@ export class LessonService {
      * @returns StudentLesson Successful Response
      * @throws ApiError
      */
-    public static apiGetLesson(
+    public static apiGetLesson1(
         lessonUuid: string,
     ): CancelablePromise<StudentLesson> {
         return __request(OpenAPI, {
