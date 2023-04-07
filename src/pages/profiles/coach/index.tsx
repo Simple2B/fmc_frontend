@@ -14,7 +14,8 @@ import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { MessagesService, User } from '@/services';
+import { UserType } from '@/store/types/user';
 import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
   CalendarToday,
@@ -49,7 +50,7 @@ export default function ProfileCoach() {
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [href, setHref] = useState<string>('my_appointments');
 
-  const [profile, setProfile] = useState<IUserProfile>({
+  const [profile, setProfile] = useState<User>({
     uuid: '',
     username: '',
     email: '',
@@ -82,9 +83,7 @@ export default function ProfileCoach() {
   }, [router, router.asPath]);
 
   const [uuidUser, setUUIDUser] = useState('');
-  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
-    null
-  );
+  const [selectedContact, setSelectedContact] = useState<User | null>(null);
 
   const [listItemsCoach, setItemsCoach] = useState<
     {
@@ -128,10 +127,9 @@ export default function ProfileCoach() {
   const { data } = useQuery(
     ['contactsCoach'],
     async () => {
-      const request = coachClientApi.coachContactList;
-      const result = await request();
+      const result = await MessagesService.apiGetCoachListOfContacts();
       console.log('--------------> contacts', result);
-      return result;
+      return result.contacts;
     },
     {
       refetchInterval: 10000,

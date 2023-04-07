@@ -1,6 +1,6 @@
 import CardSubscription from '@/common/card_subscription/CardSubscription';
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
-import { IUserProfile } from '@/store/types/user';
+import { User } from '@/services';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
@@ -16,7 +16,7 @@ const boxStyle = {
 };
 
 export interface IMyAppointments {
-  profile: IUserProfile;
+  profile: User;
 }
 
 const MyAppointments: React.FC<IMyAppointments> = ({ profile }) => {
