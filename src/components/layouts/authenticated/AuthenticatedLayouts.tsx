@@ -5,7 +5,7 @@ import CustomModel from '@/common/modal/Modal';
 import NavBar from '@/common/nav_bar/NavBar';
 import SideBar, { IItem } from '@/common/side_bar/SideBar';
 import { getCurrentUser } from '@/helper/get_current_user';
-import { IUserProfile } from '@/store/types/user';
+import { User } from '@/services';
 import {
   Box,
   createTheme,
@@ -33,7 +33,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
 }) => {
   const matches970 = useMediaQuery('(max-width:970px)');
 
-  const [profile, setProfile] = React.useState<IUserProfile>({
+  const [profile, setProfile] = React.useState<User>({
     uuid: '',
     username: '',
     email: '',
@@ -105,7 +105,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
             ? `${profile.first_name} ${profile.last_name}`
             : profile.username
         }
-        picture={profile.profile_picture}
+        picture={profile.profile_picture ?? ''}
         userType={userType}
         setIsLoad={setIsLoad}
         setProfile={setProfile}
