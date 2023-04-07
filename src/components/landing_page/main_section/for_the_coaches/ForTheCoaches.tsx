@@ -1,10 +1,4 @@
-import {
-  CalendarMonth,
-  EmojiEvents,
-  ExitToApp,
-  Paid,
-  Star,
-} from '@mui/icons-material';
+import { CalendarMonth, ExitToApp, Paid, Star } from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -50,14 +44,14 @@ const forTheCoaches = [
     type: 'right',
     href: '#',
   },
-  {
-    icon: <EmojiEvents sx={{ width: '30px', height: '30px' }} />,
-    title: 'Earn reward',
-    description:
-      'Earn points by booking more sessions through our platform. These points can be redeemed in the ‘Rewards’ section of the dashboard for vouchers and cash prizes.',
-    type: 'left',
-    href: '#',
-  },
+  // {
+  //   icon: <EmojiEvents sx={{ width: '30px', height: '30px' }} />,
+  //   title: 'Earn reward',
+  //   description:
+  //     'Earn points by booking more sessions through our platform. These points can be redeemed in the ‘Rewards’ section of the dashboard for vouchers and cash prizes.',
+  //   type: 'left',
+  //   href: '#',
+  // },
 ];
 
 const ForTheCoaches: React.FC<IForTheCoaches> = () => {

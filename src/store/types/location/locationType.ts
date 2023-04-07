@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 export interface ILocation {
+  id?: number;
+  uuid?: string;
   name: string | null;
   city: string | null;
   street: string | null;

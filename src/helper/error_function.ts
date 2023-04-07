@@ -5,11 +5,11 @@ export const getErrorMessage: any = (
   type?: string
 ) => {
   const errorNumber = axiosError.replace(/\D/g, '');
-  console.log('====================================');
-  console.log(' axiosError ', axiosError);
-  console.log('====================================');
-  console.log(' errorNumber ', errorNumber);
   if (Number(errorNumber) === 403) {
+    if (type && type === 'schedules') {
+      setError('Error creating schedule');
+      return;
+    }
     setError('Invalid credentials');
   } else if (Number(errorNumber) === 409) {
     if (type && type === 'changePass') {
@@ -18,6 +18,10 @@ export const getErrorMessage: any = (
     }
     if (type && type === 'getHelp') {
       setError('Failed to create a new contact request');
+      return;
+    }
+    if (type && type === 'schedules') {
+      setError('Schedule already exists on this date');
       return;
     }
     setError('User with such email address already exists');

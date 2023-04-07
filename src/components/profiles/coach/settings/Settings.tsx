@@ -22,19 +22,26 @@ const Settings: React.FC<ISettings> = ({ userType }) => {
   }, [isGoogleAuth]);
 
   return (
-    <Box className={styles.wrapper}>
-      <Box className={styles.container}>
-        <Box className={styles.personalInfoContainer}>
-          <PersonalInfo userType={userType} />
-        </Box>
-        <Box className={styles.changeYourProfileContainer}>
-          <YourProfile userType={userType} />
-        </Box>
-        {isGoogleAuth ? null : (
-          <Box className={styles.changePasswordContainer}>
-            <ChangePassword userType={userType} />
+    <Box
+      sx={{
+        height: '95vh',
+        overflowY: 'scroll',
+      }}
+    >
+      <Box className={styles.wrapper}>
+        <Box className={styles.container}>
+          <Box className={styles.personalInfoContainer}>
+            <PersonalInfo userType={userType} />
           </Box>
-        )}
+          <Box className={styles.changeYourProfileContainer}>
+            <YourProfile userType={userType} />
+          </Box>
+          {isGoogleAuth ? null : (
+            <Box className={styles.changePasswordContainer}>
+              <ChangePassword userType={userType} />
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
   );
