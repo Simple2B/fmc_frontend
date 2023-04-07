@@ -23,23 +23,14 @@ export class LessonService {
     }
 
     /**
-     * Get Lesson
-     * @param lessonUuid
+     * Get Upcoming Lessons
      * @returns StudentLessonList Successful Response
      * @throws ApiError
      */
-    public static apiGetLesson(
-        lessonUuid: string,
-    ): CancelablePromise<StudentLessonList> {
+    public static apiGetUpcomingLessons(): CancelablePromise<StudentLessonList> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/lesson/lessons/student/upcoming',
-            query: {
-                'lesson_uuid': lessonUuid,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
         });
     }
 
@@ -61,7 +52,7 @@ export class LessonService {
      * @returns StudentLesson Successful Response
      * @throws ApiError
      */
-    public static apiGetLesson1(
+    public static apiGetLesson(
         lessonUuid: string,
     ): CancelablePromise<StudentLesson> {
         return __request(OpenAPI, {

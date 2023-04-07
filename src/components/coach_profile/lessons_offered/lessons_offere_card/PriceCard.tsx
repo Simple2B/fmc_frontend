@@ -5,16 +5,19 @@ const testData = [
   {
     title: '1 hours',
     value: '$65',
+    disable: false,
   },
   {
     title: '3 hours',
     value: '$180',
     subTitle: 'You save 30$',
+    disable: true,
   },
   {
     title: '6 hours',
     value: '$360',
     subTitle: 'You save 30$',
+    disable: true,
   },
 ];
 
@@ -103,11 +106,11 @@ const PriceCard: React.FC<IPriceCard> = () => {
                 p: '13px 19px',
                 borderRadius: '7px',
                 color: '#ffffff',
-                backgroundColor: '#1976d2',
+                backgroundColor: item.disable ? 'grey' : '#1976d2',
                 cursor: 'pointer',
                 transition: 'ease-in-out 0.3s all',
                 '&:hover': {
-                  backgroundColor: '#222CDF',
+                  backgroundColor: item.disable ? 'grey' : '#222CDF',
                   transition: 'ease-in-out 0.3s all',
                 },
               }}
