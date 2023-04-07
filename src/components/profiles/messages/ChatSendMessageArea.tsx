@@ -43,6 +43,20 @@ export function ChatSendMessageArea({
     setMessageInput(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Enter') {
+      return;
+    }
+    if (e.ctrlKey) {
+      setMessageInput(messageInput + '\n');
+      return;
+    }
+    if (messageInput.trim()) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <>
       <Box
@@ -62,6 +76,7 @@ export function ChatSendMessageArea({
           }}
         >
           <TextField
+            onKeyDown={handleKeyDown}
             value={messageInput}
             onChange={handleInputChange}
             autoFocus={true}
