@@ -12,12 +12,14 @@ export interface IGoogleLoginBtn {
   // eslint-disable-next-line no-unused-vars
   onError?: any;
   typeSign: string;
+  disabled: boolean;
 }
 
 // eslint-disable-next-line no-empty-pattern
 const GoogleLoginBtn: React.FC<IGoogleLoginBtn> = ({
   onSuccess,
   onError,
+  disabled,
   typeSign,
 }) => {
   const keys = useContext(AuthContext);
@@ -28,6 +30,7 @@ const GoogleLoginBtn: React.FC<IGoogleLoginBtn> = ({
       render={(renderProps) => {
         return (
           <Button
+            disabled={disabled}
             fullWidth
             variant="contained"
             onClick={renderProps.onClick}
