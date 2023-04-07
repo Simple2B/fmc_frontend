@@ -53,6 +53,8 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
   const [mobileOpen, setMobileOpen] = React.useState<boolean>(false);
   const [userType, setUserType] = React.useState<string | null>();
 
+  console.log({ userType });
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };

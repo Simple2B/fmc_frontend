@@ -1,6 +1,5 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { ProfilesService, User } from '@/services';
+import { ProfilesService, User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import { getErrorMessage } from './error_function';
 
@@ -15,7 +14,7 @@ export async function getCurrentUser(
   try {
     if (userType === UserType.student) {
       if (setIsLoad) setIsLoad(true);
-      const res = await studentClientApi.checkStudent();
+      const res = await WhoamiService.apiWhoamiStudent();
       if (res) {
         try {
           // const studentProfile = await studentClientApi.studentGetProfile();
