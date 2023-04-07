@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "generate-client": "openapi --input http://127.0.0.1:10003/openapi.json --output ./src/services --client axios"
+    "generate-client": "openapi --input http://127.0.0.1:8000/openapi.json --output ./src/services --client axios"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
