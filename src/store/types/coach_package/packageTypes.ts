@@ -10,6 +10,12 @@ export interface IPackage {
   about: string | null;
 }
 
+export interface IBasePackage extends IPackage {
+  uuid: string;
+  id: number;
+  coach: IYourProfile;
+}
+
 export interface IPackageSchedule {
   uuid: string;
   id: number;

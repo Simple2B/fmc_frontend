@@ -24,7 +24,7 @@ import {
   stringOrDate,
 } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import FormSchedule from '../form_schedule/FormSchedule';
 
 const locales = {
@@ -60,6 +60,8 @@ export interface IMyCalendar {}
 const MyCalendar: React.FC<IMyCalendar> = () => {
   const router = useRouter();
 
+  const queryClient = useQueryClient();
+
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -92,61 +94,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   // const goToSpecificDate = (props: ToolbarProps, newDate: Date) => {
   //   props.onNavigate(Navigate.DATE, newDate);
   // };
-
-  const events = [
-    {
-      start: moment(new Date()).add({ hour: 1, minute: 0 }).toDate(),
-      end: moment(new Date()).add({ hour: 2, minute: 0 }).toDate(),
-      title: 'Title-1',
-    },
-    {
-      start: moment(new Date()).add({ hour: 3, minute: 30 }).toDate(),
-      end: moment(new Date()).add({ hour: 4, minute: 30 }).toDate(),
-      title: 'Title-2',
-    },
-  ];
-
-  const [myEvents, setEvents] = useState<
-    {
-      start: Date | string;
-      end: Date | string;
-      title: string;
-    }[]
-  >(events);
-
-  const [openFormEvent, setIsOpenFormEvent] = useState<boolean>(false);
-
-  // Form edit data
-  const [dayName, setDayName] = useState<string>('');
-  const [timeStart, setTimeStart] = useState<string>('');
-  const [timeEnd, setTimeEnd] = useState<string>('');
-
-  const [openFormEventCreate, setIsOpenFormEventCreate] =
-    useState<boolean>(false);
-
-  const handleSelectSlot = useCallback(
-    ({ start, end }: any) => {
-      setDayName(moment(start).format('dddd, MMMM Do'));
-      setTimeStart(moment(start).format('LT'));
-      setTimeEnd(moment(end).format('LT'));
-
-      setIsOpenFormEvent(!openFormEvent);
-      // if (title) {
-      //   setEvents((prev) => [...prev, { start, end, title }]);
-      // }
-    },
-    [openFormEvent]
-  );
-
-  // created event
-  const [dayNameCreate, setDayNameCreate] = useState<string>('');
-  const [timeStartCreate, setTimeStartCreate] = useState<string>('');
-  const [timeEndCreate, setTimeEndCreate] = useState<string>('');
-
-  const [startDatetime, setStartDatetime] = useState<Date | string>('');
-  const [endDatetime, setEndDatetime] = useState<Date | string>('');
-
-  const [location, setLocation] = useState<string | null>('London');
 
   const [packagesSchedule, setPackagesSchedule] = useState<
     {
@@ -187,6 +134,64 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     return result;
   });
 
+  const [myEvents, setEvents] = useState<
+    {
+      start: Date | string;
+      end: Date | string;
+      title: string;
+    }[]
+  >([
+    {
+      start: '',
+      end: '',
+      title: '',
+    },
+  ]);
+
+  const schedulesDataQuery = useQuery(['schedulesData'], async () => {
+    const result = await coachSchedulesApi.getSchedules();
+    console.log('[schedulesData] result => ', result);
+    if (result.length > 0) {
+      const resultData = result.map((s) => ({
+        start: new Date(s.start_datetime),
+        end: new Date(s.end_datetime),
+        title: s.lesson.title,
+      }));
+      setEvents(resultData);
+    }
+    return result;
+  });
+
+  const [openFormEvent, setIsOpenFormEvent] = useState<boolean>(false);
+
+  // Form edit data
+  const [dayName, setDayName] = useState<string>('');
+  const [timeStart, setTimeStart] = useState<string>('');
+  const [timeEnd, setTimeEnd] = useState<string>('');
+
+  const [openFormEventCreate, setIsOpenFormEventCreate] =
+    useState<boolean>(false);
+
+  const handleSelectSlot = useCallback(
+    ({ start, end }: any) => {
+      setDayName(moment(start).format('dddd, MMMM Do'));
+      setTimeStart(moment(start).format('LT'));
+      setTimeEnd(moment(end).format('LT'));
+      setIsOpenFormEvent(!openFormEvent);
+    },
+    [openFormEvent]
+  );
+
+  // created event
+  const [dayNameCreate, setDayNameCreate] = useState<string>('');
+  const [timeStartCreate, setTimeStartCreate] = useState<string>('');
+  const [timeEndCreate, setTimeEndCreate] = useState<string>('');
+
+  const [startDatetime, setStartDatetime] = useState<Date | string>('');
+  const [endDatetime, setEndDatetime] = useState<Date | string>('');
+
+  const [location, setLocation] = useState<string | null>('London');
+
   const [name, setName] = useState<string>('');
 
   const [isValidDate, setIsValidDate] = useState<boolean>(false);
@@ -211,56 +216,44 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     );
     setIsOpenFormEventCreate(!openFormEventCreate);
 
-    setStartDatetime(new Date(slotInfo.start).toISOString());
-    setEndDatetime(new Date(slotInfo.end).toISOString());
-
-    // const title = '';
-    // const title = window.prompt('New Event name');
-    // if (title) {
-    //   var newEvent = {
-    //     start: slotInfo.start,
-    //     end: slotInfo.end,
-    //     title: title,
-    //   };
-    //   setEvents([...myEvents, newEvent]);
-    // }
+    setStartDatetime(moment(slotInfo.start).format());
+    setEndDatetime(
+      moment(slotInfo.start).add(moment.duration(1, 'hours')).format()
+    );
   }
 
-  const createSchedule = () => {
-    const data = {
-      lesson_id: packageSchedule?.id,
-      start_datetime: startDatetime,
-      end_datetime: endDatetime,
-    };
-    console.log('[createSchedule] => data ', data);
-    const create = async () => {
-      try {
+  const mutation = useMutation({
+    mutationFn: async () => {
+      setIsLoad(true);
+      if (packageSchedule) {
         const response = await coachSchedulesApi.createSchedule({
           lesson_id: packageSchedule?.id,
           start_datetime: startDatetime,
           end_datetime: endDatetime,
         });
+
         console.log(' create coach schedule ', response);
-        setIsLoad(false);
-        setSuccess(true);
-      } catch (error: any) {
-        console.log(`POST create coach schedule error message ===> : ${error}`);
-        setIsLoad(false);
-        setSuccess(false);
-        getErrorMessage(error, setError, 'schedules');
+        return response;
       }
-    };
-    create();
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['schedulesData'] });
+      setIsLoad(false);
+      setSuccess(true);
+    },
+    onError: (error) => {
+      console.log(`POST create coach schedule error message ===> : ${error}`);
+      setIsLoad(false);
+      setSuccess(false);
+      getErrorMessage(error, setError, 'schedules');
+    },
+  });
+
+  const createSchedule = () => {
+    mutation.mutate();
     setIsOpenFormEventCreate(false);
   };
-
-  // const { defaultDate, scrollToTime } = useMemo(
-  //   () => ({
-  //     defaultDate: new Date(2015, 3, 12),
-  //     scrollToTime: new Date(1970, 1, 1, 6),
-  //   }),
-  //   []
-  // );
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
@@ -281,7 +274,8 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
 
   return (
     <Box sx={{ width: '100%', position: 'relative' }}>
-      <Box
+      {/* TODO: add in next step */}
+      {/* <Box
         sx={{
           position: 'absolute',
           top: 0,
@@ -296,7 +290,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         onClick={() => router.push('/profiles/coach/calendar/add_hours')}
       >
         Edit available hours
-      </Box>
+      </Box> */}
 
       <Calendar
         localizer={localizer}

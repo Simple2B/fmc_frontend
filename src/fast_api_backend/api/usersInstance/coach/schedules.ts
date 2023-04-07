@@ -1,10 +1,8 @@
-import { ISchedule } from '@/store/types/schedule/scheduleTypes';
+import { IBaseSchedule, ISchedule } from '@/store/types/schedule/scheduleTypes';
 import { instance } from '../../_axiosInstance';
 
 export const coachSchedulesApi = {
-  getSchedules: async (): Promise<
-    { uuid: string; location: Location }[] | string
-  > => {
+  getSchedules: async (): Promise<ISchedule[]> => {
     try {
       const response = await instance().get('/schedule/schedules');
       const res = response.data;
@@ -16,7 +14,7 @@ export const coachSchedulesApi = {
     }
   },
 
-  createSchedule: async (data: ISchedule): Promise<string> => {
+  createSchedule: async (data: IBaseSchedule): Promise<string> => {
     try {
       const response = await instance().post('/schedule/create', data);
       const res = response.data;
