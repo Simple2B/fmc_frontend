@@ -1,11 +1,10 @@
 import WelcomeBox from '@/common/welcom_box/WelcomeBox';
-import { IUserProfile } from '@/store/types/user';
 import { CalendarMonth } from '@mui/icons-material';
 import { Typography, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import Calendar from '@/common/calendar/Calendar';
-import { LessonService } from '@/services';
+import { LessonService, User } from '@/services';
 import { useQuery } from 'react-query';
 import styles from './MyLessons.module.sass';
 import CardsSessions from './card/CardsSessions';
@@ -20,7 +19,7 @@ const boxStyle = {
 };
 
 export interface IMyLessons {
-  profile: IUserProfile;
+  profile: User;
 }
 
 const MyLessons: React.FC<IMyLessons> = ({ profile }) => {

@@ -2,6 +2,7 @@ import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
 
+import { WhoamiService } from '@/services';
 import {
   ISession,
   ISessions,
@@ -45,7 +46,8 @@ export const studentClientApi = {
 
   checkStudent: async (): Promise<boolean> => {
     try {
-      const response = await instance().get('/whoami/student');
+      // const response = await instance().get('/whoami/student');
+      const response = await WhoamiService.apiWhoamiStudent();
       const res = response.data;
       console.log(`[GET] check student -> res data  ${res}`);
       return res;

@@ -2,8 +2,8 @@ import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import SignIn from '@/components/forms/sign_in/SignIn';
-import { studentAuthApi } from '@/fast_api_backend/api/authApi/student/authApi';
 import { getErrorMessage } from '@/helper/error_function';
+import { StudentAuthenticationService } from '@/services';
 import { TypeSign, UserType } from '@/store/types/user';
 import { IResponseStudentData } from '@/store/types/users/student/studentType';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -36,7 +36,10 @@ export default function SignInStudent() {
     const StudentGoogleAuth = async () => {
       setIsLoad(true);
       try {
-        const res = await studentAuthApi.googleAuthStudent(data);
+        // const res = await studentAuthApi.googleAuthStudent(data);
+        const res = await StudentAuthenticationService.apiStudentGoogleAuth(
+          data
+        );
         setIsLoad(false);
         setSuccess(true);
         localStorage.setItem(

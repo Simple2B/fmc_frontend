@@ -4,8 +4,8 @@ import CoachCards from '@/components/coach_search/CoachCards';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
+import { WhoamiService } from '@/services';
 import { ISport } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import Head from 'next/head';
@@ -98,7 +98,8 @@ export default function CoachSearchPage() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        const response = await instance().get('/whoami/student');
+        // const response = await instance().get('/whoami/student');
+        const response = await WhoamiService.apiWhoamiStudent();
         const res = response.data;
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);
