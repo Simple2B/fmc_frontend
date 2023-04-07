@@ -13,6 +13,7 @@ import { coachClientApi } from '../../../fast_api_backend/api/usersInstance/coac
 import { studentClientApi } from '../../../fast_api_backend/api/usersInstance/student/studentInstance';
 import { UserType } from '../../../store/types/user';
 
+import TermCheckbox from '@/common/terms_checkbox/TermCheckbox';
 import style from './SignUp.module.sass';
 
 const re = /\S+@\S+\.\S+/;
@@ -44,6 +45,8 @@ const SignUp: React.FC<ISignUp> = ({
     React.useState<string>('');
 
   const [hidePassword, setHidePassword] = React.useState<boolean>(true);
+
+  const [checked, setChecked] = React.useState<boolean>(false);
 
   const showPassword = (
     // eslint-disable-next-line no-unused-vars
@@ -155,6 +158,10 @@ const SignUp: React.FC<ISignUp> = ({
     }
   };
 
+  const handleCheckedTerms = () => {
+    setChecked((prevState) => !prevState);
+  };
+
   const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
 
   React.useEffect(() => {
@@ -250,9 +257,16 @@ const SignUp: React.FC<ISignUp> = ({
             showPassword={showPassword}
             setHidePassword={setHidePassword}
           />
+          <Box>
+            <TermCheckbox
+              checked={checked}
+              handleCheckedTerms={handleCheckedTerms}
+            />
+          </Box>
           <Button
             type="submit"
             fullWidth
+            disabled={checked ? false : true}
             variant="contained"
             sx={{
               mt: 3,
@@ -271,6 +285,7 @@ const SignUp: React.FC<ISignUp> = ({
           </div>
           <Box sx={{ width: '100%' }}>
             <GoogleLoginBtn
+              disabled={checked ? false : true}
               onSuccess={onSuccess}
               onError={onError}
               typeSign={typeSign}
