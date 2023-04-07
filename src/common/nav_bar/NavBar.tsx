@@ -1,7 +1,7 @@
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
-import { NotificationService, StudentLesson } from '@/services';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { NotificationService, StudentLesson, User } from '@/services';
+import { UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -37,7 +37,7 @@ export interface INavBar {
   // eslint-disable-next-line no-unused-vars
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
-  setProfile: (value: React.SetStateAction<IUserProfile>) => void;
+  setProfile: (value: React.SetStateAction<User>) => void;
   closeOpenMobSideBar: () => void;
   isOpenMobSideBar: boolean;
 }
