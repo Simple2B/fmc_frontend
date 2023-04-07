@@ -1,7 +1,5 @@
 import AuthenticatedLayout from '@/components/layouts/authenticated/AuthenticatedLayouts';
 
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
-
 import format from 'date-fns/format';
 import getDay from 'date-fns/getDay';
 import enUS from 'date-fns/locale/en-US';
@@ -10,6 +8,7 @@ import startOfWeek from 'date-fns/startOfWeek';
 import moment from 'moment';
 
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
+import { WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -60,7 +59,8 @@ export default function CalendarAddHours() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        const response = await instance().get('/whoami/coach');
+        // const response = await instance().get('/whoami/coach');
+        const response = await WhoamiService.apiWhoamiCoach();
         const res = response.data;
         console.log(`[GET] check coach -> res data  ${res}`);
         setIsLogIn(true);

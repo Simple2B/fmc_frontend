@@ -4,7 +4,8 @@ import CustomModel from '@/common/modal/Modal';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { User } from '@/services';
+import { UserType } from '@/store/types/user';
 import { ISport } from '@/store/types/users/coach/profileType';
 import { Logout } from '@mui/icons-material';
 import {
@@ -56,7 +57,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const [profile, setProfile] = React.useState<IUserProfile>({
+  const [profile, setProfile] = React.useState<User>({
     uuid: '',
     username: '',
     email: '',

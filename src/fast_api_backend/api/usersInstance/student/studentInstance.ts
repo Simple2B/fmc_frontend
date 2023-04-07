@@ -2,8 +2,10 @@ import { IContact, IMessages } from '@/store/types/message/messageType';
 import { IUserProfile } from '@/store/types/user';
 import { IStudent } from '@/store/types/users/student/studentType';
 
+import { WhoamiService } from '@/services';
 import {
   ISession,
+  ISessions,
   IUnreviewedLessonsList,
 } from '@/store/types/session/sessionTypes';
 import { IYourProfile } from '@/store/types/users/coach/profileType';
@@ -44,7 +46,8 @@ export const studentClientApi = {
 
   checkStudent: async (): Promise<boolean> => {
     try {
-      const response = await instance().get('/whoami/student');
+      // const response = await instance().get('/whoami/student');
+      const response = await WhoamiService.apiWhoamiStudent();
       const res = response.data;
       console.log(`[GET] check student -> res data  ${res}`);
       return res;
@@ -105,7 +108,7 @@ export const studentClientApi = {
     }
   },
 
-  studentUpcomingLessons: async () => {
+  studentUpcomingLessons: async (): Promise<ISessions> => {
     try {
       const response = await instance().get('/lesson/lessons/student/upcoming');
       const res = response.data;

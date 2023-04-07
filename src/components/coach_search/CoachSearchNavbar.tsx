@@ -3,7 +3,8 @@ import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
-import { IUserProfile, TypeTheme, UserType } from '@/store/types/user';
+import { User } from '@/services';
+import { TypeTheme, UserType } from '@/store/types/user';
 import { Logout } from '@mui/icons-material';
 import {
   Avatar,
@@ -46,7 +47,7 @@ const CoachSearchNavbar: React.FC<ICoachSearchNavbar> = ({
     setMobileOpen((prevState) => !prevState);
   };
 
-  const [profile, setProfile] = React.useState<IUserProfile>({
+  const [profile, setProfile] = React.useState<User>({
     uuid: '',
     username: '',
     email: '',

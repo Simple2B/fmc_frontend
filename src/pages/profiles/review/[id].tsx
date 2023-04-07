@@ -5,9 +5,13 @@ import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/Favo
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import CoachReview from '@/components/review/CoachReview';
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { IUserProfile, UserType } from '@/store/types/user';
+import {
+  MessagesService,
+  ProfilesService,
+  User,
+  WhoamiService,
+} from '@/services';
+import { UserType } from '@/store/types/user';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -32,9 +36,7 @@ export default function RateCoach() {
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
-  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
-    null
-  );
+  const [selectedContact, setSelectedContact] = useState<User | null>(null);
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [listItemsStudent, setItemsStudent] = useState<
     {
@@ -78,17 +80,18 @@ export default function RateCoach() {
   const { data } = useQuery(
     ['contactsStudent'],
     async () => {
-      const request = studentClientApi.studentContactsList;
-      const result = await request();
+      // const request = studentClientApi.studentContactsList;
+      // const result = await request();
+      const result = await MessagesService.apiGetStudentListOfContacts();
       console.log('--------------> contacts', result);
-      return result;
+      return result.contacts;
     },
     {
       refetchInterval: 10000,
     }
   );
 
-  const [profile, setProfile] = useState<IUserProfile>({
+  const [profile, setProfile] = useState<User>({
     uuid: '',
     username: '',
     email: '',
@@ -126,11 +129,13 @@ export default function RateCoach() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        const response = await instance().get('/whoami/student');
+        // const response = await instance().get('/whoami/student');
+        const response = await WhoamiService.apiWhoamiStudent();
         const res = response.data;
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);
-        const studentProfile = await studentClientApi.studentGetProfile();
+        // const studentProfile = await studentClientApi.studentGetProfile();
+        const studentProfile = await ProfilesService.apiGetStudentProfile();
         setProfile(studentProfile);
       } catch (error: any) {
         console.log(

@@ -1,5 +1,5 @@
 import { logout } from '@/helper/logout/logout';
-import { IUserProfile, TypeTheme, UserType } from '@/store/types/user';
+import { TypeTheme, UserType } from '@/store/types/user';
 import {
   ArrowDropDown,
   ArrowDropUp,
@@ -25,17 +25,19 @@ import * as React from 'react';
 import linkLogo from '../../../../public/LOGO(WHITE).svg';
 import linkLogoDark from '../../../../public/LOGO.svg';
 
+import { User } from '@/services';
 import style from '../LandingPage.module.sass';
 
 export interface ITopBar {
   handleDrawerToggle: () => void;
-  profile: IUserProfile;
+  // eslint-disable-next-line no-undef
+  profile: User;
   // eslint-disable-next-line no-unused-vars
   setIsLoad: (value: React.SetStateAction<boolean>) => void;
   // eslint-disable-next-line no-unused-vars
   setUserType: (value: React.SetStateAction<string | null | undefined>) => void;
   // eslint-disable-next-line no-unused-vars
-  setProfile: (value: React.SetStateAction<IUserProfile>) => void;
+  setProfile: (value: React.SetStateAction<User>) => void;
   userType: string | null | undefined;
   theme?: string;
 }

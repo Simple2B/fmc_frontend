@@ -1,4 +1,4 @@
-import { ISession } from '@/store/types/session/sessionTypes';
+import { StudentLesson } from '@/services';
 import { Notifications } from '@mui/icons-material';
 import {
   Avatar,
@@ -16,7 +16,7 @@ import React from 'react';
 
 interface IMessageNotificationsProps {
   notificationCount: number;
-  notifications: ISession[];
+  notifications: StudentLesson[];
 }
 
 export const MessageNotifications = ({

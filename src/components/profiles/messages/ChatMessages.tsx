@@ -1,4 +1,4 @@
-import { IUserProfile } from '@/store/types/user';
+import { User } from '@/services';
 import { Box } from '@mui/material';
 import { ChatHeader } from './ChatHeader';
 import { ChatMessageBox } from './ChatMessageBox';
@@ -6,7 +6,7 @@ import { ChatNotSelected } from './ChatNotSelected';
 import { ChatSendMessageArea } from './ChatSendMessageArea';
 
 interface IChatMessagesProps {
-  selectedContact: IUserProfile | null;
+  selectedContact: User | null;
 }
 
 export function ChatMessages({ selectedContact }: IChatMessagesProps) {
@@ -24,7 +24,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
           <ChatHeader
             selectedContactFirstName={selectedContact.first_name}
             selectedContactLastName={selectedContact.last_name}
-            selectedContactUUID={selectedContact.uuid}
+            selectedContactUUID={selectedContact.uuid ?? ''}
           />
           <Box
             sx={{
@@ -32,7 +32,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
               overflow: 'auto',
             }}
           >
-            <ChatMessageBox selectedContactUUID={selectedContact.uuid} />
+            <ChatMessageBox selectedContactUUID={selectedContact.uuid ?? ''} />
           </Box>
           <Box
             sx={{
@@ -43,7 +43,7 @@ export function ChatMessages({ selectedContact }: IChatMessagesProps) {
               left: '0',
             }}
           >
-            <ChatSendMessageArea receiverUUID={selectedContact.uuid} />
+            <ChatSendMessageArea receiverUUID={selectedContact.uuid ?? ''} />
           </Box>
         </Box>
       ) : (

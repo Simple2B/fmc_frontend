@@ -1,10 +1,10 @@
-import { IContact } from '@/store/types/message/messageType';
+import { Contact } from '@/services';
 import { Box, List } from '@mui/material';
 import React from 'react';
 import ContactListItem from './ContactListItem';
 
 export interface IChatContacts {
-  contacts: IContact[];
+  contacts: Contact[];
   selectedContactUUID: string;
   onContactSelected: (value: string) => void; // eslint-disable-line no-unused-vars
 }

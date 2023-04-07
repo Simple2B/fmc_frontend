@@ -1,89 +1,54 @@
-import { StaticDatePicker } from '@mui/x-date-pickers';
+import { CalendarContext } from '@/context/calendarContext';
+import { LessonService } from '@/services';
+import { Badge } from '@mui/material';
+import {
+  PickersDay,
+  PickersDayProps,
+  StaticDatePicker,
+} from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { pickersDayClasses } from '@mui/lab/PickersDay';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import addDays from 'date-fns/addDays';
-// import isSameDay from 'date-fns/isSameDay';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { useQuery } from 'react-query';
 
-// const birthday = addDays(new Date(), 3);
-// const styles1 = {
-//   color: 'red',
-//   fontWeight: 'bold',
-//   fontSize: 18,
-//   textDecoration: 'underline',
-// };
-// const styles2 = {
-//   backgroundColor: 'red',
-//   color: 'white',
-// };
-// const styles3 = {
-//   backgroundColor: 'purple',
-//   color: 'white',
-// };
+function DayWithHighLight(
+  props: PickersDayProps<Date> & { highlightedDays?: number[] }
+) {
+  const { highlightedDays, day, ...other } = props;
 
-// type HighlightedDay = {
-//   date: Date;
-//   styles: React.CSSProperties;
-// };
+  const hasEvents =
+    highlightedDays && highlightedDays?.includes(props.day.getTime());
 
-// const highlightedDays: HighlightedDay[] = [
-//   {
-//     date: birthday,
-//     styles: styles1,
-//   },
-//   {
-//     date: addDays(new Date(), 6),
-//     styles: styles2,
-//   },
-//   {
-//     date: addDays(new Date(), 9),
-//     styles: styles3,
-//   },
-//   {
-//     date: addDays(new Date(), 12),
-//     styles: styles2,
-//   },
-// ];
-
-// const renderWeekPickerDay = (
-//   date: Date,
-//   selectedDates: Array<Date | null>,
-//   pickersDayProps: PickersDayProps<Date>
-// ) => {
-//   const matchedStyles = highlightedDays.reduce((a, v) => {
-//     return isSameDay(date, v.date) ? v.styles : a;
-//   }, {});
-
-//   return (
-//     <PickersDay
-//       {...pickersDayProps}
-//       sx={{
-//         ...matchedStyles,
-//         [`&&.${(pickersDayClasses as any).selected}`]: {
-//           backgroundColor: 'green',
-//         },
-//       }}
-//     />
-//   );
-// };
-
-// export interface IMarkedCalendar {}
+  return (
+    <Badge
+      key={props.day.toString()}
+      variant="dot"
+      color="primary"
+      overlap="circular"
+      invisible={!hasEvents}
+    >
+      <PickersDay {...other} day={day} />
+    </Badge>
+  );
+}
 
 const MarkedCalendar = () => {
-  const [value, setValue] = useState<Date | null>(new Date());
-  // const [highlightedDays, setHighlightedDays] = useState([1, 2, 13]);
+  const { calendarState, setSelectedDate } = useContext(CalendarContext);
+
+  const { data } = useQuery(['studentLessons'], async () => {
+    const res = await LessonService.apiGetLessonsForStudent();
+    return res.map((lesson) => new Date(lesson.appointment_time).getTime());
+  });
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <StaticDatePicker
-        value={value}
+        value={calendarState.selectedDate}
         orientation="portrait"
-        // renderDay={renderWeekPickerDay}
         onChange={(newValue) => {
-          setValue(newValue);
+          if (!newValue) return;
+          setSelectedDate(newValue);
         }}
-        // renderInput={(params: any) => <TextField {...params} />}
         sx={{
           borderRadius: '18px',
           '& .MuiTypography-root': {
@@ -96,9 +61,10 @@ const MarkedCalendar = () => {
             color: '#000',
           },
         }}
-        // slots={
-        //   day: () => renderWeekPickerDay()
-        // }
+        slots={{
+          day: DayWithHighLight,
+        }}
+        slotProps={{ day: { highlightedDays: data ?? [] } as any }} // any type casting from MUI docs
       />
     </LocalizationProvider>
   );

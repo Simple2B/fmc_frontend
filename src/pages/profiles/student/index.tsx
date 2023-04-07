@@ -4,9 +4,14 @@ import Messages from '@/components/profiles/messages/Messages';
 import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/FavoriteCoaches';
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
-import { instance } from '@/fast_api_backend/api/_axiosInstance';
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { CalendarProvider } from '@/context/calendarContext';
+import {
+  MessagesService,
+  ProfilesService,
+  User,
+  WhoamiService,
+} from '@/services';
+import { UserType } from '@/store/types/user';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -31,7 +36,7 @@ export default function ProfileStudent() {
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
-  const [profile, setProfile] = useState<IUserProfile>({
+  const [profile, setProfile] = useState<User>({
     uuid: '',
     username: '',
     email: '',
@@ -44,11 +49,13 @@ export default function ProfileStudent() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        const response = await instance().get('/whoami/student');
+        // const response = await instance().get('/whoami/student');
+        const response = await WhoamiService.apiWhoamiStudent();
         const res = response.data;
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);
-        const studentProfile = await studentClientApi.studentGetProfile();
+        // const studentProfile = await studentClientApi.studentGetProfile();
+        const studentProfile = await ProfilesService.apiGetStudentProfile();
         setProfile(studentProfile);
       } catch (error: any) {
         console.log(
@@ -64,9 +71,7 @@ export default function ProfileStudent() {
   }, [router, router.asPath]);
 
   const [uuidUser, setUUIDUser] = useState('');
-  const [selectedContact, setSelectedContact] = useState<IUserProfile | null>(
-    null
-  );
+  const [selectedContact, setSelectedContact] = useState<User | null>(null);
 
   const [listItemsStudent, setItemsStudent] = useState<
     {
@@ -105,17 +110,17 @@ export default function ProfileStudent() {
   const { data } = useQuery(
     ['contactsStudent'],
     async () => {
-      const request = studentClientApi.studentContactsList;
-      const result = await request();
+      // const request = studentClientApi.studentContactsList;
+
+      // const result = await request();
+      const result = await MessagesService.apiGetStudentListOfContacts();
       console.log('--------------> contacts', result);
-      return result;
+      return result.contacts;
     },
     {
       refetchInterval: 10000,
     }
   );
-
-  console.log('[Student page] message data', data);
 
   const onContactSelected = (contactUUID: string) => {
     const foundContact = data?.find((element) => {
@@ -171,7 +176,7 @@ export default function ProfileStudent() {
   };
 
   return (
-    <>
+    <CalendarProvider>
       <Head>
         <title>Profile Athlete</title>
         <meta name="description" content="Profile Athlete" />
@@ -192,6 +197,6 @@ export default function ProfileStudent() {
       ) : (
         <LoginPage />
       )}
-    </>
+    </CalendarProvider>
   );
 }

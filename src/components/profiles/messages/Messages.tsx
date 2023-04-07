@@ -1,5 +1,5 @@
-import { IContact } from '@/store/types/message/messageType';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { Contact, User } from '@/services';
+import { UserType } from '@/store/types/user';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/router';
@@ -9,8 +9,8 @@ import { MessageContext } from './messageContext';
 
 export interface IMessagesProps {
   userType: UserType;
-  data?: IContact[];
-  selectedContact: IUserProfile | null;
+  data?: Contact[];
+  selectedContact: User | null;
   // eslint-disable-next-line no-unused-vars
   onContactSelected: (contactUUID: string) => void;
 }

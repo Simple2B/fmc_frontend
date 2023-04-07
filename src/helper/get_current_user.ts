@@ -1,11 +1,12 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
-import { IUserProfile, UserType } from '@/store/types/user';
+import { ProfilesService, User } from '@/services';
+import { UserType } from '@/store/types/user';
 import { getErrorMessage } from './error_function';
 
 export async function getCurrentUser(
   userType: string,
-  setProfile?: React.Dispatch<React.SetStateAction<IUserProfile>>,
+  setProfile?: React.Dispatch<React.SetStateAction<User>>,
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
   setError?: React.Dispatch<React.SetStateAction<string | null>>
@@ -17,7 +18,8 @@ export async function getCurrentUser(
       const res = await studentClientApi.checkStudent();
       if (res) {
         try {
-          const studentProfile = await studentClientApi.studentGetProfile();
+          // const studentProfile = await studentClientApi.studentGetProfile();
+          const studentProfile = await ProfilesService.apiGetStudentProfile();
           if (setProfile) setProfile(studentProfile);
           if (setIsLoad) setIsLoad(false);
           if (setSuccess) setSuccess(true);

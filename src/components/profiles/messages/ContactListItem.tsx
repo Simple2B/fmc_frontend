@@ -1,4 +1,3 @@
-import { IContact } from '@/store/types/message/messageType';
 import {
   Avatar,
   Box,
@@ -13,13 +12,14 @@ import {
 
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { Contact } from '@/services';
 import { UserType } from '@/store/types/user';
 import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
 import { useContext, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { MessageContext } from './messageContext';
 interface ContactListItemProps {
-  contactData: IContact;
+  contactData: Contact;
   onSelected: (value: string) => void; // eslint-disable-line no-unused-vars
   selected: boolean;
 }
@@ -46,7 +46,7 @@ export default function ContactListItem({
           ? studentClientApi.studentReadMessageCoach
           : coachClientApi.coachReadMessageStudent;
 
-      await request(contactData.user.uuid);
+      await request(contactData.user.uuid ?? '');
     },
     {
       onSuccess: () => {
@@ -57,7 +57,7 @@ export default function ContactListItem({
   );
 
   const handleSelect = () => {
-    onSelected(contactData.user.uuid);
+    onSelected(contactData.user.uuid ?? '');
     readMessageMutation.mutate();
   };
 
@@ -121,7 +121,7 @@ export default function ContactListItem({
               color={'Inter'}
               lineHeight={'normal'}
             >
-              {contactData.message
+              {contactData.message?.text
                 ? contactData.message.text.replace(/(.{20})..+/, '$1…')
                 : 'You have no messages with this user'}
             </Typography>

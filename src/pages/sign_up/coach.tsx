@@ -1,8 +1,8 @@
 import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
-import { coachAuthApi } from '@/fast_api_backend/api/authApi/coach/authApi';
 import { getErrorMessage } from '@/helper/error_function';
+import { CoachAuthenticationService } from '@/services';
 import { TypeSign, UserType } from '@/store/types/user';
 import { IResponseStudentData } from '@/store/types/users/student/studentType';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -34,7 +34,8 @@ export default function SignUpCoach() {
     const CoachGoogleAuth = async () => {
       setIsLoad(true);
       try {
-        const res = await coachAuthApi.googleAuthCoach(data);
+        // const res = await coachAuthApi.googleAuthCoach(data);
+        const res = await CoachAuthenticationService.apiCoachGoogleAuth(data);
         setIsLoad(false);
         setSuccess(true);
         // console.log('CoachGoogleAuth: res ', res);

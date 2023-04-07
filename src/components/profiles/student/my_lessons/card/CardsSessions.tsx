@@ -1,4 +1,4 @@
-import { ISession, ISessions } from '@/store/types/session/sessionTypes';
+import { StudentLesson } from '@/services/models/StudentLesson';
 import {
   AccessTime,
   EventAvailable,
@@ -19,14 +19,14 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 
 export interface ICardsSessions {
-  sessions: ISessions;
+  lessons: StudentLesson[];
   type: string;
 }
 
-const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
+const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
   const router = useRouter();
 
-  const handleSendMessage = (item: ISession) => {
+  const handleSendMessage = (item: StudentLesson) => {
     console.log(item.coach.profile_picture);
     // router.push({
     //   pathname: `/profiles/student?page=messages&user=`,
@@ -37,9 +37,9 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
 
   return (
     <>
-      {sessions.lessons &&
-        sessions.lessons.length > 0 &&
-        sessions.lessons.map((item, index) => {
+      {lessons &&
+        lessons.length > 0 &&
+        lessons.map((item, index) => {
           const date = new Date(item.appointment_time);
           const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
           const time = `${date.getHours()}:${date.getMinutes()}`;
@@ -77,7 +77,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                     component="div"
                     sx={{ mb: '12px' }}
                   >
-                    {item.lesson ? item.lesson.name : ''}
+                    {item ? item.schedule.lesson.title : ''}
                   </Typography>
                   <Box sx={{ borderBottom: '.5px solid #DBDBDB' }}>
                     <Box
@@ -137,7 +137,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                           }}
                         />
                         <Typography>
-                          {item.lesson ? item.lesson.price / 100 : ''}&#163;
+                          {item ? item.schedule.lesson.price / 100 : ''}&#163;
                         </Typography>
                       </Box>
                     </Box>
@@ -165,7 +165,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                           }}
                         />
                         <Typography>
-                          {item.lesson ? item.lesson.location.name : ''}
+                          {item ? item.schedule.lesson.location.name : ''}
                         </Typography>
                       </Box>
                       <Box
@@ -184,7 +184,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ sessions, type }) => {
                           }}
                         />
                         <Typography>
-                          {item.lesson ? item.lesson.notes : ''}
+                          {item ? item.schedule.lesson.about : ''}
                         </Typography>
                       </Box>
                     </Box>

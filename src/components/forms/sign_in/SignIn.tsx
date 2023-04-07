@@ -1,5 +1,9 @@
 import GoogleLoginBtn from '@/components/google_login/GoogleLogin';
 import { getErrorMessage } from '@/helper/error_function';
+import {
+  CoachAuthenticationService,
+  StudentAuthenticationService,
+} from '@/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -11,8 +15,6 @@ import PasswordInput from '../../../common/input_password/PasswordInput';
 import Loader from '../../../common/loader/Loader';
 import MessageBox from '../../../common/message_box/MessageBox';
 import CustomModel from '../../../common/modal/Modal';
-import { coachAuthApi } from '../../../fast_api_backend/api/authApi/coach/authApi';
-import { studentAuthApi } from '../../../fast_api_backend/api/authApi/student/authApi';
 import { UserType } from '../../../store/types/user';
 import { IResponseCoachData } from '../../../store/types/users/coach/coachType';
 import { IResponseStudentData } from '../../../store/types/users/student/studentType';
@@ -112,7 +114,11 @@ const SignIn: React.FC<ISignIn> = ({
         setIsLoad(true);
         try {
           if (userType === UserType.coach) {
-            const coachToken = await coachAuthApi.signInCoach(email, password);
+            // const coachToken = await coachAuthApi.signInCoach(email, password);
+            const coachToken = await CoachAuthenticationService.apiCoachLogin({
+              username: email,
+              password,
+            });
             console.log('POST [/sign_in] coach successfully', coachToken);
             localStorage.setItem(
               'token',
@@ -123,10 +129,15 @@ const SignIn: React.FC<ISignIn> = ({
             setSuccess(true);
           }
           if (userType === UserType.student) {
-            const studentToken = await studentAuthApi.signInStudent(
-              email,
-              password
-            );
+            // const studentToken = await studentAuthApi.signInStudent(
+            //   email,
+            //   password
+            // );
+            const studentToken =
+              await StudentAuthenticationService.apiStudentLogin({
+                username: email,
+                password,
+              });
             localStorage.setItem(
               'token',
               (studentToken as IResponseStudentData).access_token
