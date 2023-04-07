@@ -7,10 +7,7 @@ export interface IAboutCoachProfile {}
 
 const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
   const matches950 = useMediaQuery('(max-width:950px)');
-  // const [isOpenFilterForm, setIsOpenFilterForm] = useState<boolean>(false);
-  // const toggleFilterForm = () => {
-  //   setIsOpenFilterForm(!isOpenFilterForm);
-  // };
+
   return (
     <Box
       sx={{

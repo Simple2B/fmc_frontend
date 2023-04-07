@@ -9,29 +9,31 @@ import Head from 'next/head';
 import styles from '../../styles/Home.module.sass';
 
 export default function CoachProfilePage() {
-  //   const router = useRouter();
-  //   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
-  //   const [userType, setUserType] = useState<string | null>(null);
+  // const router = useRouter();
+  // const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
+  // const [userType, setUserType] = useState<string | null>(null);
 
-  //   useEffect(() => {
-  //     const whoAmI = async () => {
-  //       try {
-  //         const response = await instance().get('/whoami/student');
-  //         const res = response.data;
-  //         console.log(`[GET] check student -> res data  ${res}`);
-  //         setIsLogIn(true);
-  //         setUserType(localStorage.getItem('userType') ?? '');
-  //       } catch (error: any) {
-  //         console.log(
-  //           `[GET] check student -> error message => ${error.response.status}`
-  //         );
-  //         localStorage.removeItem('token');
-  //         localStorage.removeItem('userType');
-  //         setIsLogIn(false);
-  //       }
-  //     };
-  //     whoAmI();
-  //   }, [router, router.asPath]);
+  // useEffect(() => {
+  //   const whoAmI = async () => {
+  //     try {
+  //       // const response = await instance().get('/whoami/student');
+  //       const response = await WhoamiService.apiWhoamiCoach();
+  //       const res = response.data;
+  //       console.log(`[GET] check student -> res data  ${res}`);
+  //       setIsLogIn(true);
+  //       // setUserType(localStorage.getItem('userType') ?? '');
+  //     } catch (error: any) {
+  //       console.log(
+  //         `[GET] check student -> error message => ${error.response}`
+  //       );
+  //       localStorage.removeItem('token');
+  //       localStorage.removeItem('userType');
+  //       setIsLogIn(false);
+  //     }
+  //   };
+  //   whoAmI();
+  // }, [router.asPath]);
+
   return (
     <>
       <Head>

@@ -119,6 +119,7 @@ export const studentClientApi = {
       throw error.message;
     }
   },
+
   studentContactsList: async (): Promise<IContact[]> => {
     try {
       const response = await instance().get(

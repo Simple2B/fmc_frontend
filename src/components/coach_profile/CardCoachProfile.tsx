@@ -1,3 +1,4 @@
+import { ProfilesService } from '@/services/services/ProfilesService';
 import {
   Box,
   Card,
@@ -6,18 +7,27 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import star from '../../../public/star.png';
-import picture from '../../../public/test_coach_profile.png';
 
 export interface ICardCoachProfile {}
 
 const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
   const matches650 = useMediaQuery('(max-width:650px)');
-  // const [isOpenFilterForm, setIsOpenFilterForm] = useState<boolean>(false);
-  // const toggleFilterForm = () => {
-  //   setIsOpenFilterForm(!isOpenFilterForm);
-  // };
+  const router = useRouter();
+  const coachUuid =
+    router.asPath.split('/')[router.asPath.split('/').length - 1];
+
+  const profileCoachDataQuery = useQuery(
+    ['coachProfile', coachUuid],
+    async () => {
+      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+      return result;
+    }
+  );
+
   return (
     <Box
       sx={{
@@ -48,7 +58,12 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
           }}
         >
           <Box sx={{ mr: '43px' }}>
-            <Image src={picture} alt={'picture'} />
+            <Image
+              src={profileCoachDataQuery.data?.profile_picture ?? ''}
+              alt={'picture'}
+              width={200}
+              height={200}
+            />
           </Box>
           <Box>
             <Typography
@@ -59,7 +74,11 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 color: '#000000',
               }}
             >
-              John Johnson
+              {profileCoachDataQuery.data?.first_name
+                ? profileCoachDataQuery.data?.first_name +
+                  ' ' +
+                  profileCoachDataQuery.data?.last_name
+                : profileCoachDataQuery.data?.username}
             </Typography>
             <hr
               style={{
@@ -77,7 +96,13 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 mb: '10px',
               }}
             >
-              Offers Tennis Lessons
+              {'Offers' +
+                ' ' +
+                profileCoachDataQuery.data?.sports
+                  .map((sport) => sport.name)
+                  .join(', ') +
+                ' ' +
+                'Lessons'}
             </Typography>
             <Typography
               sx={{
@@ -88,7 +113,10 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 mb: '10px',
               }}
             >
-              Tennis coach with experience training over 25,000 students
+              {profileCoachDataQuery.data?.sports
+                .map((sport) => sport.name)
+                .join(', ') +
+                ' coach with experience training over 25,000 students'}
             </Typography>
             <Box
               sx={{
@@ -98,11 +126,18 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
               }}
               gap={1}
             >
-              <Box>
-                <Image src={star} alt={'star'} />
-              </Box>
+              {profileCoachDataQuery.data?.total_rate ? (
+                <Box>
+                  <Image src={star} alt={'star'} />
+                </Box>
+              ) : null}
+
               <Typography variant="body2" color="text.secondary">
-                5 (8 Reviews)
+                {profileCoachDataQuery.data?.total_rate
+                  ? profileCoachDataQuery.data?.total_rate +
+                    ' ' +
+                    (profileCoachDataQuery.data?.reviews.length + ' Reviews')
+                  : ''}
               </Typography>
             </Box>
           </Box>

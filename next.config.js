@@ -23,6 +23,11 @@ module.exports = () => {
         },
       ];
     },
+
+    images: {
+      domains: ['find-my-coach-eu.s3.amazonaws.com'],
+      formats: ['image/avif', 'image/webp'],
+    },
   };
   return nextConfig;
 };
