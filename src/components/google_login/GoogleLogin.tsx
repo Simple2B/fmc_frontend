@@ -12,7 +12,7 @@ export interface IGoogleLoginBtn {
   // eslint-disable-next-line no-unused-vars
   onError?: any;
   typeSign: string;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 // eslint-disable-next-line no-empty-pattern
@@ -30,7 +30,7 @@ const GoogleLoginBtn: React.FC<IGoogleLoginBtn> = ({
       render={(renderProps) => {
         return (
           <Button
-            disabled={disabled}
+            disabled={disabled ? disabled : false}
             fullWidth
             variant="contained"
             onClick={renderProps.onClick}
