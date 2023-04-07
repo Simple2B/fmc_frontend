@@ -1,45 +1,44 @@
+import { ReviewsService } from '@/services/services/ReviewsService';
 import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import styles from './Reviews.module.sass';
 
-const reviewsData = [
-  {
-    title: 'Natali Natali',
-    rating: 5,
-    text: `Collins has a knack. He can teach through his writings. He inspires confidence in his students, and by reading. Watch the Ball, you'll be inspired too.`,
-    date: 'Two days ago',
-  },
-
-  {
-    title: 'Natali Natali',
-    rating: 4,
-    text: `Collins has a knack. He can teach through his writings. He inspires confidence in his students, and by reading. Watch the Ball, you'll be inspired too.`,
-    date: 'Two days ago',
-  },
-];
-
-export interface IReviews {
+export interface IReviewList {
   title?: string;
 }
 
-const Reviews: React.FC<IReviews> = ({ title }) => {
+const Reviews: React.FC<IReviewList> = ({ title }) => {
   // const router = useRouter();
   // Your Reviews
+  const { data } = useQuery(['coachReviews'], async () => {
+    const res = await ReviewsService.apiCoachReviewsList();
+    console.log('Reviews ------->', res);
+    return res;
+  });
+
   return (
     <Box className={styles.wrapper} flex={1} p={2}>
       <Typography className={styles.title}>{title}</Typography>
       <Box className={styles.wrapperCards}>
-        {reviewsData.map((review, index) => (
-          <Box className={styles.card} key={index}>
-            <Box className={styles.cardTitle}>{review.title}</Box>
-            <Box className={styles.cardRating}>
-              <Rating name="disabled" value={review.rating} disabled />
+        {data?.reviews.map((review, index) => {
+          const date = new Date(review.created_at);
+          const review_date = `${date.getUTCDate()}/${
+            date.getUTCMonth() + 1
+          }/${date.getUTCFullYear()}`;
+
+          return (
+            <Box className={styles.card} key={index}>
+              {/* <Box className={styles.cardTitle}>{review.text}</Box> */}
+              <Box className={styles.cardRating}>
+                <Rating name="disabled" value={review.rate} disabled />
+              </Box>
+              <Box className={styles.cardText}>{review.text}</Box>
+              <Box className={styles.cardDate}>{review_date}</Box>
             </Box>
-            <Box className={styles.cardText}>{review.text}</Box>
-            <Box className={styles.cardDate}>{review.date}</Box>
-          </Box>
-        ))}
+          );
+        })}
       </Box>
     </Box>
   );

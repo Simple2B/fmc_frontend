@@ -84,7 +84,6 @@ export const MessageNotifications = ({
             {notifications
               ? notifications.map((notification, index) => {
                   const date = new Date(notification.appointment_time);
-                  console.log(date);
                   const appointment_date = `${date.getUTCDate()}/${
                     date.getUTCMonth() + 1
                   }/${date.getUTCFullYear()}`;
