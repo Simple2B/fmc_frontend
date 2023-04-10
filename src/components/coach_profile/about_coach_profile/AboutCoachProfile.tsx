@@ -4,12 +4,11 @@ import About from './_About';
 import Schedule from './_Schedule';
 
 export interface IAboutCoachProfile {
-  coachUuid: string;
+  coachUuid: string | string[] | undefined;
 }
 
 const AboutCoachProfile: React.FC<IAboutCoachProfile> = ({ coachUuid }) => {
   const matches950 = useMediaQuery('(max-width:950px)');
-
   return (
     <Box
       sx={{
@@ -24,7 +23,7 @@ const AboutCoachProfile: React.FC<IAboutCoachProfile> = ({ coachUuid }) => {
       }}
       gap={matches950 ? 3 : 13}
     >
-      <About />
+      <About coachUuid={coachUuid} />
       <Schedule coachUuid={coachUuid} />
     </Box>
   );

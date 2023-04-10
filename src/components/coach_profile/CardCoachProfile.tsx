@@ -17,14 +17,15 @@ export interface ICardCoachProfile {}
 const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
   const matches650 = useMediaQuery('(max-width:650px)');
   const router = useRouter();
-  const coachUuid =
-    router.asPath.split('/')[router.asPath.split('/').length - 1];
+  const coachUuid = router.query.uuid_coach;
 
   const profileCoachDataQuery = useQuery(
     ['coachProfile', coachUuid],
     async () => {
-      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
-      return result;
+      if (typeof coachUuid === 'string') {
+        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+        return result;
+      }
     }
   );
 
