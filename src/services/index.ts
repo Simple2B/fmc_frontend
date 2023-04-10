@@ -8,6 +8,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { BaseLesson } from './models/BaseLesson';
 export type { BaseMessage } from './models/BaseMessage';
+export type { BaseReview } from './models/BaseReview';
 export type { BaseSchedule } from './models/BaseSchedule';
 export type { BaseUser } from './models/BaseUser';
 export type { Body_API_coach_login } from './models/Body_API_coach_login';

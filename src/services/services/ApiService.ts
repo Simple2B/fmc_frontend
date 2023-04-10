@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseLesson } from '../models/BaseLesson';
+import type { BaseReview } from '../models/BaseReview';
 import type { BaseSchedule } from '../models/BaseSchedule';
 import type { BaseUser } from '../models/BaseUser';
 import type { Body_API_coach_login } from '../models/Body_API_coach_login';
@@ -25,7 +26,6 @@ import type { MessageList } from '../models/MessageList';
 import type { NewsletterSubscription } from '../models/NewsletterSubscription';
 import type { Product } from '../models/Product';
 import type { ProfileChangePasswordIn } from '../models/ProfileChangePasswordIn';
-import type { Review } from '../models/Review';
 import type { ReviewList } from '../models/ReviewList';
 import type { Schedule } from '../models/Schedule';
 import type { ScheduleList } from '../models/ScheduleList';
@@ -898,7 +898,7 @@ export class ApiService {
      */
     public static apiCreateReview(
         lessonUuid: string,
-        requestBody: Review,
+        requestBody: BaseReview,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',

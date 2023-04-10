@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Review } from '../models/Review';
+import type { BaseReview } from '../models/BaseReview';
 import type { ReviewList } from '../models/ReviewList';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -19,7 +19,7 @@ export class ReviewsService {
      */
     public static apiCreateReview(
         lessonUuid: string,
-        requestBody: Review,
+        requestBody: BaseReview,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
