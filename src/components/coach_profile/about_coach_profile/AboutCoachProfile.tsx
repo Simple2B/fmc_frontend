@@ -1,14 +1,15 @@
 import { Box, useMediaQuery } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import About from './_About';
 import Schedule from './_Schedule';
 
-export interface IAboutCoachProfile {
-  coachUuid: string | string[] | undefined;
-}
+export interface IAboutCoachProfile {}
 
-const AboutCoachProfile: React.FC<IAboutCoachProfile> = ({ coachUuid }) => {
+const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
+  const router = useRouter();
   const matches950 = useMediaQuery('(max-width:950px)');
+  const coachUuid = router.query.uuid_coach;
   return (
     <Box
       sx={{

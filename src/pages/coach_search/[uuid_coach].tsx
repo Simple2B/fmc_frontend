@@ -4,18 +4,39 @@ import AboutCoachProfile from '@/components/coach_profile/about_coach_profile/Ab
 import LessonsOffered from '@/components/coach_profile/lessons_offered/LessonsOffered';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
+import { WhoamiService } from '@/services/services/WhoamiService';
 import { Box } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import styles from '../../styles/Home.module.sass';
 
 export default function CoachProfilePage() {
   const router = useRouter();
 
-  const coachUuid = router.query.uuid_coach;
+  const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
 
-  console.log('[CoachProfilePage] coachUuid ', coachUuid);
-
+  useEffect(() => {
+    const whoAmI = async () => {
+      try {
+        const response = await WhoamiService.apiWhoamiStudent();
+        const res = response.data;
+        console.log(`[GET] check student -> res data  ${res}`);
+        setIsLogIn(true);
+        setUserType(localStorage.getItem('userType') ?? '');
+        // const studentProfile = await studentClientApi.studentGetProfile();
+        // setProfile(studentProfile);
+      } catch (error: any) {
+        console.log(`[GET] check student -> error message => ${error}`);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userType');
+        setIsLogIn(false);
+        // router.push('/sign_in/student');
+      }
+    };
+    whoAmI();
+  }, [router, router.asPath]);
   return (
     <>
       <Head>
@@ -28,8 +49,8 @@ export default function CoachProfilePage() {
         <CoachSearchNavbar wrapperClassName={styles.boxCoachSearch} />
         <div className={styles.boxCoachSearchContent}>
           <CardCoachProfile />
-          <AboutCoachProfile coachUuid={coachUuid} />
-          <LessonsOffered />
+          <AboutCoachProfile />
+          <LessonsOffered isLogIn={isLogIn} userType={userType} />
           <Box
             sx={{
               width: '96%',

@@ -53,11 +53,12 @@ const testDataGroup = {
   ],
 };
 
-export interface ILessonsOffered {}
+export interface ILessonsOffered {
+  isLogIn: boolean | null;
+  userType: string | null;
+}
 
-const LessonsOffered: React.FC<ILessonsOffered> = () => {
-  // const matches650 = useMediaQuery('(max-width:650px)');
-
+const LessonsOffered: React.FC<ILessonsOffered> = ({ isLogIn, userType }) => {
   return (
     <Box
       sx={{
@@ -90,7 +91,7 @@ const LessonsOffered: React.FC<ILessonsOffered> = () => {
         itemsDescription={testDataOneToOne.itemsDescription}
         location={testDataOneToOne.location}
       >
-        <PriceCard />
+        <PriceCard isLogIn={isLogIn} userType={userType} />
       </LessonsOfferedCards>
 
       <LessonsOfferedCards
