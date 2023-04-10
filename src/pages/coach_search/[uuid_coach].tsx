@@ -6,32 +6,17 @@ import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import { Box } from '@mui/material';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import styles from '../../styles/Home.module.sass';
 
 export default function CoachProfilePage() {
-  //   const router = useRouter();
-  //   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
-  //   const [userType, setUserType] = useState<string | null>(null);
+  const router = useRouter();
 
-  //   useEffect(() => {
-  //     const whoAmI = async () => {
-  //       try {
-  //         const response = await instance().get('/whoami/student');
-  //         const res = response.data;
-  //         console.log(`[GET] check student -> res data  ${res}`);
-  //         setIsLogIn(true);
-  //         setUserType(localStorage.getItem('userType') ?? '');
-  //       } catch (error: any) {
-  //         console.log(
-  //           `[GET] check student -> error message => ${error.response.status}`
-  //         );
-  //         localStorage.removeItem('token');
-  //         localStorage.removeItem('userType');
-  //         setIsLogIn(false);
-  //       }
-  //     };
-  //     whoAmI();
-  //   }, [router, router.asPath]);
+  const coachUuid =
+    router.asPath.split('/')[router.asPath.split('/').length - 1];
+
+  console.log('[CoachProfilePage] coachUuid ', coachUuid);
+
   return (
     <>
       <Head>
@@ -44,7 +29,7 @@ export default function CoachProfilePage() {
         <CoachSearchNavbar wrapperClassName={styles.boxCoachSearch} />
         <div className={styles.boxCoachSearchContent}>
           <CardCoachProfile />
-          <AboutCoachProfile />
+          <AboutCoachProfile coachUuid={coachUuid} />
           <LessonsOffered />
           <Box
             sx={{

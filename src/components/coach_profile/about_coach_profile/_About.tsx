@@ -1,13 +1,23 @@
+import { ProfilesService } from '@/services/services/ProfilesService';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 
 export interface IAbout {}
 
 const About: React.FC<IAbout> = () => {
-  // const [isOpenFilterForm, setIsOpenFilterForm] = useState<boolean>(false);
-  // const toggleFilterForm = () => {
-  //   setIsOpenFilterForm(!isOpenFilterForm);
-  // };
+  const router = useRouter();
+  const coachUuid =
+    router.asPath.split('/')[router.asPath.split('/').length - 1];
+
+  const profileCoachDataQuery = useQuery(
+    ['coachProfile', coachUuid],
+    async () => {
+      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+      return result;
+    }
+  );
   return (
     <Box flex={1}>
       <Box
@@ -31,10 +41,7 @@ const About: React.FC<IAbout> = () => {
           mb: '56px',
         }}
       >
-        Hi! I’m Adam one of the West Coast's most respected tennis teachers.
-        Since 1970 over 25,000 students have attended my camps and clinics. With
-        a limited enrollment policy, the student-staff ratio is 4-1. Since 1970
-        over 25,000 students have attended my camps and clinics.{' '}
+        {profileCoachDataQuery.data?.about}
       </Box>
       <Box
         sx={{

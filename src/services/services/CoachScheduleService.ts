@@ -24,6 +24,27 @@ export class CoachScheduleService {
     }
 
     /**
+     * Get Coach Schedules By Uuid
+     * @param coachUuid
+     * @returns ScheduleList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetCoachSchedulesByUuid(
+        coachUuid: string,
+    ): CancelablePromise<ScheduleList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/schedule/schedules/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Create Coach Schedule
      * @param requestBody
      * @returns any Successful Response
@@ -58,6 +79,31 @@ export class CoachScheduleService {
             path: {
                 'schedule_uuid': scheduleUuid,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Edit Schedule
+     * @param scheduleUuid
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiEditSchedule(
+        scheduleUuid: string,
+        requestBody: BaseSchedule,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/schedule/{schedule_uuid}',
+            path: {
+                'schedule_uuid': scheduleUuid,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },

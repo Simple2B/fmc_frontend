@@ -1,5 +1,8 @@
+import { CoachScheduleService } from '@/services/services/CoachScheduleService';
 import { Autocomplete, Box, TextField, useMediaQuery } from '@mui/material';
 import * as React from 'react';
+import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 
 const testDayData = [
   {
@@ -24,16 +27,39 @@ const testDayData = [
   },
 ];
 
-export interface ISchedule {}
+export interface ISchedule {
+  coachUuid: string;
+}
 
-const Schedule: React.FC<ISchedule> = () => {
+const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
   const matches950 = useMediaQuery('(max-width:950px)');
-  // const [isOpenFilterForm, setIsOpenFilterForm] = useState<boolean>(false);
-  // const toggleFilterForm = () => {
-  //   setIsOpenFilterForm(!isOpenFilterForm);
-  // };
+
+  // const [dayData, setDayData] = useState<
+  //   {
+  //     uuid: string;
+  //     day: string;
+  //     date: string;
+  //     time: string[];
+  //   }[]
+  // >([]);
+
+  // const today = new Date();
+  const schedulesDataQuery = useQuery(['schedules', coachUuid], async () => {
+    const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
+      coachUuid
+    );
+
+    return result;
+  });
+
+  useEffect(() => {}, []);
+
+  console.log('[schedulesDataQuery] result => ', schedulesDataQuery);
+
+  // console.log('[schedulesDataQuery] dayData => ', dayData);
 
   const optionsLocations = ['London Park, W 54th St', 'London'];
+
   return (
     <Box
       flex={1}

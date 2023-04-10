@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseLesson } from '../models/BaseLesson';
+import type { BaseReview } from '../models/BaseReview';
 import type { BaseSchedule } from '../models/BaseSchedule';
 import type { BaseUser } from '../models/BaseUser';
 import type { Body_API_coach_login } from '../models/Body_API_coach_login';
@@ -25,7 +26,6 @@ import type { MessageList } from '../models/MessageList';
 import type { NewsletterSubscription } from '../models/NewsletterSubscription';
 import type { Product } from '../models/Product';
 import type { ProfileChangePasswordIn } from '../models/ProfileChangePasswordIn';
-import type { Review } from '../models/Review';
 import type { ReviewList } from '../models/ReviewList';
 import type { Schedule } from '../models/Schedule';
 import type { ScheduleList } from '../models/ScheduleList';
@@ -747,23 +747,14 @@ export class ApiService {
     }
 
     /**
-     * Get Lesson
-     * @param lessonUuid
+     * Get Upcoming Lessons
      * @returns StudentLessonList Successful Response
      * @throws ApiError
      */
-    public static apiGetLesson(
-        lessonUuid: string,
-    ): CancelablePromise<StudentLessonList> {
+    public static apiGetUpcomingLessons(): CancelablePromise<StudentLessonList> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/lesson/lessons/student/upcoming',
-            query: {
-                'lesson_uuid': lessonUuid,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
         });
     }
 
@@ -785,7 +776,7 @@ export class ApiService {
      * @returns StudentLesson Successful Response
      * @throws ApiError
      */
-    public static apiGetLesson1(
+    public static apiGetLesson(
         lessonUuid: string,
     ): CancelablePromise<StudentLesson> {
         return __request(OpenAPI, {
@@ -907,7 +898,7 @@ export class ApiService {
      */
     public static apiCreateReview(
         lessonUuid: string,
-        requestBody: Review,
+        requestBody: BaseReview,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -1002,6 +993,27 @@ export class ApiService {
     }
 
     /**
+     * Get Coach Schedules By Uuid
+     * @param coachUuid
+     * @returns ScheduleList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetCoachSchedulesByUuid(
+        coachUuid: string,
+    ): CancelablePromise<ScheduleList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/schedule/schedules/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Create Coach Schedule
      * @param requestBody
      * @returns any Successful Response
@@ -1036,6 +1048,31 @@ export class ApiService {
             path: {
                 'schedule_uuid': scheduleUuid,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Edit Schedule
+     * @param scheduleUuid
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiEditSchedule(
+        scheduleUuid: string,
+        requestBody: BaseSchedule,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/schedule/{schedule_uuid}',
+            path: {
+                'schedule_uuid': scheduleUuid,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },
