@@ -25,7 +25,10 @@ module.exports = () => {
     },
 
     images: {
-      domains: ['find-my-coach-eu.s3.amazonaws.com'],
+      domains: [
+        'find-my-coach-eu.s3.amazonaws.com',
+        'find-my-coach-eu.s3.eu-west-2.amazonaws.com',
+      ],
       formats: ['image/avif', 'image/webp'],
     },
   };
