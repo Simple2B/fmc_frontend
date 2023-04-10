@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import Btns from '@/components/coach_search/Btns';
-import CoachCards from '@/components/coach_search/CoachCards';
+import { CoachCardList } from '@/components/coach_search/CoachCardList';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import FilterBtn from '@/components/coach_search/FilterBtn';
@@ -17,14 +17,14 @@ import styles from '../../styles/Home.module.sass';
 export default function CoachSearchPage() {
   const router = useRouter();
 
-  const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
-  const [userType, setUserType] = useState<string | null>(null);
+  const [isLogIn, setIsLogIn] = useState<boolean>(false);
+  const [userType, setUserType] = useState<string>('');
 
-  const [searchName, setName] = useState<string | null>(
-    router.query.name as string
+  const [searchName, setName] = useState<string>(
+    (router.query.name as string) ?? ''
   );
-  const [searchAddress, setAddress] = useState<string | null>(
-    router.query.address as string
+  const [searchAddress, setAddress] = useState<string>(
+    (router.query.name as string) ?? ''
   );
   const onChangeName = (value: string) => {
     setName(value);
@@ -153,13 +153,11 @@ export default function CoachSearchPage() {
               toggleSport={toggleSport}
             />
           </Box>
-          <CoachCards
+          <CoachCardList
             isLogIn={isLogIn}
             userType={userType}
             name={searchName as string}
-            sportsIdes={sports
-              .filter((s) => s.isActive)
-              .map((s) => String(s.id))}
+            sportsIdes={sports.filter((s) => s.isActive).map((s) => s.id)}
             address={searchAddress as string}
           />
         </div>
