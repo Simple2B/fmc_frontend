@@ -12,8 +12,7 @@ import styles from '../../styles/Home.module.sass';
 export default function CoachProfilePage() {
   const router = useRouter();
 
-  const coachUuid =
-    router.asPath.split('/')[router.asPath.split('/').length - 1];
+  const coachUuid = router.query.uuid_coach;
 
   console.log('[CoachProfilePage] coachUuid ', coachUuid);
 

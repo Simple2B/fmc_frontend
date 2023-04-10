@@ -28,7 +28,7 @@ const testDayData = [
 ];
 
 export interface ISchedule {
-  coachUuid: string;
+  coachUuid: string | string[] | undefined;
 }
 
 const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
@@ -45,11 +45,12 @@ const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
 
   // const today = new Date();
   const schedulesDataQuery = useQuery(['schedules', coachUuid], async () => {
-    const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
-      coachUuid
-    );
-
-    return result;
+    if (typeof coachUuid === 'string') {
+      const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
+        coachUuid
+      );
+      return result;
+    }
   });
 
   useEffect(() => {}, []);
