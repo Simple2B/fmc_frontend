@@ -2,11 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Review = {
+export type BaseReview = {
     text: string;
     rate: number;
-    id: number;
-    uuid: string;
-    created_at: string;
 };
 

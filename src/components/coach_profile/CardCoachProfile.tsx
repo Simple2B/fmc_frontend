@@ -58,12 +58,17 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
           }}
         >
           <Box sx={{ mr: '43px' }}>
-            <Image
-              src={profileCoachDataQuery.data?.profile_picture ?? ''}
-              alt={'picture'}
-              width={200}
-              height={200}
-            />
+            {profileCoachDataQuery.data &&
+            profileCoachDataQuery.data.profile_picture ? (
+              <Image
+                src={profileCoachDataQuery.data.profile_picture}
+                alt={'picture'}
+                width={200}
+                height={200}
+              />
+            ) : (
+              ''
+            )}
           </Box>
           <Box>
             <Typography
