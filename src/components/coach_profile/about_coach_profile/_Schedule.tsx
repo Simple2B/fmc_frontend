@@ -1,7 +1,8 @@
 import { CoachScheduleService } from '@/services/services/CoachScheduleService';
+import { ProfilesService } from '@/services/services/ProfilesService';
 import { Autocomplete, Box, TextField, useMediaQuery } from '@mui/material';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 const testDayData = [
@@ -29,9 +30,10 @@ const testDayData = [
 
 export interface ISchedule {
   coachUuid: string | string[] | undefined;
+  maxWidth?: number | string;
 }
 
-const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
+const Schedule: React.FC<ISchedule> = ({ coachUuid, maxWidth = 515 }) => {
   const matches950 = useMediaQuery('(max-width:950px)');
 
   // const [dayData, setDayData] = useState<
@@ -43,7 +45,6 @@ const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
   //   }[]
   // >([]);
 
-  // const today = new Date();
   const schedulesDataQuery = useQuery(['schedules', coachUuid], async () => {
     if (typeof coachUuid === 'string') {
       const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
@@ -53,20 +54,38 @@ const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
     }
   });
 
-  useEffect(() => {}, []);
-
   console.log('[schedulesDataQuery] result => ', schedulesDataQuery);
 
-  // console.log('[schedulesDataQuery] dayData => ', dayData);
+  const [location, setLocation] = useState<string>('');
 
-  const optionsLocations = ['London Park, W 54th St', 'London'];
+  const profileCoachDataQuery = useQuery(
+    ['coachProfile', coachUuid],
+    async () => {
+      if (typeof coachUuid === 'string') {
+        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+        if (result.locations.length > 0) {
+          const address = result.locations.map((loc) => {
+            return loc.city + ', ' + loc.street + ', ' + loc.postal_code;
+          });
+          // setOptionsLocations(address);
+          setLocation(address[0]);
+        }
+        return result;
+      }
+    }
+  );
+
+  console.log(
+    '[schedulesDataQuery] profileCoachDataQuery => ',
+    profileCoachDataQuery
+  );
 
   return (
     <Box
       flex={1}
       sx={{
         alignSelf: matches950 ? 'center' : 'flex-start',
-        maxWidth: 515,
+        maxWidth: maxWidth,
         width: '100%',
         height: 435,
         boxShadow: '0px 0px 17px rgba(160, 160, 160, 0.25)',
@@ -89,8 +108,14 @@ const Schedule: React.FC<ISchedule> = ({ coachUuid }) => {
         <Autocomplete
           disablePortal
           id="optionsLocations"
-          options={optionsLocations}
-          value={optionsLocations[0]}
+          options={
+            profileCoachDataQuery.data
+              ? profileCoachDataQuery.data.locations.map((loc) => {
+                  return loc.city + ', ' + loc.street + ', ' + loc.postal_code;
+                })
+              : []
+          }
+          value={location}
           sx={{ width: '100%', borderRadius: '12px' }}
           renderInput={(params) => (
             <TextField
