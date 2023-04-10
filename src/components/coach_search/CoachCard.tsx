@@ -201,14 +201,9 @@ export const CoachCard: React.FC<CoachCardProps> = ({
         <Box>
           <Rating
             name="simple-controlled"
-            // TODO: rate must be add in backend
-            // value={item.rate}
-            value={3}
+            value={item.total_rate}
             color={'#FFA629'}
             readOnly
-            // onChange={(event, newValue) => {
-            //   setValue(newValue);
-            // }}
           />
         </Box>
         <Box sx={{ height: '90px', overflow: 'scroll' }}>
