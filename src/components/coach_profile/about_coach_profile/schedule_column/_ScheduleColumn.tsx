@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import InfoModalSchedule from '../../lessons_offered/lessons_offere_card/booked_info_forms/InfoModalSchedule';
 import InfoModelSignInSignUP from '../../lessons_offered/lessons_offere_card/booked_info_forms/InfoModalSignInSignUP';
 export interface IScheduleColumn {
   day: string;
@@ -25,15 +24,11 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
   userType,
 }) => {
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
-  const [isBookSession, setIsBookSession] = useState<boolean>(false);
 
   const handleClickInfoModelSignInSignUP = () => {
     setIsOpenLogIn(!isOpenLogIn);
   };
 
-  const handleClickBookSession = () => {
-    setIsBookSession(!isBookSession);
-  };
   const router = useRouter();
   const queryClient = useQueryClient();
   const coachUuid = router.query.uuid_coach;
@@ -270,13 +265,11 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
                   onClick={() => {
                     if (userType === UserType.coach || !isLogIn) {
                       setIsOpenLogIn(true);
-                      return;
                     }
                     if (isLogIn && userType === UserType.student) {
-                      setIsBookSession(true);
-                      return;
+                      // setIsBookSession(true);
+                      bookedTime(value.uuid);
                     }
-                    bookedTime(value.uuid);
                   }}
                 >
                   {value.time}
@@ -310,14 +303,6 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
         <InfoModelSignInSignUP
           isOpenLogIn={isOpenLogIn}
           handleClick={handleClickInfoModelSignInSignUP}
-        />
-      )}
-      {isBookSession && (
-        <InfoModalSchedule
-          isBookSession={isBookSession}
-          handleClick={handleClickBookSession}
-          isLogIn={isLogIn}
-          userType={userType}
         />
       )}
     </Box>
