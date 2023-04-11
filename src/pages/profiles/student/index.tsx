@@ -5,12 +5,7 @@ import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/Favo
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import { CalendarProvider } from '@/context/calendarContext';
-import {
-  MessagesService,
-  ProfilesService,
-  User,
-  WhoamiService,
-} from '@/services';
+import { ProfilesService, User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import {
   CalendarToday,
@@ -25,7 +20,6 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/student'));
 
@@ -46,15 +40,15 @@ export default function ProfileStudent() {
     is_verified: false,
   });
 
+  const uuidUser = router.asPath.split('user=')[1];
+
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        // const response = await instance().get('/whoami/student');
         const response = await WhoamiService.apiWhoamiStudent();
         const res = response.data;
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);
-        // const studentProfile = await studentClientApi.studentGetProfile();
         const studentProfile = await ProfilesService.apiGetStudentProfile();
         setProfile(studentProfile);
       } catch (error: any) {
@@ -69,9 +63,6 @@ export default function ProfileStudent() {
     };
     whoAmI();
   }, [router, router.asPath]);
-
-  const [uuidUser, setUUIDUser] = useState('');
-  const [selectedContact, setSelectedContact] = useState<User | null>(null);
 
   const [listItemsStudent, setItemsStudent] = useState<
     {
@@ -107,47 +98,19 @@ export default function ProfileStudent() {
     },
   ]);
 
-  const { data } = useQuery(
-    ['contactsStudent'],
-    async () => {
-      // const request = studentClientApi.studentContactsList;
-
-      // const result = await request();
-      const result = await MessagesService.apiGetStudentListOfContacts();
-      console.log('--------------> contacts', result);
-      return result.contacts;
-    },
-    {
-      refetchInterval: 10000,
-    }
-  );
-
   const onContactSelected = (contactUUID: string) => {
-    const foundContact = data?.find((element) => {
-      if (element.user.uuid === contactUUID) {
-        console.log('element.user.uuid', element.user.uuid);
-        setItemsStudent(
-          listItemsStudent.map((item) => {
-            if (item.name === 'Messages') {
-              return {
-                ...item,
-                href: `/profiles/student?page=messages&user=${element.user.uuid}`,
-              };
-            }
-            return item;
-          })
-        );
-        router.push(
-          `/profiles/student?page=messages&user=${element.user.uuid}`
-        );
-        setUUIDUser(element.user.uuid);
-      }
-      return element.user.uuid === contactUUID;
-    });
-    if (!foundContact) {
-      return;
-    }
-    setSelectedContact(foundContact.user);
+    setItemsStudent(
+      listItemsStudent.map((item) => {
+        if (item.name === 'Messages') {
+          return {
+            ...item,
+            href: `/profiles/student?page=messages&user=${contactUUID}`,
+          };
+        }
+        return item;
+      })
+    );
+    router.push(`/profiles/student?page=messages&user=${contactUUID}`);
   };
 
   const [href, setHref] = useState<string>('my_lessons');
@@ -158,8 +121,6 @@ export default function ProfileStudent() {
     [`page=messages&user=${uuidUser}`]: (
       <Messages
         userType={UserType.student}
-        data={data}
-        selectedContact={selectedContact}
         onContactSelected={onContactSelected}
       />
     ),

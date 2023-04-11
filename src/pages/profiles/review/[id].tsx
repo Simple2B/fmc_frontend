@@ -5,12 +5,7 @@ import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/Favo
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import CoachReview from '@/components/review/CoachReview';
-import {
-  MessagesService,
-  ProfilesService,
-  User,
-  WhoamiService,
-} from '@/services';
+import { ProfilesService, User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import {
   CalendarToday,
@@ -26,17 +21,16 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/student'));
 
 export default function RateCoach() {
   const matches414 = useMediaQuery('(max-width:414px)');
-  const [uuidUser, setUUIDUser] = useState('');
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
-  const [selectedContact, setSelectedContact] = useState<User | null>(null);
+  const uuidUser = router.asPath.split('message&')[1];
+
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [listItemsStudent, setItemsStudent] = useState<
     {
@@ -77,20 +71,6 @@ export default function RateCoach() {
     },
   ]);
 
-  const { data } = useQuery(
-    ['contactsStudent'],
-    async () => {
-      // const request = studentClientApi.studentContactsList;
-      // const result = await request();
-      const result = await MessagesService.apiGetStudentListOfContacts();
-      console.log('--------------> contacts', result);
-      return result.contacts;
-    },
-    {
-      refetchInterval: 10000,
-    }
-  );
-
   const [profile, setProfile] = useState<User>({
     uuid: '',
     username: '',
@@ -102,28 +82,18 @@ export default function RateCoach() {
   });
 
   const onContactSelected = (contactUUID: string) => {
-    const foundContact = data?.find((element) => {
-      if (element.user.uuid === contactUUID) {
-        setItemsStudent(
-          listItemsStudent.map((item) => {
-            if (item.name === 'Messages') {
-              return {
-                ...item,
-                href: `/profiles/student?message&${element.user.uuid}`,
-              };
-            }
-            return item;
-          })
-        );
-        router.push(`/profiles/student?message&${element.user.uuid}`);
-        setUUIDUser(element.user.uuid);
-      }
-      return element.user.uuid === contactUUID;
-    });
-    if (!foundContact) {
-      return;
-    }
-    setSelectedContact(foundContact.user);
+    setItemsStudent(
+      listItemsStudent.map((item) => {
+        if (item.name === 'Messages') {
+          return {
+            ...item,
+            href: `/profiles/student?message&${contactUUID}`,
+          };
+        }
+        return item;
+      })
+    );
+    router.push(`/profiles/student?message&${contactUUID}`);
   };
 
   useEffect(() => {
@@ -158,7 +128,6 @@ export default function RateCoach() {
     ['messages']: (
       <Messages
         userType={UserType.student}
-        selectedContact={selectedContact}
         onContactSelected={onContactSelected}
       />
     ),

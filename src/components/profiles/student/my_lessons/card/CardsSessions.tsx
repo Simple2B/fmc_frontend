@@ -28,11 +28,8 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
 
   const handleSendMessage = (item: StudentLesson) => {
     console.log(item.coach.profile_picture);
-    // router.push({
-    //   pathname: `/profiles/student?page=messages&user=`,
-    //   query: { uuid: item.uuid },
-    // });
-    router.push(`/profiles/student?page=messages&user=`);
+
+    router.push(`/profiles/student?page=messages&user=${item.uuid}`);
   };
 
   return (

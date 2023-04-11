@@ -12,7 +12,7 @@ import SubscriptionCheck from '@/components/subscription_check_state/Subscriptio
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { MessagesService, User, WhoamiService } from '@/services';
+import { User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
 import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
@@ -58,6 +58,8 @@ export default function ProfileCoach() {
     is_verified: false,
   });
 
+  const uuidUser = router.asPath.split('message&')[1];
+
   useEffect(() => {
     const whoAmI = async () => {
       try {
@@ -80,9 +82,6 @@ export default function ProfileCoach() {
     };
     whoAmI();
   }, [router, router.asPath]);
-
-  const [uuidUser, setUUIDUser] = useState('');
-  const [selectedContact, setSelectedContact] = useState<User | null>(null);
 
   const [listItemsCoach, setItemsCoach] = useState<
     {
@@ -123,41 +122,19 @@ export default function ProfileCoach() {
     },
   ]);
 
-  const { data } = useQuery(
-    ['contactsCoach'],
-    async () => {
-      const result = await MessagesService.apiGetCoachListOfContacts();
-      console.log('--------------> contacts', result);
-      return result.contacts;
-    },
-    {
-      refetchInterval: 10000,
-    }
-  );
-
   const onContactSelected = (contactUUID: string) => {
-    const foundContact = data?.find((element) => {
-      if (element.user.uuid === contactUUID) {
-        setItemsCoach(
-          listItemsCoach.map((item) => {
-            if (item.name === 'Messages') {
-              return {
-                ...item,
-                href: `/profiles/coach?message&${element.user.uuid}`,
-              };
-            }
-            return item;
-          })
-        );
-        router.push(`/profiles/coach?message&${element.user.uuid}`);
-        setUUIDUser(element.user.uuid);
-      }
-      return element.user.uuid === contactUUID;
-    });
-    if (!foundContact) {
-      return;
-    }
-    setSelectedContact(foundContact.user);
+    setItemsCoach(
+      listItemsCoach.map((item) => {
+        if (item.name === 'Messages') {
+          return {
+            ...item,
+            href: `/profiles/coach?message&${contactUUID}`,
+          };
+        }
+        return item;
+      })
+    );
+    router.push(`/profiles/coach?message&${contactUUID}`);
   };
 
   useEffect(() => {
@@ -183,8 +160,6 @@ export default function ProfileCoach() {
     [`message&${uuidUser}`]: (
       <Messages
         userType={UserType.coach}
-        data={data}
-        selectedContact={selectedContact}
         onContactSelected={onContactSelected}
       />
     ),
