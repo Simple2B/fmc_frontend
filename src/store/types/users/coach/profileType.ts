@@ -86,3 +86,9 @@ export enum SubscriptionCheckState {
   ACTIVE,
   CANCELLED,
 }
+
+export enum PaymentCheckState {
+  PENDING,
+  ACTIVE,
+  CANCELLED,
+}

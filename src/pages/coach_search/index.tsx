@@ -24,7 +24,7 @@ export default function CoachSearchPage() {
     (router.query.name as string) ?? ''
   );
   const [searchAddress, setAddress] = useState<string>(
-    (router.query.name as string) ?? ''
+    (router.query.address as string) ?? ''
   );
   const onChangeName = (value: string) => {
     setName(value);

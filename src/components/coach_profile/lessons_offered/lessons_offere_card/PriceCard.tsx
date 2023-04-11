@@ -125,7 +125,9 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
                 },
               }}
               onClick={() => {
-                if (!isLogIn) {
+                console.log('====isLogIn====', isLogIn);
+                console.log('====userType====', userType === UserType.coach);
+                if (userType === UserType.coach || !isLogIn) {
                   setIsOpenLogIn(true);
                 }
                 if (isLogIn && userType === UserType.student) {
@@ -139,7 +141,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
         );
       })}
 
-      {!isLogIn && isOpenLogIn && (
+      {isOpenLogIn && (
         <CustomModel
           isOpen={isOpenLogIn}
           handleClick={() => setIsOpenLogIn(!isOpenLogIn)}
@@ -259,7 +261,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
                     mb: '22px',
                   }}
                 >
-                  I already have an account
+                  I already have athlete account
                 </Box>
                 <Box
                   sx={{
@@ -289,7 +291,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
         </CustomModel>
       )}
 
-      {isBookSession && userType === UserType.student && (
+      {isBookSession && (
         <CustomModel
           isOpen={isBookSession}
           handleClick={() => setIsBookSession(!isBookSession)}
