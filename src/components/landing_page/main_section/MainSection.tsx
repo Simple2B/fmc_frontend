@@ -1,4 +1,9 @@
-import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import {
+  faInstagram,
+  faLinkedin,
+  faTiktok,
+  faTwitter,
+} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
@@ -261,14 +266,40 @@ const MainSection: React.FC<IMainSection> = () => {
             <Box className={styles.card3}>
               <Box className={styles.c3}>Follow us</Box>
               <Box className={styles.boxSocial}>
-                <Box sx={{ cursor: 'pointer' }}>
-                  <FontAwesomeIcon
-                    icon={faFacebook}
-                    style={{ fontSize: '16px' }}
-                  />
+                <Box
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    (window.location.href = 'https://twitter.com/FindMyCoachUK')
+                  }
+                >
+                  <FontAwesomeIcon icon={faTwitter} />
                 </Box>
-                <Box sx={{ cursor: 'pointer' }}>
+                <Box
+                  onClick={() =>
+                    (window.location.href =
+                      'https://instagram.com/findmycoachuk')
+                  }
+                  sx={{ cursor: 'pointer' }}
+                >
                   <FontAwesomeIcon icon={faInstagram} />
+                </Box>
+                <Box
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    (window.location.href =
+                      'https://www.linkedin.com/company/findmycoachuk/')
+                  }
+                >
+                  <FontAwesomeIcon icon={faLinkedin} />
+                </Box>
+                <Box
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    (window.location.href =
+                      'https://www.tiktok.com/@findmycoach')
+                  }
+                >
+                  <FontAwesomeIcon icon={faTiktok} />
                 </Box>
               </Box>
             </Box>
