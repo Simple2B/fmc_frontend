@@ -7,6 +7,7 @@ interface IReviewBodyProps {
 }
 
 const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
+  console.log('------------------->>>>>>>>', lessonData);
   const date = new Date(lessonData ? lessonData.appointment_time : '');
   const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 

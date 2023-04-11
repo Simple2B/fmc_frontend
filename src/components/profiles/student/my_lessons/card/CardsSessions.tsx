@@ -31,6 +31,8 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
 
     router.push(`/profiles/student?page=messages&user=${item.coach.uuid}`);
   };
+  const handleNavigateToCoachProfile = (uuid: any) =>
+    router.push(`/coach_search/${uuid}`);
 
   return (
     <>
@@ -233,6 +235,11 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                         color: '#000',
                         fontWeight: '600',
                       }}
+                      onClick={() =>
+                        handleNavigateToCoachProfile(
+                          item ? item.coach.uuid : ''
+                        )
+                      }
                     >
                       Book new lesson
                     </Button>
@@ -241,13 +248,13 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                   <Box
                     sx={{
                       pl: { xs: 'none', sm: '8px' },
-                      cursor: 'pointer',
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
                     }}
                   >
                     <Button
+                      disabled
                       size="small"
                       sx={{ color: '#000', fontWeight: '600' }}
                     >
