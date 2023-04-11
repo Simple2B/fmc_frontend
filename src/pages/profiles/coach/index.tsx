@@ -58,7 +58,7 @@ export default function ProfileCoach() {
     is_verified: false,
   });
 
-  const uuidUser = router.asPath.split('user=')[1];
+  const uuidUser = router.asPath.split('message&')[1];
 
   useEffect(() => {
     const whoAmI = async () => {

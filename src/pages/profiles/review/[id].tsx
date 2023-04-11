@@ -29,7 +29,7 @@ export default function RateCoach() {
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
 
-  const uuidUser = router.asPath.split('user=')[1];
+  const uuidUser = router.asPath.split('message&')[1];
 
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [listItemsStudent, setItemsStudent] = useState<
