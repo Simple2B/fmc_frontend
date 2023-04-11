@@ -1,3 +1,4 @@
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import * as React from 'react';
 import LessonsOfferedCards from './lessons_offere_card/LessonsOfferedCard';
@@ -56,9 +57,16 @@ const testDataGroup = {
 export interface ILessonsOffered {
   isLogIn: boolean | null;
   userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
 }
 
-const LessonsOffered: React.FC<ILessonsOffered> = ({ isLogIn, userType }) => {
+const LessonsOffered: React.FC<ILessonsOffered> = ({
+  isLogIn,
+  userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
+}) => {
   return (
     <Box
       sx={{
@@ -91,7 +99,12 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({ isLogIn, userType }) => {
         itemsDescription={testDataOneToOne.itemsDescription}
         location={testDataOneToOne.location}
       >
-        <PriceCard isLogIn={isLogIn} userType={userType} />
+        <PriceCard
+          isLogIn={isLogIn}
+          userType={userType}
+          isPaymentCheck={isPaymentCheck}
+          setIsPaymentCheck={setIsPaymentCheck}
+        />
       </LessonsOfferedCards>
 
       <LessonsOfferedCards

@@ -1,11 +1,22 @@
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box, useMediaQuery } from '@mui/material';
 import * as React from 'react';
 import About from './_About';
 import Schedule from './schedule_column/Schedule';
 
-export interface IAboutCoachProfile {}
+export interface IAboutCoachProfile {
+  isLogIn: boolean | null;
+  userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
+}
 
-const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
+const AboutCoachProfile: React.FC<IAboutCoachProfile> = ({
+  isLogIn,
+  userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
+}) => {
   const matches950 = useMediaQuery('(max-width:950px)');
   return (
     <Box
@@ -21,8 +32,14 @@ const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
       }}
       gap={matches950 ? 3 : 13}
     >
-      <About />
-      <Schedule maxWidth={610} />
+      <About isPaymentCheck={isPaymentCheck} />
+      <Schedule
+        maxWidth={610}
+        isLogIn={isLogIn}
+        userType={userType}
+        isPaymentCheck={isPaymentCheck}
+        setIsPaymentCheck={setIsPaymentCheck}
+      />
     </Box>
   );
 };

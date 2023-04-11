@@ -139,6 +139,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       end: Date | string;
       title: string;
       uuid: string;
+      is_booked: boolean;
     }[]
   >([
     {
@@ -146,6 +147,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       end: '',
       title: '',
       uuid: '',
+      is_booked: false,
     },
   ]);
 
@@ -158,6 +160,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         end: new Date(s.end_datetime),
         title: s.lesson.title,
         uuid: s.lesson.uuid,
+        is_booked: s.is_booked,
       }));
       setEvents(resultData);
     }
@@ -195,11 +198,11 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   const [startDatetime, setStartDatetime] = useState<Date | string>('');
   const [endDatetime, setEndDatetime] = useState<Date | string>('');
 
-  const [location, setLocation] = useState<string | null>('London');
+  // const [location, setLocation] = useState<string | null>('');
 
-  const [name, setName] = useState<string>('');
+  // const [name, setName] = useState<string>('');
 
-  const [isValidDate, setIsValidDate] = useState<boolean>(false);
+  // const [isValidDate, setIsValidDate] = useState<boolean>(false);
 
   function handleSelect(slotInfo: {
     start: stringOrDate;
