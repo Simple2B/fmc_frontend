@@ -981,31 +981,24 @@ export class ApiService {
     }
 
     /**
-     * Get Current Coach Schedules
-     * @returns ScheduleList Successful Response
-     * @throws ApiError
-     */
-    public static apiGetCurrentCoachSchedules(): CancelablePromise<ScheduleList> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/schedule/schedules',
-        });
-    }
-
-    /**
      * Get Coach Schedules By Uuid
      * @param coachUuid
+     * @param scheduleDate
      * @returns ScheduleList Successful Response
      * @throws ApiError
      */
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
+        scheduleDate?: string,
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/schedule/schedules/{coach_uuid}',
             path: {
                 'coach_uuid': coachUuid,
+            },
+            query: {
+                'schedule_date': scheduleDate,
             },
             errors: {
                 422: `Validation Error`,

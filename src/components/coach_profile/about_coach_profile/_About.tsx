@@ -1,22 +1,20 @@
 import { ProfilesService } from '@/services/services/ProfilesService';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 
-export interface IAbout {
-  coachUuid: string | string[] | undefined;
-}
+export interface IAbout {}
 
-const About: React.FC<IAbout> = ({ coachUuid }) => {
-  const profileCoachDataQuery = useQuery(
-    ['coachProfile', coachUuid],
-    async () => {
-      if (typeof coachUuid === 'string') {
-        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
-        return result;
-      }
+const About: React.FC<IAbout> = () => {
+  const router = useRouter();
+  const coachUuid = router.query.uuid_coach;
+  const profileCoachDataQuery = useQuery(['coachProfile'], async () => {
+    if (typeof coachUuid === 'string') {
+      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+      return result;
     }
-  );
+  });
   return (
     <Box flex={1}>
       <Box
