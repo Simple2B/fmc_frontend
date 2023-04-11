@@ -39,6 +39,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
       {lessons &&
         lessons.length > 0 &&
         lessons.map((item, index) => {
+          console.log('ITEM ', item);
           const date = new Date(item.appointment_time);
           const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
           const time = `${date.getHours()}:${date.getMinutes()}`;
@@ -76,7 +77,8 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                     component="div"
                     sx={{ mb: '12px' }}
                   >
-                    {item ? item.schedule.lesson.title : ''}
+                    {item ? item.schedule.lesson.title : ''} with{' '}
+                    {item ? item.coach.first_name : ''}
                   </Typography>
                   <Box sx={{ borderBottom: '.5px solid #DBDBDB' }}>
                     <Box
@@ -136,7 +138,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                           }}
                         />
                         <Typography>
-                          {item ? item.schedule.lesson.price / 100 : ''}&#163;
+                          {item ? item.schedule.lesson.price / 100 : ''} &#163;
                         </Typography>
                       </Box>
                     </Box>
@@ -163,8 +165,13 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                             mr: '3px',
                           }}
                         />
+
                         <Typography>
-                          {item ? item.schedule.lesson.location.name : ''}
+                          {item ? item.schedule.lesson.location.city : ''},{' '}
+                          {item ? item.schedule.lesson.location.street : ''},{' '}
+                          {item
+                            ? item.schedule.lesson.location.postal_code
+                            : ''}
                         </Typography>
                       </Box>
                       <Box
