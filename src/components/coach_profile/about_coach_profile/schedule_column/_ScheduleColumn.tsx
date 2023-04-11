@@ -140,6 +140,7 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
   return (
     <Box
       sx={{
+        width: '100px',
         height: '100%',
         alignSelf: 'flex-start',
         display: 'flex',
@@ -179,7 +180,7 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
       </Box>
       <Box
         sx={{
-          mt: '5px',
+          pt: '35px',
           maxHeight: '100%',
           display: 'flex',
           justifyContent: 'space-around',
@@ -223,7 +224,7 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
                     mb: '3px',
                     color: value.isActive ? '#ffffff' : '#333333',
                     // p: '9px 11px',
-                    width: '102.98px',
+                    width: '97px',
                     height: '32.06px',
                     background: value.isActive
                       ? '#1976d2'
