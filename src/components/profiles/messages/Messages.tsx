@@ -23,7 +23,11 @@ const Messages: React.FC<IMessagesProps> = ({
   const { data } = useQuery(
     ['contactsStudent'],
     async () => {
-      const result = await MessagesService.apiGetStudentListOfContacts();
+      const query =
+        userType === UserType.student
+          ? MessagesService.apiGetStudentListOfContacts
+          : MessagesService.apiGetCoachListOfContacts;
+      const result = await query();
       return result.contacts;
     },
     {
