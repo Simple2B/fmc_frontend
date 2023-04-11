@@ -15,6 +15,7 @@ export default function CoachProfilePage() {
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
+
   useEffect(() => {
     const whoAmI = async () => {
       try {
@@ -35,6 +36,7 @@ export default function CoachProfilePage() {
     };
     whoAmI();
   }, [router.asPath]);
+
   return (
     <>
       <Head>

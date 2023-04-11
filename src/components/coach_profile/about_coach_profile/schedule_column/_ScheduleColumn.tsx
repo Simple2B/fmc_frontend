@@ -13,17 +13,13 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 export interface IScheduleColumn {
   day: string;
-  // date: string;
-  // times: string[];
 }
 
 const ScheduleColumn: React.FC<IScheduleColumn> = ({ day }) => {
-  const queryClient = useQueryClient();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const coachUuid = router.query.uuid_coach;
-
   const [isLoad, setIsLoad] = useState<boolean>(false);
-
   const [isPaymentCheck, setIsPaymentCheck] = useState<PaymentCheckState>(
     PaymentCheckState.PENDING
   );

@@ -195,11 +195,11 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   const [startDatetime, setStartDatetime] = useState<Date | string>('');
   const [endDatetime, setEndDatetime] = useState<Date | string>('');
 
-  const [location, setLocation] = useState<string | null>('London');
+  // const [location, setLocation] = useState<string | null>('');
 
-  const [name, setName] = useState<string>('');
+  // const [name, setName] = useState<string>('');
 
-  const [isValidDate, setIsValidDate] = useState<boolean>(false);
+  // const [isValidDate, setIsValidDate] = useState<boolean>(false);
 
   function handleSelect(slotInfo: {
     start: stringOrDate;

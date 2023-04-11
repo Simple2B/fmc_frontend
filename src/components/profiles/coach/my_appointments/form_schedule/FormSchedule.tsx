@@ -151,7 +151,7 @@ const FormSchedule: React.FC<IFormSchedule> = ({
             </Box>
             <Autocomplete
               disablePortal
-              value={packageSchedule?.name}
+              value={packageSchedule ? packageSchedule.name : ''}
               onChange={(event: any, newValue: string | null) => {
                 const packageData = packagesSchedule.filter(
                   (p) => p.name === newValue
@@ -227,15 +227,22 @@ const FormSchedule: React.FC<IFormSchedule> = ({
                   fontSize: '14px',
                   fontWeight: 500,
                   color: '#ffffff',
-                  backgroundColor: '#F05547',
+                  backgroundColor:
+                    packageSchedule?.name.length === 0 ? 'grey' : '#F05547',
                   borderRadius: '6px',
                   transition: 'easeOut 0.3s all',
                   '&:hover': {
-                    boxShadow: '0px 0px 5px #F05547',
+                    boxShadow:
+                      packageSchedule?.name.length === 0
+                        ? 'none'
+                        : '0px 0px 5px #F05547',
                     transition: 'easeOut 0.3s all',
                   },
                 }}
-                onClick={handleClickSchedule}
+                onClick={() => {
+                  if (packageSchedule?.name.length === 0) return;
+                  handleClickSchedule();
+                }}
               >
                 {btnTitle}
               </Box>
