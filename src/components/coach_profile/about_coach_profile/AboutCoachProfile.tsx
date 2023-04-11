@@ -3,9 +3,15 @@ import * as React from 'react';
 import About from './_About';
 import Schedule from './schedule_column/Schedule';
 
-export interface IAboutCoachProfile {}
+export interface IAboutCoachProfile {
+  isLogIn: boolean | null;
+  userType: string | null;
+}
 
-const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
+const AboutCoachProfile: React.FC<IAboutCoachProfile> = ({
+  isLogIn,
+  userType,
+}) => {
   const matches950 = useMediaQuery('(max-width:950px)');
   return (
     <Box
@@ -22,7 +28,7 @@ const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
       gap={matches950 ? 3 : 13}
     >
       <About />
-      <Schedule maxWidth={610} />
+      <Schedule maxWidth={610} isLogIn={isLogIn} userType={userType} />
     </Box>
   );
 };

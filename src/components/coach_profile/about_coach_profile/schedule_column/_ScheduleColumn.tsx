@@ -3,6 +3,7 @@ import CustomModel from '@/common/modal/Modal';
 import MessageSubscription from '@/components/message_subscription/MessageSubscription';
 import { CoachScheduleService } from '@/services/services/CoachScheduleService';
 import { StripeService } from '@/services/services/StripeService';
+import { UserType } from '@/store/types/user';
 import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import moment from 'moment';
@@ -10,12 +11,29 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-
+import InfoModalSchedule from '../../lessons_offered/lessons_offere_card/booked_info_forms/InfoModalSchedule';
+import InfoModelSignInSignUP from '../../lessons_offered/lessons_offere_card/booked_info_forms/InfoModalSignInSignUP';
 export interface IScheduleColumn {
   day: string;
+  isLogIn: boolean | null;
+  userType: string | null;
 }
 
-const ScheduleColumn: React.FC<IScheduleColumn> = ({ day }) => {
+const ScheduleColumn: React.FC<IScheduleColumn> = ({
+  day,
+  isLogIn,
+  userType,
+}) => {
+  const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
+  const [isBookSession, setIsBookSession] = useState<boolean>(false);
+
+  const handleClickInfoModelSignInSignUP = () => {
+    setIsOpenLogIn(!isOpenLogIn);
+  };
+
+  const handleClickBookSession = () => {
+    setIsBookSession(!isBookSession);
+  };
   const router = useRouter();
   const queryClient = useQueryClient();
   const coachUuid = router.query.uuid_coach;
@@ -249,7 +267,17 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({ day }) => {
                       transition: 'ease-in-out 0.3s all',
                     },
                   }}
-                  onClick={() => bookedTime(value.uuid)}
+                  onClick={() => {
+                    if (userType === UserType.coach || !isLogIn) {
+                      setIsOpenLogIn(true);
+                      return;
+                    }
+                    if (isLogIn && userType === UserType.student) {
+                      setIsBookSession(true);
+                      return;
+                    }
+                    bookedTime(value.uuid);
+                  }}
                 >
                   {value.time}
                 </Box>
@@ -276,6 +304,21 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({ day }) => {
         <CustomModel isOpen={isLoad}>
           <Loader />
         </CustomModel>
+      )}
+
+      {isOpenLogIn && (
+        <InfoModelSignInSignUP
+          isOpenLogIn={isOpenLogIn}
+          handleClick={handleClickInfoModelSignInSignUP}
+        />
+      )}
+      {isBookSession && (
+        <InfoModalSchedule
+          isBookSession={isBookSession}
+          handleClick={handleClickBookSession}
+          isLogIn={isLogIn}
+          userType={userType}
+        />
       )}
     </Box>
   );

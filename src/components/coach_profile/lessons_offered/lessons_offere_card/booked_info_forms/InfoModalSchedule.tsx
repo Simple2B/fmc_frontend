@@ -6,11 +6,15 @@ import * as React from 'react';
 export interface IInfoModalSchedule {
   isBookSession: boolean;
   handleClick: () => void;
+  isLogIn: boolean | null;
+  userType: string | null;
 }
 
 const InfoModalSchedule: React.FC<IInfoModalSchedule> = ({
   isBookSession,
   handleClick,
+  isLogIn,
+  userType,
 }) => {
   return (
     <CustomModel isOpen={isBookSession} handleClick={handleClick}>
@@ -70,7 +74,7 @@ const InfoModalSchedule: React.FC<IInfoModalSchedule> = ({
             </Box>
           </Box>
           <Box sx={{ m: '23px auto', width: 605 }} flex={1}>
-            <Schedule maxWidth={605} />
+            <Schedule maxWidth={605} isLogIn={isLogIn} userType={userType} />
           </Box>
           {/* TODO: add for next step of project */}
           {/* <Box

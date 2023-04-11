@@ -8,9 +8,15 @@ import ScheduleColumn from './_ScheduleColumn';
 
 export interface ISchedule {
   maxWidth?: number | string;
+  isLogIn: boolean | null;
+  userType: string | null;
 }
 
-const Schedule: React.FC<ISchedule> = ({ maxWidth = 515 }) => {
+const Schedule: React.FC<ISchedule> = ({
+  maxWidth = 515,
+  isLogIn,
+  userType,
+}) => {
   const matches950 = useMediaQuery('(max-width:950px)');
 
   const router = useRouter();
@@ -134,7 +140,14 @@ const Schedule: React.FC<ISchedule> = ({ maxWidth = 515 }) => {
           }}
         >
           {dates.map((date, index) => {
-            return <ScheduleColumn key={index} day={date} />;
+            return (
+              <ScheduleColumn
+                key={index}
+                day={date}
+                isLogIn={isLogIn}
+                userType={userType}
+              />
+            );
           })}
         </Box>
         {/* <Box

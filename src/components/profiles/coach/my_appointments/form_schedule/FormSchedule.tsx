@@ -210,7 +210,6 @@ const FormSchedule: React.FC<IFormSchedule> = ({
                     transition: 'easeOut 0.3s all',
                   },
                 }}
-                // () => setIsOpenFormEventCreate(!openFormEventCreate)
                 onClick={openForm}
               >
                 Cancel

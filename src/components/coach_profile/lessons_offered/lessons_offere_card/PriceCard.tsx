@@ -154,6 +154,8 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
         <InfoModalSchedule
           isBookSession={isBookSession}
           handleClick={handleClickBookSession}
+          isLogIn={isLogIn}
+          userType={userType}
         />
       )}
     </Box>

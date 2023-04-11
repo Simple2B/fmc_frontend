@@ -49,7 +49,7 @@ export default function CoachProfilePage() {
         <CoachSearchNavbar wrapperClassName={styles.boxCoachSearch} />
         <div className={styles.boxCoachSearchContent}>
           <CardCoachProfile />
-          <AboutCoachProfile />
+          <AboutCoachProfile isLogIn={isLogIn} userType={userType} />
           <LessonsOffered isLogIn={isLogIn} userType={userType} />
           <Box
             sx={{
