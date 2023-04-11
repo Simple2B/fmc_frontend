@@ -61,8 +61,7 @@ export default function SignUpCoach() {
     CoachGoogleAuth();
   };
 
-  const onFailure = (res: any) => {
-    console.log('[SignUpCoach] onFailure: res ', res);
+  const onFailure = () => {
     router.push('/sign_up/coach');
     localStorage.removeItem('googleAuth');
     setSuccess(false);
