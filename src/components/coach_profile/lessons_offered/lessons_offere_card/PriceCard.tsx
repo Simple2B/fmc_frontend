@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
-import Schedule from '../../about_coach_profile/_Schedule';
+import Schedule from '../../about_coach_profile/schedule_column/Schedule';
 
 const testData = [
   {
@@ -33,10 +33,7 @@ export interface IPriceCard {
 
 const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
   const router = useRouter();
-  const coachUuid = router.query.uuid_coach;
-
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
-
   const [isBookSession, setIsBookSession] = useState<boolean>(false);
 
   return (
@@ -142,7 +139,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
         );
       })}
 
-      {isOpenLogIn && (
+      {!isLogIn && isOpenLogIn && (
         <CustomModel
           isOpen={isOpenLogIn}
           handleClick={() => setIsOpenLogIn(!isOpenLogIn)}
@@ -292,7 +289,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
         </CustomModel>
       )}
 
-      {isBookSession && (
+      {isBookSession && userType === UserType.student && (
         <CustomModel
           isOpen={isBookSession}
           handleClick={() => setIsBookSession(!isBookSession)}
@@ -353,9 +350,10 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
                 </Box>
               </Box>
               <Box sx={{ m: '23px auto', width: 605 }} flex={1}>
-                <Schedule coachUuid={coachUuid} maxWidth={605} />
+                <Schedule maxWidth={605} />
               </Box>
-              <Box
+              {/* TODO: add for next step of project */}
+              {/* <Box
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -397,7 +395,7 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
                 >
                   Proceed
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
             {/* <Typography
               id="modal-modal-title"

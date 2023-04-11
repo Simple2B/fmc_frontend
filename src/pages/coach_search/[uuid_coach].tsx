@@ -36,7 +36,8 @@ export default function CoachProfilePage() {
       }
     };
     whoAmI();
-  }, [router, router.asPath]);
+  }, [router.asPath]);
+
   return (
     <>
       <Head>

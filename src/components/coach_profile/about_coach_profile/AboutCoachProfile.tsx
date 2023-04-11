@@ -1,15 +1,12 @@
 import { Box, useMediaQuery } from '@mui/material';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import About from './_About';
-import Schedule from './_Schedule';
+import Schedule from './schedule_column/Schedule';
 
 export interface IAboutCoachProfile {}
 
 const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
-  const router = useRouter();
   const matches950 = useMediaQuery('(max-width:950px)');
-  const coachUuid = router.query.uuid_coach;
   return (
     <Box
       sx={{
@@ -24,8 +21,8 @@ const AboutCoachProfile: React.FC<IAboutCoachProfile> = () => {
       }}
       gap={matches950 ? 3 : 13}
     >
-      <About coachUuid={coachUuid} />
-      <Schedule coachUuid={coachUuid} />
+      <About />
+      <Schedule maxWidth={610} />
     </Box>
   );
 };

@@ -156,7 +156,7 @@ const Packages: React.FC<IPackages> = () => {
       title: name,
       location: locData[0].locationData,
       sport: sportData[0].sportData,
-      price: Number(price),
+      price: Number(price) * 100,
       max_people: Number(amount),
       about: aboutSession,
     };
