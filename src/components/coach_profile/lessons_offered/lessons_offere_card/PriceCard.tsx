@@ -1,4 +1,5 @@
 import { UserType } from '@/store/types/user';
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
@@ -28,9 +29,16 @@ const testData = [
 export interface IPriceCard {
   isLogIn: boolean | null;
   userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
 }
 
-const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
+const PriceCard: React.FC<IPriceCard> = ({
+  isLogIn,
+  userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
+}) => {
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
   const [isBookSession, setIsBookSession] = useState<boolean>(false);
 
@@ -156,6 +164,8 @@ const PriceCard: React.FC<IPriceCard> = ({ isLogIn, userType }) => {
           handleClick={handleClickBookSession}
           isLogIn={isLogIn}
           userType={userType}
+          isPaymentCheck={isPaymentCheck}
+          setIsPaymentCheck={setIsPaymentCheck}
         />
       )}
     </Box>

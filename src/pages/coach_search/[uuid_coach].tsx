@@ -60,7 +60,12 @@ export default function CoachProfilePage() {
             isPaymentCheck={isPaymentCheck}
             setIsPaymentCheck={setIsPaymentCheck}
           />
-          <LessonsOffered isLogIn={isLogIn} userType={userType} />
+          <LessonsOffered
+            isLogIn={isLogIn}
+            userType={userType}
+            isPaymentCheck={isPaymentCheck}
+            setIsPaymentCheck={setIsPaymentCheck}
+          />
           <Box
             sx={{
               width: '96%',
