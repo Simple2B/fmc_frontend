@@ -1,9 +1,9 @@
-import { ISession } from '@/store/types/session/sessionTypes';
+import { StudentLesson } from '@/services/models/StudentLesson';
 import { Box, Typography } from '@mui/material';
 import ReviewForm from './ReviewForm';
 
 interface IReviewBodyProps {
-  lessonData: ISession | undefined;
+  lessonData: StudentLesson | undefined;
 }
 
 const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
@@ -68,7 +68,7 @@ const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
                     xs: 8,
                   }}
                 >
-                  {lessonData?.lesson.sport.name} Coach
+                  {lessonData?.schedule.lesson.sport.name} Coach
                 </Typography>
               </Box>
             </Box>

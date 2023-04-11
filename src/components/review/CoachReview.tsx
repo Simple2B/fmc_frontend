@@ -1,4 +1,4 @@
-import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
+import { LessonService } from '@/services/services/LessonService';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
@@ -9,7 +9,7 @@ const CoachReview = () => {
 
   const { data } = useQuery(['getLesson'], async () => {
     const lessonUUID = router.query ? router.query.id : '';
-    const request = studentClientApi.studentGetLessonData(lessonUUID as string);
+    const request = LessonService.apiGetLesson(lessonUUID);
     const result = await request;
     return result;
   });
