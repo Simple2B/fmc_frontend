@@ -5,6 +5,7 @@ import LessonsOffered from '@/components/coach_profile/lessons_offered/LessonsOf
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
 import Reviews from '@/components/profiles/coach/reviews/Reviews';
 import { WhoamiService } from '@/services/services/WhoamiService';
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -15,6 +16,10 @@ export default function CoachProfilePage() {
   const router = useRouter();
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
+
+  const [isPaymentCheck, setIsPaymentCheck] = useState<PaymentCheckState>(
+    PaymentCheckState.PENDING
+  );
 
   useEffect(() => {
     const whoAmI = async () => {
@@ -49,7 +54,12 @@ export default function CoachProfilePage() {
         <CoachSearchNavbar wrapperClassName={styles.boxCoachSearch} />
         <div className={styles.boxCoachSearchContent}>
           <CardCoachProfile />
-          <AboutCoachProfile isLogIn={isLogIn} userType={userType} />
+          <AboutCoachProfile
+            isLogIn={isLogIn}
+            userType={userType}
+            isPaymentCheck={isPaymentCheck}
+            setIsPaymentCheck={setIsPaymentCheck}
+          />
           <LessonsOffered isLogIn={isLogIn} userType={userType} />
           <Box
             sx={{

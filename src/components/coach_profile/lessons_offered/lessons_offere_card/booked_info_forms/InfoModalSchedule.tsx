@@ -1,5 +1,6 @@
 import CustomModel from '@/common/modal/Modal';
 import Schedule from '@/components/coach_profile/about_coach_profile/schedule_column/Schedule';
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import * as React from 'react';
 
@@ -8,6 +9,8 @@ export interface IInfoModalSchedule {
   handleClick: () => void;
   isLogIn: boolean | null;
   userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
 }
 
 const InfoModalSchedule: React.FC<IInfoModalSchedule> = ({
@@ -15,6 +18,8 @@ const InfoModalSchedule: React.FC<IInfoModalSchedule> = ({
   handleClick,
   isLogIn,
   userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
 }) => {
   return (
     <CustomModel isOpen={isBookSession} handleClick={handleClick}>
@@ -74,7 +79,13 @@ const InfoModalSchedule: React.FC<IInfoModalSchedule> = ({
             </Box>
           </Box>
           <Box sx={{ m: '23px auto', width: 605 }} flex={1}>
-            <Schedule maxWidth={605} isLogIn={isLogIn} userType={userType} />
+            <Schedule
+              maxWidth={605}
+              isLogIn={isLogIn}
+              userType={userType}
+              isPaymentCheck={isPaymentCheck}
+              setIsPaymentCheck={setIsPaymentCheck}
+            />
           </Box>
           {/* TODO: add for next step of project */}
           {/* <Box

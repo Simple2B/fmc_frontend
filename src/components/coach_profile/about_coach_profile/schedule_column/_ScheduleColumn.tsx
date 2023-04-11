@@ -1,5 +1,3 @@
-import Loader from '@/common/loader/Loader';
-import CustomModel from '@/common/modal/Modal';
 import MessageSubscription from '@/components/message_subscription/MessageSubscription';
 import { CoachScheduleService } from '@/services/services/CoachScheduleService';
 import { StripeService } from '@/services/services/StripeService';
@@ -16,12 +14,16 @@ export interface IScheduleColumn {
   day: string;
   isLogIn: boolean | null;
   userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
 }
 
 const ScheduleColumn: React.FC<IScheduleColumn> = ({
   day,
   isLogIn,
   userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
 }) => {
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
 
@@ -32,37 +34,21 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
   const router = useRouter();
   const queryClient = useQueryClient();
   const coachUuid = router.query.uuid_coach;
-  const [isLoad, setIsLoad] = useState<boolean>(false);
-  const [isPaymentCheck, setIsPaymentCheck] = useState<PaymentCheckState>(
-    PaymentCheckState.PENDING
-  );
 
   useEffect(() => {
     const success = router.asPath.includes('success');
     const cancel = router.asPath.includes('cancel');
     if (success) {
-      setIsLoad(true);
+      // setIsLoad(true);
       setIsPaymentCheck(PaymentCheckState.ACTIVE);
-      setIsLoad(false);
-      router.push(
-        {
-          pathname: `/coach_search/${coachUuid}`,
-        },
-        undefined,
-        { shallow: true }
-      );
+      // setIsLoad(false);
+      router.push(`/coach_search/${coachUuid}`);
     }
     if (cancel) {
-      setIsLoad(true);
+      // setIsLoad(true);
       setIsPaymentCheck(PaymentCheckState.CANCELLED);
-      setIsLoad(false);
-      router.push(
-        {
-          pathname: `/coach_search/${coachUuid}`,
-        },
-        undefined,
-        { shallow: true }
-      );
+      // setIsLoad(false);
+      router.push(`/coach_search/${coachUuid}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
@@ -79,24 +65,12 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
 
   const closeSuccessMessage = () => {
     setIsPaymentCheck(PaymentCheckState.PENDING);
-    router.push(
-      {
-        pathname: `/coach_search/${coachUuid}`,
-      },
-      undefined,
-      { shallow: true }
-    );
+    router.push(`/coach_search/${coachUuid}`);
   };
 
   const closeCancelMessage = () => {
     setIsPaymentCheck(PaymentCheckState.PENDING);
-    router.push(
-      {
-        pathname: `/coach_search/${coachUuid}`,
-      },
-      undefined,
-      { shallow: true }
-    );
+    router.push(`/coach_search/${coachUuid}`);
   };
 
   const [daysData, setDaysData] = useState<{
@@ -105,7 +79,7 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
     times: { uuid: string; time: string; isActive: boolean }[];
   }>();
 
-  useQuery(['schedules', day, isLoad], async () => {
+  useQuery(['schedules', day, isPaymentCheck], async () => {
     if (typeof coachUuid === 'string') {
       const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
         coachUuid,
@@ -293,11 +267,11 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           closeSuccessMessage={closeCancelMessage}
         />
       )}
-      {isLoad && (
+      {/* {isLoad && (
         <CustomModel isOpen={isLoad}>
           <Loader />
         </CustomModel>
-      )}
+      )} */}
 
       {isOpenLogIn && (
         <InfoModelSignInSignUP

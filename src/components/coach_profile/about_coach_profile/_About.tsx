@@ -1,20 +1,26 @@
 import { ProfilesService } from '@/services/services/ProfilesService';
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 
-export interface IAbout {}
+export interface IAbout {
+  isPaymentCheck: PaymentCheckState;
+}
 
-const About: React.FC<IAbout> = () => {
+const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
   const router = useRouter();
   const coachUuid = router.query.uuid_coach;
-  const profileCoachDataQuery = useQuery(['coachProfile'], async () => {
-    if (typeof coachUuid === 'string') {
-      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
-      return result;
+  const profileCoachDataQuery = useQuery(
+    ['coachProfile', isPaymentCheck],
+    async () => {
+      if (typeof coachUuid === 'string') {
+        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+        return result;
+      }
     }
-  });
+  );
   return (
     <Box flex={1}>
       <Box

@@ -1,4 +1,5 @@
 import { ProfilesService } from '@/services/services/ProfilesService';
+import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Autocomplete, Box, TextField, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -10,12 +11,16 @@ export interface ISchedule {
   maxWidth?: number | string;
   isLogIn: boolean | null;
   userType: string | null;
+  isPaymentCheck: PaymentCheckState;
+  setIsPaymentCheck: React.Dispatch<React.SetStateAction<PaymentCheckState>>;
 }
 
 const Schedule: React.FC<ISchedule> = ({
   maxWidth = 515,
   isLogIn,
   userType,
+  isPaymentCheck,
+  setIsPaymentCheck,
 }) => {
   const matches950 = useMediaQuery('(max-width:950px)');
 
@@ -40,27 +45,19 @@ const Schedule: React.FC<ISchedule> = ({
   const [optionsLocations, setOptionsLocations] = useState<string[]>([]);
   const [location, setLocation] = useState<string>('');
 
-  const profileCoachDataQuery = useQuery(
-    ['coachProfile', coachUuid],
-    async () => {
-      if (typeof coachUuid === 'string') {
-        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
-        if (result.locations.length > 0) {
-          const address = result.locations.map((loc) => {
-            return loc.city + ', ' + loc.street + ', ' + loc.postal_code;
-          });
-          setOptionsLocations(address);
-          setLocation(address[0]);
-        }
-        return result;
+  useQuery(['coachProfile', coachUuid, isPaymentCheck], async () => {
+    if (typeof coachUuid === 'string') {
+      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+      if (result.locations.length > 0) {
+        const address = result.locations.map((loc) => {
+          return loc.city + ', ' + loc.street + ', ' + loc.postal_code;
+        });
+        setOptionsLocations(address);
+        setLocation(address[0]);
       }
+      return result;
     }
-  );
-
-  console.log(
-    '[schedulesDataQuery] profileCoachDataQuery => ',
-    profileCoachDataQuery
-  );
+  });
 
   return (
     <Box
@@ -146,6 +143,8 @@ const Schedule: React.FC<ISchedule> = ({
                 day={date}
                 isLogIn={isLogIn}
                 userType={userType}
+                isPaymentCheck={isPaymentCheck}
+                setIsPaymentCheck={setIsPaymentCheck}
               />
             );
           })}
