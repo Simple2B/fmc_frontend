@@ -7,15 +7,46 @@ import Paper from '@mui/material/Paper';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+export interface IBtnSearch {
+  searchCoaches: () => void;
+}
+
+const BtnSearch: React.FC<IBtnSearch> = ({ searchCoaches }) => {
+  const matches845 = useMediaQuery('(max-width:845px)');
+  const matches445 = useMediaQuery('(max-width:445px)');
+  return (
+    <Button
+      sx={{
+        position: 'absolute',
+        textTransform: 'capitalize',
+        top: matches845 ? '4.5px' : '7px',
+        right: '6px',
+        color: '#FFF',
+        backgroundColor: '#F05547',
+        width: matches445 ? '' : matches845 ? '88px' : '108px',
+        height: matches445 ? '24px' : matches845 ? '36px' : '46px',
+        borderRadius: matches845 ? '4px' : '8px',
+        '&:hover': {
+          backgroundColor: 'grey',
+        },
+      }}
+      onClick={searchCoaches}
+    >
+      Search
+    </Button>
+  );
+};
+
 export interface ISearchInput {
-  sports: {
+  sports?: {
     id: number;
     name: string;
     isActive: boolean;
   }[];
+  children?: any;
 }
 
-const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
+const SearchInput: React.FC<ISearchInput> = ({ sports, children }) => {
   const router = useRouter();
 
   const matches845 = useMediaQuery('(max-width:845px)');
@@ -30,7 +61,9 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
         pathname: '/coach_search',
         query: {
           name: name,
-          sportsIdes: sports.filter((s) => s.isActive).map((s) => s.id),
+          sportsIdes: sports
+            ? sports.filter((s) => s.isActive).map((s) => s.id)
+            : '',
           address: address,
         },
       },
@@ -104,7 +137,7 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
       </Box>
 
       <Box sx={{ width: matches445 ? '' : matches845 ? '88px' : '108px' }}>
-        <Button
+        {/* <Button
           sx={{
             position: 'absolute',
             textTransform: 'capitalize',
@@ -122,7 +155,8 @@ const SearchInput: React.FC<ISearchInput> = ({ sports }) => {
           onClick={searchCoaches}
         >
           Search
-        </Button>
+        </Button> */}
+        {children ? children : <BtnSearch searchCoaches={searchCoaches} />}
       </Box>
     </Paper>
   );

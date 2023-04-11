@@ -1,3 +1,4 @@
+import SearchInput from '@/components/landing_page/search_box/SearchBox';
 import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/studentInstance';
 import { logout } from '@/helper/logout/logout';
 import { NotificationService, StudentLesson, User } from '@/services';
@@ -15,7 +16,6 @@ import {
   AppBar,
   Avatar,
   Box,
-  InputBase,
   Menu,
   MenuItem,
   Toolbar,
@@ -105,7 +105,8 @@ const NavBar: React.FC<INavBar> = ({
         {/* TODO: for search use mui Autocomplete */}
         {userType === UserType.student && (
           <div className={style.search}>
-            <InputBase placeholder="Search a coach" />
+            {/* <InputBase placeholder="Search a coach" /> */}
+            <SearchInput />
           </div>
         )}
 
