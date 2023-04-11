@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import moment from 'moment';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -42,7 +43,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
           console.log('ITEM ', item);
           const date = new Date(item.appointment_time);
           const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-          const time = `${date.getHours()}:${date.getMinutes()}`;
+          const time = moment(date).format('LT');
           return (
             <Card
               key={index}
