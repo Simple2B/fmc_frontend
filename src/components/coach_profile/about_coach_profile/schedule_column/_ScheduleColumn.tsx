@@ -180,20 +180,19 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
       </Box>
       <Box
         sx={{
-          pt: '35px',
-          maxHeight: '100%',
+          width: '100px',
           display: 'flex',
           justifyContent: 'space-around',
           alignItems: 'center',
           p: '20px auto',
           height: '270px',
-          overflowY: 'scroll',
+          overflow: 'hidden',
+          overflowY: 'auto',
         }}
       >
         <Box
           sx={{
-            mt: '35px',
-            height: '270px',
+            height: '100%',
             display: 'flex',
             justifyContent: 'space-around',
             flexDirection: 'column',
