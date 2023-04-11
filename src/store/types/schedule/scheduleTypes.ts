@@ -12,6 +12,7 @@ export interface ISchedule extends IBaseSchedule {
   uuid: string;
   lesson: IBasePackage;
   coach_id: number;
+  is_booked: boolean;
   coach: IYourProfile;
   reccurence: string | null;
 }
