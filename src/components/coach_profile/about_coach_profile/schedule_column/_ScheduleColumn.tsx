@@ -268,11 +268,6 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           closeSuccessMessage={closeCancelMessage}
         />
       )}
-      {/* {isLoad && (
-        <CustomModel isOpen={isLoad}>
-          <Loader />
-        </CustomModel>
-      )} */}
 
       {isOpenLogIn && (
         <InfoModelSignInSignUP
