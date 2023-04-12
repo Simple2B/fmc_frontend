@@ -3,6 +3,8 @@ import PersonalInfo from '@/components/forms/persona_iInfo/PersonalInfo';
 import YourProfile from '@/components/forms/your_profile/YourProfile';
 
 import Box from '@mui/material/Box';
+
+import StripeConnect from '@/components/forms/stripe_connect/StripeConnect';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import styles from './Settings.module.sass';
@@ -33,8 +35,11 @@ const Settings: React.FC<ISettings> = ({ userType }) => {
           <Box className={styles.personalInfoContainer}>
             <PersonalInfo userType={userType} />
           </Box>
-          <Box className={styles.changeYourProfileContainer}>
+          <Box className={styles.yourProfileContainer}>
             <YourProfile userType={userType} />
+          </Box>
+          <Box className={styles.yourProfileContainer}>
+            <StripeConnect />
           </Box>
           {isGoogleAuth ? null : (
             <Box className={styles.changePasswordContainer}>

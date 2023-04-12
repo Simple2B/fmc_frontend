@@ -79,6 +79,7 @@ const NavBar: React.FC<INavBar> = ({
     },
     { refetchInterval: 10000 }
   );
+
   return (
     <AppBar
       position="sticky"
@@ -87,7 +88,7 @@ const NavBar: React.FC<INavBar> = ({
       <Toolbar className={style.toolBar}>
         <Typography
           variant="h6"
-          // color=""
+          color="#000000"
           sx={{ display: matches970 ? 'none' : 'block' }}
         >
           LOGO
