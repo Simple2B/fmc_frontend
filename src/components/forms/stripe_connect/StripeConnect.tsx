@@ -1,12 +1,32 @@
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 
+import { StripeService } from '@/services';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import stripeLogo from '../../../../public/stripe_logo.png';
 
 export interface IStripeConnect {}
 
 const StripeConnect: React.FC<IStripeConnect> = () => {
+  // eslint-disable-next-line no-unused-vars
+  const { data, refetch } = useQuery(
+    ['coachStripeConnect'],
+    async () => {
+      const res = await StripeService.apiCoachStripeOauth();
+      return res;
+    },
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        console.log(data); // success
+        window.location.href = data;
+      },
+    }
+  );
+  const handleStripeConnect = () => {
+    refetch();
+  };
   return (
     <Box
       sx={{
@@ -93,6 +113,7 @@ const StripeConnect: React.FC<IStripeConnect> = () => {
             transition: 'all 0.5s ease-out',
           },
         }}
+        onClick={handleStripeConnect}
       >
         Connect with Stripe
       </Box>

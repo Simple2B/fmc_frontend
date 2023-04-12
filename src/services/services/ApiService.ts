@@ -824,6 +824,18 @@ export class ApiService {
     }
 
     /**
+     * Coach Stripe Oauth
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachStripeOauth(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/oauth',
+        });
+    }
+
+    /**
      * Reserve Booking
      * @param scheduleUuids
      * @returns any Successful Response
@@ -981,6 +993,18 @@ export class ApiService {
     }
 
     /**
+     * Get Current Coach Schedules
+     * @returns ScheduleList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetCurrentCoachSchedules(): CancelablePromise<ScheduleList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/schedule/schedules',
+        });
+    }
+
+    /**
      * Get Coach Schedules By Uuid
      * @param coachUuid
      * @param scheduleDate
@@ -989,7 +1013,7 @@ export class ApiService {
      */
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
-        scheduleDate?: string,
+        scheduleDate: string = '2023-04-12',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',
