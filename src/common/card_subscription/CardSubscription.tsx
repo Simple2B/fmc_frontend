@@ -10,16 +10,16 @@ export interface ICardSubscription {}
 
 const orders = [
   {
-    title: 'In order for your profileh',
+    title: '30 Days Free',
   },
   {
-    title: 'In order for your profileh',
+    title: 'A Calendar and Booking Management',
   },
   {
-    title: 'In order for your profileh',
+    title: 'Payments & Analytics Powered by Stripe',
   },
   {
-    title: 'In order for your profileh',
+    title: 'Feedback From Your Athletes',
   },
 ];
 

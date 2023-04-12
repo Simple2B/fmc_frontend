@@ -24,29 +24,48 @@ const QuestionsCards: React.FC<IQuestionsCards> = ({
     <Box className={styles.wrapperQuestionsCards} sx={{ width: width }}>
       {questions.map((item, index) => {
         return (
-          <Box key={index} className={styles.wrapperQuestionCard}>
+          <Box
+            key={index}
+            className={styles.wrapperQuestionCard}
+            onClick={() =>
+              setQuestions(
+                questions.map((item, ind) => {
+                  if (ind === index) {
+                    return {
+                      question: item.question,
+                      answer: item.answer,
+                      isOpen: !item.isOpen,
+                      isShowArrow: !item.isShowArrow,
+                    };
+                  } else {
+                    return item;
+                  }
+                })
+              )
+            }
+          >
             <Box className={styles.questionWrapper}>
               <Box className={styles.questionBox}>
                 <Box className={styles.question}>{item.question}</Box>
                 <Box
-                  sx={{ display: item.isOpen ? 'none' : 'block' }}
                   className={styles.arrow}
-                  onClick={() =>
-                    setQuestions(
-                      questions.map((item, ind) => {
-                        if (ind === index) {
-                          return {
-                            question: item.question,
-                            answer: item.answer,
-                            isOpen: true,
-                            isShowArrow: true,
-                          };
-                        } else {
-                          return item;
-                        }
-                      })
-                    )
-                  }
+                  sx={{ display: item.isOpen ? 'none' : 'block' }}
+                  // onClick={() =>
+                  //   setQuestions(
+                  //     questions.map((item, ind) => {
+                  //       if (ind === index) {
+                  //         return {
+                  //           question: item.question,
+                  //           answer: item.answer,
+                  //           isOpen: true,
+                  //           isShowArrow: true,
+                  //         };
+                  //       } else {
+                  //         return item;
+                  //       }
+                  //     })
+                  //   )
+                  // }
                 >
                   &#x2198;
                 </Box>
@@ -62,22 +81,22 @@ const QuestionsCards: React.FC<IQuestionsCards> = ({
                 <Box className={styles.answer}>{item.answer}</Box>
                 <Box
                   className={styles.arrow}
-                  onClick={() =>
-                    setQuestions(
-                      questions.map((item, ind) => {
-                        if (ind === index) {
-                          return {
-                            question: item.question,
-                            answer: item.answer,
-                            isOpen: false,
-                            isShowArrow: false,
-                          };
-                        } else {
-                          return item;
-                        }
-                      })
-                    )
-                  }
+                  // onClick={() =>
+                  //   setQuestions(
+                  //     questions.map((item, ind) => {
+                  //       if (ind === index) {
+                  //         return {
+                  //           question: item.question,
+                  //           answer: item.answer,
+                  //           isOpen: false,
+                  //           isShowArrow: false,
+                  //         };
+                  //       } else {
+                  //         return item;
+                  //       }
+                  //     })
+                  //   )
+                  // }
                 >
                   &#x2197;
                 </Box>
