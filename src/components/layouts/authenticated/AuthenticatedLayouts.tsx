@@ -48,6 +48,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
   const [isSuccess, setSuccess] = React.useState<boolean>(false);
 
   const [mode, setMode] = React.useState<PaletteMode>('light');
+
   const theme = createTheme({
     palette: {
       mode: mode,
