@@ -153,7 +153,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
 
   const schedulesDataQuery = useQuery(['schedulesData'], async () => {
     const result = await coachSchedulesApi.getSchedules();
-    console.log('[schedulesData] result => ', result);
     if (result.length > 0) {
       const resultData = result.map((s) => ({
         start: new Date(s.start_datetime),
