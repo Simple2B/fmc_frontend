@@ -38,6 +38,7 @@ export default function ProfileStudent() {
     last_name: '',
     profile_picture: '',
     is_verified: false,
+    stripe_account_id: null,
   });
 
   const uuidUser = router.asPath.split('user=')[1];
