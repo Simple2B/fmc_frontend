@@ -35,12 +35,11 @@ const Schedule: React.FC<ISchedule> = ({
   }
 
   // eslint-disable-next-line no-unused-vars
-  const [dates, setDates] = useState<string[]>([
-    today.toISOString().split('T')[0],
-    addDays(1),
-    addDays(2),
-    addDays(3),
-  ]);
+  const [dates, setDates] = useState<{ [key: number]: string[] }>({
+    1: [today.toISOString().split('T')[0], addDays(1), addDays(2), addDays(3)],
+  });
+
+  const [dateSlotKey, setDateSlotKey] = useState<number>(1);
 
   const [optionsLocations, setOptionsLocations] = useState<string[]>([]);
   const [location, setLocation] = useState<string>('');
@@ -59,6 +58,25 @@ const Schedule: React.FC<ISchedule> = ({
     }
   });
 
+  const addDateForSchedule = () => {
+    const indexLastSlotDate = Object.keys(dates).length;
+    const nextKey = Number(indexLastSlotDate) + 1;
+    const indexLastDate = Number(indexLastSlotDate) * 4;
+    const nextValue = [
+      addDays(indexLastDate),
+      addDays(indexLastDate + 1),
+      addDays(indexLastDate + 2),
+      addDays(indexLastDate + 3),
+    ];
+    setDateSlotKey(Number(indexLastSlotDate) + 1);
+    setDates((prev) => ({ ...prev, [nextKey]: nextValue }));
+  };
+
+  const removeDateForSchedule = () => {
+    delete dates[dateSlotKey];
+    setDateSlotKey(dateSlotKey - 1);
+  };
+
   return (
     <Box
       flex={1}
@@ -66,7 +84,7 @@ const Schedule: React.FC<ISchedule> = ({
         alignSelf: matches950 ? 'center' : 'flex-start',
         maxWidth: maxWidth,
         width: '100%',
-        height: 435,
+        // height: 435,
         boxShadow: '0px 0px 17px rgba(160, 160, 160, 0.25)',
         borderRadius: '16px',
         p: '24px 37px',
@@ -102,7 +120,7 @@ const Schedule: React.FC<ISchedule> = ({
       <Box
         sx={{
           position: 'relative',
-          height: '75%',
+          // height: '75%',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
@@ -111,20 +129,23 @@ const Schedule: React.FC<ISchedule> = ({
           borderRadius: '16px',
         }}
       >
-        {/* TODO: add on click to arrow  */}
-        {/* <Box
-          sx={{
-            border: 'solid black',
-            borderWidth: '0 1.5px 1.5px 0',
-            display: 'inline-block',
-            padding: '4px',
-            transform: 'rotate(135deg)',
-            cursor: 'pointer',
-            position: 'absolute',
-            top: '36px',
-            left: '17px',
-          }}
-        /> */}
+        {Object.keys(dates).length > 1 && (
+          <Box
+            sx={{
+              border: 'solid black',
+              borderWidth: '0 1.5px 1.5px 0',
+              display: 'inline-block',
+              padding: '4px',
+              transform: 'rotate(135deg)',
+              cursor: 'pointer',
+              position: 'absolute',
+              top: '36px',
+              left: '17px',
+            }}
+            onClick={removeDateForSchedule}
+          />
+        )}
+
         <Box
           flex={4}
           sx={{
@@ -136,7 +157,7 @@ const Schedule: React.FC<ISchedule> = ({
             alignItems: 'center',
           }}
         >
-          {dates.map((date, index) => {
+          {dates[dateSlotKey].map((date, index) => {
             return (
               <ScheduleColumn
                 key={index}
@@ -149,7 +170,7 @@ const Schedule: React.FC<ISchedule> = ({
             );
           })}
         </Box>
-        {/* <Box
+        <Box
           sx={{
             border: 'solid black',
             borderWidth: '0 1.5px 1.5px 0',
@@ -161,7 +182,8 @@ const Schedule: React.FC<ISchedule> = ({
             top: '36px',
             right: '17px',
           }}
-        /> */}
+          onClick={addDateForSchedule}
+        />
       </Box>
     </Box>
   );

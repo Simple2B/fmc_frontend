@@ -85,9 +85,18 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
         coachUuid,
         day
       );
+
       const startDate = moment(day).format('llll').split(',');
       const dayName = startDate[0];
       const date = startDate[1];
+      if (result.schedules.length === 0) {
+        setDaysData({
+          day: dayName,
+          date: date,
+          times: Array(5).fill({ uuid: '', time: '-', isActive: false }),
+        });
+        return result;
+      }
       const times = result.schedules.map((schedule) => ({
         uuid: schedule.uuid,
         time: schedule.start_datetime
@@ -185,9 +194,9 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           justifyContent: 'space-around',
           alignItems: 'center',
           p: '20px auto',
-          height: '270px',
+          // height: '270px',
           overflow: 'hidden',
-          overflowY: 'auto',
+          overflowY: 'scroll',
         }}
       >
         <Box
@@ -202,13 +211,14 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           {daysData &&
             daysData.times.length > 0 &&
             daysData.times.map((value, i) => {
-              if (value.time === '-') {
-                return (
-                  <Box sx={{ color: '#000000' }} key={i}>
-                    -
-                  </Box>
-                );
-              }
+              console.log('!!!!value.time => ', value.time);
+              // if (value.time === '-') {
+              //   return (
+              //     <Box sx={{ color: '#000000' }} key={i}>
+              //       -
+              //     </Box>
+              //   );
+              // }
               return (
                 <Box
                   key={i}
