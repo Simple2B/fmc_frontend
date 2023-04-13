@@ -9,7 +9,7 @@ const CoachReview = () => {
 
   const { data } = useQuery(['getLesson'], async () => {
     const lessonUUID = router.query ? router.query.id : '';
-    const request = LessonService.apiGetLesson(lessonUUID);
+    const request = LessonService.apiGetLesson(lessonUUID as string);
     const result = await request;
     return result;
   });
