@@ -34,6 +34,42 @@ export class StripeService {
     }
 
     /**
+     * Check Coach Stripe Onboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCheckCoachStripeOnboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/is_boarded',
+        });
+    }
+
+    /**
+     * Coach Stripe Onboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachStripeOnboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/onboard',
+        });
+    }
+
+    /**
+     * Coach Stripe Dashboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachStripeDashboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/dashboard',
+        });
+    }
+
+    /**
      * Reserve Booking
      * @param scheduleUuids
      * @returns any Successful Response

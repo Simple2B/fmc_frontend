@@ -1,34 +1,33 @@
+import { StripeService } from '@/services';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
-
-import { StripeService } from '@/services';
 import * as React from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import stripeLogo from '../../../../public/stripe_logo.png';
+import _StripeConnectBoarded from './_StripeConnectBoarded';
+import _StripeConnectNotBoarded from './_StripeConnectNotBoarded';
 
 export interface IStripeConnect {
   stripeAccountID: string | null;
 }
 
 const StripeConnect: React.FC<IStripeConnect> = ({ stripeAccountID }) => {
+  const [coachIsBoarded, setCoachIsBoarded] = useState(false);
   // eslint-disable-next-line no-unused-vars
-  const { data, refetch } = useQuery(
-    ['coachStripeConnect'],
+  const { data } = useQuery(
+    ['checkCoachStripeAccountOnBoard'],
     async () => {
-      const res = await StripeService.apiCoachStripeOauth();
+      const res = await StripeService.apiCheckCoachStripeOnboard();
+      console.log('IS BOARDED ?', res);
+      setCoachIsBoarded(res);
       return res;
     },
     {
-      enabled: false,
-      onSuccess: (data) => {
-        console.log(data); // success
-        window.location.href = data;
-      },
+      refetchInterval: 10000,
     }
   );
-  const handleStripeConnect = () => {
-    refetch();
-  };
+
   return (
     <Box
       sx={{
@@ -66,85 +65,10 @@ const StripeConnect: React.FC<IStripeConnect> = ({ stripeAccountID }) => {
         />
       </Box>
 
-      {stripeAccountID ? (
-        <>
-          <Box
-            sx={{
-              m: '5px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Box
-              sx={{
-                fontFamily: 'Inter, sens-serif',
-                fontSize: '16px',
-                fontWeight: 700,
-                color: '#000000',
-                pb: '8px',
-              }}
-            >
-              Connect with Stripe
-            </Box>
-            <Box
-              sx={{
-                fontFamily: 'Inter, sens-serif',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: '#777777',
-              }}
-            >
-              Use your Stripe account to accept debit and credit cards.
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              m: '5px',
-              cursor: 'pointer',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '279px',
-              height: '44px',
-              backgroundColor: '#1876D1',
-              color: '#ffffff',
-              borderRadius: '8px',
-              transition: 'all 0.5s ease-out',
-              '&:hover': {
-                backgroundColor: '#222CDF',
-                color: '#ffffff',
-                transition: 'all 0.5s ease-out',
-              },
-            }}
-            onClick={handleStripeConnect}
-          >
-            Connect with Stripe
-          </Box>
-        </>
+      {coachIsBoarded ? (
+        <_StripeConnectBoarded />
       ) : (
-        <Box
-          sx={{
-            m: '5px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-          }}
-        >
-          <Box
-            sx={{
-              fontFamily: 'Inter, sens-serif',
-              fontSize: '16px',
-              fontWeight: 700,
-              color: '#000000',
-              pb: '8px',
-            }}
-          >
-            You are already connected to STRIPE EXPRESS
-          </Box>
-        </Box>
+        <_StripeConnectNotBoarded stripeAccountID={stripeAccountID} />
       )}
     </Box>
   );

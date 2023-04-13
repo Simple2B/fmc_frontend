@@ -32,10 +32,10 @@ export class ProfilesService {
 
     /**
      * Get Coach Profile
-     * @returns User Successful Response
+     * @returns Coach Successful Response
      * @throws ApiError
      */
-    public static apiGetCoachProfile(): CancelablePromise<User> {
+    public static apiGetCoachProfile(): CancelablePromise<Coach> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/profile/coach',
