@@ -79,30 +79,41 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
     times: { uuid: string; time: string; isActive: boolean }[];
   }>();
 
-  useQuery(['schedules', day, isPaymentCheck], async () => {
-    if (typeof coachUuid === 'string') {
-      const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
-        coachUuid,
-        day
-      );
-      const startDate = moment(day).format('llll').split(',');
-      const dayName = startDate[0];
-      const date = startDate[1];
-      const times = result.schedules.map((schedule) => ({
-        uuid: schedule.uuid,
-        time: schedule.start_datetime
-          ? moment(schedule.start_datetime).format('LT')
-          : '-',
-        isActive: false,
-      }));
-      setDaysData({
-        day: dayName,
-        date: date,
-        times: times,
-      });
-      return result;
+  useQuery(
+    ['schedules', day, isPaymentCheck, coachUuid as string],
+    async () => {
+      if (typeof coachUuid === 'string') {
+        const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
+          coachUuid,
+          day
+        );
+        const startDate = moment(day).format('llll').split(',');
+        const dayName = startDate[0];
+        const date = startDate[1];
+        if (result.schedules.length === 0) {
+          setDaysData({
+            day: dayName,
+            date: date,
+            times: Array(5).fill({ uuid: '', time: '-', isActive: false }),
+          });
+          return result;
+        }
+        const times = result.schedules.map((schedule) => ({
+          uuid: schedule.uuid,
+          time: schedule.start_datetime
+            ? moment(schedule.start_datetime).format('LT')
+            : '-',
+          isActive: false,
+        }));
+        setDaysData({
+          day: dayName,
+          date: date,
+          times: times,
+        });
+        return result;
+      }
     }
-  });
+  );
 
   // TODO: will done multiply times booking (now one time)
   const mutationSchedulesFunction = useMutation(
@@ -185,9 +196,9 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           justifyContent: 'space-around',
           alignItems: 'center',
           p: '20px auto',
-          height: '270px',
+          // height: '270px',
           overflow: 'hidden',
-          overflowY: 'auto',
+          overflowY: 'scroll',
         }}
       >
         <Box
@@ -202,13 +213,6 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           {daysData &&
             daysData.times.length > 0 &&
             daysData.times.map((value, i) => {
-              if (value.time === '-') {
-                return (
-                  <Box sx={{ color: '#000000' }} key={i}>
-                    -
-                  </Box>
-                );
-              }
               return (
                 <Box
                   key={i}
@@ -221,22 +225,30 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
                     fontWeight: 500,
                     fontSize: '12px',
                     mb: '3px',
-                    color: value.isActive ? '#ffffff' : '#333333',
+                    color:
+                      value.isActive && value.time !== '-'
+                        ? '#ffffff'
+                        : '#333333',
                     // p: '9px 11px',
                     width: '97px',
                     height: '32.06px',
-                    background: value.isActive
-                      ? '#1976d2'
-                      : 'rgba(34, 44, 223, 0.1)',
+                    background:
+                      value.isActive && value.time !== '-'
+                        ? '#1976d2'
+                        : 'rgba(34, 44, 223, 0.1)',
                     borderRadius: '4px',
                     transition: 'ease-in-out 0.3s all',
                     '&:hover': {
-                      color: '#ffffff',
-                      backgroundColor: '#1976d2',
+                      color: value.time === '-' ? '#333333' : '#ffffff',
+                      backgroundColor:
+                        value.time === '-'
+                          ? 'rgba(34, 44, 223, 0.1)'
+                          : '#1976d2',
                       transition: 'ease-in-out 0.3s all',
                     },
                   }}
                   onClick={() => {
+                    if (value.time === '-') return;
                     if (userType === UserType.coach || !isLogIn) {
                       setIsOpenLogIn(true);
                     }
