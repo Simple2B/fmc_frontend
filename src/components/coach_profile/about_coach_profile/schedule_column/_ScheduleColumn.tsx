@@ -225,22 +225,30 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
                     fontWeight: 500,
                     fontSize: '12px',
                     mb: '3px',
-                    color: value.isActive ? '#ffffff' : '#333333',
+                    color:
+                      value.isActive && value.time !== '-'
+                        ? '#ffffff'
+                        : '#333333',
                     // p: '9px 11px',
                     width: '97px',
                     height: '32.06px',
-                    background: value.isActive
-                      ? '#1976d2'
-                      : 'rgba(34, 44, 223, 0.1)',
+                    background:
+                      value.isActive && value.time !== '-'
+                        ? '#1976d2'
+                        : 'rgba(34, 44, 223, 0.1)',
                     borderRadius: '4px',
                     transition: 'ease-in-out 0.3s all',
                     '&:hover': {
-                      color: '#ffffff',
-                      backgroundColor: '#1976d2',
+                      color: value.time === '-' ? '#333333' : '#ffffff',
+                      backgroundColor:
+                        value.time === '-'
+                          ? 'rgba(34, 44, 223, 0.1)'
+                          : '#1976d2',
                       transition: 'ease-in-out 0.3s all',
                     },
                   }}
                   onClick={() => {
+                    if (value.time === '-') return;
                     if (userType === UserType.coach || !isLogIn) {
                       setIsOpenLogIn(true);
                     }
