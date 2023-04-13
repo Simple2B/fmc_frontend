@@ -29,6 +29,7 @@ export const logout = (
       last_name: '',
       profile_picture: '',
       is_verified: false,
+      stripe_account_id: null,
     });
     setIsLoad(false);
     if (setMobileOpen) setMobileOpen((prevState: boolean) => !prevState);
