@@ -31,7 +31,7 @@ const TermCheckbox: React.FC<ITermCheckbox> = ({
       />
       <span className={styles.title}>
         I agree with the <Link href="/sign_up/terms">Terms and Conditions</Link>
-        and
+        <span style={{ paddingLeft: '5px', paddingRight: '5px' }}>and</span>
         <Link href="/sign_up/privacy"> Privacy Policy</Link>
       </span>
     </Box>
