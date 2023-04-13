@@ -59,7 +59,6 @@ export interface IMyCalendar {}
 
 const MyCalendar: React.FC<IMyCalendar> = () => {
   const router = useRouter();
-
   const queryClient = useQueryClient();
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
@@ -118,7 +117,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   useQuery(['packagesSchedule'], async () => {
     const request = coachClientApi.coachGetPackages;
     const result = await request();
-    console.log('[packageSchedule] result => ', result);
     if (result.length > 0) {
       const resultData = result.map((s) => ({
         name: s.title,
@@ -238,8 +236,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
           start_datetime: startDatetime,
           end_datetime: endDatetime,
         });
-
-        console.log(' create coach schedule ', response);
         return response;
       }
     },
@@ -249,8 +245,9 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       setIsLoad(false);
       setSuccess(true);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.log(`POST create coach schedule error message ===> : ${error}`);
+
       setIsLoad(false);
       setSuccess(false);
       getErrorMessage(error, setError, 'schedules');
@@ -456,6 +453,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         onSelectEvent={handleSelectSlot}
         selectable={true}
         onSelectSlot={handleSelect}
+
         // onSelectStart={(start) => {
         //   console.log('[onSelectStart] start =>', start);
         // }}

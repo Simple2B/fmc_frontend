@@ -164,12 +164,7 @@ export default function ProfileCoach() {
         onContactSelected={onContactSelected}
       />
     ),
-    ['settings']: (
-      <Settings
-        stripeAccountID={profile.stripe_account_id}
-        userType={UserType.coach}
-      />
-    ),
+    ['settings']: <Settings userType={UserType.coach} />,
     ['get_help']: <GetHelp userType={UserType.coach} email={profile.email} />,
   };
 

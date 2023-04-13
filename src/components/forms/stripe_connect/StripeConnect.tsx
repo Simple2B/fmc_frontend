@@ -8,11 +8,9 @@ import stripeLogo from '../../../../public/stripe_logo.png';
 import _StripeConnectBoarded from './_StripeConnectBoarded';
 import _StripeConnectNotBoarded from './_StripeConnectNotBoarded';
 
-export interface IStripeConnect {
-  stripeAccountID: string | null;
-}
+export interface IStripeConnect {}
 
-const StripeConnect: React.FC<IStripeConnect> = ({ stripeAccountID }) => {
+const StripeConnect: React.FC<IStripeConnect> = () => {
   const [coachIsBoarded, setCoachIsBoarded] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const { data } = useQuery(
@@ -68,7 +66,7 @@ const StripeConnect: React.FC<IStripeConnect> = ({ stripeAccountID }) => {
       {coachIsBoarded ? (
         <_StripeConnectBoarded />
       ) : (
-        <_StripeConnectNotBoarded stripeAccountID={stripeAccountID} />
+        <_StripeConnectNotBoarded />
       )}
     </Box>
   );

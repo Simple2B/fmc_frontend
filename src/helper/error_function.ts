@@ -39,6 +39,12 @@ export const getErrorMessage: any = (
       setError('Old password is incorrect');
       return;
     }
+    if (type && type === 'schedules') {
+      setError(
+        'You are not allowed to process payments. Please visit your stripe dashboard'
+      );
+      return;
+    }
     setError('You haven`t been signed up before');
   } else if (Number(errorNumber) === 500) {
     setError('Something went wrong');

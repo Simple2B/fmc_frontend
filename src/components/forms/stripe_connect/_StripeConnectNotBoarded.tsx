@@ -1,54 +1,87 @@
+import Loader from '@/common/loader/Loader';
+import CustomModel from '@/common/modal/Modal';
+import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { StripeService } from '@/services';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-interface IStripeConnectNotBoardedProps {
-  stripeAccountID: string | null;
-}
 
-function _StripeConnectNotBoarded({
-  stripeAccountID,
-}: IStripeConnectNotBoardedProps) {
+// eslint-disable-next-line no-unused-vars
+interface IStripeConnectNotBoardedProps {}
+
+function _StripeConnectNotBoarded() {
   const [enabledCreateBtn, setEnabledCreateBtn] = useState(false);
   const [enabledOnBoardBtn, setEnabledOnBoardBtn] = useState(false);
+  const [stripeAccountID, setStripeAccountID] = useState<string | null>(null);
+
+  const [isLoad, setIsLoad] = useState(false);
 
   // eslint-disable-next-line no-empty-pattern
-  const {} = useQuery(
+  const coachStripeConnectQuery = useQuery(
     ['coachStripeConnect'],
     async () => {
+      setIsLoad(true);
       const res = await StripeService.apiCoachStripeOauth();
       return res;
     },
     {
       enabled: enabledCreateBtn,
+      onSuccess: () => {
+        setIsLoad(false);
+      },
+      onError: () => {
+        setIsLoad(false);
+      },
     }
   );
   // eslint-disable-next-line no-empty-pattern
-  const {} = useQuery(
+  const coachStripeAccountOnBoardQuery = useQuery(
     ['coachStripeAccountOnBoard'],
     async () => {
+      setIsLoad(true);
       const res = await StripeService.apiCoachStripeOnboard();
       return res;
     },
     {
       enabled: enabledOnBoardBtn,
       onSuccess: (resp) => {
+        setIsLoad(false);
         window.location.href = resp;
+      },
+      onError: () => {
+        setIsLoad(false);
       },
     }
   );
 
   const handleCreateStripeAccount = () => {
+    coachStripeConnectQuery.refetch();
     setEnabledCreateBtn(true);
   };
 
   const handleCompleteStripeOnBoard = () => {
+    coachStripeAccountOnBoardQuery.refetch();
     setEnabledOnBoardBtn(true);
   };
 
+  useEffect(() => {
+    const getStripeAccountID = async () => {
+      try {
+        const coachProfile = await coachClientApi.coachGetProfile();
+        console.log('[getStripeAccountID] coachProfile', coachProfile);
+        setStripeAccountID(coachProfile.stripe_account_id);
+      } catch (error: any) {
+        console.log(
+          `[GET] stripe account id -> error message => ${error.response.status}`
+        );
+      }
+    };
+    getStripeAccountID();
+  }, [isLoad]);
+
   return (
-    <div>
+    <>
       {' '}
       {!stripeAccountID ? (
         <>
@@ -57,8 +90,7 @@ function _StripeConnectNotBoarded({
               m: '5px',
               display: 'flex',
               justifyContent: 'space-between',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
+              alignItems: 'center',
             }}
           >
             <Box
@@ -67,7 +99,8 @@ function _StripeConnectNotBoarded({
                 fontSize: '16px',
                 fontWeight: 700,
                 color: '#000000',
-                pb: '8px',
+                pb: '5px',
+                mr: '10px',
               }}
             >
               Connect with Stripe
@@ -78,6 +111,7 @@ function _StripeConnectNotBoarded({
                 fontSize: '12px',
                 fontWeight: 400,
                 color: '#777777',
+                mr: '10px',
               }}
             >
               Use your Stripe account to accept debit and credit cards.
@@ -112,8 +146,7 @@ function _StripeConnectNotBoarded({
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
+            alignItems: 'center',
           }}
         >
           <Box
@@ -122,7 +155,8 @@ function _StripeConnectNotBoarded({
               fontSize: '16px',
               fontWeight: 700,
               color: '#000000',
-              pb: '8px',
+              p: '5px',
+              mr: '10px',
             }}
           >
             You are already connected to STRIPE EXPRESS
@@ -155,7 +189,12 @@ function _StripeConnectNotBoarded({
           </Box>
         </Box>
       )}
-    </div>
+      {isLoad && (
+        <CustomModel isOpen={isLoad}>
+          <Loader />
+        </CustomModel>
+      )}
+    </>
   );
 }
 
