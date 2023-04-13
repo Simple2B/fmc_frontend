@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import * as React from 'react';
-import SignUpStartPageCard from './card/SignUpStartPageCard';
 import style from './SignUpStartPage.module.sass';
+import SignUpStartPageCard from './card/SignUpStartPageCard';
 
 // eslint-disable-next-line no-unused-vars
 export interface ISignUpStartPage {}
@@ -10,14 +10,14 @@ const SignUpStartPage: React.FC<ISignUpStartPage> = () => {
   return (
     <Box className={style.wrapper}>
       <SignUpStartPageCard
-        title={'I AM A COACH'}
-        description={'I want to train and get paid easily.'}
+        title={'COACH'}
+        description={'Manage sessions and payments with ease'}
         href={'/sign_up/coach'}
       />
       <Box className={style.orBox}> or </Box>
       <SignUpStartPageCard
-        title={'I AM A ATHLETE'}
-        description={'I want to discover a coach and schedule a training.'}
+        title={'ATHLETE'}
+        description={'Book and review sessions with your coach'}
         href={'/sign_up/student'}
       />
     </Box>

@@ -22,10 +22,12 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import logoFMC from '../../../public/LOGO.svg';
 import MarkedCalendar from '../marked_calendar/MarkedCalendar';
 import { MessageNotifications } from './MessageNotifications';
 import style from './NavBar.module.sass';
@@ -86,13 +88,17 @@ const NavBar: React.FC<INavBar> = ({
       sx={{ boxShadow: 'none', border: '0.3px solid #DBDBDB' }}
     >
       <Toolbar className={style.toolBar}>
-        <Typography
-          variant="h6"
-          color="#000000"
-          sx={{ display: matches970 ? 'none' : 'block' }}
-        >
-          LOGO
-        </Typography>
+        <Box onClick={() => router.push('/')}>
+          {' '}
+          <Image
+            src={logoFMC}
+            alt={'logo'}
+            width={100}
+            height={100}
+            style={{ display: matches970 ? 'none' : 'block' }}
+          />
+        </Box>
+
         <Typography
           variant="h6"
           color="#000"
