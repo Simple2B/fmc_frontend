@@ -54,7 +54,7 @@ export class LessonService {
    * @throws ApiError
    */
   public static apiGetLesson(
-    lessonUuid: string | undefined | string[]
+    lessonUuid: string | string[] | undefined
   ): CancelablePromise<StudentLesson> {
     return __request(OpenAPI, {
       method: 'GET',

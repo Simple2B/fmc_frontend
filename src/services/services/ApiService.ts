@@ -1013,7 +1013,7 @@ export class ApiService {
      */
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
-        scheduleDate: string = '2023-04-12',
+        scheduleDate: string = '2023-04-13',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',

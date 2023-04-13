@@ -11,9 +11,10 @@ import styles from './Settings.module.sass';
 
 export interface ISettings {
   userType: string;
+  stripeAccountID: string | null;
 }
 
-const Settings: React.FC<ISettings> = ({ userType }) => {
+const Settings: React.FC<ISettings> = ({ userType, stripeAccountID }) => {
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ const Settings: React.FC<ISettings> = ({ userType }) => {
             <YourProfile userType={userType} />
           </Box>
           <Box className={styles.yourProfileContainer}>
-            <StripeConnect />
+            <StripeConnect stripeAccountID={stripeAccountID} />
           </Box>
           {isGoogleAuth ? null : (
             <Box className={styles.changePasswordContainer}>

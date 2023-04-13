@@ -56,6 +56,7 @@ export default function ProfileCoach() {
     last_name: '',
     profile_picture: '',
     is_verified: false,
+    stripe_account_id: null,
   });
 
   const uuidUser = router.asPath.split('message&')[1];
@@ -163,7 +164,12 @@ export default function ProfileCoach() {
         onContactSelected={onContactSelected}
       />
     ),
-    ['settings']: <Settings userType={UserType.coach} />,
+    ['settings']: (
+      <Settings
+        stripeAccountID={profile.stripe_account_id}
+        userType={UserType.coach}
+      />
+    ),
     ['get_help']: <GetHelp userType={UserType.coach} email={profile.email} />,
   };
 

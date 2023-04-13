@@ -15,6 +15,7 @@ export enum TypeTheme {
 }
 
 export interface IUserProfile {
+  stripe_account_id: string | null;
   uuid: string;
   email: string;
   username: string;

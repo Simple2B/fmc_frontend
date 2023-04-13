@@ -6,9 +6,11 @@ import * as React from 'react';
 import { useQuery } from 'react-query';
 import stripeLogo from '../../../../public/stripe_logo.png';
 
-export interface IStripeConnect {}
+export interface IStripeConnect {
+  stripeAccountID: string | null;
+}
 
-const StripeConnect: React.FC<IStripeConnect> = () => {
+const StripeConnect: React.FC<IStripeConnect> = ({ stripeAccountID }) => {
   // eslint-disable-next-line no-unused-vars
   const { data, refetch } = useQuery(
     ['coachStripeConnect'],
@@ -63,60 +65,87 @@ const StripeConnect: React.FC<IStripeConnect> = () => {
           }}
         />
       </Box>
-      <Box
-        sx={{
-          m: '5px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-        }}
-      >
+
+      {stripeAccountID ? (
+        <>
+          <Box
+            sx={{
+              m: '5px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Box
+              sx={{
+                fontFamily: 'Inter, sens-serif',
+                fontSize: '16px',
+                fontWeight: 700,
+                color: '#000000',
+                pb: '8px',
+              }}
+            >
+              Connect with Stripe
+            </Box>
+            <Box
+              sx={{
+                fontFamily: 'Inter, sens-serif',
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#777777',
+              }}
+            >
+              Use your Stripe account to accept debit and credit cards.
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              m: '5px',
+              cursor: 'pointer',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '279px',
+              height: '44px',
+              backgroundColor: '#1876D1',
+              color: '#ffffff',
+              borderRadius: '8px',
+              transition: 'all 0.5s ease-out',
+              '&:hover': {
+                backgroundColor: '#222CDF',
+                color: '#ffffff',
+                transition: 'all 0.5s ease-out',
+              },
+            }}
+            onClick={handleStripeConnect}
+          >
+            Connect with Stripe
+          </Box>
+        </>
+      ) : (
         <Box
           sx={{
-            fontFamily: 'Inter, sens-serif',
-            fontSize: '16px',
-            fontWeight: 700,
-            color: '#000000',
-            pb: '8px',
+            m: '5px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
           }}
         >
-          Connect with Stripe
+          <Box
+            sx={{
+              fontFamily: 'Inter, sens-serif',
+              fontSize: '16px',
+              fontWeight: 700,
+              color: '#000000',
+              pb: '8px',
+            }}
+          >
+            You are already connected to STRIPE EXPRESS
+          </Box>
         </Box>
-        <Box
-          sx={{
-            fontFamily: 'Inter, sens-serif',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: '#777777',
-          }}
-        >
-          Use your Stripe account to accept debit and credit cards.
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          m: '5px',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '279px',
-          height: '44px',
-          backgroundColor: '#1876D1',
-          color: '#ffffff',
-          borderRadius: '8px',
-          transition: 'all 0.5s ease-out',
-          '&:hover': {
-            backgroundColor: '#222CDF',
-            color: '#ffffff',
-            transition: 'all 0.5s ease-out',
-          },
-        }}
-        onClick={handleStripeConnect}
-      >
-        Connect with Stripe
-      </Box>
+      )}
     </Box>
   );
 };
