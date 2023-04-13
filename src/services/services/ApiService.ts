@@ -335,10 +335,10 @@ export class ApiService {
 
     /**
      * Get Coach Profile
-     * @returns User Successful Response
+     * @returns Coach Successful Response
      * @throws ApiError
      */
-    public static apiGetCoachProfile(): CancelablePromise<User> {
+    public static apiGetCoachProfile(): CancelablePromise<Coach> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/profile/coach',
@@ -832,6 +832,42 @@ export class ApiService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/stripe/coach/oauth',
+        });
+    }
+
+    /**
+     * Check Coach Stripe Onboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCheckCoachStripeOnboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/is_boarded',
+        });
+    }
+
+    /**
+     * Coach Stripe Onboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachStripeOnboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/onboard',
+        });
+    }
+
+    /**
+     * Coach Stripe Dashboard
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachStripeDashboard(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripe/coach/dashboard',
         });
     }
 
