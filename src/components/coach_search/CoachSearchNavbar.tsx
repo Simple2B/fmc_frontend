@@ -55,7 +55,7 @@ const CoachSearchNavbar: React.FC<ICoachSearchNavbar> = ({
     last_name: '',
     profile_picture: '',
     is_verified: false,
-    // stripe_account_id: null,
+    stripe_account_id: null,
   });
 
   React.useEffect(() => {
