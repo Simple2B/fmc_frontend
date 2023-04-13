@@ -29,14 +29,11 @@ export default function CoachProfilePage() {
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);
         setUserType(localStorage.getItem('userType') ?? '');
-        // const studentProfile = await studentClientApi.studentGetProfile();
-        // setProfile(studentProfile);
       } catch (error: any) {
         console.log(`[GET] check student -> error message => ${error}`);
         localStorage.removeItem('token');
         localStorage.removeItem('userType');
         setIsLogIn(false);
-        // router.push('/sign_in/student');
       }
     };
     whoAmI();

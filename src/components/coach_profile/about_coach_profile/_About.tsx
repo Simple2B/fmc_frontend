@@ -13,7 +13,7 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
   const router = useRouter();
   const coachUuid = router.query.uuid_coach;
   const profileCoachDataQuery = useQuery(
-    ['coachProfile', isPaymentCheck],
+    ['coachProfile', isPaymentCheck, coachUuid],
     async () => {
       if (typeof coachUuid === 'string') {
         const result = await ProfilesService.apiGetCoachByUuid(coachUuid);

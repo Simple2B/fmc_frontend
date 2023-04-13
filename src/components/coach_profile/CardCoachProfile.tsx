@@ -19,12 +19,15 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
   const router = useRouter();
   const coachUuid = router.query.uuid_coach;
 
-  const profileCoachDataQuery = useQuery(['coachProfile'], async () => {
-    if (typeof coachUuid === 'string') {
-      const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
-      return result;
+  const profileCoachDataQuery = useQuery(
+    ['coachProfile', coachUuid],
+    async () => {
+      if (typeof coachUuid === 'string') {
+        const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+        return result;
+      }
     }
-  });
+  );
 
   return (
     <Box

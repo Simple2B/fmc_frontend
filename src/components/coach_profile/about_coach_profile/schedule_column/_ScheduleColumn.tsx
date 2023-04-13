@@ -79,39 +79,41 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
     times: { uuid: string; time: string; isActive: boolean }[];
   }>();
 
-  useQuery(['schedules', day, isPaymentCheck], async () => {
-    if (typeof coachUuid === 'string') {
-      const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
-        coachUuid,
-        day
-      );
-
-      const startDate = moment(day).format('llll').split(',');
-      const dayName = startDate[0];
-      const date = startDate[1];
-      if (result.schedules.length === 0) {
+  useQuery(
+    ['schedules', day, isPaymentCheck, coachUuid as string],
+    async () => {
+      if (typeof coachUuid === 'string') {
+        const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
+          coachUuid,
+          day
+        );
+        const startDate = moment(day).format('llll').split(',');
+        const dayName = startDate[0];
+        const date = startDate[1];
+        if (result.schedules.length === 0) {
+          setDaysData({
+            day: dayName,
+            date: date,
+            times: Array(5).fill({ uuid: '', time: '-', isActive: false }),
+          });
+          return result;
+        }
+        const times = result.schedules.map((schedule) => ({
+          uuid: schedule.uuid,
+          time: schedule.start_datetime
+            ? moment(schedule.start_datetime).format('LT')
+            : '-',
+          isActive: false,
+        }));
         setDaysData({
           day: dayName,
           date: date,
-          times: Array(5).fill({ uuid: '', time: '-', isActive: false }),
+          times: times,
         });
         return result;
       }
-      const times = result.schedules.map((schedule) => ({
-        uuid: schedule.uuid,
-        time: schedule.start_datetime
-          ? moment(schedule.start_datetime).format('LT')
-          : '-',
-        isActive: false,
-      }));
-      setDaysData({
-        day: dayName,
-        date: date,
-        times: times,
-      });
-      return result;
     }
-  });
+  );
 
   // TODO: will done multiply times booking (now one time)
   const mutationSchedulesFunction = useMutation(
@@ -211,14 +213,6 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
           {daysData &&
             daysData.times.length > 0 &&
             daysData.times.map((value, i) => {
-              console.log('!!!!value.time => ', value.time);
-              // if (value.time === '-') {
-              //   return (
-              //     <Box sx={{ color: '#000000' }} key={i}>
-              //       -
-              //     </Box>
-              //   );
-              // }
               return (
                 <Box
                   key={i}
