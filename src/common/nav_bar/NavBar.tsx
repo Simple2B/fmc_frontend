@@ -88,15 +88,12 @@ const NavBar: React.FC<INavBar> = ({
       sx={{ boxShadow: 'none', border: '0.3px solid #DBDBDB' }}
     >
       <Toolbar className={style.toolBar}>
-        <Box onClick={() => router.push('/')}>
+        <Box
+          onClick={() => router.push('/')}
+          sx={{ display: matches970 ? 'none' : 'block' }}
+        >
           {' '}
-          <Image
-            src={logoFMC}
-            alt={'logo'}
-            width={100}
-            height={100}
-            style={{ display: matches970 ? 'none' : 'block' }}
-          />
+          <Image src={logoFMC} alt={'logo'} width={100} height={100} />
         </Box>
 
         <Typography
