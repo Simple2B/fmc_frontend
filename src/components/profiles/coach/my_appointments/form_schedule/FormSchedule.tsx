@@ -1,4 +1,5 @@
 import { Autocomplete, Box, TextField } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 const nameInputStyles = {
@@ -48,6 +49,7 @@ const FormSchedule: React.FC<IFormSchedule> = ({
   btnTitle,
   handleClickSchedule,
 }) => {
+  const router = useRouter();
   const packages = packagesSchedule.map((p) => p.name);
 
   return (
@@ -274,7 +276,23 @@ const FormSchedule: React.FC<IFormSchedule> = ({
               color: '#333333',
             }}
           >
-            No packages! You must created package
+            No packages! You must{' '}
+            <Box
+              sx={{
+                m: 'auto 5px',
+                color: '#222CDF',
+                borderBottom: '1px solid #222CDF',
+                cursor: 'pointer',
+                '&:hover': {
+                  color: '#F05547',
+                  borderBottom: '1px solid #F05547',
+                },
+              }}
+              onClick={() => router.push('/profiles/coach?packages')}
+            >
+              create
+            </Box>{' '}
+            a package
           </Box>
           <Box
             sx={{
