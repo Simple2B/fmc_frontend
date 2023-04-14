@@ -11,6 +11,10 @@ export const getErrorMessage: any = (
       return;
     }
     setError('Invalid credentials');
+  } else if (Number(errorNumber) === 412) {
+    if (type && type === 'schedules') {
+      setError('You didn`t connect to Stripe Connect');
+    }
   } else if (Number(errorNumber) === 409) {
     if (type && type === 'changePass') {
       setError('Error while changing password');
