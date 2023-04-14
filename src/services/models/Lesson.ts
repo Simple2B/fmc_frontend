@@ -13,6 +13,8 @@ export type Lesson = {
     price: number;
     max_people?: number;
     about?: string;
+    additional_information_title?: string;
+    additional_information_description?: string;
     uuid: string;
     id: number;
     coach: Coach;

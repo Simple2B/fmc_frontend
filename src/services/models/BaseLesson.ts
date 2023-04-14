@@ -12,5 +12,7 @@ export type BaseLesson = {
     price: number;
     max_people?: number;
     about?: string;
+    additional_information_title?: string;
+    additional_information_description?: string;
 };
 

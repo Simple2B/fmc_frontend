@@ -78,8 +78,9 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
           mb: '32px',
         }}
       >
-        Ed was the former coach of University of San Diego (’78—’96), and has
-        coached over 25,000 students in the past 50 years
+        {profileCoachDataQuery.data
+          ? profileCoachDataQuery.data.experience
+          : ''}
       </Box>
       <Box
         sx={{
@@ -102,11 +103,11 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
           mb: '32px',
         }}
       >
-        Ed is a Four-time San Diego USPTA Coach-of-the-Year, inditeed to the USD
-        Athletic Hall of Fame (2001), and his camp is awarded Tennis Magazine's
-        Top-25 Adult Tennis Camps in 2006
+        {profileCoachDataQuery.data
+          ? profileCoachDataQuery.data.credentials
+          : ''}
       </Box>
-      <Box
+      {/* <Box
         sx={{
           fontFamily: 'Inter, sans-serif',
           fontSize: '18px',
@@ -128,7 +129,7 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
         }}
       >
         Consectetur adipiscing elit. Neque pharetra tempor turpis ut quis risus.
-      </Box>
+      </Box> */}
     </Box>
   );
 };

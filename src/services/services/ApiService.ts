@@ -975,6 +975,27 @@ export class ApiService {
     }
 
     /**
+     * Get Reviews By Coach Uuid
+     * @param coachUuid
+     * @returns ReviewList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetReviewsByCoachUuid(
+        coachUuid: string,
+    ): CancelablePromise<ReviewList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/review/reviews/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Like Coach
      * @param coachUuid
      * @returns any Successful Response
@@ -1049,7 +1070,7 @@ export class ApiService {
      */
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
-        scheduleDate: string = '2023-04-13',
+        scheduleDate: string = '2023-04-14',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',

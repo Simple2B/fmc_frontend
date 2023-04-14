@@ -44,11 +44,26 @@ const Packages: React.FC<IPackages> = () => {
 
   const [name, setName] = useState<string>('');
 
+  const [aboutSession, setAboutSession] = useState<string>('');
+  const [additionalInformationTitle, setAdditionalInformationTitle] =
+    useState<string>('');
+  const [
+    additionalInformationDescription,
+    setAdditionalInformationDescription,
+  ] = useState<string>('');
+
   useQuery(['packagesQuery'], async () => {
     const result = await PackagesService.apiGetPackages();
-    console.log('[packagesQuery] result ===> ', result);
-    if (result.lessons[0].title) {
-      setName(result.lessons[0].title);
+    if (result.lessons.length > 0) {
+      const lessonNumber = result.lessons.length - 1;
+      setName(result.lessons[lessonNumber].title ?? '');
+      setAboutSession(result.lessons[lessonNumber].about ?? '');
+      setAdditionalInformationTitle(
+        result.lessons[lessonNumber].additional_information_title ?? ''
+      );
+      setAdditionalInformationDescription(
+        result.lessons[lessonNumber].additional_information_description ?? ''
+      );
     }
     return result;
   });
@@ -66,9 +81,6 @@ const Packages: React.FC<IPackages> = () => {
   const [errorPriceMessage, setErrorPriceMessage] = useState<string>('');
   const [isErrorPrice, setIsErrorPrice] = useState<boolean>(false);
 
-  const [aboutSession, setAboutSession] = useState<string>('');
-
-  const [clothes, setClothes] = useState<string>('');
   const [typeSession, setTypeSession] = useState<string | null>(
     sessionsTypes[0]
   );
@@ -92,6 +104,7 @@ const Packages: React.FC<IPackages> = () => {
       },
     },
   ]);
+
   const [location, setLocation] = useState<string | null>('');
 
   useQuery(['locationsTypesQuery'], async () => {
@@ -170,6 +183,8 @@ const Packages: React.FC<IPackages> = () => {
       price: Number(price) * 100,
       max_people: Number(amount),
       about: aboutSession,
+      additional_information_title: additionalInformationTitle,
+      additional_information_description: additionalInformationDescription,
     };
 
     if (name !== '' && price !== '') {
@@ -194,7 +209,7 @@ const Packages: React.FC<IPackages> = () => {
       createPackage();
       setName('');
       setAboutSession('');
-      setClothes('');
+      // setClothes('');
     }
   };
 
@@ -372,7 +387,45 @@ const Packages: React.FC<IPackages> = () => {
               onChange={(e) => setAboutSession(e.target.value)}
             />
           </Box>
-          <Box sx={{ width: 642, mb: '30px' }}>
+          <Box sx={{ width: 642, mb: '45px' }}>
+            <Box
+              sx={{
+                fontFamily: 'Inter, sens-serif',
+                fontWeight: '400',
+                fontSize: '14px',
+                color: '#222222',
+                p: '10px 15px',
+              }}
+            >
+              Additional information
+            </Box>
+            <Box sx={{ width: 642, mb: '7px' }}>
+              <TextField
+                sx={{ width: '100%' }}
+                id="outlined-multiline-static"
+                label="title"
+                multiline
+                rows={1}
+                value={additionalInformationTitle}
+                onChange={(e) => setAdditionalInformationTitle(e.target.value)}
+              />
+            </Box>
+            <Box sx={{ width: 642 }}>
+              <TextField
+                sx={{ width: '100%' }}
+                id="outlined-multiline-static"
+                label="description"
+                multiline
+                rows={1.5}
+                value={additionalInformationDescription}
+                onChange={(e) =>
+                  setAdditionalInformationDescription(e.target.value)
+                }
+              />
+            </Box>
+          </Box>
+
+          {/* <Box sx={{ width: 642, mb: '45px' }}>
             <Input
               name={'clothes'}
               label={'What to bring?'}
@@ -381,7 +434,7 @@ const Packages: React.FC<IPackages> = () => {
               onChange={(e) => setClothes(e.target.value)}
               type="text"
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               width: 642,

@@ -18,6 +18,8 @@ export type Coach = {
     stripe_account_id?: string;
     total_rate: number;
     about?: string;
+    experience?: string;
+    credentials?: string;
     is_for_adults: boolean;
     is_for_children: boolean;
     locations: Array<Location>;

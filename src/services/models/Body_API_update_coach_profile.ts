@@ -5,6 +5,8 @@
 export type Body_API_update_coach_profile = {
     sport_category?: string;
     about?: string;
+    experience?: string;
+    credentials?: string;
     certificates?: Array<Blob>;
     deleted_certificates?: string;
     is_for_adult?: boolean;

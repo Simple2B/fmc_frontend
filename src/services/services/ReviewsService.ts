@@ -47,4 +47,25 @@ export class ReviewsService {
         });
     }
 
+    /**
+     * Get Reviews By Coach Uuid
+     * @param coachUuid
+     * @returns ReviewList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetReviewsByCoachUuid(
+        coachUuid: string,
+    ): CancelablePromise<ReviewList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/review/reviews/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
 }

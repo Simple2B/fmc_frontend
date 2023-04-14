@@ -8,6 +8,8 @@ export interface IPackage {
   price: number;
   max_people: number;
   about: string | null;
+  additional_information_title: string | null;
+  additional_information_description: string | null;
 }
 
 export interface IBasePackage extends IPackage {

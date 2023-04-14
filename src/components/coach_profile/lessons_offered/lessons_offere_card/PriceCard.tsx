@@ -9,18 +9,18 @@ import InfoModelSignInSignUP from './booked_info_forms/InfoModalSignInSignUP';
 const testData = [
   {
     title: '1 hours',
-    value: '$65',
+    value: '£65',
     disable: false,
   },
   {
     title: '3 hours',
-    value: '$180',
+    value: '£180',
     subTitle: 'You save 30$',
     disable: true,
   },
   {
     title: '6 hours',
-    value: '$360',
+    value: '£360',
     subTitle: 'You save 30$',
     disable: true,
   },
@@ -139,6 +139,7 @@ const PriceCard: React.FC<IPriceCard> = ({
                 },
               }}
               onClick={() => {
+                if (item.disable) return;
                 if (userType === UserType.coach || !isLogIn) {
                   setIsOpenLogIn(true);
                 }
