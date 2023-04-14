@@ -30,6 +30,8 @@ const formatProfileInfoRequestBody = (
   sport_category: string[],
   deleted_certificates: string[],
   about: string,
+  experience: string,
+  credentials: string,
   certificates: File[],
   is_for_adult: string,
   is_for_children: string,
@@ -41,6 +43,8 @@ const formatProfileInfoRequestBody = (
   formData.append('sport_category', JSON.stringify(sport_category));
   formData.append('deleted_certificates', JSON.stringify(deleted_certificates));
   formData.append('about', about);
+  formData.append('experience', experience);
+  formData.append('credentials', credentials);
   for (let i = 0; i < certificates.length; i++) {
     formData.append('certificates', certificates[i]);
   }
@@ -111,6 +115,8 @@ export const coachProfileApi = {
     sport_category: string[],
     deleted_certificates: string[],
     about: string,
+    experience: string,
+    credentials: string,
     certificates: File[],
     is_for_adult: string,
     is_for_children: string,
@@ -123,6 +129,8 @@ export const coachProfileApi = {
           sport_category,
           deleted_certificates,
           about,
+          experience,
+          credentials,
           certificates,
           is_for_adult,
           is_for_children,

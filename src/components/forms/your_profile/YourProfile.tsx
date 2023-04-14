@@ -80,6 +80,8 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           setCheckedAdults(response.is_for_adults);
           setCheckedChildren(response.is_for_children);
           setAbout(response.about);
+          setExperienceCoach(response.experience);
+          setCredentialsCoach(response.credentials);
           setLocationValuesInputs(() => {
             if (response.locations.length > 0) {
               const locations = response.locations.map((location) => ({
@@ -129,6 +131,9 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
   const [checkedChildren, setCheckedChildren] = useState<boolean>(false);
 
   const [aboutCoach, setAbout] = useState<string>('');
+
+  const [experienceCoach, setExperienceCoach] = useState<string>('');
+  const [credentialsCoach, setCredentialsCoach] = useState<string>('');
 
   // Location
   const [locationValuesInputs, setLocationValuesInputs] = useState<
@@ -322,6 +327,8 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
               sport.length > 0 ? sport.map((s) => s.label) : [],
               deletedFilesUrls ? deletedFilesUrls : [],
               aboutCoach,
+              experienceCoach,
+              credentialsCoach,
               files,
               String(checkedAdults),
               String(checkedChildren),
@@ -415,6 +422,27 @@ const YourProfile: React.FC<IYourProfileCoach> = ({ userType }) => {
           />
         </Box>
       </Box>
+
+      <Box className={styles.aboutSection}>
+        <Textarea
+          placeholder="Experience"
+          minRows={3}
+          sx={{ width: '100%' }}
+          value={experienceCoach}
+          onChange={(e) => setExperienceCoach(e.target.value)}
+        />
+      </Box>
+
+      <Box className={styles.aboutSection}>
+        <Textarea
+          placeholder="Credentials"
+          minRows={3}
+          sx={{ width: '100%' }}
+          value={credentialsCoach}
+          onChange={(e) => setCredentialsCoach(e.target.value)}
+        />
+      </Box>
+
       <Box className={styles.sessionsSection}>
         <Box className={styles.sessionsTitle}>
           <Typography variant="h4" className={styles.title}>
