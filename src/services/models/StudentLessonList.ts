@@ -5,6 +5,5 @@
 import type { StudentLesson } from './StudentLesson';
 
 export type StudentLessonList = {
-    lessons: Array<StudentLesson>;
+  lessons: Array<StudentLesson>;
 };
-

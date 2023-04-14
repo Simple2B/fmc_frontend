@@ -19,8 +19,6 @@ const styleBtn = {
 export interface ILessonRequestsCalendar {}
 
 const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
-  // const router = useRouter();
-
   const [value, setValue] = React.useState('myCalendar');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
