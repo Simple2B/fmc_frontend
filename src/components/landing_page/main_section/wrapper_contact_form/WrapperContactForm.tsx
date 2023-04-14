@@ -137,7 +137,7 @@ const WrapperContactForm: React.FC<IWrapperContactForm> = () => {
             fullWidth
             variant="contained"
             sx={{
-              backgroundColor: '#EB5757',
+              backgroundColor: '#222CDF',
               borderRadius: '8px',
               textTransform: 'capitalize',
               fontSize: '',

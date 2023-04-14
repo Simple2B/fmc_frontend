@@ -74,27 +74,27 @@ export default function ProfileStudent() {
   >([
     {
       name: 'My lessons',
-      icon: <CalendarToday color={'primary'} />,
+      icon: <CalendarToday sx={{ color: '#222CDF' }} />,
       href: '/profiles/student?my_lessons',
     },
     {
       name: 'Favorite coaches',
-      icon: <FavoriteBorder color={'primary'} />,
+      icon: <FavoriteBorder sx={{ color: '#222CDF' }} />,
       href: '/profiles/student?favorite_coaches',
     },
     {
       name: 'Messages',
-      icon: <Mess color={'primary'} />,
+      icon: <Mess sx={{ color: '#222CDF' }} />,
       href: `/profiles/student?page=messages&user=${uuidUser}`,
     },
     {
       name: 'Settings',
-      icon: <Sett color={'primary'} />,
+      icon: <Sett sx={{ color: '#222CDF' }} />,
       href: '/profiles/student?settings',
     },
     {
       name: 'Get help',
-      icon: <Help color={'primary'} />,
+      icon: <Help sx={{ color: '#222CDF' }} />,
       href: '/profiles/student?get_help',
     },
   ]);

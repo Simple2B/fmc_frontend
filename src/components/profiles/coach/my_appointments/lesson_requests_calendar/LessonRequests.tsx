@@ -1,4 +1,4 @@
-import { LessonService } from '@/services';
+import { StudentLesson } from '@/services';
 import {
   AccessTime,
   EventAvailable,
@@ -9,178 +9,195 @@ import { Avatar, Card, CardContent, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import moment from 'moment';
 import * as React from 'react';
-import { useQuery } from 'react-query';
 
-export interface ILessonRequests {}
+export interface ILessonRequests {
+  lessons: StudentLesson[] | [];
+}
 
-const LessonRequests: React.FC<ILessonRequests> = () => {
-  const { data } = useQuery(['coachUpcomingLessons'], async () => {
-    const res = await LessonService.apiGetUpcomingAppointments();
-    console.log(res);
-    return res;
-  });
-
+const LessonRequests: React.FC<ILessonRequests> = ({
+  lessons,
+}: ILessonRequests) => {
   return (
-    <Box>
-      <Card
-        // key={index}
-        sx={{
-          maxWidth: 885,
-          minHeight: 151,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: '16px',
-        }}
-      >
-        {data?.lessons.map((item, index) => {
+    <Box
+      sx={{
+        maxWidth: 885,
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        flexDirection: 'column',
+      }}
+      gap={1}
+    >
+      {lessons &&
+        lessons.length > 0 &&
+        lessons?.map((item, index) => {
           const date = new Date(item.appointment_time);
           const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
           const time = moment(date).format('LT');
           return (
-            <Box
+            <Card
               key={index}
               sx={{
+                maxWidth: 885,
+                minHeight: 151,
                 width: '100%',
                 display: 'flex',
-                justifyContent: 'space-around',
+                justifyContent: 'center',
                 alignItems: 'center',
+                borderRadius: '16px',
               }}
             >
               <Box
                 sx={{
+                  width: '100%',
                   display: 'flex',
-                  justifyContent: 'center',
+                  justifyContent: 'space-around',
                   alignItems: 'center',
-                  width: '100px',
-                  height: '100px',
-                  margin: 'auto 5%',
                 }}
               >
-                {' '}
-                <Avatar
+                <Box
                   sx={{
-                    width: '100%',
-                    height: '100%',
-                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100px',
+                    height: '100px',
+                    margin: 'auto 5%',
                   }}
-                  src={item.student.profile_picture}
-                  aria-label="recipe"
-                />
-              </Box>
-
-              <CardContent
-                sx={{
-                  flex: 4,
-                  alignSelf: 'flex-start',
-                }}
-              >
-                <Typography
-                  gutterBottom
-                  variant="h5"
-                  component="div"
-                  sx={{ mb: '12px' }}
                 >
-                  {item.schedule.lesson.title}
-                </Typography>
-                <Box sx={{ borderBottom: '.5px solid #DBDBDB' }}>
-                  <Box
+                  {' '}
+                  <Avatar
                     sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      flexWrap: 'wrap',
-                      mt: '12px',
-                      mb: '12px',
+                      width: '100%',
+                      height: '100%',
+                      flex: 1,
                     }}
+                    src={item.student.profile_picture}
+                    aria-label="recipe"
+                  />
+                </Box>
+
+                <CardContent
+                  sx={{
+                    flex: 4,
+                    alignSelf: 'flex-start',
+                  }}
+                >
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    sx={{ mb: '12px' }}
                   >
+                    {item.student.first_name} has requested a{' '}
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      1-on-1 {item.schedule.lesson.sport.name} Lesson
+                    </Typography>
+                  </Typography>
+                  <Box sx={{ borderBottom: '.5px solid #DBDBDB' }}>
                     <Box
                       sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        mr: '7px',
-                      }}
-                    >
-                      <EventAvailable
-                        sx={{
-                          color: '#1976d2',
-                          mr: '3px',
-                        }}
-                      />
-                      <Typography>{appointment_date}</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        mr: '7px',
-                      }}
-                    >
-                      <AccessTime
-                        sx={{
-                          color: '#1976d2',
-                          mr: '3px',
-                        }}
-                      />
-                      <Typography>{time}</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        mr: '7px',
-                      }}
-                    >
-                      <MonetizationOn
-                        sx={{
-                          color: '#1976d2',
-                          mr: '3px',
-                        }}
-                      />
-                      <Typography>
-                        {item.schedule.lesson.price / 100} &#163;
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      flexDirection: 'column',
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        mr: '7px',
+                        flexWrap: 'wrap',
+                        mt: '12px',
                         mb: '12px',
                       }}
                     >
-                      <Place
+                      <Box
                         sx={{
-                          color: '#1976d2',
-                          mr: '3px',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          mr: '7px',
                         }}
-                      />
-                      <Typography>
-                        {item.schedule.lesson.location.city},{' '}
-                        {item.schedule.lesson.location.street},{' '}
-                        {item.schedule.lesson.location.postal_code}
-                      </Typography>
+                      >
+                        <EventAvailable
+                          sx={{
+                            color: '#222CDF',
+                            mr: '3px',
+                          }}
+                        />
+                        <Typography>{appointment_date}</Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          mr: '7px',
+                        }}
+                      >
+                        <AccessTime
+                          sx={{
+                            color: '#222CDF',
+                            mr: '3px',
+                          }}
+                        />
+                        <Typography>{time}</Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          mr: '7px',
+                        }}
+                      >
+                        <MonetizationOn
+                          sx={{
+                            color: '#222CDF',
+                            mr: '3px',
+                          }}
+                        />
+                        <Typography>
+                          {item.schedule.lesson.price / 100} &#163;
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        flexDirection: 'column',
+                        flexWrap: 'wrap',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          mr: '7px',
+                          mb: '12px',
+                        }}
+                      >
+                        <Place
+                          sx={{
+                            color: '#222CDF',
+                            mr: '3px',
+                          }}
+                        />
+                        <Typography>
+                          {item.schedule.lesson.location.city},{' '}
+                          {item.schedule.lesson.location.street},{' '}
+                          {item.schedule.lesson.location.postal_code}
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              </CardContent>
-            </Box>
+                </CardContent>
+              </Box>
+            </Card>
           );
         })}
-      </Card>
     </Box>
   );
 };

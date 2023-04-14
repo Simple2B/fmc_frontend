@@ -1,3 +1,4 @@
+import { LessonService } from '@/services';
 import {
   FormControl,
   FormControlLabel,
@@ -6,6 +7,7 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import * as React from 'react';
+import { useQuery } from 'react-query';
 import styles from '../MyAppointments.module.sass';
 import LessonRequests from './LessonRequests';
 import MyCalendar from './MyCalendar';
@@ -24,7 +26,17 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
-
+  const { data } = useQuery(
+    ['coachUpcomingLessons'],
+    async () => {
+      const res = await LessonService.apiGetUpcomingAppointments();
+      console.log(res.lessons);
+      return res;
+    },
+    {
+      refetchInterval: 10000,
+    }
+  );
   return (
     <Box className={styles.wrapperLessonRequestsCalendar} flex={1} p={2}>
       <Box className={styles.toggleBtns}>
@@ -40,14 +52,14 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
               <FormControlLabel
                 sx={{
                   ...styleBtn,
-                  color: value === 'lessonRequests' ? '#333333' : '#BBB5B5',
+                  color: value === 'lessonRequests' ? '#222CDF' : '#222CDF',
                   position: 'relative',
                 }}
                 value="lessonRequests"
                 control={
                   <Radio
                     sx={{
-                      color: value === 'lessonRequests' ? '#333333' : '#BBB5B5',
+                      color: value === 'lessonRequests' ? '#222CDF' : '#222CDF',
                     }}
                   />
                 }
@@ -70,14 +82,14 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
               <FormControlLabel
                 sx={{
                   ...styleBtn,
-                  color: value === 'myCalendar' ? '#333333' : '#BBB5B5',
+                  color: value === 'myCalendar' ? '#222CDF' : '#222CDF',
                   position: 'relative',
                 }}
                 value="myCalendar"
                 control={
                   <Radio
                     sx={{
-                      color: value === 'myCalendar' ? '#333333' : '#BBB5B5',
+                      color: value === 'myCalendar' ? '#222CDF' : '#222CDF',
                     }}
                   />
                 }
@@ -100,9 +112,14 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
       </Box>
       <Box className={styles.sectionsWrapper}>
         <Box className={styles.sectionsTitle}>
-          Respond to pending lesson requests • 1 new
+          Respond to pending lesson requests •{' '}
+          {data && data.lessons.length > 0 ? `${data.lessons.length} new` : '0'}
         </Box>
-        {value === 'lessonRequests' ? <LessonRequests /> : <MyCalendar />}
+        {value === 'lessonRequests' ? (
+          <LessonRequests lessons={data ? data.lessons : []} />
+        ) : (
+          <MyCalendar />
+        )}
       </Box>
     </Box>
   );

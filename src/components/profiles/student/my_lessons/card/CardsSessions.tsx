@@ -102,7 +102,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                       >
                         <EventAvailable
                           sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#1976d2',
+                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
                             mr: '3px',
                           }}
                         />
@@ -118,7 +118,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                       >
                         <AccessTime
                           sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#1976d2',
+                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
                             mr: '3px',
                           }}
                         />
@@ -134,7 +134,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                       >
                         <MonetizationOn
                           sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#1976d2',
+                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
                             mr: '3px',
                           }}
                         />
@@ -162,7 +162,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                       >
                         <Place
                           sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#1976d2',
+                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
                             mr: '3px',
                           }}
                         />
@@ -186,7 +186,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                       >
                         <Subject
                           sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#1976d2',
+                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
                             mr: '3px',
                           }}
                         />
