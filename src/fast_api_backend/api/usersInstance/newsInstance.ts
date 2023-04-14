@@ -11,9 +11,7 @@ export const newsApi = {
 
       return response.data;
     } catch (error: any) {
-      console.log(
-        `[POST: sign_up] newsletter -> error message => ${error.message}`
-      );
+      console.log(`[POST] newsletter -> error message => ${error.message}`);
       throw error;
     }
   },

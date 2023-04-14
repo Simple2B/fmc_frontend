@@ -5,7 +5,8 @@ import FavoriteCoaches from '@/components/profiles/student/favorite_coaches/Favo
 import MyLessons from '@/components/profiles/student/my_lessons/MyLessons';
 import Settings from '@/components/profiles/student/settings/Settings';
 import CoachReview from '@/components/review/CoachReview';
-import { ProfilesService, User, WhoamiService } from '@/services';
+import { instance } from '@/fast_api_backend/api/_axiosInstance';
+import { ProfilesService, User } from '@/services';
 import { UserType } from '@/store/types/user';
 import {
   CalendarToday,
@@ -100,8 +101,8 @@ export default function RateCoach() {
   useEffect(() => {
     const whoAmI = async () => {
       try {
-        // const response = await instance().get('/whoami/student');
-        const response = await WhoamiService.apiWhoamiStudent();
+        const response = await instance().get('/whoami/student');
+        // const response = await WhoamiService.apiWhoamiStudent();
         const res = response.data;
         console.log(`[GET] check student -> res data  ${res}`);
         setIsLogIn(true);

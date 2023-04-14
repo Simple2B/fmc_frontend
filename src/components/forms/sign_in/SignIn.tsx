@@ -1,9 +1,7 @@
 import GoogleLoginBtn from '@/components/google_login/GoogleLogin';
+import { coachAuthApi } from '@/fast_api_backend/api/authApi/coach/authApi';
+import { studentAuthApi } from '@/fast_api_backend/api/authApi/student/authApi';
 import { getErrorMessage } from '@/helper/error_function';
-import {
-  CoachAuthenticationService,
-  StudentAuthenticationService,
-} from '@/services';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -114,11 +112,11 @@ const SignIn: React.FC<ISignIn> = ({
         setIsLoad(true);
         try {
           if (userType === UserType.coach) {
-            // const coachToken = await coachAuthApi.signInCoach(email, password);
-            const coachToken = await CoachAuthenticationService.apiCoachLogin({
-              username: email,
-              password,
-            });
+            const coachToken = await coachAuthApi.signInCoach(email, password);
+            // const coachToken = await CoachAuthenticationService.apiCoachLogin({
+            //   username: email,
+            //   password,
+            // });
             console.log('POST [/sign_in] coach successfully', coachToken);
             localStorage.setItem(
               'token',
@@ -129,15 +127,15 @@ const SignIn: React.FC<ISignIn> = ({
             setSuccess(true);
           }
           if (userType === UserType.student) {
-            // const studentToken = await studentAuthApi.signInStudent(
-            //   email,
-            //   password
-            // );
-            const studentToken =
-              await StudentAuthenticationService.apiStudentLogin({
-                username: email,
-                password,
-              });
+            const studentToken = await studentAuthApi.signInStudent(
+              email,
+              password
+            );
+            // const studentToken =
+            //   await StudentAuthenticationService.apiStudentLogin({
+            //     username: email,
+            //     password,
+            //   });
             localStorage.setItem(
               'token',
               (studentToken as IResponseStudentData).access_token
@@ -151,17 +149,15 @@ const SignIn: React.FC<ISignIn> = ({
           if (userType === UserType.coach) {
             router.push('/sign_in/coach');
             console.log(`POST [/sign_in] coach error message: ${error}`);
-            setSuccess(false);
-            getErrorMessage(error, setError);
           }
           if (userType === UserType.student) {
             router.push('/sign_in/student');
             console.log(
               `POST [/sign_in] student error message ===> : ${error}`
             );
-            setSuccess(false);
-            getErrorMessage(error, setError);
           }
+          setSuccess(false);
+          getErrorMessage(error, setError);
           setIsLoad(false);
         }
       };
