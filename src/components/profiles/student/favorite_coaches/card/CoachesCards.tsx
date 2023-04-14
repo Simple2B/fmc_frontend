@@ -51,7 +51,7 @@ const CoachesCards: React.FC<ICoaches> = ({ sessions }) => {
                   maxHeight: 63,
                 }}
                 component="img"
-                alt="green iguana"
+                alt="avatar"
                 height="140"
                 image={item.profile_picture}
               />

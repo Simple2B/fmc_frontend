@@ -23,7 +23,7 @@ function DayWithHighLight(
     <Badge
       key={props.day.toString()}
       variant="dot"
-      sx={{ color: '#222CDF' }}
+      color="primary"
       overlap="circular"
       invisible={!hasEvents}
     >

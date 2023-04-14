@@ -62,7 +62,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                   opacity: type === 'past' ? 0.4 : 1,
                 }}
                 component="img"
-                alt="green iguana"
+                alt="avatar"
                 height="140"
                 image={item.coach.profile_picture}
               />
