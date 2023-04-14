@@ -177,7 +177,11 @@ export const NewsLetter: React.FC<INewsLetter> = ({
                 }
                 type="text"
               />
-              <Box className={styles.btnSave} onClick={subscribeNews}>
+              <Box
+                sx={{ backgroundColor: '#222CDF' }}
+                className={styles.btnSave}
+                onClick={subscribeNews}
+              >
                 Subscribe
               </Box>
             </Box>

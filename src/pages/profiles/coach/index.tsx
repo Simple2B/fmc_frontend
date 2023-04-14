@@ -93,32 +93,32 @@ export default function ProfileCoach() {
   >([
     {
       name: 'My Appointments ',
-      icon: <CalendarToday color={'primary'} />,
+      icon: <CalendarToday sx={{ color: '#222CDF' }} />,
       href: '/profiles/coach?my_appointments',
     },
     {
       name: 'Reviews',
-      icon: <FavoriteBorder color={'primary'} />,
+      icon: <FavoriteBorder sx={{ color: '#222CDF' }} />,
       href: '/profiles/coach?reviews',
     },
     {
       name: 'Packages',
-      icon: <Mode color={'primary'} />,
+      icon: <Mode sx={{ color: '#222CDF' }} />,
       href: '/profiles/coach?packages',
     },
     {
       name: 'Messages',
-      icon: <Mess color={'primary'} />,
+      icon: <Mess sx={{ color: '#222CDF' }} />,
       href: `/profiles/coach?message&${uuidUser}`,
     },
     {
       name: 'Settings',
-      icon: <Set color={'primary'} />,
+      icon: <Set sx={{ color: '#222CDF' }} />,
       href: '/profiles/coach?settings',
     },
     {
       name: 'Get help',
-      icon: <Help color={'primary'} />,
+      icon: <Help sx={{ color: '#222CDF' }} />,
       href: '/profiles/coach?get_help',
     },
   ]);

@@ -22,12 +22,12 @@ const BtnSearch: React.FC<IBtnSearch> = ({ searchCoaches }) => {
         top: matches845 ? '4.5px' : '7px',
         right: '6px',
         color: '#FFF',
-        backgroundColor: '#F05547',
+        backgroundColor: '#222CDF',
         width: matches445 ? '' : matches845 ? '88px' : '108px',
         height: matches445 ? '24px' : matches845 ? '36px' : '46px',
         borderRadius: matches845 ? '4px' : '8px',
         '&:hover': {
-          backgroundColor: 'grey',
+          backgroundColor: '#3843e0',
         },
       }}
       onClick={searchCoaches}

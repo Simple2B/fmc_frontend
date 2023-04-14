@@ -175,7 +175,7 @@ const GetHelp: React.FC<IGetHelp> = ({ userType, email }) => {
           sx={{
             mt: '26px',
             mb: '26px',
-            backgroundColor: '#1876D1',
+            backgroundColor: '#222CDF',
             borderRadius: '8px',
             textTransform: 'capitalize',
             fontSize: '',

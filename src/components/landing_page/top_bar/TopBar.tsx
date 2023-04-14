@@ -286,6 +286,7 @@ const TopBar: React.FC<ITopBar> = ({
                     width: matches845 ? '152px' : '199px',
                     height: matches845 ? '40px' : '56px',
                     textAlign: 'center',
+                    backgroundColor: '#222CDF',
                   }}
                 >
                   Create account
