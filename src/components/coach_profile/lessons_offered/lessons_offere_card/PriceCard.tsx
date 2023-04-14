@@ -130,7 +130,7 @@ const PriceCard: React.FC<IPriceCard> = ({
                 p: '13px 19px',
                 borderRadius: '7px',
                 color: '#ffffff',
-                backgroundColor: item.disable ? 'grey' : '#1976d2',
+                backgroundColor: item.disable ? 'grey' : '#222CDF',
                 cursor: 'pointer',
                 transition: 'ease-in-out 0.3s all',
                 '&:hover': {

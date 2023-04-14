@@ -39,7 +39,6 @@ export const MessageNotifications = ({
     <Box sx={{ postion: 'relative' }}>
       <Badge
         badgeContent={notificationCount}
-        color="primary"
         sx={{
           display: matches970 ? 'none' : 'inline-block',
           position: 'relative',
@@ -53,6 +52,10 @@ export const MessageNotifications = ({
             border: '1px solid',
             p: '7px 9px',
             borderRadius: '50%',
+          },
+          '& .MuiBadge-badge': {
+            color: 'white',
+            backgroundColor: '#222CDF',
           },
         }}
         onClick={toggle}
