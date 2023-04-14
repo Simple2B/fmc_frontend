@@ -5,6 +5,7 @@ import CustomModel from '@/common/modal/Modal';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { coachPackageApi } from '@/fast_api_backend/api/usersInstance/coach/package';
 import { getErrorMessage } from '@/helper/error_function';
+import { PackagesService } from '@/services/services/PackagesService';
 import { RE_ONLY_NUMBER, RE_PRICE } from '@/store/constants';
 import { ILocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/users/coach/profileType';
@@ -42,6 +43,16 @@ const Packages: React.FC<IPackages> = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [name, setName] = useState<string>('');
+
+  useQuery(['packagesQuery'], async () => {
+    const result = await PackagesService.apiGetPackages();
+    console.log('[packagesQuery] result ===> ', result);
+    if (result.lessons[0].title) {
+      setName(result.lessons[0].title);
+    }
+    return result;
+  });
+
   const [errorNameMessage, setErrorNameMessage] = useState<string>('');
   const [isErrorName, setIsErrorName] = useState<boolean>(false);
 
@@ -115,6 +126,7 @@ const Packages: React.FC<IPackages> = () => {
       },
     },
   ]);
+
   const [sport, setSport] = useState<string | null>(sports[0].name);
 
   useQuery(['sportsTypesQuery'], async () => {
@@ -131,7 +143,6 @@ const Packages: React.FC<IPackages> = () => {
     }
     return result;
   });
-  //
 
   const savePackage = () => {
     if (name === '') {
