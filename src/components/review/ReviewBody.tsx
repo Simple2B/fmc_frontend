@@ -37,7 +37,7 @@ const ReviewBody = ({ lessonData }: IReviewBodyProps) => {
                 maxWidth: { xs: 100, md: 100 },
               }}
               alt="The house from the offer."
-              src="https://find-my-coach-eu.s3.eu-west-2.amazonaws.com/assets/test_coach_avatar.png"
+              src={lessonData?.coach.profile_picture}
             />
             <Box
               sx={{
