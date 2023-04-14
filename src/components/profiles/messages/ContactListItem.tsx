@@ -104,7 +104,11 @@ export default function ContactListItem({
               fontWeight={'600'}
               lineHeight={'18px'}
             >
-              {contactData.user.first_name} {contactData.user.last_name}
+              {contactData && contactData.user
+                ? `${contactData.user.first_name} ${contactData.user.last_name}`
+                : contactData.user
+                ? contactData.user.username
+                : ''}
             </Typography>
           }
           secondary={
