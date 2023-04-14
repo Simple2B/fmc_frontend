@@ -33,6 +33,8 @@ export interface ICoachDetailProfile extends IUserProfile {
 
 export interface IYourProfile {
   about: string;
+  experience: string;
+  credentials: string;
   certificates: {
     certificate_url: string;
     created_at: string;
