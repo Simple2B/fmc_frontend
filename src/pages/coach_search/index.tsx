@@ -108,10 +108,7 @@ export default function CoachSearchPage() {
         // setProfile(studentProfile);
       } catch (error: any) {
         console.log(`[GET] check student -> error message => ${error}`);
-        localStorage.removeItem('token');
-        localStorage.removeItem('userType');
         setIsLogIn(false);
-        // router.push('/sign_in/student');
       }
     };
     whoAmI();
