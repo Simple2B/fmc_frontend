@@ -1,6 +1,7 @@
 import { ProfilesService } from '@/services/services/ProfilesService';
 import { PaymentCheckState } from '@/store/types/users/coach/profileType';
-import { Box } from '@mui/material';
+import { BorderColor } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useQuery } from 'react-query';
@@ -25,14 +26,37 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
     <Box flex={1}>
       <Box
         sx={{
-          fontFamily: 'Poppins, sans-serif',
-          fontSize: '24px',
-          fontWeight: '500',
-          color: '#394454',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+
           mb: '16px',
         }}
       >
-        About me
+        <Typography
+          sx={{
+            alignSelf: 'center',
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '24px',
+            fontWeight: '500',
+            color: '#394454',
+          }}
+        >
+          About me
+        </Typography>
+        <BorderColor
+          onClick={() => router.push('/profiles/coach?settings')}
+          sx={{
+            ml: '15px',
+            mb: '7px',
+            alignSelf: 'center',
+            color: 'rgba(0, 0, 0, 0.3)',
+            cursor: 'pointer',
+            '&:hover': {
+              color: '#394454',
+            },
+          }}
+        />
       </Box>
       <Box
         sx={{
@@ -48,14 +72,38 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
       </Box>
       <Box
         sx={{
-          fontFamily: 'Poppins, sans-serif',
-          fontSize: '24px',
-          fontWeight: '500',
-          color: '#394454',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+
           mb: '26px',
         }}
       >
-        Credentials and Experience
+        <Typography
+          sx={{
+            alignSelf: 'center',
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '24px',
+            fontWeight: '500',
+            color: '#394454',
+          }}
+        >
+          Credentials and Experience
+        </Typography>
+
+        <BorderColor
+          onClick={() => router.push('/profiles/coach?settings')}
+          sx={{
+            ml: '15px',
+            mb: '7px',
+            alignSelf: 'center',
+            color: 'rgba(0, 0, 0, 0.3)',
+            cursor: 'pointer',
+            '&:hover': {
+              color: '#394454',
+            },
+          }}
+        />
       </Box>
       <Box
         sx={{

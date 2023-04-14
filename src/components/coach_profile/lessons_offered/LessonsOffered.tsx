@@ -1,6 +1,8 @@
 import { PackagesService } from '@/services/services/PackagesService';
 import { PaymentCheckState } from '@/store/types/users/coach/profileType';
-import { Box } from '@mui/material';
+import { BorderColor } from '@mui/icons-material';
+import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -70,6 +72,7 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
   isPaymentCheck,
   setIsPaymentCheck,
 }) => {
+  const router = useRouter();
   // info for the package one to one
   const [locations, setLocations] = useState<
     {
@@ -129,14 +132,41 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
           width: '100%',
           alignSelf: 'flex-start',
           mb: '32px',
-          fontFamily: 'Poppins, sans-serif',
-          fontSize: '24px',
-          fontWeight: '500',
-          color: '#394454',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          // fontFamily: 'Poppins, sans-serif',
+          // fontSize: '24px',
+          // fontWeight: '500',
+          // color: '#394454',
         }}
       >
         {' '}
-        LessonsOffered
+        <Typography
+          sx={{
+            alignSelf: 'center',
+            fontFamily: 'Poppins, sans-serif',
+            fontSize: '24px',
+            fontWeight: '500',
+            color: '#394454',
+          }}
+        >
+          {' '}
+          LessonsOffered
+        </Typography>
+        <BorderColor
+          onClick={() => router.push('/profiles/coach?packages')}
+          sx={{
+            ml: '15px',
+            mb: '7px',
+            alignSelf: 'center',
+            color: 'rgba(0, 0, 0, 0.3)',
+            cursor: 'pointer',
+            '&:hover': {
+              color: '#394454',
+            },
+          }}
+        />
       </Box>
       <LessonsOfferedCards
         title={`1-on-1 Tennis Lesson (${name})`}
