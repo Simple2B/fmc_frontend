@@ -28,8 +28,6 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
   const router = useRouter();
 
   const handleSendMessage = (item: StudentLesson) => {
-    console.log(item.coach.profile_picture);
-
     router.push(`/profiles/student?page=messages&user=${item.coach.uuid}`);
   };
   const handleNavigateToCoachProfile = (uuid: any) =>
@@ -39,8 +37,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
     <>
       {lessons &&
         lessons.length > 0 &&
-        lessons.map((item, index) => {
-          console.log('ITEM ', item);
+        lessons.map((item: StudentLesson, index) => {
           const date = new Date(item.appointment_time);
           const appointment_date = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
           const time = moment(date).format('LT');
@@ -65,7 +62,7 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                   opacity: type === 'past' ? 0.4 : 1,
                 }}
                 component="img"
-                alt="green iguana"
+                alt="avatar"
                 height="140"
                 image={item.coach.profile_picture}
               />
@@ -78,8 +75,12 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                     component="div"
                     sx={{ mb: '12px' }}
                   >
-                    {item ? item.schedule.lesson.title : ''} with{' '}
-                    {item ? item.coach.first_name : ''}
+                    {item.coach ? item.schedule.lesson.title : ''} with{' '}
+                    {item.coach && item.coach.first_name
+                      ? item.coach.first_name
+                      : item.coach
+                      ? item.coach.username
+                      : ''}
                   </Typography>
                   <Box sx={{ borderBottom: '.5px solid #DBDBDB' }}>
                     <Box
