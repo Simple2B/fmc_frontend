@@ -247,7 +247,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     },
     onError: (error: any) => {
       console.log(`POST create coach schedule error message ===> : ${error}`);
-
       setIsLoad(false);
       setSuccess(false);
       getErrorMessage(error, setError, 'schedules');

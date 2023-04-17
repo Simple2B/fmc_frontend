@@ -11,11 +11,9 @@ import SubscriptionCheck from '@/components/subscription_check_state/Subscriptio
 
 import LessonRequestsCalendar from '@/components/profiles/coach/my_appointments/lesson_requests_calendar/LessonRequestsCalendar';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
-import { coachSubscriptionApi } from '@/fast_api_backend/api/authApi/coach/subscription';
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
 import { User } from '@/services';
 import { UserType } from '@/store/types/user';
-import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
   CalendarToday,
   FavoriteBorder,
@@ -29,22 +27,24 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/coach'));
 
 export default function ProfileCoach() {
   const router = useRouter();
-  const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
-    ['coachSubscription'],
-    async () => {
-      const request = coachSubscriptionApi.getSubscription;
-      const result = await request();
-      console.log('[coach subscription] coach result', result);
-      return result;
-    },
-    {}
-  );
+
+  const coachQuery = { data: { is_active: true } };
+
+  // const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
+  //   ['coachSubscription'],
+  //   async () => {
+  //     const request = coachSubscriptionApi.getSubscription;
+  //     const result = await request();
+  //     console.log('[coach subscription] coach result', result);
+  //     return result;
+  //   },
+  //   {}
+  // );
   const [isLogIn, setIsLogIn] = useState<boolean | null>(null);
   const [isOpenMobSideBar, setIsOpenMobSideBar] = useState<boolean>(false);
   const [href, setHref] = useState<string>('my_appointments');
