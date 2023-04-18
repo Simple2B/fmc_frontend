@@ -105,7 +105,7 @@ export default function SignUpStudent() {
         typeSign={TypeSign.up}
       >
         <SignUp
-          title={'I’m a Athlete'}
+          title={'Athlete'}
           userType={UserType.student}
           onSuccess={onSuccess}
           onError={onFailure}

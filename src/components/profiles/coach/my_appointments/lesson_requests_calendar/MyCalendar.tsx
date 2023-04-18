@@ -164,7 +164,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     return result;
   });
 
-  const [openFormEvent, setIsOpenFormEvent] = useState<boolean>(false);
+  const [openFormEventDelete, setIsOpenFormEvent] = useState<boolean>(false);
 
   // Form edit data
   const [dayName, setDayName] = useState<string>('');
@@ -182,9 +182,9 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       setTimeStart(moment(selectSlot.start).format('LT'));
       setTimeEnd(moment(selectSlot.end).format('LT'));
       setTitle(selectSlot.title);
-      setIsOpenFormEvent(!openFormEvent);
+      setIsOpenFormEvent(!openFormEventDelete);
     },
-    [openFormEvent]
+    [openFormEventDelete]
   );
 
   // created event
@@ -460,7 +460,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
       />
 
       {/* TODO: must implement edit schedule  */}
-      {openFormEvent && (
+      {openFormEventDelete && (
         <Box
           sx={{
             width: '100vw',
@@ -547,7 +547,6 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
                 {timeEnd}
               </Box>
             </Box>
-
             <Box sx={{ mt: '36px', width: '100%' }}>
               <Box sx={{ width: '100%', border: '1px solid #DBDBDB' }} />
               <Box
@@ -576,7 +575,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
                       transition: 'easeOut 0.3s all',
                     },
                   }}
-                  onClick={() => setIsOpenFormEvent(!openFormEvent)}
+                  onClick={() => setIsOpenFormEvent(!openFormEventDelete)}
                 >
                   Cancel
                 </Box>

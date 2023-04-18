@@ -99,7 +99,7 @@ export default function SignUpCoach() {
         typeSign={TypeSign.up}
       >
         <SignUp
-          title={'I’m a Coach'}
+          title={'Coach'}
           userType={UserType.coach}
           onSuccess={onSuccess}
           onError={onFailure}
