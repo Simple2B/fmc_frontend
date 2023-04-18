@@ -69,22 +69,6 @@ export default function CoachProfilePage() {
           />
           <Reviews />
         </div>
-        {/* {isLoad && (
-          <CustomModel isOpen={isLoad}>
-            <Loader />
-          </CustomModel>
-        )}
-        {error && !isSuccess && (
-          <CustomModel
-            isOpen={modalIsOpen}
-            handleClick={() => setModalIsOpen(!modalIsOpen)}
-          >
-            <MessageBox
-              message={error}
-              handleClick={() => setModalIsOpen(!modalIsOpen)}
-            />
-          </CustomModel>
-        )} */}
       </main>
     </>
   );
