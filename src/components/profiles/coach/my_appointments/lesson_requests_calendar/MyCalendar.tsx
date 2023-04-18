@@ -25,6 +25,7 @@ import {
 } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { CoachScheduleService } from '../../../../../services/services/CoachScheduleService';
 import FormSchedule from '../form_schedule/FormSchedule';
 
 const locales = {
@@ -156,7 +157,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
         start: new Date(s.start_datetime),
         end: new Date(s.end_datetime),
         title: s.lesson.title,
-        uuid: s.lesson.uuid,
+        uuid: s.uuid,
         is_booked: s.is_booked,
       }));
       setEvents(resultData);
@@ -172,16 +173,18 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   const [timeStart, setTimeStart] = useState<string>('');
   const [timeEnd, setTimeEnd] = useState<string>('');
 
+  const [uuid, setUUID] = useState<string>('');
+
   const [openFormEventCreate, setIsOpenFormEventCreate] =
     useState<boolean>(false);
 
   const handleSelectSlot = useCallback(
     (selectSlot: any) => {
-      console.log(' selectSlot ', selectSlot);
       setDayName(moment(selectSlot.start).format('dddd, MMMM Do'));
       setTimeStart(moment(selectSlot.start).format('LT'));
       setTimeEnd(moment(selectSlot.end).format('LT'));
       setTitle(selectSlot.title);
+      setUUID(selectSlot.uuid);
       setIsOpenFormEvent(!openFormEventDelete);
     },
     [openFormEventDelete]
@@ -259,14 +262,12 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
   };
 
   const mutationDelete = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (scheduleUuid: string) => {
       setIsLoad(true);
       if (packageSchedule) {
-        const response = await coachSchedulesApi.createSchedule({
-          lesson_id: packageSchedule?.id,
-          start_datetime: startDatetime,
-          end_datetime: endDatetime,
-        });
+        const response = await CoachScheduleService.apiDeleteScheduleByUuid(
+          scheduleUuid
+        );
 
         console.log(' delete coach schedule ', response);
         return response;
@@ -286,7 +287,10 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
     },
   });
 
-  const scheduleDelete = () => {};
+  const scheduleDelete = (scheduleUuid: string) => {
+    mutationDelete.mutate(scheduleUuid);
+    setIsOpenFormEvent(false);
+  };
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
@@ -579,7 +583,7 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
                 >
                   Cancel
                 </Box>
-                {/* <Box
+                <Box
                   sx={{
                     cursor: 'pointer',
                     display: 'flex',
@@ -599,10 +603,10 @@ const MyCalendar: React.FC<IMyCalendar> = () => {
                       transition: 'easeOut 0.3s all',
                     },
                   }}
-                  onClick={scheduleDelete}
+                  onClick={() => scheduleDelete(uuid)}
                 >
                   Delete
-                </Box> */}
+                </Box>
               </Box>
             </Box>
           </Box>
