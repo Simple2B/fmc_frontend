@@ -336,7 +336,7 @@ const Packages: React.FC<IPackages> = () => {
                     return;
                   }
                   // TODO: add change price
-                  // setPrice(e.target.value);
+                  setPrice(e.target.value);
                 }}
                 type="text"
               />
