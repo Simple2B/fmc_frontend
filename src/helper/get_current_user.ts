@@ -1,12 +1,11 @@
 import { coachClientApi } from '@/fast_api_backend/api/usersInstance/coach/coachInstance';
-import { ProfilesService, WhoamiService } from '@/services';
+import { ProfilesService, User, WhoamiService } from '@/services';
 import { UserType } from '@/store/types/user';
-import { IUserProfile } from '../store/types/user';
 import { getErrorMessage } from './error_function';
 
 export async function getCurrentUser(
   userType: string,
-  setProfile?: React.Dispatch<React.SetStateAction<IUserProfile>>,
+  setProfile?: React.Dispatch<React.SetStateAction<User>>,
   setIsLoad?: React.Dispatch<React.SetStateAction<boolean>>,
   setSuccess?: React.Dispatch<React.SetStateAction<boolean>>,
   setError?: React.Dispatch<React.SetStateAction<string | null>>

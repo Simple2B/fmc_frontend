@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
-import { IUserProfile } from '../../store/types/user';
+import { User } from '../../services/models/User';
 import TopBar from '../landing_page/top_bar/TopBar';
 import style from './CoachSearch.module.sass';
 
@@ -47,7 +47,7 @@ const CoachSearchNavbar: React.FC<ICoachSearchNavbar> = ({
     setMobileOpen((prevState) => !prevState);
   };
 
-  const [profile, setProfile] = React.useState<IUserProfile>({
+  const [profile, setProfile] = React.useState<User>({
     uuid: '',
     username: '',
     email: '',
