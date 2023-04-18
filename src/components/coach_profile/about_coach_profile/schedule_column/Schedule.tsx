@@ -27,6 +27,7 @@ const Schedule: React.FC<ISchedule> = ({
   const router = useRouter();
   const coachUuid = router.query.uuid_coach;
   const today = new Date();
+  console.log(' TODAY => ', today.toISOString().split('T')[0]);
 
   function addDays(days: number) {
     const date = new Date();
@@ -41,18 +42,32 @@ const Schedule: React.FC<ISchedule> = ({
 
   const [dateSlotKey, setDateSlotKey] = useState<number>(1);
 
-  const [optionsLocations, setOptionsLocations] = useState<string[]>([]);
-  const [location, setLocation] = useState<string>('');
+  const [optionsLocations, setOptionsLocations] = useState<
+    { address: string; id: number }[]
+  >([]);
+  const [location, setLocation] = useState<{
+    address: string;
+    id: number;
+  } | null>(null);
+
+  // useQuery(['coachLocationSchedule', location], async () => {
+  //   // const result = await ProfilesService.apiGetCoachByUuid();
+  //   // return result;
+  // });
 
   useQuery(['coachProfile', coachUuid, isPaymentCheck], async () => {
     if (typeof coachUuid === 'string') {
       const result = await ProfilesService.apiGetCoachByUuid(coachUuid);
+      console.log('[Schedule] coachProfile result =>> ', result);
       if (result.locations.length > 0) {
-        const address = result.locations.map((loc) => {
-          return loc.city + ', ' + loc.street + ', ' + loc.postal_code;
+        const addressData = result.locations.map((loc) => {
+          return {
+            address: loc.city + ', ' + loc.street + ', ' + loc.postal_code,
+            id: loc.id,
+          };
         });
-        setOptionsLocations(address);
-        setLocation(address[0]);
+        setOptionsLocations(addressData);
+        setLocation(addressData[0]);
       }
       return result;
     }
@@ -105,8 +120,21 @@ const Schedule: React.FC<ISchedule> = ({
         <Autocomplete
           disablePortal
           id="optionsLocations"
-          options={optionsLocations}
-          value={location}
+          options={optionsLocations.map((options) => options.address)}
+          value={location ? location.address : ''}
+          onChange={(event: any, newValue: string | null) => {
+            const scheduleData = optionsLocations.filter(
+              (p) => p.address === newValue
+            );
+            let id = 0;
+            if (scheduleData.length === 1) {
+              id = scheduleData[0].id;
+            }
+            setLocation({
+              address: newValue ?? '',
+              id: id,
+            });
+          }}
           sx={{ width: '100%', borderRadius: '12px' }}
           renderInput={(params) => (
             <TextField
@@ -145,7 +173,6 @@ const Schedule: React.FC<ISchedule> = ({
             onClick={removeDateForSchedule}
           />
         )}
-
         <Box
           flex={4}
           sx={{
@@ -166,6 +193,7 @@ const Schedule: React.FC<ISchedule> = ({
                 userType={userType}
                 isPaymentCheck={isPaymentCheck}
                 setIsPaymentCheck={setIsPaymentCheck}
+                locationId={location ? location.id : 0}
               />
             );
           })}

@@ -1064,13 +1064,15 @@ export class ApiService {
     /**
      * Get Coach Schedules By Uuid
      * @param coachUuid
+     * @param locationId
      * @param scheduleDate
      * @returns ScheduleList Successful Response
      * @throws ApiError
      */
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
-        scheduleDate: string = '2023-04-14',
+        locationId?: number,
+        scheduleDate: string = '2023-04-18',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -1079,6 +1081,7 @@ export class ApiService {
                 'coach_uuid': coachUuid,
             },
             query: {
+                'location_id': locationId,
                 'schedule_date': scheduleDate,
             },
             errors: {

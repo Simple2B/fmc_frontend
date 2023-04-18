@@ -253,7 +253,7 @@ const FormSchedule: React.FC<IFormSchedule> = ({
       ) : (
         <Box
           sx={{
-            width: '396px',
+            // width: '400px',
             display: 'flex',
             justifyContent: 'flex-start',
             flexDirection: 'column',
@@ -276,7 +276,7 @@ const FormSchedule: React.FC<IFormSchedule> = ({
               color: '#333333',
             }}
           >
-            No packages! You must{' '}
+            <Box>No packages! You must </Box>
             <Box
               sx={{
                 m: 'auto 5px',
@@ -292,7 +292,7 @@ const FormSchedule: React.FC<IFormSchedule> = ({
             >
               create
             </Box>{' '}
-            a package
+            <Box>a package</Box>
           </Box>
           <Box
             sx={{

@@ -12,6 +12,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import InfoModelSignInSignUP from '../../lessons_offered/lessons_offere_card/booked_info_forms/InfoModalSignInSignUP';
 export interface IScheduleColumn {
   day: string;
+  locationId: number;
   isLogIn: boolean | null;
   userType: string | null;
   isPaymentCheck: PaymentCheckState;
@@ -20,12 +21,15 @@ export interface IScheduleColumn {
 
 const ScheduleColumn: React.FC<IScheduleColumn> = ({
   day,
+  locationId,
   isLogIn,
   userType,
   isPaymentCheck,
   setIsPaymentCheck,
 }) => {
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
+
+  console.log(' locationId ====>', locationId);
 
   const handleClickInfoModelSignInSignUP = () => {
     setIsOpenLogIn(!isOpenLogIn);
@@ -80,11 +84,12 @@ const ScheduleColumn: React.FC<IScheduleColumn> = ({
   }>();
 
   useQuery(
-    ['schedules', day, isPaymentCheck, coachUuid as string],
+    ['schedules', day, isPaymentCheck, coachUuid as string, locationId],
     async () => {
       if (typeof coachUuid === 'string') {
         const result = await CoachScheduleService.apiGetCoachSchedulesByUuid(
           coachUuid,
+          locationId,
           day
         );
         const startDate = moment(day).format('llll').split(',');
