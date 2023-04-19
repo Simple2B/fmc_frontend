@@ -872,6 +872,18 @@ export class ApiService {
     }
 
     /**
+     * Coach Customer Portal
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static apiCoachCustomerPortal(): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/stripecoach/customer_portal',
+        });
+    }
+
+    /**
      * Reserve Booking
      * @param scheduleUuids
      * @returns any Successful Response
@@ -1072,7 +1084,7 @@ export class ApiService {
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
         locationId?: number,
-        scheduleDate: string = '2023-04-18',
+        scheduleDate: string = '2023-04-19',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',

@@ -8,6 +8,7 @@ import {
 import Box from '@mui/material/Box';
 import * as React from 'react';
 import { useQuery } from 'react-query';
+import { StripeService } from '../../../../../services/services/StripeService';
 import styles from '../MyAppointments.module.sass';
 import LessonRequests from './LessonRequests';
 import MyCalendar from './MyCalendar';
@@ -26,17 +27,27 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
+
   const { data } = useQuery(
     ['coachUpcomingLessons'],
     async () => {
       const res = await LessonService.apiGetUpcomingAppointments();
-      console.log(res.lessons);
+      console.log('[coachUpcomingLessons] lessons => ', res.lessons);
       return res;
     },
     {
       refetchInterval: 10000,
     }
   );
+
+  const coachCustomerPortalQuery = useQuery(
+    ['coachCustomerPortal'],
+    async () => {
+      const res = await StripeService.apiCoachCustomerPortal();
+      return res;
+    }
+  );
+
   return (
     <Box className={styles.wrapperLessonRequestsCalendar} flex={1} p={2}>
       <Box className={styles.toggleBtns}>
@@ -109,6 +120,14 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
             </Box>
           </RadioGroup>
         </FormControl>
+        <Box
+          className={styles.manageSubBtn}
+          onClick={() => {
+            window.location.href = coachCustomerPortalQuery.data;
+          }}
+        >
+          Manage your subscription
+        </Box>
       </Box>
       <Box className={styles.sectionsWrapper}>
         <Box className={styles.sectionsTitle}>
