@@ -28,7 +28,7 @@ import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/coach'));
@@ -155,7 +155,9 @@ export default function ProfileCoach() {
   const profileComponents: { [key: string]: JSX.Element | null } = {
     ['my_appointments']:
       coachSubscriptionQuery && coachSubscriptionQuery.data?.is_active ? (
-        <LessonRequestsCalendar />
+        <LessonRequestsCalendar
+          coachSubscription={coachSubscriptionQuery.data}
+        />
       ) : (
         <MyAppointments
           profile={profile}
@@ -164,7 +166,9 @@ export default function ProfileCoach() {
       ),
     ['my_appointments#lesson_requests']:
       coachSubscriptionQuery && coachSubscriptionQuery.data?.is_active ? (
-        <LessonRequestsCalendar />
+        <LessonRequestsCalendar
+          coachSubscription={coachSubscriptionQuery.data}
+        />
       ) : null,
     ['reviews']: <Reviews title={'Your Reviews'} />,
     ['packages']: <Packages />,

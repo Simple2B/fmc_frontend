@@ -1,4 +1,5 @@
 import { LessonService } from '@/services';
+import { ICoachSubscription } from '@/store/types/users/coach/profileType';
 import {
   FormControl,
   FormControlLabel,
@@ -19,9 +20,13 @@ const styleBtn = {
   fontWeight: 600,
 };
 
-export interface ILessonRequestsCalendar {}
+export interface ILessonRequestsCalendar {
+  coachSubscription?: ICoachSubscription | null;
+}
 
-const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
+const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
+  coachSubscription,
+}) => {
   const [value, setValue] = React.useState('myCalendar');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +50,9 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = () => {
     async () => {
       const res = await StripeService.apiCoachCustomerPortal();
       return res;
+    },
+    {
+      enabled: coachSubscription ? true : false,
     }
   );
 
