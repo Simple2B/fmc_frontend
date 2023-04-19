@@ -20,7 +20,7 @@ const boxStyle = {
 
 export interface IMyAppointments {
   profile: User;
-  coachSubscription: ICoachSubscription | null;
+  coachSubscription?: ICoachSubscription | null;
 }
 
 const MyAppointments: React.FC<IMyAppointments> = ({
