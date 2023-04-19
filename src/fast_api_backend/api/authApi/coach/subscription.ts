@@ -15,7 +15,7 @@ export const coachSubscriptionApi = {
       throw error;
     }
   },
-  getSubscription: async (): Promise<ICoachSubscription | null> => {
+  getSubscription: async (): Promise<ICoachSubscription | null | number> => {
     try {
       const response = await instance().get('/profile/coach/subscription/info');
       const res = response.data;

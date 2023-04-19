@@ -28,7 +28,7 @@ import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const LoginPage = dynamic(() => import('../../sign_in/coach'));
@@ -36,12 +36,15 @@ const LoginPage = dynamic(() => import('../../sign_in/coach'));
 export default function ProfileCoach() {
   const router = useRouter();
 
-  const coachQuery = useQuery<ICoachSubscription | null, ErrorConstructor>(
+  const coachSubscriptionQuery = useQuery<
+    ICoachSubscription | null,
+    ErrorConstructor
+  >(
     ['coachSubscription'],
     async () => {
       const request = coachSubscriptionApi.getSubscription;
       const result = await request();
-      console.log('[coach subscription] coach result', result);
+      console.log('!!!! ===== [coach subscription] coach result', result);
       return result;
     },
     {}
@@ -151,13 +154,16 @@ export default function ProfileCoach() {
   // eslint-disable-next-line no-undef
   const profileComponents: { [key: string]: JSX.Element | null } = {
     ['my_appointments']:
-      coachQuery && coachQuery.data?.is_active ? (
+      coachSubscriptionQuery && coachSubscriptionQuery.data?.is_active ? (
         <LessonRequestsCalendar />
       ) : (
-        <MyAppointments profile={profile} />
+        <MyAppointments
+          profile={profile}
+          coachSubscription={coachSubscriptionQuery.data}
+        />
       ),
     ['my_appointments#lesson_requests']:
-      coachQuery && coachQuery.data?.is_active ? (
+      coachSubscriptionQuery && coachSubscriptionQuery.data?.is_active ? (
         <LessonRequestsCalendar />
       ) : null,
     ['reviews']: <Reviews title={'Your Reviews'} />,

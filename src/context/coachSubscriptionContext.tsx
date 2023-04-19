@@ -17,7 +17,7 @@ export const CoachProfileContextProvider: React.FC<PropsWithChildren> = ({
     async () => {
       const request = coachSubscriptionApi.getSubscription();
       const result = await request;
-      // console.log('[Your profile] coach result', result);
+      console.log('[Your profile] coach result', result);
       setCoachDetailProfile(result);
       return result;
     },
