@@ -107,7 +107,7 @@ const LessonsOfferedCards: React.FC<ILessonsOfferedCards> = ({
             <Box
               sx={{
                 display: 'flex',
-                justifyContent: matches650 ? 'flex-start' : 'space-between',
+                justifyContent: 'flex-start',
                 flexDirection: matches650 ? 'column' : 'row',
                 alignItems: matches650 ? 'flex-start' : 'center',
               }}
@@ -123,6 +123,7 @@ const LessonsOfferedCards: React.FC<ILessonsOfferedCards> = ({
                         fontWeight: '600',
                         color: '#394454',
                         mb: '4px',
+                        mr: '25px',
                       }}
                     >
                       {i + 1}.{val.name}

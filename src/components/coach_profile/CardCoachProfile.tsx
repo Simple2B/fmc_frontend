@@ -110,7 +110,7 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 ' ' +
                 'Lessons'}
             </Typography>
-            <Typography
+            {/* <Typography
               sx={{
                 fontFamily: 'Inter',
                 fontSize: '18px',
@@ -123,7 +123,7 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 .map((sport) => sport.name)
                 .join(', ') +
                 ' coach with experience training over 25,000 students'}
-            </Typography>
+            </Typography> */}
             <Box
               sx={{
                 display: 'flex',

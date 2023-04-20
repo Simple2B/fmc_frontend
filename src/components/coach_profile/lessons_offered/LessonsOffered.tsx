@@ -169,7 +169,7 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
         />
       </Box>
       <LessonsOfferedCards
-        title={`1-on-1 Tennis Lesson (${name})`}
+        title={`1-on-1 Lesson (${name} package)`}
         description={additionalInformationTitle}
         itemsDescription={[additionalInformationDescription]}
         location={locations}
