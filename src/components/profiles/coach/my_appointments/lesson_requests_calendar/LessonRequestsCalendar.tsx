@@ -5,15 +5,16 @@ import {
   FormControlLabel,
   Radio,
   RadioGroup,
+  Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 import { StripeService } from '../../../../../services/services/StripeService';
 import styles from '../MyAppointments.module.sass';
 import LessonRequests from './LessonRequests';
 import MyCalendar from './MyCalendar';
-
 const styleBtn = {
   fontFamily: 'Inter, sens-serif',
   fontSize: '20px',
@@ -28,7 +29,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
   coachSubscription,
 }) => {
   const [value, setValue] = React.useState('myCalendar');
-
+  const matches768 = useMediaQuery('(max-width:768px)');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
@@ -145,7 +146,29 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
         {value === 'lessonRequests' ? (
           <LessonRequests lessons={data ? data.lessons : []} />
         ) : (
-          <MyCalendar />
+          <>
+            {matches768 && (
+              <Box
+                sx={{
+                  marginBottom: '2%',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: '10px',
+                    fontFamily: 'Inter',
+                    color: 'red',
+                    textDecoration: 'underline',
+                  }}
+                >
+                  If you are using the mobile version, then press and hold your
+                  finger on the desired slot to create a schedule !
+                </Typography>
+              </Box>
+            )}
+
+            <MyCalendar />
+          </>
         )}
       </Box>
     </Box>
