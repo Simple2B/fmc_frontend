@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBookPro16.svg';
 import line_first from '../../../../public/lines/line_first.png';
@@ -68,11 +69,16 @@ const typeQuestions = [
 export interface IMainSection {}
 
 const MainSection: React.FC<IMainSection> = () => {
+  const router = useRouter();
+
   const matches1111 = useMediaQuery('(max-width:1111px)');
   const matches855 = useMediaQuery('(max-width:855px)');
   const matches625 = useMediaQuery('(max-width:625px)');
   const matches385 = useMediaQuery('(max-width:385px)');
 
+  const handleRedirectToPrivacy = () => {
+    router.push('/sign_up/privacy');
+  };
   const year = new Date().getFullYear();
 
   return (
@@ -257,7 +263,9 @@ const MainSection: React.FC<IMainSection> = () => {
               </Box>
             </Box>
             <Box className={styles.card2}>
-              <Box className={styles.c2}>Privacy&policy</Box>
+              <Box className={styles.c2} onClick={handleRedirectToPrivacy}>
+                Privacy & Policy
+              </Box>
               <Box className={styles.c2}>Become an investor</Box>
               <Box component={'a'} href={'#contact_us'} className={styles.c2}>
                 Contact us
