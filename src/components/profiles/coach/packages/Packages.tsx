@@ -276,8 +276,7 @@ const Packages: React.FC<IPackages> = () => {
                   if (!RE_ONLY_NUMBER.test(e.target.value.toLowerCase())) {
                     return;
                   }
-                  // TODO: add change amount of students for lesson
-                  // setAmount(e.target.value);
+                  setAmount(e.target.value);
                 }}
                 type="text"
               />
