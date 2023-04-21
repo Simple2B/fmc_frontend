@@ -44,6 +44,27 @@ export class PackagesService {
     }
 
     /**
+     * Get Packages For Coach
+     * @param coachUuid
+     * @returns LessonList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetPackagesForCoach(
+        coachUuid: string,
+    ): CancelablePromise<LessonList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/package/packages/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Get Package
      * @param packageUuid
      * @returns Lesson Successful Response

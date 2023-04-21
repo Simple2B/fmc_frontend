@@ -5,7 +5,7 @@ import checkMark from '../../../../../public/check_mark.png';
 
 interface ILessonsOfferedCards {
   title: string;
-  description: string;
+  description?: string | null;
   itemsDescription: string[];
   location: { name: string; address: string }[];
   children?: any;

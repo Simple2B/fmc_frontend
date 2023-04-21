@@ -1084,7 +1084,7 @@ export class ApiService {
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
         locationId?: number,
-        scheduleDate: string = '2023-04-19',
+        scheduleDate: string = '2023-04-21',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -1218,6 +1218,27 @@ export class ApiService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/package/packages',
+        });
+    }
+
+    /**
+     * Get Packages For Coach
+     * @param coachUuid
+     * @returns LessonList Successful Response
+     * @throws ApiError
+     */
+    public static apiGetPackagesForCoach(
+        coachUuid: string,
+    ): CancelablePromise<LessonList> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/package/packages/{coach_uuid}',
+            path: {
+                'coach_uuid': coachUuid,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
         });
     }
 

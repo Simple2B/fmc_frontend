@@ -73,6 +73,24 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
   setIsPaymentCheck,
 }) => {
   const router = useRouter();
+  const coachUUID =
+    router.asPath.split('/')[router.asPath.split('/').length - 1];
+
+  const { data } = useQuery(['coachPackages', coachUUID], async () => {
+    const result = await PackagesService.apiGetPackagesForCoach(
+      coachUUID as string
+    );
+    const lessonNumber = result.lessons.length - 1;
+    setLocations(
+      result.lessons[lessonNumber].coach.locations.map((location) => {
+        return {
+          name: ` ${location.city}, ${location.street}, ${location.postal_code}`,
+          address: '',
+        };
+      })
+    );
+    return result;
+  });
   // info for the package one to one
   const [locations, setLocations] = useState<
     {
@@ -80,13 +98,9 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
       address: string;
     }[]
   >([]);
-  const [name, setName] = useState<string>('');
-  const [additionalInformationTitle, setAdditionalInformationTitle] =
-    useState<string>('');
-  const [
-    additionalInformationDescription,
-    setAdditionalInformationDescription,
-  ] = useState<string>('');
+  const [, setName] = useState<string>('');
+  const [, setAdditionalInformationTitle] = useState<string>('');
+  const [, setAdditionalInformationDescription] = useState<string>('');
 
   useQuery(['packagesQuery'], async () => {
     const result = await PackagesService.apiGetPackages();
@@ -168,10 +182,13 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
           }}
         />
       </Box>
+
       <LessonsOfferedCards
-        title={`1-on-1 Lesson (${name} package)`}
-        description={additionalInformationTitle}
-        itemsDescription={[additionalInformationDescription]}
+        title={`1-on-1 Lesson (${data?.lessons[0].title} package)`}
+        description={data?.lessons[0].additional_information_title}
+        itemsDescription={[
+          data?.lessons[0].additional_information_description ?? '',
+        ]}
         location={locations}
       >
         <PriceCard

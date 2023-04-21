@@ -34,7 +34,7 @@ export class CoachScheduleService {
     public static apiGetCoachSchedulesByUuid(
         coachUuid: string,
         locationId?: number,
-        scheduleDate: string = '2023-04-19',
+        scheduleDate: string = '2023-04-21',
     ): CancelablePromise<ScheduleList> {
         return __request(OpenAPI, {
             method: 'GET',
