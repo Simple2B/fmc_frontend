@@ -98,9 +98,17 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
       address: string;
     }[]
   >([]);
-  const [, setName] = useState<string>('');
-  const [, setAdditionalInformationTitle] = useState<string>('');
-  const [, setAdditionalInformationDescription] = useState<string>('');
+  // eslint-disable-next-line no-unused-vars
+  const [name, setName] = useState<string>('');
+  // eslint-disable-next-line no-unused-vars
+  const [additionalInformationTitle, setAdditionalInformationTitle] =
+    useState<string>('');
+
+  const [
+    // eslint-disable-next-line no-unused-vars
+    additionalInformationDescription,
+    setAdditionalInformationDescription,
+  ] = useState<string>('');
 
   useQuery(['packagesQuery'], async () => {
     const result = await PackagesService.apiGetPackages();
