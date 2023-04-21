@@ -15,6 +15,7 @@ import { studentClientApi } from '@/fast_api_backend/api/usersInstance/student/s
 import { Contact } from '@/services';
 import { UserType } from '@/store/types/user';
 import MoreHorizIcon from '@mui/icons-material/MoreHorizOutlined';
+import moment from 'moment';
 import { useContext, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { MessageContext } from './messageContext';
@@ -37,7 +38,7 @@ export default function ContactListItem({
   const date = contactData.message
     ? new Date(contactData.message.created_at)
     : new Date();
-  const last_message_date = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+  const last_message_date = moment(date).format('DD-MM-YYYY');
 
   const readMessageMutation = useMutation(
     async () => {

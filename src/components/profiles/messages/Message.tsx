@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import moment from 'moment';
 
 interface IMessageProps {
   text: string;
@@ -8,7 +9,7 @@ interface IMessageProps {
 
 export function Message({ text, isOutgoing, date }: IMessageProps) {
   const messageDateObj = new Date(date);
-  const messageDate = `${messageDateObj.getDay()}/${messageDateObj.getMonth()}/${messageDateObj.getFullYear()}`;
+  const messageDate = moment(messageDateObj).format('DD-MM-YYYY');
   const messageTime = `${messageDateObj.getHours()}:${
     (messageDateObj.getMinutes() < 10 ? '0' : '') + messageDateObj.getMinutes()
   }`;
