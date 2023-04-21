@@ -10,6 +10,7 @@ interface IChatMessagesProps {
 }
 
 export function ChatMessages({ selectedContact }: IChatMessagesProps) {
+  console.log('[ChatMessages] selectedContact ', selectedContact);
   return (
     <>
       {selectedContact ? (

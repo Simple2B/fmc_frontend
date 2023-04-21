@@ -14,7 +14,6 @@ import line_first from '../../../../public/lines/line_first.png';
 import line_second from '../../../../public/lines/line_second.png';
 import TitleBox from '../title_box/TitleBox';
 import styles from './MainSection.module.sass';
-import Cards from './cards_sport_types/Cards';
 import CardsTypesPayment from './cards_type_payment/CardsTypesPayment';
 import ForTheCoaches from './for_the_coaches/ForTheCoaches';
 import InfoBoxSignUp from './info_box_sign_up/InfoBoxSignUp';
@@ -136,15 +135,16 @@ const MainSection: React.FC<IMainSection> = () => {
           <Image src={line_first} alt={'logo'} width={400} height={45} />
         </Box>
       </Box>
-      <TitleBox
+      {/*TODO: categories of sports */}
+      {/* <TitleBox
         color={'#000'}
         top={''}
         title={'Explore sport categories'}
         description={'Choose your coach based on your favorite sport'}
-      />
-      <Box className={styles.wrapperCardTypeSports}>
+      /> */}
+      {/* <Box className={styles.wrapperCardTypeSports}>
         <Cards />
-      </Box>
+      </Box> */}
       <TitleBox
         color={'#000'}
         top={''}

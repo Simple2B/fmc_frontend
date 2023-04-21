@@ -64,7 +64,7 @@ export default function ProfileCoach() {
     stripe_account_id: null,
   });
 
-  const uuidUser = router.asPath.split('message&')[1];
+  const uuidUser = router.asPath.split('user=')[1];
 
   useEffect(() => {
     const whoAmI = async () => {
@@ -114,7 +114,7 @@ export default function ProfileCoach() {
     {
       name: 'Messages',
       icon: <Mess sx={{ color: '#222CDF' }} />,
-      href: `/profiles/coach?message&${uuidUser}`,
+      href: `/profiles/coach?page=messages&user=${uuidUser}`,
     },
     {
       name: 'Settings',
@@ -134,13 +134,13 @@ export default function ProfileCoach() {
         if (item.name === 'Messages') {
           return {
             ...item,
-            href: `/profiles/coach?message&${contactUUID}`,
+            href: `/profiles/coach?page=messages&user=${contactUUID}`,
           };
         }
         return item;
       })
     );
-    router.push(`/profiles/coach?message&${contactUUID}`);
+    router.push(`/profiles/coach?page=messages&user=${contactUUID}`);
   };
 
   useEffect(() => {
@@ -172,7 +172,7 @@ export default function ProfileCoach() {
       ) : null,
     ['reviews']: <Reviews title={'Your Reviews'} />,
     ['packages']: <Packages />,
-    [`message&${uuidUser}`]: (
+    [`page=messages&user=${uuidUser}`]: (
       <Messages
         userType={UserType.coach}
         onContactSelected={onContactSelected}
