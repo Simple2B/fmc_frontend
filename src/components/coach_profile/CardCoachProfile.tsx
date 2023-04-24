@@ -33,7 +33,7 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
     <Box
       sx={{
         width: '100%',
-        p: '0 24px',
+        p: matches650 ? '4px' : '0 24px',
         display: 'flex',
         justifyContent: 'flex-end',
         alignItems: 'center',

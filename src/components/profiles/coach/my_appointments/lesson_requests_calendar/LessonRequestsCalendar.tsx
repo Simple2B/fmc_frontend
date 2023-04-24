@@ -30,6 +30,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
 }) => {
   const [value, setValue] = React.useState('myCalendar');
   const matches768 = useMediaQuery('(max-width:768px)');
+  const matches670 = useMediaQuery('(max-width:670px)');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
   };
@@ -85,7 +86,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
                 }
                 label="Upcoming Lessons"
               />
-              {value === 'lessonRequests' && (
+              {!matches670 && value === 'lessonRequests' && (
                 <Box
                   sx={{
                     position: 'absolute',
@@ -115,7 +116,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
                 }
                 label="My calendar"
               />
-              {value === 'myCalendar' && (
+              {!matches670 && value === 'myCalendar' && (
                 <Box
                   sx={{
                     position: 'absolute',
@@ -138,6 +139,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
           Manage your subscription
         </Box>
       </Box>
+
       <Box className={styles.sectionsWrapper}>
         <Box className={styles.sectionsTitle}>
           Respond to pending lesson requests •{' '}
