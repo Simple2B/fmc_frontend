@@ -58,7 +58,7 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
             flexDirection: matches650 ? 'column' : 'row',
           }}
         >
-          <Box sx={{ mr: '43px' }}>
+          <Box sx={{ mr: matches650 ? '0px' : '43px' }}>
             {profileCoachDataQuery.data &&
             profileCoachDataQuery.data.profile_picture ? (
               <Image

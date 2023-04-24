@@ -97,7 +97,7 @@ const Schedule: React.FC<ISchedule> = ({
       flex={1}
       sx={{
         alignSelf: matches950 ? 'center' : 'flex-start',
-        maxWidth: maxWidth,
+        maxWidth: matches950 ? 320 : maxWidth,
         width: '100%',
         // height: 435,
         boxShadow: '0px 0px 17px rgba(160, 160, 160, 0.25)',

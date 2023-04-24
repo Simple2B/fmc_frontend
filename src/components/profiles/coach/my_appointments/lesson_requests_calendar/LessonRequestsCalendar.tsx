@@ -83,7 +83,7 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
                     }}
                   />
                 }
-                label="Lesson Requests"
+                label="Upcoming Lessons"
               />
               {value === 'lessonRequests' && (
                 <Box

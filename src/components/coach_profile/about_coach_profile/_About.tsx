@@ -75,7 +75,6 @@ const About: React.FC<IAbout> = ({ isPaymentCheck }) => {
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
-
           mb: '26px',
         }}
       >
