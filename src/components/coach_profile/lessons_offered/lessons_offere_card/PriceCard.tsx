@@ -1,6 +1,6 @@
 import { UserType } from '@/store/types/user';
 import { PaymentCheckState } from '@/store/types/users/coach/profileType';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import InfoModalSchedule from './booked_info_forms/InfoModalSchedule';
@@ -41,6 +41,7 @@ const PriceCard: React.FC<IPriceCard> = ({
   isPaymentCheck,
   setIsPaymentCheck,
 }) => {
+  const matches950 = useMediaQuery('(max-width:950px)');
   const [packagesDataPrice, setPackagesDataPrice] = useState<
     {
       title: string;
@@ -100,10 +101,11 @@ const PriceCard: React.FC<IPriceCard> = ({
       sx={{
         height: '100%',
         display: 'flex',
-        justifyContent: 'space-around',
+        justifyContent: matches950 ? 'center' : 'space-around',
         alignItems: 'center',
+        flexWrap: matches950 ? 'wrap' : 'nowrap',
       }}
-      gap={1}
+      gap={matches950 ? 2.5 : 1}
     >
       {packagesDataPrice.map((item, index) => {
         return (

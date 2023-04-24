@@ -7,7 +7,7 @@ import FilterBtn from '@/components/coach_search/FilterBtn';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { ISport } from '@/store/types/users/coach/profileType';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import styles from '../../styles/Home.module.sass';
 
 export default function CoachSearchPage() {
   const router = useRouter();
+  const matches950 = useMediaQuery('(max-width:950px)');
 
   const [isLogIn, setIsLogIn] = useState<boolean>(false);
   const [userType, setUserType] = useState<string>('');
@@ -137,7 +138,8 @@ export default function CoachSearchPage() {
             }}
             gap={1}
           >
-            <FilterBtn />
+            {!matches950 && <FilterBtn />}
+
             <CoachSearchInput
               name={searchName as string}
               onChangeName={onChangeName}

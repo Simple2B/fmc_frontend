@@ -6,6 +6,7 @@ import {
   IconButton,
   InputBase,
   Paper,
+  useMediaQuery,
 } from '@mui/material';
 import * as React from 'react';
 
@@ -24,6 +25,7 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
   onChangeName,
   onChangeAddress,
 }) => {
+  const matches950 = useMediaQuery('(max-width:950px)');
   return (
     <Paper
       component="form"
@@ -39,9 +41,12 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
         backgroundColor: 'rgba(255, 255, 255, 1)',
       }}
     >
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
+      {!matches950 && (
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      )}
+
       <Box
         sx={{
           width: '100%',
@@ -104,24 +109,30 @@ const CoachSearchInput: React.FC<ICoachSearchInput> = ({
       </Box>
 
       <Box>
-        <Button
-          sx={{
-            position: 'absolute',
-            textTransform: 'capitalize',
-            top: '7px',
-            right: '6px',
-            color: '#FFF',
-            backgroundColor: '#1664C0',
-            width: '108px',
-            height: '46px',
-            borderRadius: '8px',
-            '&:hover': {
-              backgroundColor: '#F05547',
-            },
-          }}
-        >
-          Search
-        </Button>
+        {matches950 ? (
+          <IconButton type="button" sx={{ p: '1.5px' }} aria-label="search">
+            <SearchIcon sx={{ color: '#1976d2' }} />
+          </IconButton>
+        ) : (
+          <Button
+            sx={{
+              position: 'absolute',
+              textTransform: 'capitalize',
+              top: '7px',
+              right: '6px',
+              color: '#FFF',
+              backgroundColor: '#1664C0',
+              width: '108px',
+              height: '46px',
+              borderRadius: '8px',
+              '&:hover': {
+                backgroundColor: '#F05547',
+              },
+            }}
+          >
+            Search
+          </Button>
+        )}
       </Box>
     </Paper>
   );

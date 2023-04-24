@@ -47,6 +47,7 @@ const Btns: React.FC<IBtns> = ({ sports, toggleSport }) => {
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'center',
+          flexWrap: 'wrap',
         }}
         gap={0.5}
       >

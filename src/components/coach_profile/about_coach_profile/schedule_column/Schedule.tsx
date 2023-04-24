@@ -180,8 +180,9 @@ const Schedule: React.FC<ISchedule> = ({
             // pl: '1.5px',
             height: '100%',
             display: 'flex',
-            justifyContent: 'space-around',
+            justifyContent: matches950 ? 'center' : 'space-around',
             alignItems: 'center',
+            flexWrap: matches950 ? 'wrap' : 'nowrap',
           }}
         >
           {dates[dateSlotKey].map((date, index) => {

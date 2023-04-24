@@ -80,39 +80,6 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
   const [additionalInformationTitle, setAdditionalInformationTitle] =
     useState<string>('');
 
-  // const [
-  //   // eslint-disable-next-line no-unused-vars
-  //   additionalInformationDescription,
-  //   setAdditionalInformationDescription,
-  // ] = useState<string>('');
-
-  // useQuery(['packagesQuery'], async () => {
-  //   const result = await PackagesService.apiGetPackages();
-
-  //   console.log('[LessonsOffered =>>> packagesQuery] result === ', result);
-  //   if (result.lessons.length > 0) {
-  //     const lessonNumber = result.lessons.length - 1;
-  //     setName(result.lessons[lessonNumber].title ?? '');
-  //     setAdditionalInformationTitle(
-  //       result.lessons[lessonNumber].additional_information_title ?? ''
-  //     );
-  //     setAdditionalInformationDescription(
-  //       result.lessons[lessonNumber].additional_information_description ?? ''
-  //     );
-  //     if (result.lessons[lessonNumber].coach.locations.length > 0) {
-  //       const coachLocations = result.lessons[lessonNumber].coach.locations.map(
-  //         (location) => {
-  //           return {
-  //             name: ` ${location.city}, ${location.street}, ${location.postal_code}`,
-  //             address: '',
-  //           };
-  //         }
-  //       );
-  //       setLocations(coachLocations);
-  //     }
-  //   }
-  //   return result;
-  // });
   return (
     <Box
       sx={{
@@ -133,10 +100,6 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
-          // fontFamily: 'Poppins, sans-serif',
-          // fontSize: '24px',
-          // fontWeight: '500',
-          // color: '#394454',
         }}
       >
         {' '}
