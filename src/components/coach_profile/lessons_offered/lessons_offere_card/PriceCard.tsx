@@ -2,31 +2,32 @@ import { UserType } from '@/store/types/user';
 import { PaymentCheckState } from '@/store/types/users/coach/profileType';
 import { Box } from '@mui/material';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InfoModalSchedule from './booked_info_forms/InfoModalSchedule';
 import InfoModelSignInSignUP from './booked_info_forms/InfoModalSignInSignUP';
 
 const testData = [
   {
     title: '1 hours',
-    value: '£65',
+    price: 65,
     disable: false,
   },
   {
     title: '3 hours',
-    value: '£180',
+    price: 180,
     subTitle: 'You save 30$',
     disable: true,
   },
   {
     title: '6 hours',
-    value: '£360',
+    price: 360,
     subTitle: 'You save 30$',
     disable: true,
   },
 ];
 
 export interface IPriceCard {
+  price?: number;
   isLogIn: boolean | null;
   userType: string | null;
   isPaymentCheck: PaymentCheckState;
@@ -34,11 +35,20 @@ export interface IPriceCard {
 }
 
 const PriceCard: React.FC<IPriceCard> = ({
+  price,
   isLogIn,
   userType,
   isPaymentCheck,
   setIsPaymentCheck,
 }) => {
+  const [packagesDataPrice, setPackagesDataPrice] = useState<
+    {
+      title: string;
+      price: number;
+      subTitle?: string;
+      disable: boolean;
+    }[]
+  >(testData);
   const [isOpenLogIn, setIsOpenLogIn] = useState<boolean>(false);
   const [isBookSession, setIsBookSession] = useState<boolean>(false);
 
@@ -50,6 +60,41 @@ const PriceCard: React.FC<IPriceCard> = ({
     setIsBookSession(!isBookSession);
   };
 
+  useEffect(() => {
+    setPackagesDataPrice(
+      testData.map((packageData, index) => {
+        if (index === 0) {
+          return {
+            title: packageData.title,
+            price: price ? price / 100 : packageData.price,
+            disable: packageData.disable,
+          };
+        }
+        if (index === 1) {
+          return {
+            title: packageData.title,
+            price: price
+              ? (price / 100) * 3 - (price / 100) * 3 * 0.3
+              : packageData.price,
+            subTitle: packageData.subTitle,
+            disable: packageData.disable,
+          };
+        }
+        if (index === 2) {
+          return {
+            title: packageData.title,
+            price: price
+              ? (price / 100) * 6 - (price / 100) * 6 * 0.3
+              : packageData.price,
+            subTitle: packageData.subTitle,
+            disable: packageData.disable,
+          };
+        }
+        return packageData;
+      })
+    );
+  }, [price]);
+
   return (
     <Box
       sx={{
@@ -60,7 +105,7 @@ const PriceCard: React.FC<IPriceCard> = ({
       }}
       gap={1}
     >
-      {testData.map((item, index) => {
+      {packagesDataPrice.map((item, index) => {
         return (
           <Box
             key={index}
@@ -117,7 +162,8 @@ const PriceCard: React.FC<IPriceCard> = ({
                 pb: '30px',
               }}
             >
-              {item.value}
+              {/* TODO: price for first package (in next step of work will be add all packages info of coach) */}
+              £{item.price}
             </Box>
             <Box
               sx={{
