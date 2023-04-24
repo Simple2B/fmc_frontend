@@ -9,7 +9,6 @@ import {
   CardHeader,
   Menu,
   MenuItem,
-  useMediaQuery,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -34,13 +33,12 @@ export const MessageNotifications = ({
   const rateCoach = (sessionUUID: string) => {
     router.push(`/profiles/review/${sessionUUID}`);
   };
-  const matches970 = useMediaQuery('(max-width:970px)');
   return (
-    <Box sx={{ postion: 'relative' }}>
+    <Box>
       <Badge
         badgeContent={notificationCount}
         sx={{
-          display: matches970 ? 'none' : 'inline-block',
+          display: 'inline-block',
           position: 'relative',
           // display: { xs: 'none', sm: 'inline-block' },
           boxShadow: '0px 0px 5px rgba(142, 142, 142, 0.25)',

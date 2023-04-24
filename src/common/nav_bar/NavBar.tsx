@@ -91,6 +91,7 @@ const NavBar: React.FC<INavBar> = ({
         borderBottom: matches970
           ? '0.3px solid #ffffff'
           : '0.3px solid #DBDBDB',
+        mb: matches970 ? '27px' : '0px',
       }}
     >
       <Toolbar className={style.toolBar}>
@@ -114,9 +115,15 @@ const NavBar: React.FC<INavBar> = ({
 
         {/* TODO: for search use mui Autocomplete */}
         {userType === UserType.student && (
-          <div className={style.search}>
+          <Box
+            className={style.search}
+            sx={{
+              position: matches970 ? 'absolute' : 'none',
+              top: '88%',
+            }}
+          >
             <SearchInput />
-          </div>
+          </Box>
         )}
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
