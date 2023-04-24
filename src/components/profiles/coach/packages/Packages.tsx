@@ -9,7 +9,7 @@ import { PackagesService } from '@/services/services/PackagesService';
 import { RE_ONLY_NUMBER, RE_PRICE } from '@/store/constants';
 import { ILocation } from '@/store/types/location/locationType';
 import { ISport } from '@/store/types/users/coach/profileType';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/router';
@@ -38,6 +38,7 @@ export interface IPackages {}
 
 const Packages: React.FC<IPackages> = () => {
   const router = useRouter();
+  const matches650 = useMediaQuery('(max-width:650px)');
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const [isSuccess, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -248,11 +249,13 @@ const Packages: React.FC<IPackages> = () => {
             sx={{
               display: 'flex',
               justifyContent: 'flex-start',
+              flexDirection: matches650 ? 'column' : 'row',
               flexWrap: 'wrap',
-              mb: '45px',
+              mb: matches650 ? '25px' : '45px',
             }}
+            gap={matches650 ? 1.5 : 0}
           >
-            <Box sx={{ width: 424, mr: '12px' }}>
+            <Box sx={{ width: matches650 ? 315 : 424, mr: '12px' }}>
               <Input
                 helperText={errorNameMessage}
                 isError={isErrorName}
@@ -264,7 +267,7 @@ const Packages: React.FC<IPackages> = () => {
                 type="text"
               />
             </Box>
-            <Box sx={{ width: 206 }}>
+            <Box sx={{ width: matches650 ? 315 : 206 }}>
               <Input
                 // helperText={errorNameMessage}
                 // isError={isErrorName}
@@ -287,10 +290,12 @@ const Packages: React.FC<IPackages> = () => {
               display: 'flex',
               justifyContent: 'flex-start',
               flexWrap: 'wrap',
-              mb: '45px',
+              flexDirection: matches650 ? 'column' : 'row',
+              mb: matches650 ? '25px' : '45px',
             }}
+            gap={matches650 ? 1.5 : 0}
           >
-            <Box sx={{ width: 424, mr: '12px' }}>
+            <Box sx={{ width: matches650 ? 315 : 424, mr: '12px' }}>
               <Autocomplete
                 value={typeSession}
                 onChange={(event: any, newValue: string | null) => {
@@ -306,28 +311,30 @@ const Packages: React.FC<IPackages> = () => {
             </Box>
             <Box
               sx={{
-                width: 206,
+                width: matches650 ? 315 : 206,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              <Box
-                sx={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '24px',
-                  fontWeight: 500,
-                  color: 'rgba(0, 0, 0, 0.87)',
-                  mr: '5px',
-                }}
-              >
-                £
-              </Box>
+              {matches650 ? null : (
+                <Box
+                  sx={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '24px',
+                    fontWeight: 500,
+                    color: 'rgba(0, 0, 0, 0.87)',
+                    mr: '5px',
+                  }}
+                >
+                  £
+                </Box>
+              )}
               <Input
                 helperText={errorPriceMessage}
                 isError={isErrorPrice}
                 name={'price'}
-                label={'Price'}
+                label={matches650 ? 'Price (£)' : 'Price'}
                 value={price}
                 sx={{ ...nameInputStyles, maxWidth: '100%' }}
                 onChange={(e) => {
@@ -343,12 +350,14 @@ const Packages: React.FC<IPackages> = () => {
           </Box>
           <Box
             sx={{
-              width: 642,
-              mb: '45px',
+              width: matches650 ? 315 : 642,
+              mb: matches650 ? '25px' : '45px',
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              justifyContent: matches650 ? 'flex-start' : 'space-between',
+              flexDirection: matches650 ? 'column' : 'row',
+              alignItems: matches650 ? 'flex-start' : 'center',
             }}
+            gap={matches650 ? 1.5 : 0}
           >
             <Autocomplete
               value={location}
@@ -357,7 +366,7 @@ const Packages: React.FC<IPackages> = () => {
               }}
               id="controllable-states-demo"
               options={locations.map((loc) => loc.name)}
-              sx={{ ...nameInputStyles, width: '49%' }}
+              sx={{ ...nameInputStyles, width: matches650 ? '100%' : '49%' }}
               renderInput={(params: any) => (
                 <TextField {...params} label="Location" />
               )}
@@ -369,13 +378,18 @@ const Packages: React.FC<IPackages> = () => {
               }}
               id="controllable-states-demo"
               options={sports.map((sport) => sport.name)}
-              sx={{ ...nameInputStyles, width: '49%' }}
+              sx={{ ...nameInputStyles, width: '100%' }}
               renderInput={(params: any) => (
                 <TextField {...params} label="Sport" />
               )}
             />
           </Box>
-          <Box sx={{ width: 642, mb: '45px' }}>
+          <Box
+            sx={{
+              width: matches650 ? 315 : 642,
+              mb: matches650 ? '15px' : '45px',
+            }}
+          >
             <TextField
               sx={{ width: '100%' }}
               id="outlined-multiline-static"
@@ -386,7 +400,12 @@ const Packages: React.FC<IPackages> = () => {
               onChange={(e) => setAboutSession(e.target.value)}
             />
           </Box>
-          <Box sx={{ width: 642, mb: '45px' }}>
+          <Box
+            sx={{
+              width: matches650 ? 315 : 642,
+              mb: matches650 ? '25px' : '45px',
+            }}
+          >
             <Box
               sx={{
                 fontFamily: 'Inter, sens-serif',
@@ -398,7 +417,7 @@ const Packages: React.FC<IPackages> = () => {
             >
               Additional information
             </Box>
-            <Box sx={{ width: 642, mb: '7px' }}>
+            <Box sx={{ width: matches650 ? 315 : 642, mb: '7px' }}>
               <TextField
                 sx={{ width: '100%' }}
                 id="outlined-multiline-static"
@@ -409,7 +428,7 @@ const Packages: React.FC<IPackages> = () => {
                 onChange={(e) => setAdditionalInformationTitle(e.target.value)}
               />
             </Box>
-            <Box sx={{ width: 642 }}>
+            <Box sx={{ width: matches650 ? 315 : 642 }}>
               <TextField
                 sx={{ width: '100%' }}
                 id="outlined-multiline-static"
@@ -436,7 +455,7 @@ const Packages: React.FC<IPackages> = () => {
           </Box> */}
           <Box
             sx={{
-              width: 642,
+              width: matches650 ? 315 : 642,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',

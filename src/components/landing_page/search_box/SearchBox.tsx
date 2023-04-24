@@ -48,7 +48,7 @@ export interface ISearchInput {
 
 const SearchInput: React.FC<ISearchInput> = ({ sports, children }) => {
   const router = useRouter();
-
+  const matches970 = useMediaQuery('(max-width:970px)');
   const matches845 = useMediaQuery('(max-width:845px)');
   const matches445 = useMediaQuery('(max-width:445px)');
   const matches320 = useMediaQuery('(max-width:320px)');
@@ -88,9 +88,12 @@ const SearchInput: React.FC<ISearchInput> = ({ sports, children }) => {
           : 'rgba(255, 255, 255, 1)',
       }}
     >
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
+      {!matches970 && (
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      )}
+
       <Box
         sx={{
           ml: 1,
@@ -137,26 +140,31 @@ const SearchInput: React.FC<ISearchInput> = ({ sports, children }) => {
       </Box>
 
       <Box sx={{ width: matches445 ? '' : matches845 ? '88px' : '108px' }}>
-        {/* <Button
-          sx={{
-            position: 'absolute',
-            textTransform: 'capitalize',
-            top: matches845 ? '4.5px' : '7px',
-            right: '6px',
-            color: '#FFF',
-            backgroundColor: '#F05547',
-            width: matches445 ? '' : matches845 ? '88px' : '108px',
-            height: matches445 ? '24px' : matches845 ? '36px' : '46px',
-            borderRadius: matches845 ? '4px' : '8px',
-            '&:hover': {
-              backgroundColor: 'grey',
-            },
-          }}
-          onClick={searchCoaches}
-        >
-          Search
-        </Button> */}
-        {children ? children : <BtnSearch searchCoaches={searchCoaches} />}
+        {children ? (
+          children
+        ) : matches970 ? (
+          <Box
+            sx={{
+              cursor: 'pointer',
+              position: 'absolute',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              top: '7px',
+              right: '3px',
+              width: '55px',
+              height: '75%',
+              borderRadius: '4px',
+              border: '1px solid #F05547',
+              backgroundColor: '#F05547',
+            }}
+            onClick={searchCoaches}
+          >
+            <SearchIcon sx={{ color: '#ffffff' }} />
+          </Box>
+        ) : (
+          <BtnSearch searchCoaches={searchCoaches} />
+        )}
       </Box>
     </Paper>
   );

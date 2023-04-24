@@ -85,7 +85,13 @@ const NavBar: React.FC<INavBar> = ({
   return (
     <AppBar
       position="sticky"
-      sx={{ boxShadow: 'none', border: '0.3px solid #DBDBDB' }}
+      sx={{
+        boxShadow: 'none',
+        backgroundColor: matches970 ? '#ffffff' : '#1976d2',
+        borderBottom: matches970
+          ? '0.3px solid #ffffff'
+          : '0.3px solid #DBDBDB',
+      }}
     >
       <Toolbar className={style.toolBar}>
         <Box
@@ -109,7 +115,6 @@ const NavBar: React.FC<INavBar> = ({
         {/* TODO: for search use mui Autocomplete */}
         {userType === UserType.student && (
           <div className={style.search}>
-            {/* <InputBase placeholder="Search a coach" /> */}
             <SearchInput />
           </div>
         )}
@@ -165,8 +170,13 @@ const NavBar: React.FC<INavBar> = ({
             onClick={() => setOpen(!isOpen)}
             ref={anchorRef}
           >
-            <Box>{username}</Box>
-            {isOpen ? <ArrowDropDown /> : <ArrowDropUp />}
+            {!matches970 && (
+              <>
+                <Box>{username}</Box>
+                {isOpen ? <ArrowDropDown /> : <ArrowDropUp />}
+              </>
+            )}
+
             <Menu
               id="basic-menu"
               sx={{

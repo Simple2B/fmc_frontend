@@ -14,6 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import style from './AuthenticatedLayouts.module.sass';
 
 export interface IStudentAuthenticatedLayout {
@@ -56,7 +57,7 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCurrentUser(
       userType,
       setProfile,
@@ -68,9 +69,9 @@ const AuthenticatedLayout: React.FC<IStudentAuthenticatedLayout> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType]);
 
-  const [modalIsOpen, setModalIsOpen] = React.useState<boolean>(true);
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!modalIsOpen) {
       setTimeout(() => {
         setModalIsOpen(true);

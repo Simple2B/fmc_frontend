@@ -21,6 +21,7 @@ export interface IPersonalInfo {
 
 const PersonalInfo: React.FC<IPersonalInfo> = ({ userType }) => {
   const matches600 = useMediaQuery('(max-width:600px)');
+  // const matches650 = useMediaQuery('(max-width:650px)');
 
   const nameInputStyles = {
     mt: matches600 ? 1.5 : 4,
