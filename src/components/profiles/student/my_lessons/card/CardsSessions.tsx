@@ -4,7 +4,6 @@ import {
   EventAvailable,
   MonetizationOn,
   Place,
-  Subject,
 } from '@mui/icons-material';
 import {
   Button,
@@ -174,25 +173,6 @@ const CardsSessions: React.FC<ICardsSessions> = ({ lessons, type }) => {
                           {item
                             ? item.schedule.lesson.location.postal_code
                             : ''}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'flex-start',
-                          alignItems: 'center',
-                          mr: '7px',
-                          mb: '12px',
-                        }}
-                      >
-                        <Subject
-                          sx={{
-                            color: type === 'past' ? '#B5B5B5' : '#222CDF',
-                            mr: '3px',
-                          }}
-                        />
-                        <Typography>
-                          {item ? item.schedule.lesson.about : ''}
                         </Typography>
                       </Box>
                     </Box>

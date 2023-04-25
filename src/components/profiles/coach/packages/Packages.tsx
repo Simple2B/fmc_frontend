@@ -387,22 +387,6 @@ const Packages: React.FC<IPackages> = () => {
           <Box
             sx={{
               width: matches650 ? 315 : 642,
-              mb: matches650 ? '15px' : '45px',
-            }}
-          >
-            <TextField
-              sx={{ width: '100%' }}
-              id="outlined-multiline-static"
-              label="About session"
-              multiline
-              rows={4}
-              value={aboutSession}
-              onChange={(e) => setAboutSession(e.target.value)}
-            />
-          </Box>
-          <Box
-            sx={{
-              width: matches650 ? 315 : 642,
               mb: matches650 ? '25px' : '45px',
             }}
           >
@@ -421,7 +405,7 @@ const Packages: React.FC<IPackages> = () => {
               <TextField
                 sx={{ width: '100%' }}
                 id="outlined-multiline-static"
-                label="title"
+                label="Title"
                 multiline
                 rows={1}
                 value={additionalInformationTitle}
@@ -432,9 +416,9 @@ const Packages: React.FC<IPackages> = () => {
               <TextField
                 sx={{ width: '100%' }}
                 id="outlined-multiline-static"
-                label="description"
+                label="Description"
                 multiline
-                rows={1.5}
+                rows={7}
                 value={additionalInformationDescription}
                 onChange={(e) =>
                   setAdditionalInformationDescription(e.target.value)
