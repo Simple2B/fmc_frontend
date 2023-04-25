@@ -403,7 +403,7 @@ const Packages: React.FC<IPackages> = () => {
             </Box>
             <Box sx={{ width: matches650 ? 315 : 642, mb: '7px' }}>
               <TextField
-                sx={{ width: '100%' }}
+                sx={{ width: '100%', marginBottom: '10px' }}
                 id="outlined-multiline-static"
                 label="Title"
                 multiline
