@@ -82,6 +82,22 @@ const MainSection: React.FC<IMainSection> = () => {
 
   return (
     <Box className={styles.section}>
+      <Box className={styles.wrapperCardTypePayment}>
+        <InfoBoxSignUp />
+      </Box>
+      <TitleBox
+        color={'#000'}
+        top={''}
+        title={'How it works'}
+        description={
+          'We make it fast, simple and secure to book a coach that can help increase your potential.'
+        }
+      />
+      <Box className={styles.wrapperCardTypePayment}>
+        {/* <Box className={styles.arrow1}> - </Box> */}
+        <CardsTypesPayment />
+        {/* <Box className={styles.arrow2}> - </Box> */}
+      </Box>
       <TitleBox
         color={'#000'}
         top={''}
@@ -145,22 +161,7 @@ const MainSection: React.FC<IMainSection> = () => {
       {/* <Box className={styles.wrapperCardTypeSports}>
         <Cards />
       </Box> */}
-      <TitleBox
-        color={'#000'}
-        top={''}
-        title={'How it works'}
-        description={
-          'We make it fast, simple and secure to book a coach that can help increase your potential.'
-        }
-      />
-      <Box className={styles.wrapperCardTypePayment}>
-        {/* <Box className={styles.arrow1}> - </Box> */}
-        <CardsTypesPayment />
-        {/* <Box className={styles.arrow2}> - </Box> */}
-      </Box>
-      <Box className={styles.wrapperCardTypePayment}>
-        <InfoBoxSignUp />
-      </Box>
+
       <TitleBox
         color={'#000'}
         top={''}
