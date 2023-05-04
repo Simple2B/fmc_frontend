@@ -1,7 +1,6 @@
 import { ReviewsService } from '@/services';
 import { Rating, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 import styles from './Reviews.module.sass';
@@ -11,14 +10,8 @@ export interface IReviews {
 }
 
 const Reviews: React.FC<IReviews> = ({ title }) => {
-  const router = useRouter();
-  const coachUuid = router.query.uuid_coach;
-
-  const { data } = useQuery(['coachReviews'], async () => {
-    const result = await ReviewsService.apiGetReviewsByCoachUuid(
-      coachUuid as string
-    );
-    console.log(result);
+  const { data } = useQuery(['currentcoachReviews'], async () => {
+    const result = await ReviewsService.apiCoachReviewsList();
     return result.reviews;
   });
   return (
