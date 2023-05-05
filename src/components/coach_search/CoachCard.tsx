@@ -206,7 +206,7 @@ export const CoachCard: React.FC<CoachCardProps> = ({
             readOnly
           />
         </Box>
-        <Box sx={{ height: '90px', overflow: 'scroll' }}>
+        {/* <Box sx={{ height: '90px', overflow: 'scroll' }}>
           <Typography
             sx={{
               fontFamily: 'Inter, sans-serif',
@@ -217,7 +217,7 @@ export const CoachCard: React.FC<CoachCardProps> = ({
           >
             {item.about}
           </Typography>
-        </Box>
+        </Box> */}
       </CardContent>
       <CardActions
         sx={{

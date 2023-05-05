@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
-import Btns from '@/components/coach_search/Btns';
 import { CoachCardList } from '@/components/coach_search/CoachCardList';
 import CoachSearchInput from '@/components/coach_search/CoachSearchInput';
 import CoachSearchNavbar from '@/components/coach_search/CoachSearchNavbar';
-import FilterBtn from '@/components/coach_search/FilterBtn';
 import { instance } from '@/fast_api_backend/api/_axiosInstance';
 import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { ISport } from '@/store/types/users/coach/profileType';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -16,7 +14,7 @@ import styles from '../../styles/Home.module.sass';
 
 export default function CoachSearchPage() {
   const router = useRouter();
-  const matches950 = useMediaQuery('(max-width:950px)');
+  // const matches950 = useMediaQuery('(max-width:950px)');
 
   const [isLogIn, setIsLogIn] = useState<boolean>(false);
   const [userType, setUserType] = useState<string>('');
@@ -78,6 +76,7 @@ export default function CoachSearchPage() {
     }
   );
 
+  // eslint-disable-next-line no-unused-vars
   const toggleSport = (sport: {
     id: number;
     name: string;
@@ -138,7 +137,7 @@ export default function CoachSearchPage() {
             }}
             gap={1}
           >
-            {!matches950 && <FilterBtn />}
+            {/* {!matches950 && <FilterBtn />} */}
 
             <CoachSearchInput
               name={searchName as string}
@@ -146,11 +145,11 @@ export default function CoachSearchPage() {
               onChangeAddress={onChangeAddress}
               address={searchAddress as string}
             />
-            <Btns
+            {/* <Btns
               sportsIdes={router.query.sportsIdes}
               sports={sports}
               toggleSport={toggleSport}
-            />
+            /> */}
           </Box>
           <CoachCardList
             isLogIn={isLogIn}
