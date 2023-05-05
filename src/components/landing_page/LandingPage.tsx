@@ -1,12 +1,10 @@
 import Loader from '@/common/loader/Loader';
 import MessageBox from '@/common/message_box/MessageBox';
 import CustomModel from '@/common/modal/Modal';
-import { coachProfileApi } from '@/fast_api_backend/api/usersInstance/coach/profileInstance';
 import { getCurrentUser } from '@/helper/get_current_user';
 import { logout } from '@/helper/logout/logout';
 import { User } from '@/services';
 import { UserType } from '@/store/types/user';
-import { ISport } from '@/store/types/users/coach/profileType';
 import { Logout } from '@mui/icons-material';
 import {
   Avatar,
@@ -24,7 +22,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import linkLogo from '../../../public/LOGO(WHITE).svg';
 import style from './LandingPage.module.sass';
 import SearchInput from './search_box/SearchBox';
@@ -40,9 +37,9 @@ export interface ILandingPage {
 const drawerWidth = 240;
 
 const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
-  const matches1920 = useMediaQuery('(max-width:1920px)');
-  const matches845 = useMediaQuery('(max-width:845px)');
-  const matches414 = useMediaQuery('(max-width:414px)');
+  // const matches1920 = useMediaQuery('(max-width:1920px)');
+  // const matches845 = useMediaQuery('(max-width:845px)');
+  // const matches414 = useMediaQuery('(max-width:414px)');
   const matches320 = useMediaQuery('(max-width:320px)');
 
   const [isLoad, setIsLoad] = React.useState<boolean>(false);
@@ -244,6 +241,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     }
   }, [modalIsOpen, error]);
 
+  // eslint-disable-next-line no-unused-vars
   const [sports, setSports] = useState<
     {
       id: number;
@@ -258,42 +256,42 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
     },
   ]);
 
-  const sportsQuery = useQuery<ISport[], ErrorConstructor>(
-    ['sports'],
-    async () => {
-      const request = coachProfileApi.getTypeSports;
-      const result = await request();
-      if (result) {
-        setSports(
-          result.map((s) => ({
-            id: s.id ? s.id : 0,
-            name: s.name,
-            isActive: false,
-          }))
-        );
-      }
+  // const sportsQuery = useQuery<ISport[], ErrorConstructor>(
+  //   ['sports'],
+  //   async () => {
+  //     const request = coachProfileApi.getTypeSports;
+  //     const result = await request();
+  //     if (result) {
+  //       setSports(
+  //         result.map((s) => ({
+  //           id: s.id ? s.id : 0,
+  //           name: s.name,
+  //           isActive: false,
+  //         }))
+  //       );
+  //     }
 
-      return result;
-    }
-  );
+  //     return result;
+  //   }
+  // );
 
-  const toggleSport = (sport: {
-    id: number;
-    name: string;
-    isActive: boolean;
-  }) => {
-    setSports(
-      sports.map((s) => {
-        if (sport.id === s.id) {
-          return {
-            ...s,
-            isActive: !s.isActive,
-          };
-        }
-        return s;
-      })
-    );
-  };
+  // const toggleSport = (sport: {
+  //   id: number;
+  //   name: string;
+  //   isActive: boolean;
+  // }) => {
+  //   setSports(
+  //     sports.map((s) => {
+  //       if (sport.id === s.id) {
+  //         return {
+  //           ...s,
+  //           isActive: !s.isActive,
+  //         };
+  //       }
+  //       return s;
+  //     })
+  //   );
+  // };
 
   return (
     <Box className={`${wrapperClassName}`}>
@@ -351,7 +349,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
             }
           >
             <SearchInput sports={sports} />
-            <Box
+            {/* <Box
               sx={{
                 width: matches414
                   ? '142px'
@@ -397,7 +395,7 @@ const LandingPage: React.FC<ILandingPage> = ({ window, wrapperClassName }) => {
                     );
                   }
                 })}
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Box>

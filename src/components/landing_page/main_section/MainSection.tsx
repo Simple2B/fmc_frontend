@@ -10,12 +10,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import logo from '../../../../public/LOGO(WHITE).svg';
 import computer from '../../../../public/MacBookPro16.svg';
-import line_first from '../../../../public/lines/line_first.png';
-import line_second from '../../../../public/lines/line_second.png';
 import TitleBox from '../title_box/TitleBox';
 import styles from './MainSection.module.sass';
 import CardsTypesPayment from './cards_type_payment/CardsTypesPayment';
-import ForTheCoaches from './for_the_coaches/ForTheCoaches';
 import InfoBoxSignUp from './info_box_sign_up/InfoBoxSignUp';
 import QuestionsCards from './questions_cards/QuestionsCards';
 import WrapperContactForm from './wrapper_contact_form/WrapperContactForm';
@@ -70,7 +67,7 @@ export interface IMainSection {}
 const MainSection: React.FC<IMainSection> = () => {
   const router = useRouter();
 
-  const matches1111 = useMediaQuery('(max-width:1111px)');
+  // const matches1111 = useMediaQuery('(max-width:1111px)');
   const matches855 = useMediaQuery('(max-width:855px)');
   const matches625 = useMediaQuery('(max-width:625px)');
   const matches385 = useMediaQuery('(max-width:385px)');
@@ -78,6 +75,11 @@ const MainSection: React.FC<IMainSection> = () => {
   const handleRedirectToPrivacy = () => {
     router.push('/sign_up/privacy');
   };
+
+  const handleRedirectToTermsConditions = () => {
+    router.push('/sign_up/terms');
+  };
+
   const year = new Date().getFullYear();
 
   return (
@@ -98,7 +100,7 @@ const MainSection: React.FC<IMainSection> = () => {
         <CardsTypesPayment />
         {/* <Box className={styles.arrow2}> - </Box> */}
       </Box>
-      <TitleBox
+      {/* <TitleBox
         color={'#000'}
         top={''}
         title={'For the coaches'}
@@ -150,7 +152,7 @@ const MainSection: React.FC<IMainSection> = () => {
         >
           <Image src={line_first} alt={'logo'} width={400} height={45} />
         </Box>
-      </Box>
+      </Box> */}
       {/*TODO: categories of sports */}
       {/* <TitleBox
         color={'#000'}
@@ -260,14 +262,19 @@ const MainSection: React.FC<IMainSection> = () => {
                   pl: '15px',
                 }}
               >
-                Optimizing your coach experience
+                Optimising your coaching experience
               </Box>
             </Box>
             <Box className={styles.card2}>
               <Box className={styles.c2} onClick={handleRedirectToPrivacy}>
                 Privacy & Policy
               </Box>
-              <Box className={styles.c2}>Become an investor</Box>
+              <Box
+                className={styles.c2}
+                onClick={handleRedirectToTermsConditions}
+              >
+                Terms and Conditions
+              </Box>
               <Box component={'a'} href={'#contact_us'} className={styles.c2}>
                 Contact us
               </Box>
