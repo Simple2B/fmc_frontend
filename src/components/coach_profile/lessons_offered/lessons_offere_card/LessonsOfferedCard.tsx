@@ -102,7 +102,9 @@ const LessonsOfferedCards: React.FC<ILessonsOfferedCards> = ({
                 mb: '28px',
               }}
             >
-              2 Locations
+              {location.length === 1
+                ? '1 Location'
+                : `${location.length} Locations`}
             </Box>
             <Box
               sx={{

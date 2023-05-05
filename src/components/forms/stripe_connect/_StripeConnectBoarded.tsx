@@ -50,7 +50,8 @@ const _StripeConnectBoarded = () => {
             color: 'white',
           }}
         >
-          View your dashboard
+          {/* View your dashboard */}
+          Stripe Connect
         </Typography>
       </Box>
     </Box>

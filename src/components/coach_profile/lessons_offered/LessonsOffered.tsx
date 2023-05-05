@@ -9,6 +9,7 @@ import { useQuery } from 'react-query';
 import LessonsOfferedCards from './lessons_offere_card/LessonsOfferedCard';
 import PriceCard from './lessons_offere_card/PriceCard';
 
+// eslint-disable-next-line no-unused-vars
 const testDataGroup = {
   title: 'Group Tennis Lesson',
   description:
@@ -113,7 +114,7 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
           }}
         >
           {' '}
-          LessonsOffered
+          Lessons Offered
         </Typography>
         <BorderColor
           onClick={() => router.push('/profiles/coach?packages')}
@@ -146,13 +147,13 @@ const LessonsOffered: React.FC<ILessonsOffered> = ({
           setIsPaymentCheck={setIsPaymentCheck}
         />
       </LessonsOfferedCards>
-
-      <LessonsOfferedCards
+      {/* TODO: it is for the group lesson */}
+      {/* <LessonsOfferedCards
         title={testDataGroup.title}
         description={testDataGroup.description}
         itemsDescription={testDataGroup.itemsDescription}
         location={testDataGroup.location}
-      />
+      /> */}
     </Box>
   );
 };

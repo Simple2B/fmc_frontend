@@ -142,7 +142,7 @@ const CardCoachProfile: React.FC<ICardCoachProfile> = () => {
                 {profileCoachDataQuery.data?.total_rate
                   ? profileCoachDataQuery.data?.total_rate +
                     ' ' +
-                    (profileCoachDataQuery.data?.reviews.length + ' Reviews')
+                    `(${profileCoachDataQuery.data?.reviews.length}  Reviews)`
                   : ''}
               </Typography>
             </Box>

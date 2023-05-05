@@ -98,7 +98,6 @@ const LessonRequestsCalendar: React.FC<ILessonRequestsCalendar> = ({
                 />
               )}
             </Box>
-
             <Box>
               <FormControlLabel
                 sx={{
