@@ -138,7 +138,7 @@ function _StripeConnectNotBoarded() {
             }}
             onClick={handleCreateStripeAccount}
           >
-            Connect with Stripe
+            Stripe Connect
           </Box>
         </>
       ) : (
