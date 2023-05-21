@@ -21,7 +21,7 @@ const typeQuestions = [
   {
     question: 'How much does it cost to use FindMyCoach ?',
     answer:
-      'At this current stage, there is no subscription fee for FindMyCoach! There is a very small charge for bookings (3.9% + 20p) which includes the Stripe payments fee and covers the cost of the Stripe Express accounts which you will have access to. We will have subscription tiers as we include some of our exciting new features but don’t worry - we will always have the option to keep using our platform for no subscription cost.dd',
+      'For coaches the cost is £19.99/month after the free trial. Athletes pay a very small charge for bookings (3.9% + 20p) which includes the Stripe payments fee and covers the cost of the Stripe Express accounts which you will have access to. We will have subscription tiers as we include some of our exciting new features but don’t worry - we will always have the option to keep using our platform for no subscription cost.dd',
     isOpen: false,
     isShowArrow: false,
   },
@@ -35,7 +35,7 @@ const typeQuestions = [
   {
     question: 'What are the benefits to me as an athlete ?',
     answer:
-      'For athletes using FindMyCoach, our platform will give you access to your own account from which you can book with and rate your coach. Our built in calendar and booking system will make it easy for you manage your upcoming and past sessions to stay on top of your game and control your routine. By rating and reviewing the sessions you have you are helping to keep coaches accountable, which has a dramatic affect on the quality of coaching across the UK. We have some big updates planned to make your experience with 1-2-1 and group coaching much more immersive. Stay tuned!',
+      'For athletes using FindMyCoach, our platform will give you access to your own account from which you can book with and rate your coach. Our built in calendar and booking system will make it easy for you to manage your upcoming sessions to stay on top of your game. All of your bookings are safe, secure and 100% quality guaranteed',
     isOpen: false,
     isShowArrow: false,
   },
@@ -49,7 +49,7 @@ const typeQuestions = [
   {
     question: 'Is there a FindMyCoach app ?',
     answer:
-      'Unfortunately not! Having said that, the platform is functional on both laptop and mobile so you can still use us on the go. We do plan to launch a fully featured app in the future.',
+      'Unfortunately not! Having said that, we do plan to launch a fully featured app in the 2024.',
     isOpen: false,
     isShowArrow: false,
   },
