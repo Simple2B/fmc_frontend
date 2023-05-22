@@ -4,6 +4,8 @@ import style from './TitleBox.module.sass';
 export interface ITitleBox {
   color: string;
   top?: string;
+  marginBottom?: string;
+  marginTop?: string;
   title: string;
   description: string;
   textAlign?: string;
@@ -13,6 +15,8 @@ export interface ITitleBox {
 const TitleBox: React.FC<ITitleBox> = ({
   color,
   top = 0,
+  marginBottom = 0,
+  marginTop = 0,
   title,
   description,
   textAlign = 'center',
@@ -25,7 +29,13 @@ const TitleBox: React.FC<ITitleBox> = ({
     <Box
       component="section"
       className={style.section}
-      sx={{ top: { top }, textAlign: textAlign, paddingLeft: paddingLeft }}
+      sx={{
+        top: { top },
+        marginTop: { marginTop },
+        marginBottom: { marginBottom },
+        textAlign: textAlign,
+        paddingLeft: paddingLeft,
+      }}
     >
       <Box sx={{ color: { color } }} className={style.title}>
         {title}

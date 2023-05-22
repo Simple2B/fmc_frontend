@@ -90,6 +90,8 @@ const MainSection: React.FC<IMainSection> = () => {
       <TitleBox
         color={'#000'}
         top={''}
+        marginBottom={'5%'}
+        marginTop={'5%'}
         title={'How it works'}
         description={
           'We make it fast, simple and secure to book a coach that can help increase your potential.'
@@ -241,7 +243,7 @@ const MainSection: React.FC<IMainSection> = () => {
         <Box className={styles.wrapperBackground2} />
       </Box>
       <Box className={styles.wrapperQuestion}>
-        <QuestionsCards typeQuestions={typeQuestions} width={'1140px'} />
+        <QuestionsCards typeQuestions={typeQuestions} width={'100%'} />
       </Box>
       <Box className={styles.wrapperContactForm}>
         <WrapperContactForm />
