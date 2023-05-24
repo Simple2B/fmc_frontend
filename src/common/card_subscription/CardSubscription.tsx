@@ -10,7 +10,7 @@ export interface ICardSubscription {}
 
 const orders = [
   {
-    title: '30 Days Free',
+    title: 'Free Access',
   },
   {
     title: 'A Calendar and Booking Management',
