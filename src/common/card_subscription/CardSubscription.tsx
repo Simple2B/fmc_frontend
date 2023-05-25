@@ -43,7 +43,7 @@ const CardSubscription: React.FC<ICardSubscription> = () => {
     <Card className={styles.card}>
       <CardContent className={styles.cardContent}>
         <Box className={styles.wrapperTitle}>
-          <Typography className={styles.title}>£ 19,99</Typography>
+          <Typography className={styles.title}>FREE</Typography>
           <Typography className={styles.subtitle}>per month</Typography>
         </Box>
         <Box className={styles.wrapperLists}>
