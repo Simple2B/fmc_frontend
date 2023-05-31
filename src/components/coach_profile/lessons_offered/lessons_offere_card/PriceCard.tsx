@@ -59,26 +59,26 @@ const PriceCard: React.FC<IPriceCard> = ({
             disable: packageData.disable,
           };
         }
-        if (index === 1) {
-          return {
-            title: packageData.title,
-            price: price
-              ? Math.round((price / 100) * 3 - (price / 100) * 3 * 0.3)
-              : packageData.price,
-            subTitle: packageData.subTitle,
-            disable: packageData.disable,
-          };
-        }
-        if (index === 2) {
-          return {
-            title: packageData.title,
-            price: price
-              ? Math.round((price / 100) * 6 - (price / 100) * 6 * 0.3)
-              : packageData.price,
-            subTitle: packageData.subTitle,
-            disable: packageData.disable,
-          };
-        }
+        // if (index === 1) {
+        //   return {
+        //     title: packageData.title,
+        //     price: price
+        //       ? Math.round((price / 100) * 3 - (price / 100) * 3 * 0.3)
+        //       : packageData.price,
+        //     subTitle: packageData.subTitle,
+        //     disable: packageData.disable,
+        //   };
+        // }
+        // if (index === 2) {
+        //   return {
+        //     title: packageData.title,
+        //     price: price
+        //       ? Math.round((price / 100) * 6 - (price / 100) * 6 * 0.3)
+        //       : packageData.price,
+        //     subTitle: packageData.subTitle,
+        //     disable: packageData.disable,
+        //   };
+        // }
         return packageData;
       })
     );

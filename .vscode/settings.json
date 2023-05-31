@@ -5,5 +5,13 @@
     "source.fixAll": true,
     "source.organizeImports": true
   },
-  "cSpell.words": ["fortawesome", "miroshnichenko", "nocheck", "petstore"]
+  "cSpell.words": [
+    "fortawesome",
+    "miroshnichenko",
+    "nocheck",
+    "petstore"
+  ],
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }
