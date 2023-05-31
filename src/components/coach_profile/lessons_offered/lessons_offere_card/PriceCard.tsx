@@ -12,18 +12,6 @@ const testData = [
     price: 65,
     disable: false,
   },
-  {
-    title: '3 hours',
-    price: 180,
-    subTitle: 'You save 30$',
-    disable: true,
-  },
-  {
-    title: '6 hours',
-    price: 360,
-    subTitle: 'You save 30$',
-    disable: true,
-  },
 ];
 
 export interface IPriceCard {
